@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.app {
+  @apply max-w-[460px] mx-auto min-h-screen;
+}
+
+.page {
+  @apply px-36 py-20;
+
+  &--centered {
+    @apply flex items-center justify-center;
+  }
+}
+
+.btn {
+
+}
