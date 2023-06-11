@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 
+html {
+  background-image: url('../public/assets/images/app-background.svg');
+}
+
 .app {
   @apply max-w-[460px] mx-auto min-h-screen;
 }
