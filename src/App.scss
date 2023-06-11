@@ -4,7 +4,10 @@
 
 
 html {
-  background-image: url('../public/assets/images/app-background.svg');
+  background-image: url('../public/assets/images/app-background.svg'), url('../public/assets/images/app-background-blub.svg');
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
 }
 
 .app {
