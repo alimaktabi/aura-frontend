@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Dashboard = () => {
   return (
     <div className="page page__dashboard">
@@ -26,14 +28,16 @@ const Dashboard = () => {
       </div>
 
       <div className="row mb-4">
-        <div className="card">
+        <Link to="/domain-overview" className="card">
           <img
             className="icon"
             src="/assets/images/Dashboard/domain-overview-icon.svg"
             alt=""
           />
-          <p className="text-right text-[18px] text-gray20">Domain Overview</p>
-        </div>
+          <p className="text-right text-[18px] text-gray20">
+            Domain <br /> Overview
+          </p>
+        </Link>
         <div className="card">
           <img
             className="icon"
@@ -41,7 +45,7 @@ const Dashboard = () => {
             alt=""
           />
           <p className="text-right text-[18px] text-gray20">
-            Subject Evaluation
+            Subject <br /> Evaluation
           </p>
         </div>
       </div>
