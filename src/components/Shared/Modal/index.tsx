@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
+import { FiltersModal } from '../../../pages/SubjectsEvaluation/FiltersModal';
+import { SortModal } from '../../../pages/SubjectsEvaluation/SortModal';
 
 export const Modal: FC<{
   title: string;
@@ -37,8 +39,8 @@ export const Modal: FC<{
               />
             </div>
             <div className=" mt-4.5 w-full flex gap-2"></div>
-            <div className="z-10 bg-gray20 max-h-[70vh] styled-scroll">
-              {children}
+            <div className="z-10 styled-scroll">
+              <FiltersModal />
             </div>
           </div>
         </div>

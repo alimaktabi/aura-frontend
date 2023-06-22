@@ -30,7 +30,7 @@ export const SelectButtonWithModal = ({
           {iconLeft && (
             <img
               className="w-3 h-3 md:w-[26px] md:h-[26px]"
-              src="/assets/images/Shared/arrow-up-icon.svg"
+              src="/assets/images/Shared/arrow-up-icon-black.svg"
               alt=""
             />
           )}
