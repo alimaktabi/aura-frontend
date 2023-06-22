@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SubjectCard } from './SubjectCard.tsx';
+import { SubjectSearch } from './SubjectSearch.tsx';
 
 const SubjectsEvaluation = () => {
   const [subjects] = useState<any>([
@@ -37,7 +38,7 @@ const SubjectsEvaluation = () => {
 
   return (
     <div className="page page__dashboard">
-      <div className="card mb-4"></div>
+      <SubjectSearch />
       <p className="text-lg text-white mb-5 mt-7">
         Subjects <strong>(23)</strong>
       </p>
