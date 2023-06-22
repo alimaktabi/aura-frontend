@@ -26,7 +26,7 @@ const Index = () => {
           {headerComponent.title}
         </span>
       </span>
-      <span className="header-right">
+      <span className="header-right flex items-center">
         {headerComponent.icon && headerComponent.iconClicked && (
           <span onClick={headerComponent.iconClicked} className="header-icon">
             <img

@@ -1,0 +1,64 @@
+export const SubjectCard = ({ subject }: { subject: any }) => {
+  return (
+    <div
+      className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full ${
+        subject.evaluation === 'POSITIVE'
+          ? '!bg-green-card !opacity-75'
+          : subject.evaluation === 'NEGATIVE'
+          ? '!bg-red-card !opacity-75'
+          : ''
+      }`}
+    >
+      <div className="evaluation-left flex flex-col gap-2 flex-1">
+        <div className="evaluation-left__top flex gap-3">
+          <div className="evaluation__profile">
+            <img
+              className="rounded-full w-12 h-12 border border-white bg-center bg-cover"
+              src={subject.image}
+              alt=""
+            />
+          </div>
+          <div className="evaluation__info flex flex-col">
+            <p className="text-black font-medium">{subject.name}</p>
+            <p className="text-gray20">
+              Tier:{' '}
+              <span className="font-medium text-black">{subject.tier}</span>
+            </p>
+          </div>
+        </div>
+        <div className="evaluation-left__bottom">
+          <p className="text-sm text-gray20">Your evaluation</p>
+          <p className="font-medium">
+            {subject.evaluation === 'POSITIVE' ? (
+              <span className="text-green-800">
+                Positive{' '}
+                <span className="text-black">
+                  {' '}
+                  - {subject.evaluationStrength}
+                </span>
+              </span>
+            ) : subject.evaluation === 'NEGATIVE' ? (
+              <span className="text-red-800">
+                Negative{' '}
+                <span className="text-black">
+                  {' '}
+                  - {subject.evaluationStrength}
+                </span>
+              </span>
+            ) : (
+              <span className="text-gray20">...</span>
+            )}
+          </p>
+        </div>
+      </div>
+      <div className="evaluation-right flex-1">
+        <p className="text-gray20">
+          Tier: <span className="font-medium text-black">{subject.tier}</span>
+        </p>
+        <p className="text-gray20">
+          <span className="font-medium text-black">{subject.tier}</span>
+        </p>
+      </div>
+    </div>
+  );
+};

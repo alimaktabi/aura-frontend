@@ -6,6 +6,8 @@ export default {
       colors: {
         gray20: '#585858',
         'pastel-purple': '#C9A2FF',
+        'green-card': '#C0E6C9',
+        'red-card': '#E6C0C0',
       },
     },
   },

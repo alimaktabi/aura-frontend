@@ -1,5 +1,6 @@
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
+import SubjectsEvaluation from './pages/SubjectsEvaluation';
 
 const routes = [
   {
@@ -19,6 +20,17 @@ const routes = [
       icon: 'home',
       iconClicked: () => {
         window.location.href = '/';
+      },
+    },
+  },
+  {
+    path: '/subjects-evaluation',
+    element: SubjectsEvaluation,
+    header: {
+      title: 'Subjects Evaluation',
+      icon: 'back',
+      iconClicked: () => {
+        return;
       },
     },
   },
