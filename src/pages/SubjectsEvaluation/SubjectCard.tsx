@@ -9,7 +9,7 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
           : ''
       }`}
     >
-      <div className="evaluation-left flex flex-col gap-2 flex-1">
+      <div className="evaluation-left flex flex-col gap-2">
         <div className="evaluation-left__top flex gap-3">
           <div className="evaluation__profile">
             <img
@@ -51,13 +51,18 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
           </p>
         </div>
       </div>
-      <div className="evaluation-right flex-1">
-        <p className="text-gray20">
-          Tier: <span className="font-medium text-black">{subject.tier}</span>
-        </p>
-        <p className="text-gray20">
-          <span className="font-medium text-black">{subject.tier}</span>
-        </p>
+      <div className="evaluation-right flex flex-col gap-2">
+        <div className="evaluation-right__top">
+          <p className="text-gray20">
+            Tier: <span className="font-medium text-black">{subject.tier}</span>
+          </p>
+          <p className="text-gray20">
+            <span className="font-medium text-black">{subject.tier}</span>
+          </p>
+        </div>
+        <div className="evaluation-right__bottom">
+          <img className="w-26.5 h-12" src="/assets/images/chart.svg" alt="" />
+        </div>
       </div>
     </div>
   );
