@@ -1,6 +1,7 @@
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
+import SubjectProfile from './pages/SubjectProfile';
 
 const routes = [
   {
@@ -34,6 +35,17 @@ const routes = [
       },
     },
   },
+  {
+    path: '/subject-profile',
+    element: SubjectProfile,
+    header: {
+      title: 'Subject Profile',
+      icon: 'back',
+      iconClicked: () => {
+        return;
+      },
+    },
+  }
 ];
 
 export default routes;
