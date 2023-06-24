@@ -3,6 +3,7 @@ import ProfileEvaluation from '../../components/Shared/ProfileEvaluation';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { YourEvaluation } from './YourEvaluation';
 import { useState } from 'react';
+import { Modal } from '../../components/Shared/Modal';
 
 const SubjectProfile = () => {
   const [profiles] = useState([
@@ -57,14 +58,37 @@ const SubjectProfile = () => {
       <ProfileInfo />
       <YourEvaluation />
       <EvaluationsDetails />
-      <div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">
-        {profiles.map((profiles: any) => (
-          <ProfileEvaluation
-            profile={profiles}
-            className="!min-w-[305px] !py-5"
-          />
-        ))}
+      <div>
+        <div className="mb-2 flex justify-between">
+          <p className="text-lg text-white">Other Evaluations</p>
+          <div className="flex items-center gap-1.5">
+            <p className="underline text-sm text-white">See all</p>
+            <img
+              src="/assets/images/Shared/arrow-right-icon-white.svg"
+              alt=""
+              className="w-4 h-4"
+            />
+          </div>
+        </div>
+        <div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">
+          {profiles.map((profiles: any) => (
+            <ProfileEvaluation
+              profile={profiles}
+              className="!min-w-[305px] !py-5"
+            />
+          ))}
+        </div>
       </div>
+      <Modal
+        title={'Evaluation List'}
+        isOpen={true}
+        closeModalHandler={() => {
+          return;
+        }}
+        className="select-button-with-modal__modal"
+      >
+        <div></div>
+      </Modal>
     </div>
   );
 };
