@@ -8,11 +8,16 @@ export default {
         gray20: '#585858',
         gray30: '#D9D9D9',
         gray40: '#ECECEC',
+        gray50: '#CDCDCD',
         'pastel-purple': '#C9A2FF',
         'green-card': '#C0E6C9',
         'red-card': '#E6C0C0',
         black2: '#2C2C2C',
-        
+        pl1: '#C0E6C9',
+        pl2: '#72BF83',
+        nl1: '#E6C0C0',
+        nl2: '#D39090',
+
       },
     },
   },
