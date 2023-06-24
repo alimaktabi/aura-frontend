@@ -6,7 +6,7 @@ const SubjectsEvaluation = () => {
   const [subjects] = useState<any>([
     {
       id: 1,
-      image: '/assets/images/profile.jpg',
+      image: '/assets/images/profile.jpeg',
       name: 'Sina Parvizi',
       tier: 'Bronze',
       score: '2.5k',
@@ -16,7 +16,7 @@ const SubjectsEvaluation = () => {
     },
     {
       id: 2,
-      image: '/assets/images/profile.jpg',
+      image: '/assets/images/profile.jpeg',
       name: 'Sina Parvizi',
       tier: 'Bronze',
       score: '2.5k',
@@ -26,7 +26,7 @@ const SubjectsEvaluation = () => {
     },
     {
       id: 3,
-      image: '/assets/images/profile.jpg',
+      image: '/assets/images/profile.jpeg',
       name: 'Sina Parvizi',
       tier: 'Bronze',
       score: '2.5k',

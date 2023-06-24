@@ -1,16 +1,4 @@
-export const EvaluationInfo = ({
-  notes,
-  evaluation,
-  evaluationStrength,
-  score,
-  isYourEvaluation,
-}: {
-  notes: boolean;
-  evaluation: string;
-  evaluationStrength: string;
-  score: string;
-  isYourEvaluation: boolean;
-}) => {
+export const EvaluationInfo = ({ info }: { info: any }) => {
   const evaluationValues = (evaluation: string) => {
     switch (evaluation) {
       case 'POSITIVE':
@@ -37,12 +25,14 @@ export const EvaluationInfo = ({
     <div className="flex gap-2.5 items-center text-sm">
       <div
         className={`p-2.5 rounded ${
-          !notes ? 'bg-gray50' : evaluationValues(evaluation).iconBgColor
+          !info.notes
+            ? 'bg-gray50'
+            : evaluationValues(info.evaluation).iconBgColor
         }`}
       >
         <img
           src={`${
-            notes
+            info.notes
               ? '/assets/images/Shared/note-icon-white.svg'
               : '/assets/images/Shared/note-icon-gray.svg'
           }`}
@@ -51,21 +41,21 @@ export const EvaluationInfo = ({
       </div>
       <div
         className={`flex w-full justify-between rounded items-center p-1.5 ${
-          evaluationValues(evaluation).bgColor
-        }`}
+          evaluationValues(info.evaluation).bgColor
+        } ${info.isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}
       >
         <div>
           <span className="font-medium">
-            {evaluationValues(evaluation).text}
+            {evaluationValues(info.evaluation).text}
           </span>
-          <span className="font-bold"> - {evaluationStrength}</span>
+          <span className="font-bold"> - {info.evaluationStrength}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-medium">{score}</span>
-          {isYourEvaluation && (
+          <span className="font-medium">{info.score}</span>
+          {info.isYourEvaluation && (
             <div
               className={`p-1.5 rounded ${
-                evaluationValues(evaluation).iconBgColor
+                evaluationValues(info.evaluation).iconBgColor
               }`}
             >
               <img
