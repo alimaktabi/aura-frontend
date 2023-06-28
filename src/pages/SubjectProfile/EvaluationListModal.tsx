@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ModalItem } from '../../components/Shared/Modal/ModalItem';
+import ProfileEvaluation from '../../components/Shared/ProfileEvaluation';
 
 export const EvaluationListModal = () => {
   const [filters] = useState<any>([
@@ -36,10 +37,62 @@ export const EvaluationListModal = () => {
       isSelected: false,
     },
   ]);
+  const [profiles] = useState([
+    {
+      id: 1,
+      name: 'Adam Stallard',
+      image: '/assets/images/profile.jpeg',
+      connections: 432,
+      mutualConnections: 323,
+      rate: '233K',
+      evaluationInfo: {
+        notes: true,
+        evaluation: 'POSITIVE',
+        evaluationStrength: 'Very High',
+        score: '2.32K',
+        isYourEvaluation: false,
+      },
+    },
+    {
+      id: 2,
+      name: 'Adam Stallard',
+      image: 'assets/images/profile.jpeg',
+      connections: 432,
+      mutualConnections: 323,
+      rate: '233K',
+      evaluationInfo: {
+        notes: false,
+        evaluation: 'NEGATIVE',
+        evaluationStrength: 'Very High',
+        score: '-2.32K',
+        isYourEvaluation: false,
+      },
+    },
+    {
+      id: 3,
+      name: 'Adam Stallard',
+      image: 'assets/images/profile.jpeg',
+      connections: 432,
+      mutualConnections: 323,
+      rate: '233K',
+      evaluationInfo: {
+        notes: true,
+        evaluation: 'NEGATIVE',
+        evaluationStrength: 'Very High',
+        score: '-2.32K',
+        isYourEvaluation: false,
+      },
+    },
+  ]);
   return (
-    <div className="flex flex-col gap-[18px]">
+    <div className="flex flex-col gap-[18px] overflow-scroll overscroll-contain max-h-[600px]">
       <SelectItems title="Filters" isOpen={true} items={filters} />
       <SelectItems title="Sort" isOpen={false} items={sorts} />
+      <div className="flex flex-col gap-2.5 w-full -mb-5 pb-5">
+        {profiles.map((profiles: any) => (
+          <ProfileEvaluation profile={profiles} />
+        ))}
+      </div>
     </div>
   );
 };

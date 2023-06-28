@@ -27,8 +27,8 @@ const ProfileEvaluation = ({
             </div>
           </div>
         </div>
-        <div className="card__info__right flex flex-col items-center gap-1">
-          <div className="flex items-center gap-1.5 rounded bg-gray00 p-2">
+        <div className="card__info__right flex flex-col items-center">
+          <div className="flex items-center gap-1.5 rounded bg-gray00 py-1.5 px-2">
             <img src="/assets/images/Shared/star-icon.svg" alt="" />
             <div className="text-white text-xs">
               {profile.rate} ({profile.mutualConnections})

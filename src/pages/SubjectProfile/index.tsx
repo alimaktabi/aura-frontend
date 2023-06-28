@@ -82,6 +82,7 @@ const SubjectProfile = () => {
       <Modal
         title={'Evaluation List'}
         isOpen={true}
+        noButtonPadding={true}
         closeModalHandler={() => {
           return;
         }}

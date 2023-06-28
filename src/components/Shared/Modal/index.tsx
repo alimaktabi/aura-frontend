@@ -9,9 +9,18 @@ export const Modal: FC<{
   className?: string;
   size?: 'sm' | 'md' | 'lg';
   isOpen: boolean;
+  noButtonPadding?: boolean;
   children: React.ReactNode;
   closeModalHandler: () => void;
-}> = ({ title, children, size, isOpen, closeModalHandler, className }) => {
+}> = ({
+  title,
+  children,
+  size,
+  isOpen,
+  closeModalHandler,
+  className,
+  noButtonPadding,
+}) => {
   return (
     <>
       {isOpen && (
@@ -21,9 +30,9 @@ export const Modal: FC<{
           data-testid="modal-wrapper"
         >
           <div
-            className={`modal-content bg-gray40 max-w-[400px] w-[90%] px-8 pt-5 pb-8 relative overflow-hidden -z-10 ${
+            className={`modal-content bg-gray40 max-w-[400px] w-[90%] px-5 pt-5 pb-5 relative overflow-hidden -z-10 ${
               size === 'sm' ? '' : ''
-            } rounded-3xl`}
+            } ${noButtonPadding ? 'pb-0' : ''} rounded-3xl`}
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
           >
