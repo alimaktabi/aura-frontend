@@ -11,7 +11,7 @@ export const ModalItem = ({
 }) => {
   return (
     <div
-      className={`flex justify-center items-center gap-3 rounded px-1.5 py-2.5 min-w-[30%] ${
+      className={`flex justify-center items-center gap-3 rounded px-3 py-2.5 min-w-[30%] ${
         isSelected ? 'bg-pastel-purple' : 'bg-gray30'
       }
       ${className ? className : ''}
