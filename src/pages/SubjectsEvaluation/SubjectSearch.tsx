@@ -1,4 +1,6 @@
 import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';
+import { FiltersModal } from './FiltersModal.tsx';
+import { SortModal } from './SortModal.tsx';
 
 export const SubjectSearch = () => {
   return (
@@ -20,12 +22,16 @@ export const SubjectSearch = () => {
           title="Filters"
           iconLeft={false}
           selectedItem="No filter"
-        />
+        >
+          <FiltersModal />
+        </SelectButtonWithModal>
         <SelectButtonWithModal
           title="Sort By"
           iconLeft={false}
           selectedItem="Last created"
-        />
+        >
+          <SortModal />
+        </SelectButtonWithModal>
       </div>
     </div>
   );

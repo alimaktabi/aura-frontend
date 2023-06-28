@@ -4,9 +4,12 @@ import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { YourEvaluation } from './YourEvaluation';
 import { useState } from 'react';
 import { Modal } from '../../components/Shared/Modal';
-import { ConnectionListModal } from './ConnectionListModal.tsx';
+import { EvaluationListModal } from './EvaluationListModal.tsx';
 
 const SubjectProfile = () => {
+  const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
+    useState(false);
+
   const [profiles] = useState([
     {
       id: 1,
@@ -63,7 +66,12 @@ const SubjectProfile = () => {
         <div className="mb-2 flex justify-between">
           <p className="text-lg text-white">Other Evaluations</p>
           <div className="flex items-center gap-1.5">
-            <p className="underline text-sm text-white">See all</p>
+            <p
+              onClick={() => setIsEvaluationListModalOpen(true)}
+              className="underline text-sm text-white"
+            >
+              See all
+            </p>
             <img
               src="/assets/images/Shared/arrow-right-icon-white.svg"
               alt=""
@@ -82,14 +90,12 @@ const SubjectProfile = () => {
       </div>
       <Modal
         title={'Evaluation List'}
-        isOpen={false}
+        isOpen={isEvaluationListModalOpen}
         noButtonPadding={true}
-        closeModalHandler={() => {
-          return;
-        }}
+        closeModalHandler={() => setIsEvaluationListModalOpen(false)}
         className="select-button-with-modal__modal"
       >
-        <ConnectionListModal />
+        <EvaluationListModal />
       </Modal>
     </div>
   );

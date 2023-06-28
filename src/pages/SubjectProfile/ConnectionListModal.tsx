@@ -44,14 +44,34 @@ export const ConnectionListModal = () => {
       evaluation: 'null',
       evaluationStrength: 'Medium',
     },
+    {
+      id: 5,
+      image: '/assets/images/profile.jpeg',
+      name: 'Sina Parvizi',
+      tier: 'Bronze',
+      score: '2.5k',
+      status: '18 Pos / 5 Neg',
+      evaluation: 'null',
+      evaluationStrength: 'Medium',
+    },
+    {
+      id: 6,
+      image: '/assets/images/profile.jpeg',
+      name: 'Sina Parvizi',
+      tier: 'Bronze',
+      score: '2.5k',
+      status: '18 Pos / 5 Neg',
+      evaluation: 'null',
+      evaluationStrength: 'Medium',
+    },
   ]);
   return (
-    <div className="flex flex-col gap-6 overflow-scroll overscroll-contain max-h-[600px]">
+    <div className="flex flex-col gap-6 max-h-[600px]">
       <div className="flex w-full justify-between">
         <p>Filters:</p>
         <ModalItem title="Mutual Connections" isSelected={false} icon={null} />
       </div>
-      <div className="flex flex-col gap-2.5 w-full -mb-5 pb-5">
+      <div className="flex flex-col overflow-scroll overscroll-contain gap-2.5 w-full -mb-5 pb-5">
         {subjects.map((subject: any) => (
           <SubjectCard subject={subject} />
         ))}

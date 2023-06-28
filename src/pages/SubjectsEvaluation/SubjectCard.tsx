@@ -57,14 +57,25 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
       <div className="evaluation-right flex flex-col gap-2">
         <div className="evaluation-right__top">
           <p className="text-gray20">
-            Tier: <span className="font-medium text-black">{subject.tier}</span>
+            Score:{' '}
+            <span className="font-medium text-black">{subject.score}</span>
           </p>
           <p className="text-gray20">
-            <span className="font-medium text-black">{subject.tier}</span>
+            <span className="font-medium text-black">{subject.status}</span>
           </p>
         </div>
         <div className="evaluation-right__bottom">
-          <img className="w-26.5 h-12" src="/assets/images/chart.svg" alt="" />
+          <img
+            className="w-26.5 h-12"
+            src={
+              subject.evaluation === 'NEGATIVE'
+                ? '/assets/images/negative-chart.svg'
+                : subject.evaluation === 'POSITIVE'
+                ? '/assets/images/positive-chart.svg'
+                : '/assets/images/chart.svg'
+            }
+            alt=""
+          />
         </div>
       </div>
     </Link>

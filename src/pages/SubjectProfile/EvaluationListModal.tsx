@@ -83,12 +83,42 @@ export const EvaluationListModal = () => {
         isYourEvaluation: false,
       },
     },
+    {
+      id: 6,
+      name: 'Adam Stallard',
+      image: '/assets/images/profile.jpeg',
+      connections: 432,
+      mutualConnections: 323,
+      rate: '233K',
+      evaluationInfo: {
+        notes: true,
+        evaluation: 'POSITIVE',
+        evaluationStrength: 'Very High',
+        score: '2.32K',
+        isYourEvaluation: false,
+      },
+    },
+    {
+      id: 4,
+      name: 'Adam Stallard',
+      image: 'assets/images/profile.jpeg',
+      connections: 432,
+      mutualConnections: 323,
+      rate: '233K',
+      evaluationInfo: {
+        notes: true,
+        evaluation: 'NEGATIVE',
+        evaluationStrength: 'Very High',
+        score: '-2.32K',
+        isYourEvaluation: false,
+      },
+    },
   ]);
   return (
-    <div className="flex flex-col gap-[18px] overflow-scroll overscroll-contain max-h-[600px]">
+    <div className="flex flex-col gap-[18px] max-h-[600px]">
       <SelectItems title="Filters" isOpen={true} items={filters} />
       <SelectItems title="Sort" isOpen={false} items={sorts} />
-      <div className="flex flex-col gap-2.5 w-full -mb-5 pb-5">
+      <div className="flex flex-col overflow-scroll overscroll-contain gap-2.5 w-full -mb-5 pb-5">
         {profiles.map((profiles: any) => (
           <ProfileEvaluation profile={profiles} />
         ))}

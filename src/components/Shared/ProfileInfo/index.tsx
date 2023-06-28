@@ -1,3 +1,7 @@
+import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal.tsx';
+import Modal from '../Modal';
+import { useState } from 'react';
+
 export const ProfileInfo = ({
   isPerformance = false,
 }: {
@@ -39,14 +43,32 @@ export const ProfileInfo = ({
 };
 
 const ConnectionsButton = () => {
+  const [isConnectionsListModalOpen, setIsConnectionsListModalOpen] =
+    useState(false);
   return (
-    <div className="card--header__right flex flex-col justify-center bg-pastel-purple rounded h-full py-2 px-3.5">
-      <div className="flex w-full justify-between items-center">
-        <div className="font-bold text-white leading-5">439</div>
-        <img src="/assets/images/Shared/arrow-right-icon-white.svg" alt="" />
+    <>
+      <div
+        onClick={() => setIsConnectionsListModalOpen(true)}
+        className="card--header__right flex flex-col justify-center bg-pastel-purple rounded h-full py-2 px-3.5"
+      >
+        <div className="flex w-full justify-between items-center">
+          <div className="font-bold text-white leading-5">439</div>
+          <img src="/assets/images/Shared/arrow-right-icon-white.svg" alt="" />
+        </div>
+        <div className="font-bold text-sm text-white leading-5">
+          Connections
+        </div>
       </div>
-      <div className="font-bold text-sm text-white leading-5">Connections</div>
-    </div>
+      <Modal
+        title={'Connections List'}
+        isOpen={isConnectionsListModalOpen}
+        noButtonPadding={true}
+        closeModalHandler={() => setIsConnectionsListModalOpen(false)}
+        className="select-button-with-modal__modal"
+      >
+        <ConnectionListModal />
+      </Modal>
+    </>
   );
 };
 
