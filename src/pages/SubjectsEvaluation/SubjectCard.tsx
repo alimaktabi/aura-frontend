@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom';
+
 export const SubjectCard = ({ subject }: { subject: any }) => {
   return (
-    <div
+    <Link
+      to="/subject-profile"
       className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full ${
         subject.evaluation === 'POSITIVE'
           ? '!bg-green-card !opacity-75'
@@ -64,6 +67,6 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
           <img className="w-26.5 h-12" src="/assets/images/chart.svg" alt="" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
