@@ -38,7 +38,7 @@ const Dashboard = () => {
             Domain <br /> Overview
           </p>
         </Link>
-        <div className="card">
+        <Link to="/subjects-evaluation" className="card">
           <img
             className="icon"
             src="/assets/images/Dashboard/subject-evaluation-icon.svg"
@@ -47,7 +47,7 @@ const Dashboard = () => {
           <p className="text-right text-[18px] text-gray20">
             Subject <br /> Evaluation
           </p>
-        </div>
+        </Link>
       </div>
 
       <div className="row mb-4">

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Modal } from '../../Shared/Modal';
 
 export const SelectButtonWithModal = ({
@@ -6,8 +6,6 @@ export const SelectButtonWithModal = ({
   iconLeft,
   selectedItem,
   children,
-  isModalOpen,
-  closeModalHandler,
   modalTitle,
   onClick,
 }: {
@@ -15,17 +13,20 @@ export const SelectButtonWithModal = ({
   iconLeft?: boolean;
   selectedItem: string;
   children?: ReactNode;
-  isModalOpen?: boolean;
-  closeModalHandler?: () => void;
   modalTitle?: string;
   onClick?: () => void;
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="text-xyz-75 text-gray20 text-sm max-md:text-sm max-md:font-semibold">
         {title}:
       </div>
-      <div className="select-button-with-modal__button flex items-center justify-between bg-catskill-white rounded pl-3 md:pl-5 pr-4 h-10 md:h-14 cursor-pointer border border-gray10">
+      <div
+        onClick={() => setIsModalOpen(true)}
+        className="select-button-with-modal__button flex items-center justify-between bg-catskill-white rounded pl-3 md:pl-5 pr-4 h-10 md:h-14 cursor-pointer border border-gray10"
+      >
         <span className="flex gap-1.5 md:gap-2.5 items-center">
           {iconLeft && (
             <img
@@ -47,10 +48,8 @@ export const SelectButtonWithModal = ({
       </div>
       <Modal
         title={'Filters'}
-        isOpen={true}
-        closeModalHandler={() => {
-          return;
-        }}
+        isOpen={isModalOpen}
+        closeModalHandler={() => setIsModalOpen(false)}
         className="select-button-with-modal__modal"
       >
         {children}

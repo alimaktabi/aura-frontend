@@ -23,7 +23,7 @@ export const SubjectSearch = () => {
         />
         <SelectButtonWithModal
           title="Sort By"
-          iconLeft={true}
+          iconLeft={false}
           selectedItem="Last created"
         />
       </div>
