@@ -10,6 +10,7 @@ export default {
         gray30: '#D9D9D9',
         gray40: '#ECECEC',
         gray50: '#CDCDCD',
+        purple00: '#C9A2FF',
         'pastel-purple': '#C9A2FF',
         'green-card': '#C0E6C9',
         'red-card': '#E6C0C0',
