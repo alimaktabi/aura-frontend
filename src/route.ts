@@ -2,6 +2,7 @@ import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
 import SubjectProfile from './pages/SubjectProfile';
+import PerformanceOverview from './pages/PerformanceOverview';
 
 const routes = [
   {
@@ -17,7 +18,7 @@ const routes = [
     path: '/domain-overview',
     element: DomainOverview,
     header: {
-      title: 'Domain Overview',
+      title: 'Domain overview',
       icon: 'home',
       iconClicked: () => {
         window.location.href = '/';
@@ -28,7 +29,7 @@ const routes = [
     path: '/subjects-evaluation',
     element: SubjectsEvaluation,
     header: {
-      title: 'Subjects Evaluation',
+      title: 'Subjects evaluation',
       icon: 'back',
       iconClicked: () => {
         return;
@@ -39,11 +40,22 @@ const routes = [
     path: '/subject-profile',
     element: SubjectProfile,
     header: {
-      title: 'Subject Profile',
+      title: 'Subject profile',
       icon: 'back',
       iconClicked: () => {
         return;
       },
+    },
+  },
+  {
+    path: '/performance-overview',
+    element: PerformanceOverview,
+    header: {
+      title: 'Player performance overview',
+      icon: 'back',
+      iconClicked: () => {
+        return;
+      }
     },
   }
 ];
