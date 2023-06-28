@@ -1,9 +1,5 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { FiltersModal } from '../../../pages/SubjectsEvaluation/FiltersModal';
-import { SortModal } from '../../../pages/SubjectsEvaluation/SortModal';
-import { EvaluationListModal } from '../../../pages/SubjectProfile/EvaluationListModal';
-import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal';
 
 export const Modal: FC<{
   title: string;
@@ -50,12 +46,7 @@ export const Modal: FC<{
               />
             </div>
             <div className=" mt-4.5 w-full flex gap-2"></div>
-            <div className="z-10 styled-scroll">
-              {/* <EvaluationListModal /> */}
-              {/* <FiltersModal /> */}
-              {/* <SortModal /> */}
-              <ConnectionListModal />
-            </div>
+            <div className="z-10 styled-scroll">{children}</div>
           </div>
         </div>
       )}

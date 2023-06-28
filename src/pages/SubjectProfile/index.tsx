@@ -4,6 +4,7 @@ import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { YourEvaluation } from './YourEvaluation';
 import { useState } from 'react';
 import { Modal } from '../../components/Shared/Modal';
+import { ConnectionListModal } from './ConnectionListModal.tsx';
 
 const SubjectProfile = () => {
   const [profiles] = useState([
@@ -88,7 +89,7 @@ const SubjectProfile = () => {
         }}
         className="select-button-with-modal__modal"
       >
-        <div></div>
+        <ConnectionListModal />
       </Modal>
     </div>
   );

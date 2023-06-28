@@ -17,7 +17,8 @@ export const SelectButtonWithModal = ({
   onClick?: () => void;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log('modalTitle', modalTitle);
+  console.log(onClick);
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="text-xyz-75 text-gray20 text-sm max-md:text-sm max-md:font-semibold">
