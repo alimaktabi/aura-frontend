@@ -8,12 +8,12 @@ import { AuthDataWithPassword } from '../../types';
 
 export type ProfileState = {
   //TODO: rename this to authData
-  auth: AuthDataWithPassword | null;
+  authData: AuthDataWithPassword | null;
   brightIdBackupEncrypted: string | null;
 };
 
 const initialProfileState: ProfileState = {
-  auth: null,
+  authData: null,
   brightIdBackupEncrypted: null,
 };
 
@@ -23,10 +23,10 @@ export const profileSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
-      state.auth = action.payload;
+      state.authData = action.payload;
     });
     builder.addCase(refreshKeyPairThunk.fulfilled, (state, action) => {
-      state.auth = action.payload;
+      state.authData = action.payload;
     });
     builder.addCase(getBrightIdBackupThunk.fulfilled, (state, action) => {
       state.brightIdBackupEncrypted = action.payload;

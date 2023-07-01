@@ -4,22 +4,22 @@ import { decryptUserData } from 'utils/crypto';
 
 export const selectAuthData = createSelector(
   (state: RootState) => state.profile,
-  (profile) => profile.auth,
+  (profile) => profile.authData,
 );
 export const selectPrivateKey = createSelector(
   (state: RootState) => state.profile,
-  (profile) => profile.auth?.privateKey,
+  (profile) => profile.authData?.privateKey,
 );
 
 export const selectIsLoggedIn = createSelector(
   (state: RootState) => state.profile,
-  (profile) => !!profile.auth,
+  (profile) => !!profile.authData,
 );
 export const selectBrightIdBackup = createSelector(
   (state: RootState) => state.profile,
   (profile) => {
     const backupEncrypted = profile.brightIdBackupEncrypted;
-    const password = profile.auth?.password;
+    const password = profile.authData?.password;
     if (!backupEncrypted || !password) return null;
     return decryptUserData(backupEncrypted, password);
   },

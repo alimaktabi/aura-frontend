@@ -28,6 +28,7 @@ export async function pullProfilePhoto(
     return decryptData(encryptedUserPicture.data, password);
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 

@@ -10,6 +10,7 @@ export const ProfileInfo = ({
   isPerformance?: boolean;
 }) => {
   const { subjectId } = useParams();
+  if (!subjectId) return <div>Error</div>;
 
   return (
     <div className="card">
