@@ -1,10 +1,8 @@
 import CryptoJS from 'crypto-js';
 
 import nacl from 'tweetnacl';
-import { fromByteArray, toByteArray } from 'base64-js';
+import { fromByteArray } from 'base64-js';
 import { BrightIdBackup } from 'types';
-import { useSelector } from 'react-redux';
-import { selectPrivateKey } from '../store/profile/selectors.ts';
 
 export function encryptData(data: string, password: string) {
   return CryptoJS.AES.encrypt(data, password).toString();
@@ -54,27 +52,5 @@ export const generateB64Keypair = () => {
   return {
     privateKey: b64SecretKey,
     publicKey: b64PublicKey,
-  };
-};
-
-export const CryptoUtilsHook = () => {
-  const privateKey = useSelector(selectPrivateKey);
-
-  const encryptStringWithPrivateKey = (data: string) => {
-    if (!privateKey) {
-      throw new Error('need secret key stored');
-    }
-
-    const utf8Encode = new TextEncoder();
-    return nacl.sign(utf8Encode.encode(data), toByteArray(privateKey));
-  };
-
-  const encryptDataWithPrivateKey = (data: any) => {
-    return encryptStringWithPrivateKey(JSON.stringify(data));
-  };
-
-  return {
-    encryptStringWithPrivateKey,
-    encryptDataWithPrivateKey,
   };
 };

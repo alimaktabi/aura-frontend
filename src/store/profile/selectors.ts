@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../index.ts';
-import { decryptUserData } from '../../utils/crypto.ts';
+import { RootState } from '..';
+import { decryptUserData } from 'utils/crypto';
 
 export const selectPrivateKey = createSelector(
   (state: RootState) => state.profile,

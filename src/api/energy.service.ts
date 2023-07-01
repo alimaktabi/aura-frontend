@@ -1,5 +1,4 @@
 import { AxiosInstance } from 'axios';
-import { encryptDataWithPrivateKey } from 'scripts/utils/crypto';
 import {
   EnergyAllocationList,
   EnergyAllocationRetrieveResponse,
@@ -7,6 +6,7 @@ import {
   InboundEnergyAllocationList,
   InboundEnergyAllocationRetrieveResponse,
 } from 'types';
+import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
 
 export const transferEnergy = async (
   backendApi: AxiosInstance,

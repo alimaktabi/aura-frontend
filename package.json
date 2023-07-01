@@ -22,6 +22,7 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
+    "tweetnacl": "^1.0.3",
     "workbox-core": "^7.0.0",
     "workbox-precaching": "^7.0.0",
     "workbox-routing": "^7.0.0",
