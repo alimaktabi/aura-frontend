@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export const SubjectCard = ({ subject }: { subject: any }) => {
   return (
     <Link
-      to="/subject-profile"
+      to="/subject/123"
       className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full ${
         subject.evaluation === 'POSITIVE'
           ? '!bg-green-card !opacity-75'

@@ -1,19 +1,23 @@
 import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal.tsx';
 import Modal from '../Modal';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
 
 export const ProfileInfo = ({
   isPerformance = false,
 }: {
   isPerformance?: boolean;
 }) => {
+  const { subjectId } = useParams();
+
   return (
     <div className="card">
       <div className="card--header flex justify-between w-full items-center">
         <div className="card--header__left flex gap-4">
-          <img
+          <BrightIdProfilePicture
             className="card--header__left__avatar rounded-full border border-[3px] border-pastel-purple h-[51px] w-[51px]"
-            src="/assets/images/profile.jpeg"
+            id={subjectId}
           />
           <div className="card--header__left__info flex flex-col justify-center">
             <h3 className="text-lg font-medium leading-5">Ali Beigi</h3>
