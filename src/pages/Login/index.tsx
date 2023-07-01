@@ -1,12 +1,31 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'store';
 import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { RoutePath } from '../../route.ts';
+import { selectIsLoggedIn } from '../../store/profile/selectors.ts';
 
 const Login = () => {
   const [explorerCode, setExplorerCode] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
+  const [query] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const redirectAfterLogin = useCallback(() => {
+    if (location.pathname === RoutePath.LOGIN) {
+      const next = query.get('next');
+      navigate(next ?? RoutePath.DASHBOARD, { replace: true });
+    }
+  }, [location.pathname, navigate, query]);
+
+  const userIsLogged = useSelector(selectIsLoggedIn); // Your hook to get login status
+  useEffect(() => {
+    if (userIsLogged) {
+      redirectAfterLogin();
+    }
+  }, [redirectAfterLogin, userIsLogged]);
 
   async function doLogin() {
     await dispatch(loginByExplorerCodeThunk({ explorerCode, password }));

@@ -32,7 +32,7 @@ export const store = configureStore({
     }),
 });
 
-persistStore(store);
+export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
 export type AppDispatch = AppStore['dispatch'];

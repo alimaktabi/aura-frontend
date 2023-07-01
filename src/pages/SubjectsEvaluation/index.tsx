@@ -44,7 +44,7 @@ const SubjectsEvaluation = () => {
       </p>
       <div className="flex flex-col gap-3">
         {subjects.map((subject: any) => (
-          <SubjectCard subject={subject} />
+          <SubjectCard subject={subject} key={subject.id} />
         ))}
       </div>
     </div>

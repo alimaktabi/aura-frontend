@@ -3,26 +3,33 @@ import DomainOverview from './pages/DomainOverview';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
 import SubjectProfile from './pages/SubjectProfile';
 import PerformanceOverview from './pages/PerformanceOverview';
-import Login from "./pages/Login";
+import Login from './pages/Login';
+
+export enum RoutePath {
+  LOGIN = '/',
+  DASHBOARD = '/dashboard',
+}
 
 const routes = [
   {
-    path: '/',
+    path: RoutePath.LOGIN,
     element: Login,
     header: {
       title: 'Login',
       icon: null,
       iconClicked: null,
     },
+    requireAuth: false,
   },
   {
-    path: '/dashboard',
+    path: RoutePath.DASHBOARD,
     element: Dashboard,
     header: {
       title: 'Dashboard',
       icon: null,
       iconClicked: null,
     },
+    requireAuth: true,
   },
   {
     path: '/domain-overview',
@@ -34,6 +41,7 @@ const routes = [
         window.location.href = '/';
       },
     },
+    requireAuth: true,
   },
   {
     path: '/subjects-evaluation',
@@ -45,6 +53,7 @@ const routes = [
         return;
       },
     },
+    requireAuth: true,
   },
   {
     path: '/subject-profile',
@@ -56,6 +65,7 @@ const routes = [
         return;
       },
     },
+    requireAuth: true,
   },
   {
     path: '/performance-overview',
@@ -65,9 +75,10 @@ const routes = [
       icon: 'back',
       iconClicked: () => {
         return;
-      }
+      },
     },
-  }
+    requireAuth: true,
+  },
 ];
 
 export default routes;

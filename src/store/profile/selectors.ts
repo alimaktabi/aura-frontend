@@ -6,6 +6,11 @@ export const selectPrivateKey = createSelector(
   (state: RootState) => state.profile,
   (profile) => profile.auth?.privateKey,
 );
+
+export const selectIsLoggedIn = createSelector(
+  (state: RootState) => state.profile,
+  (profile) => !!profile.auth,
+);
 export const selectBrightIdBackup = createSelector(
   (state: RootState) => state.profile,
   (profile) => {

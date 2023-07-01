@@ -80,9 +80,10 @@ const SubjectProfile = () => {
           </div>
         </div>
         <div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">
-          {profiles.map((profiles: any) => (
+          {profiles.map((profile: any) => (
             <ProfileEvaluation
-              profile={profiles}
+              key={profile.id}
+              profile={profile}
               className="!min-w-[305px] !py-5"
             />
           ))}
