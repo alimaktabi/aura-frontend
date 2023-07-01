@@ -13,7 +13,7 @@ export enum RoutePath {
 const routes = [
   {
     path: RoutePath.LOGIN,
-    element: Login,
+    element: <Login />,
     header: {
       title: 'Login',
       icon: null,
@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: RoutePath.DASHBOARD,
-    element: Dashboard,
+    element: <Dashboard />,
     header: {
       title: 'Dashboard',
       icon: null,
@@ -33,7 +33,7 @@ const routes = [
   },
   {
     path: '/domain-overview',
-    element: DomainOverview,
+    element: <DomainOverview />,
     header: {
       title: 'Domain overview',
       icon: 'home',
@@ -45,7 +45,7 @@ const routes = [
   },
   {
     path: '/subjects-evaluation',
-    element: SubjectsEvaluation,
+    element: <SubjectsEvaluation />,
     header: {
       title: 'Subjects evaluation',
       icon: 'back',
@@ -56,8 +56,8 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: '/subject-profile',
-    element: SubjectProfile,
+    path: '/subject-profile/:id',
+    element: <SubjectProfile />,
     header: {
       title: 'Subject profile',
       icon: 'back',
@@ -69,7 +69,7 @@ const routes = [
   },
   {
     path: '/performance-overview',
-    element: PerformanceOverview,
+    element: <PerformanceOverview />,
     header: {
       title: 'Player performance overview',
       icon: 'back',

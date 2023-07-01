@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import routes from '../../route.ts';
+import routes from 'Routes';
 
 const Index = () => {
   // Todo: Implement route stack

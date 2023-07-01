@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'store';
 import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { RoutePath } from '../../route.ts';
+import { RoutePath } from 'Routes';
 import { selectIsLoggedIn } from '../../store/profile/selectors.ts';
 
 const Login = () => {

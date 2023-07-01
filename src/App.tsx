@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import routes, { RoutePath } from './route.ts';
+import routes, { RoutePath } from 'Routes';
 import React, { FC } from 'react';
 import { selectIsLoggedIn } from './store/profile/selectors.ts';
 import { useSelector } from 'react-redux';
@@ -34,9 +34,9 @@ function App() {
             key={route.path}
             element={
               route.requireAuth ? (
-                <RequireAuth>{route.element()}</RequireAuth>
+                <RequireAuth>{route.element}</RequireAuth>
               ) : (
-                route.element()
+                route.element
               )
             }
           />
