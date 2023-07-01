@@ -38,7 +38,7 @@ export const refreshKeyPairThunk = createAsyncThunk<
   AuthDataWithPassword,
   void,
   { state: RootState }
->('profile/loginByExplorerCode', async (_args, { getState }) => {
+>('profile/refreshKeyPair', async (_args, { getState }) => {
   const authData = selectAuthData(getState());
   if (!authData) throw new Error('Not Authenticated');
   const password = authData.password;

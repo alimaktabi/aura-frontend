@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { store } from '../store';
-import { refreshKeyPairThunk } from '../store/profile/actions.ts';
 
 export const backendApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -18,7 +16,7 @@ export const auraBrightIdNodeApi = axios.create({
   mode: 'no-cors',
 });
 
-const isThereProblemWithEncryption = (errorMessage?: string) => {
+export const isThereProblemWithEncryption = (errorMessage?: string) => {
   if (typeof errorMessage !== 'string') return false;
   return (
     errorMessage.includes('Could not decrypt using publicKey') ||
@@ -26,23 +24,3 @@ const isThereProblemWithEncryption = (errorMessage?: string) => {
     errorMessage.includes('Could not decode data')
   );
 };
-
-backendApi.interceptors.response.use(
-  (response) => response,
-  (error) =>
-    new Promise((_resolve, reject) => {
-      if (isThereProblemWithEncryption(error.response?.data)) {
-        store
-          .dispatch(refreshKeyPairThunk())
-          .then(() => {
-            reject(new Error('retryRequest'));
-          })
-          .catch((_e) => {
-            console.log(_e);
-            reject(error);
-          });
-      } else {
-        reject(error);
-      }
-    }),
-);
