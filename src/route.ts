@@ -3,10 +3,20 @@ import DomainOverview from './pages/DomainOverview';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
 import SubjectProfile from './pages/SubjectProfile';
 import PerformanceOverview from './pages/PerformanceOverview';
+import Login from "./pages/Login";
 
 const routes = [
   {
     path: '/',
+    element: Login,
+    header: {
+      title: 'Login',
+      icon: null,
+      iconClicked: null,
+    },
+  },
+  {
+    path: '/dashboard',
     element: Dashboard,
     header: {
       title: 'Dashboard',
