@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getBrightIdBackupThunk, loginByExplorerCodeThunk } from './actions.ts';
+import {
+  getBrightIdBackupThunk,
+  loginByExplorerCodeThunk,
+  refreshKeyPairThunk,
+} from './actions.ts';
 import { AuthDataWithPassword } from '../../types';
 
 export type ProfileState = {
+  //TODO: rename this to authData
   auth: AuthDataWithPassword | null;
   brightIdBackupEncrypted: string | null;
 };
@@ -18,6 +23,9 @@ export const profileSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
+      state.auth = action.payload;
+    });
+    builder.addCase(refreshKeyPairThunk.fulfilled, (state, action) => {
       state.auth = action.payload;
     });
     builder.addCase(getBrightIdBackupThunk.fulfilled, (state, action) => {

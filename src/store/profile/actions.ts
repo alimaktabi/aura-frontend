@@ -4,6 +4,9 @@ import {
   pullEncryptedUserData,
 } from '../../api/login.service';
 import { AuthDataWithPassword } from 'types';
+import { selectAuthData } from './selectors.ts';
+import { RootState } from '../index.ts';
+import { encryptData } from '../../utils/crypto.ts';
 
 export const getBrightIdBackupThunk = createAsyncThunk<
   string,
@@ -31,3 +34,18 @@ export const loginByExplorerCodeThunk = createAsyncThunk<
     };
   },
 );
+export const refreshKeyPairThunk = createAsyncThunk<
+  AuthDataWithPassword,
+  void,
+  { state: RootState }
+>('profile/loginByExplorerCode', async (_args, { getState }) => {
+  const authData = selectAuthData(getState());
+  if (!authData) throw new Error('Not Authenticated');
+  const password = authData.password;
+  const explorerCode = encryptData(authData.brightId, password);
+  const brightIdData = await loginByExplorerCode(explorerCode, password);
+  return {
+    ...brightIdData,
+    password,
+  };
+});

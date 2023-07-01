@@ -2,6 +2,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { decryptUserData } from 'utils/crypto';
 
+export const selectAuthData = createSelector(
+  (state: RootState) => state.profile,
+  (profile) => profile.auth,
+);
 export const selectPrivateKey = createSelector(
   (state: RootState) => state.profile,
   (profile) => profile.auth?.privateKey,

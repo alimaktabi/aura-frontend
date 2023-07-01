@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { store } from '../store';
+import { refreshKeyPairThunk } from '../store/profile/actions.ts';
 
 export const backendApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -25,22 +27,22 @@ const isThereProblemWithEncryption = (errorMessage?: string) => {
   );
 };
 
-// backendApi.interceptors.response.use(
-//   (response) => response,
-//   (error) =>
-//     new Promise((_resolve, reject) => {
-//       if (isThereProblemWithEncryption(error.response?.data)) {
-//         store
-//           .dispatch('login/refreshKeyPair')
-//           .then(() => {
-//             reject(new Error('retryRequest'));
-//           })
-//           .catch((_e) => {
-//             console.log(_e);
-//             reject(error);
-//           });
-//       } else {
-//         reject(error);
-//       }
-//     }),
-// );
+backendApi.interceptors.response.use(
+  (response) => response,
+  (error) =>
+    new Promise((_resolve, reject) => {
+      if (isThereProblemWithEncryption(error.response?.data)) {
+        store
+          .dispatch(refreshKeyPairThunk())
+          .then(() => {
+            reject(new Error('retryRequest'));
+          })
+          .catch((_e) => {
+            console.log(_e);
+            reject(error);
+          });
+      } else {
+        reject(error);
+      }
+    }),
+);
