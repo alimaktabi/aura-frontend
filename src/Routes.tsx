@@ -56,7 +56,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: '/subject/:subjectId',
+    path: '/subject/:subjectIdProp',
     element: <SubjectProfile />,
     header: {
       title: 'Subject profile',

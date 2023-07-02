@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { decryptUserData } from 'utils/crypto';
+import { BrightIdBackup } from '../../types';
 
 export const selectAuthData = createSelector(
   (state: RootState) => state.profile,
@@ -21,6 +22,6 @@ export const selectBrightIdBackup = createSelector(
     const backupEncrypted = profile.brightIdBackupEncrypted;
     const password = profile.authData?.password;
     if (!backupEncrypted || !password) return null;
-    return decryptUserData(backupEncrypted, password);
+    return decryptUserData(backupEncrypted, password) as BrightIdBackup;
   },
 );

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { pullProfilePhoto } from '../api/login.service.ts';
 
 const BrightIdProfilePicture = (
-  props: React.HTMLAttributes<HTMLImageElement> & { id: string },
+  props: React.HTMLAttributes<HTMLImageElement> & { id: string | undefined },
 ) => {
   const [imgSrc, setImgSrc] = useState('/assets/images/avatar-thumb.jpg');
   const authData = useSelector(selectAuthData);
@@ -12,7 +12,7 @@ const BrightIdProfilePicture = (
     let mounted = true;
 
     async function f() {
-      if (!authData) return;
+      if (!authData || !props.id) return;
       const profilePhoto = await pullProfilePhoto(
         authData.authKey,
         props.id,

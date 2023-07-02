@@ -8,6 +8,7 @@ import {
   ConnectionResponse,
 } from 'types';
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
+import { backendApi } from './index.ts';
 
 export const getConnections = (
   backendApi: AxiosInstance,
@@ -62,33 +63,24 @@ export const getConnection = async (
 };
 
 type ProfileApiResponse = AxiosResponse<AuraProfile | AuraPublicProfile>;
-export const getProfile = async (
-  backendApi: AxiosInstance,
-  fromBrightId: string,
-  isPublic = false,
-) => {
+export const getProfile = async (brightId: string, isPublic = true) => {
   let res: ProfileApiResponse;
-  let resFinal: ProfileApiResponse & {
-    isPublic: boolean;
-  };
   const privateRoute = '/v1/profile/';
   const publicRoute = '/v1/profile/public/';
   const route = isPublic ? publicRoute : privateRoute;
   try {
     // TODO: write seperated service for public profile
     res = await backendApi.get<AuraProfile | AuraPublicProfile>(
-      route + fromBrightId,
+      route + brightId,
     );
-    resFinal = { ...res, isPublic };
   } catch (error: any) {
     if (error?.response?.status === 500) {
-      res = await backendApi.get<AuraPublicProfile>(publicRoute + fromBrightId);
-      resFinal = { ...res, isPublic: true };
+      res = await backendApi.get<AuraPublicProfile>(publicRoute + brightId);
     } else {
       throw new Error('profile is not defined');
     }
   }
-  return resFinal;
+  return { ...res.data, isPublic: true };
 };
 
 export const setNickname = (
