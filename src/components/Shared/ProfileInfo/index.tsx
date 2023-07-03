@@ -1,23 +1,16 @@
 import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal.tsx';
 import Modal from '../Modal';
-import { useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
-import { useSelector } from 'react-redux';
-import { selectAuthData } from '../../../store/profile/selectors.ts';
 import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
 
 export const ProfileInfo = ({
   isPerformance = false,
+  subjectId,
 }: {
   isPerformance?: boolean;
+  subjectId: string | undefined;
 }) => {
-  const { subjectIdProp } = useParams();
-  const authData = useSelector(selectAuthData);
-  const subjectId = useMemo(
-    () => subjectIdProp ?? authData?.brightId,
-    [authData?.brightId, subjectIdProp],
-  );
   const { tier, userHasRecovery, name, joinedDateString, auraPublicProfile } =
     useSubjectBasicInfo(subjectId);
   return (

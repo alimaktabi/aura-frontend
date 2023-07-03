@@ -68,7 +68,7 @@ const SubjectProfile = () => {
   );
   return (
     <div className="page page__dashboard flex flex-col gap-4">
-      <ProfileInfo />
+      <ProfileInfo subjectId={subjectId} />
       <YourEvaluation />
       <EvaluationsDetails subjectId={subjectId} />
       <div>

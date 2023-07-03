@@ -1,6 +1,10 @@
 import { useInboundRatings } from '../../../hooks/useSubjectRatings.ts';
 
-const EvaluationsDetails = ({ subjectId }: { subjectId: string }) => {
+const EvaluationsDetails = ({
+  subjectId,
+}: {
+  subjectId: string | undefined;
+}) => {
   const { inboundRatings, inboundRatingsStatsString } =
     useInboundRatings(subjectId);
   return (
