@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import { useSubjectBasicInfo } from '../../hooks/useSubjectBasicInfo.ts';
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture.tsx';
 import { compactFormat } from '../../utils/number.ts';
+import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 
 export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
   const { tier, name, auraScore } = useSubjectBasicInfo(subjectId);
+  const { inboundRatingsStatsString } = useInboundRatings(subjectId);
   return (
     <Link
       to={'/subject/' + subjectId}
@@ -66,7 +68,9 @@ export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
             </span>
           </p>
           <p className="text-gray20">
-            <span className="font-medium text-black">{'18 Pos / 5 Neg'}</span>
+            <span className="font-medium text-black">
+              {inboundRatingsStatsString}
+            </span>
           </p>
         </div>
         <div className="evaluation-right__bottom">

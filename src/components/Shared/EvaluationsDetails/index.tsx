@@ -1,8 +1,20 @@
-const EvaluationsDetails = () => {
+import { useInboundRatings } from '../../../hooks/useSubjectRatings.ts';
+
+const EvaluationsDetails = ({ subjectId }: { subjectId: string }) => {
+  const { inboundRatings, inboundRatingsStatsString } =
+    useInboundRatings(subjectId);
   return (
     <div className="card flex flex-col gap-3">
       <div className="header__info flex flex-col gap-1">
-        <ShowData title="Evaluations" value="23" details="(18 Pos / 5 Neg)" />
+        <ShowData
+          title="Evaluations"
+          value={inboundRatings?.length}
+          details={
+            inboundRatingsStatsString
+              ? `(${inboundRatingsStatsString})`
+              : undefined
+          }
+        />
         <ShowData
           title="Calculated Score"
           value="32.32K"
@@ -27,9 +39,9 @@ const ShowData = ({
   value,
   details,
 }: {
-  title: string;
-  value: string;
-  details: string;
+  title: string | number | null | undefined;
+  value: string | number | null | undefined;
+  details: string | number | null | undefined;
 }) => {
   return (
     <div className="flex justify-between w-full">

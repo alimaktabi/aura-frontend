@@ -2,9 +2,12 @@ import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import ProfileEvaluation from '../../components/Shared/ProfileEvaluation';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { YourEvaluation } from './YourEvaluation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Modal } from '../../components/Shared/Modal';
 import { EvaluationListModal } from './EvaluationListModal.tsx';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectAuthData } from '../../store/profile/selectors.ts';
 
 const SubjectProfile = () => {
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
@@ -57,11 +60,17 @@ const SubjectProfile = () => {
       },
     },
   ]);
+  const { subjectIdProp } = useParams();
+  const authData = useSelector(selectAuthData);
+  const subjectId = useMemo(
+    () => subjectIdProp ?? authData?.brightId,
+    [authData?.brightId, subjectIdProp],
+  );
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       <ProfileInfo />
       <YourEvaluation />
-      <EvaluationsDetails />
+      <EvaluationsDetails subjectId={subjectId} />
       <div>
         <div className="mb-2 flex justify-between">
           <p className="text-lg text-white">Other Evaluations</p>

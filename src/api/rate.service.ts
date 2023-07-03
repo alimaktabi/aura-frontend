@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { AuraRating, AuraRatingRetrieveResponse } from 'types';
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
+import { backendApi } from './index.ts';
 
 export const rateUser = async (
   backendApi: AxiosInstance,
@@ -33,8 +34,7 @@ export const rateUser = async (
   }
 };
 
-export const getRatedUsers = async (
-  backendApi: AxiosInstance,
+export const getOutboundRatings = async (
   fromBrightId: string,
 ): Promise<AuraRating[]> => {
   try {
@@ -55,8 +55,7 @@ export const getRatedUsers = async (
   }
 };
 
-export const getIncomingRatings = async (
-  backendApi: AxiosInstance,
+export const getInboundRatings = async (
   toBrightId: string,
 ): Promise<AuraRating[]> => {
   try {
