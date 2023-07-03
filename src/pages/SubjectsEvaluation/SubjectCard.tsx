@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useSubjectBasicInfo } from '../../hooks/useSubjectBasicInfo.ts';
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture.tsx';
+import { compactFormat } from '../../utils/number.ts';
 
 export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
-  const { tier, userHasRecovery, name, joinedDateString, auraPublicProfile } =
-    useSubjectBasicInfo(subjectId);
+  const { tier, name, auraScore } = useSubjectBasicInfo(subjectId);
   return (
     <Link
       to={'/subject/' + subjectId}
@@ -60,7 +60,10 @@ export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
       <div className="evaluation-right flex flex-col gap-2">
         <div className="evaluation-right__top">
           <p className="text-gray20">
-            Score: <span className="font-medium text-black">{'2.5k'}</span>
+            Score:{' '}
+            <span className="font-medium text-black">
+              {auraScore ? compactFormat(auraScore) : '-'}
+            </span>
           </p>
           <p className="text-gray20">
             <span className="font-medium text-black">{'18 Pos / 5 Neg'}</span>

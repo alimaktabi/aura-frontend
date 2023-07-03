@@ -11,6 +11,7 @@ export type VerificationsResponse = {
       block: number;
       timestamp: number;
       level?: AuraVerification;
+      score?: number;
     }[];
   };
 };

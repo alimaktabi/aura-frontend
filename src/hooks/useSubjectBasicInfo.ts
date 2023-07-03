@@ -5,10 +5,7 @@ import {
 } from '../store/profile/selectors.ts';
 import { useEffect, useMemo, useState } from 'react';
 import { AuraPublicProfile } from '../types';
-import {
-  getAuraVerificationStringFromVerificationsResponse,
-  getVerifications,
-} from '../api/auranode.service.ts';
+import { getVerifications } from '../api/auranode.service.ts';
 import { getProfile } from '../api/connections.service.ts';
 
 export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
@@ -18,6 +15,7 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
     return subjectId === authData?.brightId;
   }, [authData?.brightId, subjectId]);
   const [tier, setTier] = useState<string | null>(null);
+  const [auraScore, setAuraScore] = useState<number | null>(null);
   const [userHasRecovery, setUserHasRecovery] = useState<boolean | null>(null);
   const profileInfo = useMemo(
     () =>
@@ -54,18 +52,19 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
     let mounted = true;
     if (subjectId) {
       getVerifications(subjectId).then((verificationsResponse) => {
-        if (mounted) {
-          setTier(
-            getAuraVerificationStringFromVerificationsResponse(
-              verificationsResponse,
-            ),
-          );
+        if (verificationsResponse && mounted) {
+          const auraVerification =
+            verificationsResponse.data.verifications.find(
+              (verification) => verification.name === 'Aura',
+            );
+          setTier(auraVerification?.level ?? 'Not yet');
+          if (auraVerification?.score !== undefined) {
+            setAuraScore(auraVerification.score);
+          }
           setUserHasRecovery(
-            verificationsResponse
-              ? !!verificationsResponse.data.verifications.find(
-                  (verification) => verification.name === 'SocialRecoverySetup',
-                )
-              : null,
+            !!verificationsResponse.data.verifications.find(
+              (verification) => verification.name === 'SocialRecoverySetup',
+            ),
           );
         }
         getProfile(subjectId).then((res) => {
@@ -81,6 +80,7 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
   return {
     tier,
     userHasRecovery,
+    auraScore,
     name: profileInfo?.name ?? profileInfo?.id ?? 'Unknown',
     joinedDateString,
     auraPublicProfile,

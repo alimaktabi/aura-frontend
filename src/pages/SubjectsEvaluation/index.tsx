@@ -10,7 +10,8 @@ const SubjectsEvaluation = () => {
     <div className="page page__dashboard">
       <SubjectSearch />
       <p className="text-lg text-white mb-5 mt-7">
-        Subjects <strong>(23)</strong>
+        Subjects{' '}
+        <strong>({brightIdBackup?.connections.length ?? '...'})</strong>
       </p>
       {brightIdBackup ? (
         <div className="flex flex-col gap-3">
