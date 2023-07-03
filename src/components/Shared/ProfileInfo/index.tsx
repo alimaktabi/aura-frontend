@@ -1,19 +1,11 @@
 import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal.tsx';
 import Modal from '../Modal';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
 import { useSelector } from 'react-redux';
-import {
-  selectAuthData,
-  selectBrightIdBackup,
-} from '../../../store/profile/selectors.ts';
-import {
-  getAuraVerificationStringFromVerificationsResponse,
-  getVerifications,
-} from '../../../api/auranode.service.ts';
-import { AuraPublicProfile } from '../../../types';
-import { getProfile } from '../../../api/connections.service.ts';
+import { selectAuthData } from '../../../store/profile/selectors.ts';
+import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
 
 export const ProfileInfo = ({
   isPerformance = false,
@@ -22,75 +14,12 @@ export const ProfileInfo = ({
 }) => {
   const { subjectIdProp } = useParams();
   const authData = useSelector(selectAuthData);
-  const brightIdBackup = useSelector(selectBrightIdBackup);
   const subjectId = useMemo(
     () => subjectIdProp ?? authData?.brightId,
     [authData?.brightId, subjectIdProp],
   );
-  const isOwn = useMemo(() => {
-    return subjectId === authData?.brightId;
-  }, [authData?.brightId, subjectId]);
-  const [auraVerification, setAuraVerification] = useState<string | null>(null);
-  const [userHasRecovery, setUserHasRecovery] = useState<boolean | null>(null);
-  const profileInfo = useMemo(
-    () =>
-      isOwn
-        ? brightIdBackup?.userData
-        : brightIdBackup?.connections.find((conn) => conn.id === subjectId),
-    [brightIdBackup?.connections, brightIdBackup?.userData, isOwn, subjectId],
-  );
-
-  const [auraPublicProfile, setAuraPublicProfile] =
-    useState<AuraPublicProfile | null>(null);
-  const joinedDateString = useMemo(() => {
-    const today = new Date();
-    if (!auraPublicProfile?.brightIdDate) {
-      return '';
-    }
-    const reg = new Date(auraPublicProfile.brightIdDate);
-
-    const difDate = today.getTime() - reg.getTime();
-    const diffYears = Math.floor(difDate / (365 * 24 * 3600 * 1000));
-    if (diffYears > 0) {
-      return diffYears + ' year(s)';
-    }
-
-    const difMonths = Math.floor(difDate / (12 * 24 * 3600 * 1000));
-    if (difMonths > 0) {
-      return difMonths + ' month(s)';
-    }
-
-    return '< 1 month';
-  }, [auraPublicProfile]);
-
-  useEffect(() => {
-    let mounted = true;
-    if (subjectId) {
-      getVerifications(subjectId).then((verificationsResponse) => {
-        if (mounted) {
-          setAuraVerification(
-            getAuraVerificationStringFromVerificationsResponse(
-              verificationsResponse,
-            ),
-          );
-          setUserHasRecovery(
-            verificationsResponse
-              ? !!verificationsResponse.data.verifications.find(
-                  (verification) => verification.name === 'SocialRecoverySetup',
-                )
-              : null,
-          );
-        }
-        getProfile(subjectId).then((res) => {
-          if (mounted) setAuraPublicProfile(res);
-        });
-      });
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [subjectId]);
-
+  const { tier, userHasRecovery, name, joinedDateString, auraPublicProfile } =
+    useSubjectBasicInfo(subjectId);
   return (
     <div className="card">
       <div className="card--header flex justify-between w-full items-center">
@@ -100,18 +29,16 @@ export const ProfileInfo = ({
             id={subjectId}
           />
           <div className="card--header__left__info flex flex-col justify-center">
-            <h3 className="text-lg font-medium leading-5">
-              {profileInfo?.name}
-            </h3>
+            <h3 className="text-lg font-medium leading-5">{name}</h3>
             <div className="leading-5">
               {isPerformance ? (
                 <>
                   <span>Player Tier: </span>
                   <span className="font-medium">1</span>
                 </>
-              ) : auraVerification ? (
+              ) : tier ? (
                 <>
-                  <span className="font-medium">{auraVerification} </span>
+                  <span className="font-medium">{tier} </span>
                   <span>Subject</span>
                 </>
               ) : (
