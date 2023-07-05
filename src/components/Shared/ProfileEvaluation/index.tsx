@@ -2,6 +2,7 @@ import { EvaluationInfo } from '../EvaluationInfo';
 import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
 import { useInboundConnections } from '../../../hooks/useSubjectConnections.ts';
+import { compactFormat } from '../../../utils/number.ts';
 
 const ProfileEvaluation = ({
   fromSubjectId,
@@ -38,7 +39,7 @@ const ProfileEvaluation = ({
             <img src="/assets/images/Shared/star-icon.svg" alt="" />
             <div className="text-white text-xs">
               {/*{profile.rate} ({profile.mutualConnections})*/}
-              233K (323)
+              {profile.auraScore ? compactFormat(profile.auraScore) : '-'} (323)
             </div>
           </div>
           <div className="text-[10px] text-gray20">

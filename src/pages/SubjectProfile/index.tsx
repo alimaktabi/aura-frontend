@@ -35,7 +35,7 @@ const SubjectProfile = () => {
           <div className="flex items-center gap-1.5">
             <p
               onClick={() => setIsEvaluationListModalOpen(true)}
-              className="underline text-sm text-white"
+              className="underline text-sm text-white cursor-pointer"
             >
               See all
             </p>
