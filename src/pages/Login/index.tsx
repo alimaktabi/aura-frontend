@@ -5,6 +5,7 @@ import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { RoutePath } from 'Routes';
 import { selectIsLoggedIn } from '../../store/profile/selectors.ts';
+import { decryptData } from '../../utils/crypto.ts';
 
 const Login = () => {
   const [explorerCode, setExplorerCode] = useState('');
@@ -28,7 +29,21 @@ const Login = () => {
   }, [redirectAfterLogin, userIsLogged]);
 
   async function doLogin() {
-    await dispatch(loginByExplorerCodeThunk({ explorerCode, password }));
+    try {
+      const brightId = decryptData(explorerCode, password);
+      if (!brightId) {
+        alert('Incorrect explorer code or password');
+        return;
+      }
+    } catch (e) {
+      alert('Incorrect explorer code or password');
+      return;
+    }
+    try {
+      await dispatch(loginByExplorerCodeThunk({ explorerCode, password }));
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
