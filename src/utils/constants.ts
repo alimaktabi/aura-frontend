@@ -1,4 +1,4 @@
-import { ConnectionLevel } from 'types';
+import { AuraRating, ConnectionLevel } from 'types';
 
 export const CONNECTION_SEARCH_SEED = 5;
 
@@ -13,6 +13,16 @@ export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
   'already known': 3,
   recovery: 4,
 };
+
+export function getConfidenceValue(auraRating: AuraRating | null | undefined) {
+  if (!auraRating) return auraRating;
+  const score = Math.abs(Number(auraRating.rating));
+  if (score >= 4) return 'Very High';
+  if (score >= 3) return 'High';
+  if (score >= 2) return 'Medium';
+  if (score >= 1) return 'Low';
+  return 'Very Low';
+}
 
 export const IS_PRODUCTION =
   (import.meta.env.NUXT_ENV_VERCEL_ENV || import.meta.env.NODE_ENV) ===

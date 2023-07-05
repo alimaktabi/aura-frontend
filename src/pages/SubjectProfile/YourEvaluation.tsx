@@ -1,18 +1,19 @@
 import { EvaluationInfo } from '../../components/Shared/EvaluationInfo';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAuthData } from '../../store/profile/selectors.ts';
 
-export const YourEvaluation = () => {
-  const [info] = useState({
-    notes: true,
-    evaluation: 'POSITIVE',
-    evaluationStrength: 'Very High',
-    score: '2.32K',
-    isYourEvaluation: true,
-  });
+export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
+  const authData = useSelector(selectAuthData);
+  if (!authData) {
+    return <div>Not logged in</div>;
+  }
   return (
     <div className="card flex flex-col gap-2.5">
       <div className="font-medium">Your Evaluation</div>
-      <EvaluationInfo info={info} />
+      <EvaluationInfo
+        fromSubjectId={authData.brightId}
+        toSubjectId={subjectId}
+      />
     </div>
   );
 };

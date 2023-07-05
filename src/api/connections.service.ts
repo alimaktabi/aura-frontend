@@ -1,11 +1,11 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { CONNECTION_SEARCH_SEED } from 'utils/constants';
 import {
+  AuraConnectionResponse,
   AuraConnectionsResponse,
   AuraProfile,
   AuraPublicProfile,
   BrightIdConnectionsResponse,
-  ConnectionResponse,
 } from 'types';
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
 import { backendApi, brightIdNodeApi } from './index.ts';
@@ -37,15 +37,10 @@ export const getOutboundConnections = async (toBrightId: string) => {
 };
 
 export const getConnection = async (
-  backendApi: AxiosInstance,
+  fromBrightId: string,
   toBrightId: string,
 ) => {
-  const fromBrightId = localStorage.getItem('brightId');
-  if (!fromBrightId) {
-    return;
-  }
-
-  const res = await backendApi.get<ConnectionResponse>(
+  const res = await backendApi.get<AuraConnectionResponse>(
     '/v1/connections/' + fromBrightId + '/' + toBrightId,
   );
 

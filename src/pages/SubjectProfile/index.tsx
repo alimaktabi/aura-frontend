@@ -66,10 +66,13 @@ const SubjectProfile = () => {
     () => subjectIdProp ?? authData?.brightId,
     [authData?.brightId, subjectIdProp],
   );
+  if (!subjectId) {
+    return <div>Unknown subject id</div>;
+  }
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       <ProfileInfo subjectId={subjectId} />
-      <YourEvaluation />
+      <YourEvaluation subjectId={subjectId} />
       <EvaluationsDetails subjectId={subjectId} />
       <div>
         <div className="mb-2 flex justify-between">

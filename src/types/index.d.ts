@@ -132,7 +132,7 @@ export type AuraRatingRetrieveResponse = {
   ratings: AuraRating[];
 };
 
-export type ConnectionResponse = {
+export type AuraConnectionResponse = {
   connectedTimestamp: number;
   energyAllocated?: {
     amount: number;
