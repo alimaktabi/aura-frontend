@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { ModalItem } from '../../components/Shared/Modal/ModalItem';
-import ProfileEvaluation from '../../components/Shared/ProfileEvaluation';
+import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
+import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 
-export const EvaluationListModal = () => {
-  const [filters] = useState<any>([
+export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
+  const [filters] = useState([
     {
       id: 1,
       title: 'Mutual connections',
@@ -20,7 +21,7 @@ export const EvaluationListModal = () => {
       isSelected: false,
     },
   ]);
-  const [sorts] = useState<any>([
+  const [sorts] = useState([
     {
       id: 1,
       title: 'Recent',
@@ -37,90 +38,19 @@ export const EvaluationListModal = () => {
       isSelected: false,
     },
   ]);
-  const [profiles] = useState([
-    {
-      id: 1,
-      name: 'Adam Stallard',
-      image: '/assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: true,
-        evaluation: 'POSITIVE',
-        evaluationStrength: 'Very High',
-        score: '2.32K',
-        isYourEvaluation: false,
-      },
-    },
-    {
-      id: 2,
-      name: 'Adam Stallard',
-      image: 'assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: false,
-        evaluation: 'NEGATIVE',
-        evaluationStrength: 'Very High',
-        score: '-2.32K',
-        isYourEvaluation: false,
-      },
-    },
-    {
-      id: 3,
-      name: 'Adam Stallard',
-      image: 'assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: true,
-        evaluation: 'NEGATIVE',
-        evaluationStrength: 'Very High',
-        score: '-2.32K',
-        isYourEvaluation: false,
-      },
-    },
-    {
-      id: 6,
-      name: 'Adam Stallard',
-      image: '/assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: true,
-        evaluation: 'POSITIVE',
-        evaluationStrength: 'Very High',
-        score: '2.32K',
-        isYourEvaluation: false,
-      },
-    },
-    {
-      id: 4,
-      name: 'Adam Stallard',
-      image: 'assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: true,
-        evaluation: 'NEGATIVE',
-        evaluationStrength: 'Very High',
-        score: '-2.32K',
-        isYourEvaluation: false,
-      },
-    },
-  ]);
+  const { inboundRatings } = useInboundRatings(subjectId);
   return (
     <div className="flex flex-col gap-[18px] max-h-[600px]">
       <SelectItems title="Filters" isOpen={true} items={filters} />
       <SelectItems title="Sort" isOpen={false} items={sorts} />
       <div className="flex flex-col overflow-scroll overscroll-contain gap-2.5 w-full -mb-5 pb-5">
-        {profiles.map((profiles: any) => (
-          <ProfileEvaluation profile={profiles} />
+        {inboundRatings?.map((rating) => (
+          <SubjectEvaluation
+            key={rating.id}
+            fromSubjectId={rating.fromBrightId}
+            toSubjectId={rating.toBrightId}
+            className="!min-w-[305px] !py-5"
+          />
         ))}
       </div>
     </div>

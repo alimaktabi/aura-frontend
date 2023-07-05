@@ -14,53 +14,6 @@ const SubjectProfile = () => {
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
     useState(false);
 
-  const [profiles] = useState([
-    {
-      id: 1,
-      name: 'Adam Stallard',
-      image: '/assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: true,
-        evaluation: 'POSITIVE',
-        evaluationStrength: 'Very High',
-        score: '2.32K',
-        isYourEvaluation: false,
-      },
-    },
-    {
-      id: 2,
-      name: 'Adam Stallard',
-      image: 'assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: false,
-        evaluation: 'NEGATIVE',
-        evaluationStrength: 'Very High',
-        score: '-2.32K',
-        isYourEvaluation: false,
-      },
-    },
-    {
-      id: 3,
-      name: 'Adam Stallard',
-      image: 'assets/images/profile.jpeg',
-      connections: 432,
-      mutualConnections: 323,
-      rate: '233K',
-      evaluationInfo: {
-        notes: true,
-        evaluation: 'NEGATIVE',
-        evaluationStrength: 'Very High',
-        score: '-2.32K',
-        isYourEvaluation: false,
-      },
-    },
-  ]);
   const { subjectIdProp } = useParams();
   const authData = useSelector(selectAuthData);
   const subjectId = useMemo(
@@ -111,7 +64,7 @@ const SubjectProfile = () => {
         closeModalHandler={() => setIsEvaluationListModalOpen(false)}
         className="select-button-with-modal__modal"
       >
-        <EvaluationListModal />
+        <EvaluationListModal subjectId={subjectId} />
       </Modal>
     </div>
   );
