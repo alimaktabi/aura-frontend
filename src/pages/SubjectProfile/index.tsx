@@ -94,7 +94,7 @@ const SubjectProfile = () => {
           </div>
         </div>
         <div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">
-          {inboundRatings?.map((rating) => (
+          {inboundRatings?.slice(0, 4).map((rating) => (
             <SubjectEvaluation
               key={rating.id}
               fromSubjectId={rating.fromBrightId}
