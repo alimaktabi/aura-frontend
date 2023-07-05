@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ModalItem } from '../../components/Shared/Modal/ModalItem';
 
 export const FiltersModal = () => {
-  const [filters] = useState<any>([
+  const [filters] = useState([
     {
       id: 1,
       name: 'Tier',
@@ -56,6 +56,7 @@ export const FiltersModal = () => {
         {
           id: 4,
           name: 'not evaluated yet',
+          isSelected: false,
         },
       ],
     },
@@ -78,15 +79,15 @@ export const FiltersModal = () => {
   ]);
   return (
     <div className="w-full flex flex-col gap-5">
-      {filters.map((filter: any) => (
-        <div className="flex flex-col gap-3">
+      {filters.map((filter) => (
+        <div className="flex flex-col gap-3" key={filter.id}>
           <p className="text-black2">{filter.name}</p>
           <div className="flex flex-row flex-wrap gap-2">
-            {filter.items.map((item: any) => (
+            {filter.items.map((item) => (
               <ModalItem
+                key={item.id}
                 title={item.name}
                 isSelected={item.isSelected}
-                icon={null}
               />
             ))}
           </div>

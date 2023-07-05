@@ -12,7 +12,7 @@ export const ConnectionListModal = ({
     <div className="flex flex-col gap-6 max-h-[600px]">
       <div className="flex w-full justify-between">
         <p>Filters:</p>
-        <ModalItem title="Mutual Connections" isSelected={false} icon={null} />
+        <ModalItem title="Mutual Connections" isSelected={false} />
       </div>
       <div className="flex flex-col overflow-scroll overscroll-contain gap-2.5 w-full -mb-5 pb-5">
         {inboundConnections?.map((subject) => (

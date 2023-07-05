@@ -8,7 +8,7 @@ export const ModalItem = ({
   onClick,
 }: {
   title: string;
-  icon?: string;
+  icon?: string | null;
   isSelected: boolean;
   className?: string;
   onClick?: MouseEventHandler<HTMLDivElement>;
