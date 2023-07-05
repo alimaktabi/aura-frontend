@@ -25,7 +25,7 @@ export function getConfidenceValue(auraRating: AuraRating | null | undefined) {
 }
 
 export const IS_PRODUCTION =
-  (import.meta.env.NUXT_ENV_VERCEL_ENV || import.meta.env.NODE_ENV) ===
+  (import.meta.env.VITE_VERCEL_ENV || import.meta.env.NODE_ENV) ===
   'production';
 export const brightIdBaseURL = 'http://184.72.224.75';
 

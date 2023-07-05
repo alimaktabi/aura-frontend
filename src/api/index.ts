@@ -1,7 +1,14 @@
 import axios from 'axios';
+import { IS_PRODUCTION } from '../utils/constants.ts';
 
 export const backendApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+});
+
+export const recoveryApi = axios.create({
+  baseURL: IS_PRODUCTION ? 'https://recovery.brightid.org' : '/brightid',
+  // @ts-ignore
+  mode: 'no-cors',
 });
 
 export const brightIdNodeApi = axios.create({

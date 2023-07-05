@@ -1,11 +1,10 @@
-import axios from 'axios';
 import {
   decryptData,
   decryptUserData,
   generateB64Keypair,
   hash,
 } from 'utils/crypto';
-import { backendApi } from './index';
+import { backendApi, recoveryApi } from './index';
 import { AuthData } from '../types';
 
 export async function pullDecryptedUserData(key: string, password: string) {
@@ -13,7 +12,7 @@ export async function pullDecryptedUserData(key: string, password: string) {
 }
 
 export function pullEncryptedUserData(key: string) {
-  return axios.get<string>(`/brightid/backups/${key}/data`);
+  return recoveryApi.get<string>(`/backups/${key}/data`);
 }
 
 export async function pullProfilePhoto(
@@ -22,8 +21,8 @@ export async function pullProfilePhoto(
   password: string,
 ) {
   try {
-    const encryptedUserPicture = await axios.get(
-      `/brightid/backups/${key}/${brightId}`,
+    const encryptedUserPicture = await recoveryApi.get(
+      `/backups/${key}/${brightId}`,
     );
     return decryptData(encryptedUserPicture.data, password);
   } catch (error) {
