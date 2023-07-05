@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AuraRating } from '../types';
 import { getConnection } from '../api/connections.service.ts';
+import { getConfidenceValue } from '../utils/constants.ts';
 
 export const useSubjectRating = ({
   fromSubjectId,
@@ -26,5 +27,7 @@ export const useSubjectRating = ({
       mounted = false;
     };
   }, [fromSubjectId, toSubjectId]);
-  return { rating, loading };
+  const confidenceValue = useMemo(() => getConfidenceValue(rating), [rating]);
+
+  return { rating, loading, confidenceValue };
 };

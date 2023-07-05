@@ -17,12 +17,14 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
   const [tier, setTier] = useState<string | null>(null);
   const [auraScore, setAuraScore] = useState<number | null>(null);
   const [userHasRecovery, setUserHasRecovery] = useState<boolean | null>(null);
+
+  const connectionInfo = useMemo(
+    () => brightIdBackup?.connections.find((conn) => conn.id === subjectId),
+    [brightIdBackup?.connections, subjectId],
+  );
   const profileInfo = useMemo(
-    () =>
-      isOwn
-        ? brightIdBackup?.userData
-        : brightIdBackup?.connections.find((conn) => conn.id === subjectId),
-    [brightIdBackup?.connections, brightIdBackup?.userData, isOwn, subjectId],
+    () => (isOwn ? brightIdBackup?.userData : connectionInfo),
+    [brightIdBackup?.userData, connectionInfo, isOwn],
   );
 
   const [auraPublicProfile, setAuraPublicProfile] =
@@ -52,17 +54,17 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
     let mounted = true;
     if (subjectId) {
       getVerifications(subjectId).then((verificationsResponse) => {
-        if (verificationsResponse && mounted) {
-          const auraVerification =
-            verificationsResponse.data.verifications.find(
-              (verification) => verification.name === 'Aura',
-            );
+        if (mounted) {
+          const verifications = verificationsResponse.data.verifications;
+          const auraVerification = verifications.find(
+            (verification) => verification.name === 'Aura',
+          );
           setTier(auraVerification?.level ?? 'Not yet');
           if (auraVerification?.score !== undefined) {
             setAuraScore(auraVerification.score);
           }
           setUserHasRecovery(
-            !!verificationsResponse.data.verifications.find(
+            !!verifications.find(
               (verification) => verification.name === 'SocialRecoverySetup',
             ),
           );
@@ -84,5 +86,6 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
     name: profileInfo?.name ?? profileInfo?.id ?? 'Unknown',
     joinedDateString,
     auraPublicProfile,
+    isConnection: !!connectionInfo,
   };
 };

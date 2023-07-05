@@ -8,6 +8,7 @@ import { selectAuthData } from './selectors.ts';
 import { RootState } from '../index.ts';
 import { encryptData } from '../../utils/crypto.ts';
 
+//TODO: add a way to reload brightId backup
 export const getBrightIdBackupThunk = createAsyncThunk<
   string,
   { authKey: string }

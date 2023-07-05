@@ -2,7 +2,6 @@ import { useSubjectRating } from '../../../hooks/useSubjectRating.ts';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from '../../../store/profile/selectors.ts';
 import { useMemo } from 'react';
-import { getConfidenceValue } from '../../../utils/constants.ts';
 
 export const EvaluationInfo = ({
   fromSubjectId,
@@ -11,7 +10,10 @@ export const EvaluationInfo = ({
   fromSubjectId: string;
   toSubjectId: string;
 }) => {
-  const { rating, loading } = useSubjectRating({ fromSubjectId, toSubjectId });
+  const { rating, loading, confidenceValue } = useSubjectRating({
+    fromSubjectId,
+    toSubjectId,
+  });
   const authData = useSelector(selectAuthData);
   const isYourEvaluation = useMemo(
     () => fromSubjectId === authData?.brightId,
@@ -47,7 +49,6 @@ export const EvaluationInfo = ({
       text: 'Not Rated',
     };
   }, [rating, loading]);
-  const confidenceValue = useMemo(() => getConfidenceValue(rating), [rating]);
   return (
     <div className="flex gap-2.5 items-center text-sm">
       <div

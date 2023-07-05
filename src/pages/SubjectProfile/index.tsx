@@ -1,5 +1,5 @@
 import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
-import ProfileEvaluation from '../../components/Shared/ProfileEvaluation';
+import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { YourEvaluation } from './YourEvaluation';
 import { useMemo, useState } from 'react';
@@ -8,6 +8,7 @@ import { EvaluationListModal } from './EvaluationListModal.tsx';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from '../../store/profile/selectors.ts';
+import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 
 const SubjectProfile = () => {
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
@@ -66,6 +67,7 @@ const SubjectProfile = () => {
     () => subjectIdProp ?? authData?.brightId,
     [authData?.brightId, subjectIdProp],
   );
+  const { inboundRatings } = useInboundRatings(subjectId);
   if (!subjectId) {
     return <div>Unknown subject id</div>;
   }
@@ -92,10 +94,11 @@ const SubjectProfile = () => {
           </div>
         </div>
         <div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">
-          {profiles.map((profile: any) => (
-            <ProfileEvaluation
-              key={profile.id}
-              profile={profile}
+          {inboundRatings?.map((rating) => (
+            <SubjectEvaluation
+              key={rating.id}
+              fromSubjectId={rating.fromBrightId}
+              toSubjectId={rating.toBrightId}
               className="!min-w-[305px] !py-5"
             />
           ))}

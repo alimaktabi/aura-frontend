@@ -39,7 +39,8 @@ const BrightIdProfilePicture = ({
     };
   }, [authData, brightIdBackup, subjectId]);
 
-  return <img {...props} src={imgSrc} />;
+  //TODO: use profile name in alt
+  return <img {...props} alt={subjectId} src={imgSrc} />;
 };
 
 export default BrightIdProfilePicture;
