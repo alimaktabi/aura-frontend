@@ -1,3 +1,8 @@
+// export const EvaluationInfo = ({
+//                                  subjectId,
+//                                }: {
+//   subjectId: string | undefined;
+// }) => {
 export const EvaluationInfo = ({ info }: { info: any }) => {
   const evaluationValues = (evaluation: string) => {
     switch (evaluation) {

@@ -8,7 +8,7 @@ import {
   ConnectionResponse,
 } from 'types';
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
-import { backendApi } from './index.ts';
+import { backendApi, brightIdNodeApi } from './index.ts';
 
 export const getConnections = (
   backendApi: AxiosInstance,
@@ -22,20 +22,14 @@ export const getConnections = (
   });
 };
 
-export const getIncomingConnections = async (
-  brightIdNodeApi: AxiosInstance,
-  toBrightId: string,
-) => {
+export const getInboundConnections = async (toBrightId: string) => {
   const res = await brightIdNodeApi.get<BrightIdConnectionsResponse>(
     `/node/v6/users/${toBrightId}/connections/inbound`,
   );
   return res.data.data.connections;
 };
 
-export const getOutboundConnections = async (
-  brightIdNodeApi: AxiosInstance,
-  toBrightId: string,
-) => {
+export const getOutboundConnections = async (toBrightId: string) => {
   const res = await brightIdNodeApi.get<BrightIdConnectionsResponse>(
     `/node/v6/users/${toBrightId}/connections/outbound`,
   );

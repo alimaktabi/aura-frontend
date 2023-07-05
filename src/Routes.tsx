@@ -8,6 +8,7 @@ import Login from './pages/Login';
 export enum RoutePath {
   LOGIN = '/',
   DASHBOARD = '/dashboard',
+  PERFORMANCE_OVERVIEW = '/performance-overview',
 }
 
 const routes = [
@@ -68,7 +69,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: '/performance-overview',
+    path: RoutePath.PERFORMANCE_OVERVIEW,
     element: <PerformanceOverview />,
     header: {
       title: 'Player performance overview',

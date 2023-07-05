@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { RoutePath } from '../../Routes.tsx';
 
 const Dashboard = () => {
   return (
@@ -51,7 +52,7 @@ const Dashboard = () => {
       </div>
 
       <div className="row mb-4">
-        <div className="card">
+        <Link to={RoutePath.PERFORMANCE_OVERVIEW} className="card">
           <img
             className="icon"
             src="/assets/images/Dashboard/performance-overview.svg"
@@ -60,7 +61,7 @@ const Dashboard = () => {
           <p className="text-right text-[18px] text-gray20">
             Performance Overview
           </p>
-        </div>
+        </Link>
         <div className="card">
           <img
             className="icon"

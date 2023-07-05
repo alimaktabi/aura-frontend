@@ -24,7 +24,7 @@ export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
           <div className="evaluation__profile">
             <BrightIdProfilePicture
               className="rounded-full w-12 h-12 border border-white bg-center bg-cover"
-              id={subjectId}
+              subjectId={subjectId}
             />
           </div>
           <div className="evaluation__info flex flex-col">

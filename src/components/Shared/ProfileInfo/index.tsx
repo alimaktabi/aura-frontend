@@ -3,6 +3,7 @@ import Modal from '../Modal';
 import { useState } from 'react';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
 import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
+import { useInboundConnections } from '../../../hooks/useSubjectConnections.ts';
 
 export const ProfileInfo = ({
   isPerformance = false,
@@ -19,7 +20,7 @@ export const ProfileInfo = ({
         <div className="card--header__left flex gap-4">
           <BrightIdProfilePicture
             className="card--header__left__avatar rounded-full border border-[3px] border-pastel-purple h-[51px] w-[51px]"
-            id={subjectId}
+            subjectId={subjectId}
           />
           <div className="card--header__left__info flex flex-col justify-center">
             <h3 className="text-lg font-medium leading-5">{name}</h3>
@@ -40,7 +41,11 @@ export const ProfileInfo = ({
             </div>
           </div>
         </div>
-        {isPerformance ? <PerformanceInfo /> : <ConnectionsButton />}
+        {isPerformance ? (
+          <PerformanceInfo />
+        ) : (
+          <ConnectionsButton subjectId={subjectId} />
+        )}
       </div>
       <hr className="my-5 border-dashed" />
       <div className="card--body text-sm">
@@ -69,7 +74,13 @@ export const ProfileInfo = ({
   );
 };
 
-const ConnectionsButton = () => {
+const ConnectionsButton = ({
+  subjectId,
+}: {
+  subjectId: string | undefined;
+}) => {
+  const { inboundConnections } = useInboundConnections(subjectId);
+
   const [isConnectionsListModalOpen, setIsConnectionsListModalOpen] =
     useState(false);
   return (
@@ -79,7 +90,9 @@ const ConnectionsButton = () => {
         className="card--header__right flex flex-col justify-center bg-pastel-purple rounded h-full py-2 px-3.5"
       >
         <div className="flex w-full justify-between items-center">
-          <div className="font-bold text-white leading-5">439</div>
+          <div className="font-bold text-white leading-5">
+            {inboundConnections?.length ?? '...'}
+          </div>
           <img src="/assets/images/Shared/arrow-right-icon-white.svg" alt="" />
         </div>
         <div className="font-bold text-sm text-white leading-5">
@@ -93,7 +106,7 @@ const ConnectionsButton = () => {
         closeModalHandler={() => setIsConnectionsListModalOpen(false)}
         className="select-button-with-modal__modal"
       >
-        <ConnectionListModal />
+        <ConnectionListModal subjectId={subjectId} />
       </Modal>
     </>
   );
