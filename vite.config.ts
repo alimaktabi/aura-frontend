@@ -2,7 +2,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   server: {
     host: true,
     proxy: {
@@ -10,8 +10,9 @@ export default defineConfig({
         target: 'https://recovery.brightid.org',
         changeOrigin: true,
         rewrite: (path) => path.slice('/brightid'.length),
+        secure: mode !== 'development',
       },
     },
   },
   plugins: [tsconfigPaths(), VitePWA({ registerType: 'autoUpdate' })],
-});
+}));
