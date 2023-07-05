@@ -1,8 +1,11 @@
 import { useInboundRatings } from '../../../hooks/useSubjectRatings.ts';
+import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
+import { compactFormat } from '../../../utils/number.ts';
 
 const EvaluationsDetails = ({ subjectId }: { subjectId: string }) => {
   const { inboundRatings, inboundRatingsStatsString } =
     useInboundRatings(subjectId);
+  const { auraScore } = useSubjectBasicInfo(subjectId);
   return (
     <div className="card flex flex-col gap-3">
       <div className="header__info flex flex-col gap-1">
@@ -17,7 +20,7 @@ const EvaluationsDetails = ({ subjectId }: { subjectId: string }) => {
         />
         <ShowData
           title="Calculated Score"
-          value="32.32K"
+          value={auraScore ? compactFormat(auraScore) : '-'}
           details="(2.82K / -500)"
         />
       </div>
