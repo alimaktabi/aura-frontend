@@ -51,6 +51,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         func: (a: AuraRating, b: AuraRating) =>
           Number(b.rating) - Number(a.rating),
       },
+      // TODO: handle this sort function
       // {
       //   id: 3,
       //   title: 'Player Score',
