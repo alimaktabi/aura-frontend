@@ -39,12 +39,12 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
     const difDate = today.getTime() - reg.getTime();
     const diffYears = Math.floor(difDate / (365 * 24 * 3600 * 1000));
     if (diffYears > 0) {
-      return diffYears + ' year(s)';
+      return diffYears === 1 ? '1 year' : diffYears + ' years';
     }
 
     const difMonths = Math.floor(difDate / (12 * 24 * 3600 * 1000));
     if (difMonths > 0) {
-      return difMonths + ' month(s)';
+      return difMonths === 1 ? '1 month' : difMonths + ' months';
     }
 
     return '< 1 month';
