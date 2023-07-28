@@ -1,6 +1,6 @@
 import InfiniteScroll from 'react-infinite-scroller';
 import * as React from 'react';
-import { JSX, useCallback, useMemo, useState } from 'react';
+import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface InfiniteScrollLocalProps<T> extends React.HTMLProps<InfiniteScroll> {
   items: T[] | null | undefined;
@@ -15,6 +15,9 @@ export default function InfiniteScrollLocal<T>({
   ...props
 }: InfiniteScrollLocalProps<T>) {
   const [itemsLocal, setItemsLocal] = useState<T[]>([]);
+  useEffect(() => {
+    setItemsLocal([]);
+  }, [items]);
   const loadMore = useCallback(
     (_page: number) => {
       console.log({ _page });

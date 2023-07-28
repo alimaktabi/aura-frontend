@@ -10,13 +10,13 @@ export const SortModal = () => {
         {
           id: 1,
           name: 'Ascending',
-          isSelected: true,
+
           icon: '/assets/images/Shared/arrow-up-icon',
         },
         {
           id: 2,
           name: 'Descending',
-          isSelected: false,
+
           icon: '/assets/images/Shared/arrow-down-icon',
         },
       ],
@@ -28,13 +28,13 @@ export const SortModal = () => {
         {
           id: 1,
           name: 'Ascending',
-          isSelected: true,
+
           icon: '/assets/images/Shared/arrow-up-icon',
         },
         {
           id: 2,
           name: 'Descending',
-          isSelected: false,
+
           icon: '/assets/images/Shared/arrow-down-icon',
         },
       ],
@@ -46,13 +46,13 @@ export const SortModal = () => {
         {
           id: 1,
           name: 'Ascending',
-          isSelected: true,
+
           icon: '/assets/images/Shared/arrow-up-icon',
         },
         {
           id: 2,
           name: 'Descending',
-          isSelected: false,
+
           icon: '/assets/images/Shared/arrow-down-icon',
         },
       ],
@@ -64,13 +64,13 @@ export const SortModal = () => {
         {
           id: 1,
           name: 'Ascending',
-          isSelected: true,
+
           icon: '/assets/images/Shared/arrow-up-icon',
         },
         {
           id: 2,
           name: 'Descending',
-          isSelected: false,
+
           icon: '/assets/images/Shared/arrow-down-icon',
         },
       ],
@@ -86,7 +86,7 @@ export const SortModal = () => {
               <ModalItem
                 className="flex-1"
                 title={item.name}
-                isSelected={item.isSelected}
+                isSelected={false}
                 icon={item.icon}
               />
             ))}

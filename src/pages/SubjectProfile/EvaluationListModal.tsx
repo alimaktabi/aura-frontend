@@ -14,7 +14,6 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
       {
         id: 1,
         title: 'Mutual connections',
-        isSelected: false,
         func: (item: AuraRating) =>
           !!brightIdBackup?.connections.find(
             (conn) => item.fromBrightId === conn.id,
@@ -23,13 +22,11 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
       {
         id: 2,
         title: 'Positive Evaluations',
-        isSelected: true,
         func: (item: AuraRating) => Number(item.rating) > 0,
       },
       {
         id: 3,
         title: 'Negative Evaluations',
-        isSelected: false,
         func: (item: AuraRating) => Number(item.rating) < 0,
       },
     ],
@@ -40,7 +37,6 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
       {
         id: 1,
         title: 'Recent',
-        isSelected: false,
         func: (a: AuraRating, b: AuraRating) =>
           new Date(b.updatedAt ?? 0).getTime() -
           new Date(a.updatedAt ?? 0).getTime(),
@@ -48,7 +44,6 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
       {
         id: 2,
         title: 'Evaluation Score',
-        isSelected: true,
         func: (a: AuraRating, b: AuraRating) =>
           Number(b.rating) - Number(a.rating),
       },
@@ -56,7 +51,6 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
       // {
       //   id: 3,
       //   title: 'Player Score',
-      //   isSelected: false,
       //   func: (a: AuraRating, b: AuraRating) => Number(a.updatedAt) - Number(b.updatedAt),
       // },
     ],

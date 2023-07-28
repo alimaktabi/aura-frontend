@@ -10,27 +10,22 @@ export const FiltersModal = () => {
         {
           id: 1,
           name: 'Not yet',
-          isSelected: false,
         },
         {
           id: 2,
           name: 'Sybil',
-          isSelected: true,
         },
         {
           id: 3,
           name: 'Bronze',
-          isSelected: false,
         },
         {
           id: 4,
           name: 'Silver',
-          isSelected: false,
         },
         {
           id: 5,
           name: 'Gold',
-          isSelected: true,
         },
       ],
     },
@@ -41,22 +36,18 @@ export const FiltersModal = () => {
         {
           id: 1,
           name: 'All',
-          isSelected: false,
         },
         {
           id: 2,
           name: 'Positive',
-          isSelected: false,
         },
         {
           id: 3,
           name: 'Negative',
-          isSelected: false,
         },
         {
           id: 4,
           name: 'not evaluated yet',
-          isSelected: false,
         },
       ],
     },
@@ -67,12 +58,10 @@ export const FiltersModal = () => {
         {
           id: 1,
           name: 'Just met',
-          isSelected: false,
         },
         {
           id: 2,
           name: 'Already known+',
-          isSelected: false,
         },
       ],
     },
@@ -84,11 +73,7 @@ export const FiltersModal = () => {
           <p className="text-black2">{filter.name}</p>
           <div className="flex flex-row flex-wrap gap-2">
             {filter.items.map((item) => (
-              <ModalItem
-                key={item.id}
-                title={item.name}
-                isSelected={item.isSelected}
-              />
+              <ModalItem key={item.id} title={item.name} isSelected={false} />
             ))}
           </div>
         </div>
