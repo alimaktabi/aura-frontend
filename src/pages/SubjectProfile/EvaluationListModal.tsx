@@ -5,6 +5,7 @@ import { SelectItems } from '../../components/Shared/SelectItems.tsx';
 import { AuraRating } from '../../types';
 import { useSelector } from 'react-redux';
 import { selectBrightIdBackup } from '../../store/profile/selectors.ts';
+import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
 
 export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   const brightIdBackup = useSelector(selectBrightIdBackup);
@@ -89,15 +90,18 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         selectedItemId={selectedSortId}
         setSelectedItemId={setSelectedSortId}
       />
-      <div className="flex flex-col overflow-scroll overscroll-contain gap-2.5 w-full -mb-5 pb-5">
-        {inboundRatingsFiltered?.map((rating) => (
-          <SubjectEvaluation
-            key={rating.id}
-            fromSubjectId={rating.fromBrightId}
-            toSubjectId={rating.toBrightId}
-            className="!min-w-[305px] !py-5"
-          />
-        ))}
+      <div className={'overflow-auto'}>
+        <InfiniteScrollLocal
+          className={'flex flex-col gap-2.5 w-full -mb-5 pb-5'}
+          items={inboundRatingsFiltered}
+          renderItem={(rating) => (
+            <SubjectEvaluation
+              fromSubjectId={rating.fromBrightId}
+              toSubjectId={rating.toBrightId}
+              className="!min-w-[305px] !py-5"
+            />
+          )}
+        />
       </div>
     </div>
   );

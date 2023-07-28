@@ -1,29 +1,37 @@
 import InfiniteScroll from 'react-infinite-scroller';
 import * as React from 'react';
-import { JSX, useMemo, useState } from 'react';
+import { JSX, useCallback, useMemo, useState } from 'react';
 
 interface InfiniteScrollLocalProps<T> extends React.HTMLProps<InfiniteScroll> {
-  items: T[] | null;
-  renderItem: (item: T) => JSX.Element;
+  items: T[] | null | undefined;
+  renderItem: (item: T, index: number) => JSX.Element;
+  pageSize?: number;
 }
 
 export default function InfiniteScrollLocal<T>({
   items,
   renderItem,
+  pageSize,
   ...props
 }: InfiniteScrollLocalProps<T>) {
   const [itemsLocal, setItemsLocal] = useState<T[]>([]);
-  const loadMore = (_page: number) => {
-    console.log({ _page });
-    if (!items) return;
-    setItemsLocal([
-      ...itemsLocal,
-      ...items.slice(itemsLocal.length, itemsLocal.length + 10),
-    ]);
-  };
+  const loadMore = useCallback(
+    (_page: number) => {
+      console.log({ _page });
+      if (!items) return;
+      setItemsLocal((itemsLocalPrev) => [
+        ...itemsLocalPrev,
+        ...items.slice(
+          itemsLocalPrev.length,
+          itemsLocalPrev.length + (pageSize ?? 10),
+        ),
+      ]);
+    },
+    [items, pageSize],
+  );
 
   const hasMore = useMemo(
-    () => items !== null && items.length !== itemsLocal.length,
+    () => !!items && items.length !== itemsLocal.length,
     [items, itemsLocal.length],
   );
   return (
@@ -37,9 +45,11 @@ export default function InfiniteScrollLocal<T>({
           useWindow={false}
           {...props}
         >
-          {itemsLocal.map((item, index) =>
-            React.cloneElement(renderItem(item), { key: index }),
-          )}
+          {itemsLocal.map((item, index) => (
+            <React.Fragment key={index}>
+              {renderItem(item, index)}
+            </React.Fragment>
+          ))}
         </InfiniteScroll>
       )}
     </>

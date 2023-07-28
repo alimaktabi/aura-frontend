@@ -2,6 +2,7 @@ import { SubjectCard } from './SubjectCard.tsx';
 import { SubjectSearch } from './SubjectSearch.tsx';
 import { selectBrightIdBackup } from '../../store/profile/selectors.ts';
 import { useSelector } from 'react-redux';
+import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
 
 const SubjectsEvaluation = () => {
   const brightIdBackup = useSelector(selectBrightIdBackup);
@@ -14,10 +15,12 @@ const SubjectsEvaluation = () => {
         <strong>({brightIdBackup?.connections.length ?? '...'})</strong>
       </p>
       {brightIdBackup ? (
-        <div className="flex flex-col gap-3">
-          {brightIdBackup.connections.map((conn) => (
-            <SubjectCard subjectId={conn.id} key={conn.id} />
-          ))}
+        <div className="overflow-auto">
+          <InfiniteScrollLocal
+            className={'flex flex-col gap-3'}
+            items={brightIdBackup.connections}
+            renderItem={(conn) => <SubjectCard subjectId={conn.id} />}
+          />
         </div>
       ) : (
         <div>loading...</div>

@@ -16,8 +16,9 @@ export const ConnectionListModal = ({
         <p>Filters:</p>
         <ModalItem title="Mutual Connections" isSelected={false} />
       </div>
-      <div className="flex flex-col overflow-scroll overscroll-contain gap-2.5 w-full -mb-5 pb-5">
+      <div className="overflow-auto">
         <InfiniteScrollLocal
+          className={'flex flex-col gap-2.5 w-full -mb-5 pb-5'}
           items={inboundConnections}
           renderItem={(subject) => <SubjectCard subjectId={subject.id} />}
         />
