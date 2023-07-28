@@ -2,27 +2,27 @@ import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 import { SelectItems } from '../../components/Shared/SelectItems.tsx';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
-import { AuraFilter, useEvaluationFilters } from 'hooks/useFilters.ts';
-import { AuraSort, useEvaluationSorts } from 'hooks/useSorts.ts';
+import { AuraFilterId, useEvaluationFilters } from 'hooks/useFilters.ts';
+import { AuraSortId, useEvaluationSorts } from 'hooks/useSorts.ts';
 import useFilterAndSort from 'hooks/useFilterAndSort.ts';
 
 export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   const filters = useEvaluationFilters([
-    AuraFilter.EvaluationMutualConnections,
-    AuraFilter.PositiveEvaluations,
-    AuraFilter.NegativeEvaluations,
+    AuraFilterId.EvaluationMutualConnections,
+    AuraFilterId.EvaluationPositiveEvaluations,
+    AuraFilterId.EvaluationNegativeEvaluations,
   ]);
 
   const sorts = useEvaluationSorts([
-    AuraSort.RecentEvaluation,
-    AuraSort.EvaluationScore,
+    AuraSortId.RecentEvaluation,
+    AuraSortId.EvaluationScore,
   ]);
 
   const { inboundRatings } = useInboundRatings(subjectId);
 
   const {
     selectedFilterId,
-    setSelectedFilterId,
+    toggleFilterById,
     selectedSortId,
     setSelectedSortId,
     itemsFiltered: inboundRatingsFiltered,
@@ -35,7 +35,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         isOpenInitial={true}
         items={filters}
         selectedItemId={selectedFilterId}
-        setSelectedItemId={setSelectedFilterId}
+        setSelectedItemId={toggleFilterById}
       />
       <SelectItems
         title="Sort"

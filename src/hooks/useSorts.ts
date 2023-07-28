@@ -1,38 +1,37 @@
 import { AuraRating } from 'types';
 import { useMemo } from 'react';
 
-export enum AuraSort {
+export enum AuraSortId {
   RecentEvaluation = 1,
   EvaluationScore = 2,
 }
 
 export type AuraSortOption<T> = {
-  id: AuraSort;
+  id: AuraSortId;
   title: string;
   func: (a: T, b: T) => number;
 };
 
-export function useEvaluationSorts(sortIds: AuraSort[]) {
+export function useEvaluationSorts(sortIds: AuraSortId[]) {
   return useMemo(() => {
     const sorts: AuraSortOption<AuraRating>[] = [
       {
-        id: AuraSort.RecentEvaluation,
+        id: AuraSortId.RecentEvaluation,
         title: 'Recent',
-        func: (a: AuraRating, b: AuraRating) =>
+        func: (a, b) =>
           new Date(b.updatedAt ?? 0).getTime() -
           new Date(a.updatedAt ?? 0).getTime(),
       },
       {
-        id: AuraSort.EvaluationScore,
+        id: AuraSortId.EvaluationScore,
         title: 'Evaluation Score',
-        func: (a: AuraRating, b: AuraRating) =>
-          Number(b.rating) - Number(a.rating),
+        func: (a, b) => Number(b.rating) - Number(a.rating),
       },
       // TODO: handle this sort function
       // {
       //   id: 3,
       //   title: 'Player Score',
-      //   func: (a: AuraRating, b: AuraRating) => Number(a.updatedAt) - Number(b.updatedAt),
+      //   func: (a, b) => Number(a.updatedAt) - Number(b.updatedAt),
       // },
     ];
     return sortIds

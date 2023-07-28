@@ -1,6 +1,13 @@
-import { AuraFilter, AuraFilterOption } from 'hooks/useFilters.ts';
-import { AuraSort, AuraSortOption } from 'hooks/useSorts.ts';
-import { useMemo, useState } from 'react';
+import { AuraFilterId, AuraFilterOption } from 'hooks/useFilters.ts';
+import { AuraSortId, AuraSortOption } from 'hooks/useSorts.ts';
+import { useCallback, useMemo, useState } from 'react';
+
+export enum FilterOrSortCategory {
+  Default = 'Default',
+  YourEvaluation = 'Your Evaluation',
+  Tier = 'Tier',
+  ConnectionType = 'Connection Type',
+}
 
 export default function useFilterAndSort<T>(
   items: T[] | null | undefined,
@@ -8,10 +15,19 @@ export default function useFilterAndSort<T>(
   sorts: AuraSortOption<T>[],
   searchKeys?: (keyof T)[],
 ) {
-  const [selectedFilterId, setSelectedFilterId] = useState<AuraFilter | null>(
+  const [selectedFilterId, setSelectedFilterId] = useState<AuraFilterId | null>(
     null,
   );
-  const [selectedSortId, setSelectedSortId] = useState<AuraSort | null>(null);
+  const toggleFilterById = useCallback(
+    (filterId: AuraFilterId | null | undefined) => {
+      if (filterId) {
+        setSelectedFilterId((value) => (value === filterId ? null : filterId));
+      }
+    },
+    [],
+  );
+  //TODO: handle ascending and decending sort
+  const [selectedSortId, setSelectedSortId] = useState<AuraSortId | null>(null);
   const [searchString, setSearchString] = useState('');
   const itemsFiltered = useMemo(() => {
     const selectedFilter = filters.find((f) => f.id === selectedFilterId)?.func;
@@ -40,6 +56,7 @@ export default function useFilterAndSort<T>(
   return {
     selectedFilterId,
     setSelectedFilterId,
+    toggleFilterById,
     selectedSortId,
     setSelectedSortId,
     searchString,

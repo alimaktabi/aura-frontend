@@ -16,8 +16,20 @@ export type ConnectionLevel =
   | 'just met'
   | 'recovery';
 
-export type Connection = {
+export type BrightIdConnection = {
   id: string;
+  level: ConnectionLevel;
+  reportReason: string | null;
+  timestamp: number;
+};
+
+export type BrightIdConnectionsResponse = {
+  data: {
+    connections: BrightIdConnection[];
+  };
+};
+
+export type Connection = BrightIdConnection & {
   name: string;
   connectionDate: number;
   photo: {
@@ -25,11 +37,8 @@ export type Connection = {
   };
   status: 'verified';
   notificationToken: string;
-  level: ConnectionLevel;
   socialMedia: any[];
   verifications: any[];
-  reportReason: string | null;
-  timestamp: number;
   incomingLevel: ConnectionLevel;
 };
 
@@ -144,17 +153,4 @@ export type AuraConnectionResponse = {
 export type AppToast = {
   text: string;
   color: 'success' | 'danger';
-};
-
-export type BrightIdConnection = {
-  id: string;
-  level: ConnectionLevel;
-  reportReason: string | null;
-  timestamp: number;
-};
-
-export type BrightIdConnectionsResponse = {
-  data: {
-    connections: BrightIdConnection[];
-  };
 };

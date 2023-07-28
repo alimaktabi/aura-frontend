@@ -18,7 +18,7 @@ export function SelectItems<T extends Key>({
   isOpenInitial: boolean;
   items: SelectableItem<T>[];
   selectedItemId: T | null;
-  setSelectedItemId: React.Dispatch<React.SetStateAction<T | null>>;
+  setSelectedItemId: (item: T | null) => void;
 }) {
   const [isOpen, setIsOpen] = useState(isOpenInitial);
   return (
