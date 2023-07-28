@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react';
 import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 import { SelectItems } from '../../components/Shared/SelectItems.tsx';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
 import { AuraFilter, useEvaluationFilters } from 'hooks/useFilters.ts';
 import { AuraSort, useEvaluationSorts } from 'hooks/useSorts.ts';
+import useFilterAndSort from 'hooks/useFilterAndSort.ts';
 
 export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   const filters = useEvaluationFilters([
@@ -20,17 +20,13 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
 
   const { inboundRatings } = useInboundRatings(subjectId);
 
-  const [selectedFilterId, setSelectedFilterId] = useState<AuraFilter | null>(
-    null,
-  );
-  const [selectedSortId, setSelectedSortId] = useState<AuraSort | null>(null);
-
-  const inboundRatingsFiltered = useMemo(() => {
-    const selectedFilter = filters.find((f) => f.id === selectedFilterId)?.func;
-    const selectedSort = sorts.find((s) => s.id === selectedSortId)?.func;
-    const items = inboundRatings?.filter(selectedFilter ?? ((_item) => true));
-    return selectedSort ? items?.sort(selectedSort) : items;
-  }, [filters, inboundRatings, selectedFilterId, selectedSortId, sorts]);
+  const {
+    selectedFilterId,
+    setSelectedFilterId,
+    selectedSortId,
+    setSelectedSortId,
+    itemsFiltered: inboundRatingsFiltered,
+  } = useFilterAndSort(inboundRatings, filters, sorts);
 
   return (
     <div className="flex flex-col gap-[18px] max-h-[600px]">
