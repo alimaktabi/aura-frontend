@@ -34,7 +34,7 @@ export default function InfiniteScrollLocal<T>({
   );
 
   const hasMore = useMemo(
-    () => !!items && items.length !== itemsLocal.length,
+    () => !!items && items.length > itemsLocal.length,
     [items, itemsLocal.length],
   );
   return (
