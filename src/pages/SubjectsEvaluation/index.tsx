@@ -8,14 +8,14 @@ const SubjectsEvaluation = () => {
   const brightIdBackup = useSelector(selectBrightIdBackup);
 
   return (
-    <div className="page page__dashboard">
+    <div className="page page__dashboard h-screen flex flex-col">
       <SubjectSearch />
       <p className="text-lg text-white mb-5 mt-7">
         Subjects{' '}
         <strong>({brightIdBackup?.connections.length ?? '...'})</strong>
       </p>
       {brightIdBackup ? (
-        <div className="overflow-auto">
+        <div className="overflow-auto flex-grow">
           <InfiniteScrollLocal
             className={'flex flex-col gap-3'}
             items={brightIdBackup.connections}

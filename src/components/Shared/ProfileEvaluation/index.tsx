@@ -38,7 +38,6 @@ const ProfileEvaluation = ({
           <div className="flex items-center gap-1.5 rounded bg-gray00 py-1.5 px-2">
             <img src="/assets/images/Shared/star-icon.svg" alt="" />
             <div className="text-white text-xs">
-              {/*{profile.rate} ({profile.mutualConnections})*/}
               {profile.auraScore ? compactFormat(profile.auraScore) : '-'} (323)
             </div>
           </div>

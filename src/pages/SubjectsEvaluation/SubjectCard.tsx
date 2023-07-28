@@ -3,21 +3,31 @@ import { useSubjectBasicInfo } from '../../hooks/useSubjectBasicInfo.ts';
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture.tsx';
 import { compactFormat } from '../../utils/number.ts';
 import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
+import { useMemo } from 'react';
+import { useSubjectRating } from 'hooks/useSubjectRating.ts';
+import { useSelector } from 'react-redux';
+import { selectAuthData } from 'store/profile/selectors.ts';
 
 export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
   const { tier, name, auraScore } = useSubjectBasicInfo(subjectId);
   const { inboundRatingsStatsString } = useInboundRatings(subjectId);
+  const authData = useSelector(selectAuthData);
+
+  const { rating, loading, confidenceValue } = useSubjectRating({
+    fromSubjectId: authData?.brightId,
+    toSubjectId: subjectId,
+  });
+  const styleValues = useMemo(() => {
+    if (rating?.rating) {
+      if (Number(rating.rating) > 0) return '!bg-green-card !opacity-75';
+      if (Number(rating.rating) < 0) return '!bg-red-card !opacity-75';
+    }
+    return '';
+  }, [rating]);
   return (
     <Link
       to={'/subject/' + subjectId}
-      className={
-        'card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full'
-        // + subject.evaluation === 'POSITIVE'
-        //   ? '!bg-green-card !opacity-75'
-        //   : subject.evaluation === 'NEGATIVE'
-        //     ? '!bg-red-card !opacity-75'
-        //     : ''
-      }
+      className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full ${styleValues}`}
     >
       <div className="evaluation-left flex flex-col gap-2">
         <div className="evaluation-left__top flex gap-3">
@@ -37,25 +47,21 @@ export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
         <div className="evaluation-left__bottom">
           <p className="text-sm text-gray20">Your evaluation</p>
           <p className="font-medium">
-            {/*{subject.evaluation === 'POSITIVE' ? (*/}
-            {/*  <span className="text-green-800">*/}
-            {/*    Positive{' '}*/}
-            {/*    <span className="text-black">*/}
-            {/*      {' '}*/}
-            {/*      - {subject.evaluationStrength}*/}
-            {/*    </span>*/}
-            {/*  </span>*/}
-            {/*) : subject.evaluation === 'NEGATIVE' ? (*/}
-            {/*  <span className="text-red-800">*/}
-            {/*    Negative{' '}*/}
-            {/*    <span className="text-black">*/}
-            {/*      {' '}*/}
-            {/*      - {subject.evaluationStrength}*/}
-            {/*    </span>*/}
-            {/*  </span>*/}
-            {/*) : (*/}
-            {/*  <span className="text-gray20">...</span>*/}
-            {/*)}*/}
+            {loading ? (
+              <span className="text-gray20">...</span>
+            ) : Number(rating?.rating) > 0 ? (
+              <span className="text-green-800">
+                Positive{' '}
+                <span className="text-black"> - {confidenceValue}</span>
+              </span>
+            ) : Number(rating?.rating) < 0 ? (
+              <span className="text-red-800">
+                Negative{' '}
+                <span className="text-black"> - {confidenceValue}</span>
+              </span>
+            ) : (
+              <span className="text-gray20">Not Evaluated</span>
+            )}
           </p>
         </div>
       </div>
