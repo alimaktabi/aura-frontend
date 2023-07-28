@@ -2,64 +2,28 @@ import { useMemo, useState } from 'react';
 import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 import { SelectItems } from '../../components/Shared/SelectItems.tsx';
-import { AuraRating } from '../../types';
-import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from '../../store/profile/selectors.ts';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
+import { AuraFilter, useEvaluationFilters } from 'hooks/useFilters.ts';
+import { AuraSort, useEvaluationSorts } from 'hooks/useSorts.ts';
 
 export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
-  const brightIdBackup = useSelector(selectBrightIdBackup);
-  const filters = useMemo(
-    () => [
-      {
-        id: 1,
-        title: 'Mutual connections',
-        func: (item: AuraRating) =>
-          !!brightIdBackup?.connections.find(
-            (conn) => item.fromBrightId === conn.id,
-          ),
-      },
-      {
-        id: 2,
-        title: 'Positive Evaluations',
-        func: (item: AuraRating) => Number(item.rating) > 0,
-      },
-      {
-        id: 3,
-        title: 'Negative Evaluations',
-        func: (item: AuraRating) => Number(item.rating) < 0,
-      },
-    ],
-    [brightIdBackup?.connections],
-  );
-  const sorts = useMemo(
-    () => [
-      {
-        id: 1,
-        title: 'Recent',
-        func: (a: AuraRating, b: AuraRating) =>
-          new Date(b.updatedAt ?? 0).getTime() -
-          new Date(a.updatedAt ?? 0).getTime(),
-      },
-      {
-        id: 2,
-        title: 'Evaluation Score',
-        func: (a: AuraRating, b: AuraRating) =>
-          Number(b.rating) - Number(a.rating),
-      },
-      // TODO: handle this sort function
-      // {
-      //   id: 3,
-      //   title: 'Player Score',
-      //   func: (a: AuraRating, b: AuraRating) => Number(a.updatedAt) - Number(b.updatedAt),
-      // },
-    ],
-    [],
-  );
+  const filters = useEvaluationFilters([
+    AuraFilter.EvaluationMutualConnections,
+    AuraFilter.PositiveEvaluations,
+    AuraFilter.NegativeEvaluations,
+  ]);
+
+  const sorts = useEvaluationSorts([
+    AuraSort.RecentEvaluation,
+    AuraSort.EvaluationScore,
+  ]);
+
   const { inboundRatings } = useInboundRatings(subjectId);
 
-  const [selectedFilterId, setSelectedFilterId] = useState<number | null>(null);
-  const [selectedSortId, setSelectedSortId] = useState<number | null>(null);
+  const [selectedFilterId, setSelectedFilterId] = useState<AuraFilter | null>(
+    null,
+  );
+  const [selectedSortId, setSelectedSortId] = useState<AuraSort | null>(null);
 
   const inboundRatingsFiltered = useMemo(() => {
     const selectedFilter = filters.find((f) => f.id === selectedFilterId)?.func;

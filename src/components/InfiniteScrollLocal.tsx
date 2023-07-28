@@ -18,6 +18,7 @@ export default function InfiniteScrollLocal<T>({
   useEffect(() => {
     setItemsLocal([]);
   }, [items]);
+
   const loadMore = useCallback(
     (_page: number) => {
       console.log({ _page });
