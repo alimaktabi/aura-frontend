@@ -41,7 +41,8 @@ export function useCategorizeAuraFilterOptions<T>(
 
     for (const item of filters) {
       if (result[item.category]) {
-        result[item.category].push(item);
+        // ? is added to fix build problem
+        result[item.category]?.push(item);
       } else {
         result[item.category] = [item];
       }
