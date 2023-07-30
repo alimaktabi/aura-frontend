@@ -50,7 +50,6 @@ export const SubjectSearch = ({
     selectedFilterId,
     setSelectedFilterId,
     selectedSort,
-    selectedSortId,
     setSelectedSort,
   } = useFilterAndSort(
     subjects,
@@ -110,7 +109,7 @@ export const SubjectSearch = ({
         >
           <SortsModal
             sorts={sorts}
-            selectedSortId={selectedSortId}
+            selectedSort={selectedSort}
             setSelectedSort={(...value) => {
               setIsSortsModalOpen(false);
               setSelectedSort(...value);
