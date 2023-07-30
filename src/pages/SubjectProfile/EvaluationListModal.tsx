@@ -16,6 +16,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   const sorts = useEvaluationSorts([
     AuraSortId.RecentEvaluation,
     AuraSortId.EvaluationScore,
+    AuraSortId.EvaluationPlayerScore,
   ]);
 
   const { inboundRatings } = useInboundRatings(subjectId);
