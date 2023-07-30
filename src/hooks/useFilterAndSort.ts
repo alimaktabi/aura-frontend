@@ -9,7 +9,7 @@ import { useCallback, useMemo, useState } from 'react';
 export enum FilterOrSortCategory {
   Default = 'Default',
   YourEvaluation = 'Your Evaluation',
-  Tier = 'Tier',
+  Tier = 'Tier (Not Implemented)',
   ConnectionType = 'Connection Type',
 }
 
@@ -51,7 +51,7 @@ export default function useFilterAndSort<T>(
 
   const setSelectedSort = useCallback(
     (id: AuraSortId, ascending?: boolean) => {
-      const obj = sorts.find((s) => s.id === selectedSortId);
+      const obj = sorts.find((s) => s.id === id);
       if (obj) {
         setSelectedSortId(id);
         if (ascending !== undefined) {
@@ -64,7 +64,7 @@ export default function useFilterAndSort<T>(
         }
       }
     },
-    [selectedSortId, sorts],
+    [sorts],
   );
 
   const itemsFiltered: T[] | null = useMemo(() => {

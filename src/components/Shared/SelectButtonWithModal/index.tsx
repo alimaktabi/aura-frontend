@@ -47,7 +47,7 @@ export const SelectButtonWithModal = ({
         />
       </div>
       <Modal
-        title={'Filters'}
+        title={title}
         isOpen={isOpen}
         closeModalHandler={closeModalHandler}
         className="select-button-with-modal__modal"

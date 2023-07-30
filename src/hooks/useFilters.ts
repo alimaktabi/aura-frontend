@@ -64,37 +64,36 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         func: (item) =>
           !!brightIdBackup?.connections.find((conn) => item.id === conn.id),
       },
-      //TODO: handle Tier filters
-      // {
-      //   id: AuraFilterId.ConnectionTierNotYet,
-      //   category: FilterOrSortCategory.Tier,
-      //   title: 'Not yet',
-      //   func: (_item) => true,
-      // },
-      // {
-      //   id: AuraFilterId.ConnectionTierSybil,
-      //   category: FilterOrSortCategory.Tier,
-      //   title: 'Sybil',
-      //   func: (_item) => true,
-      // },
-      // {
-      //   id: AuraFilterId.ConnectionTierBronze,
-      //   category: FilterOrSortCategory.Tier,
-      //   title: 'Bronze',
-      //   func: (_item) => true,
-      // },
-      // {
-      //   id: AuraFilterId.ConnectionTierSilver,
-      //   category: FilterOrSortCategory.Tier,
-      //   title: 'Silver',
-      //   func: (_item) => true,
-      // },
-      // {
-      //   id: AuraFilterId.ConnectionTierGold,
-      //   category: FilterOrSortCategory.Tier,
-      //   title: 'Gold',
-      //   func: (_item) => true,
-      // },
+      {
+        id: AuraFilterId.ConnectionTierNotYet,
+        category: FilterOrSortCategory.Tier,
+        title: 'Not yet',
+        func: (_item) => true,
+      },
+      {
+        id: AuraFilterId.ConnectionTierSybil,
+        category: FilterOrSortCategory.Tier,
+        title: 'Sybil',
+        func: (_item) => true,
+      },
+      {
+        id: AuraFilterId.ConnectionTierBronze,
+        category: FilterOrSortCategory.Tier,
+        title: 'Bronze',
+        func: (_item) => true,
+      },
+      {
+        id: AuraFilterId.ConnectionTierSilver,
+        category: FilterOrSortCategory.Tier,
+        title: 'Silver',
+        func: (_item) => true,
+      },
+      {
+        id: AuraFilterId.ConnectionTierGold,
+        category: FilterOrSortCategory.Tier,
+        title: 'Gold',
+        func: (_item) => true,
+      },
       {
         id: AuraFilterId.ConnectionYourEvaluationPositive,
         category: FilterOrSortCategory.YourEvaluation,

@@ -1,10 +1,15 @@
-import { AuraRating } from 'types';
+import { AuraRating, BrightIdConnection } from 'types';
 import { useMemo } from 'react';
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
 
 export enum AuraSortId {
   RecentEvaluation = 1,
-  EvaluationScore = 2,
+  EvaluationScore,
+  ConnectionLastUpdated,
+  MostMutualConnections,
+  ConnectionScore,
+  ConnectionMostEvaluations,
+  EvaluationPlayerScore,
 }
 
 export type AuraSortOption<T> = {
@@ -40,6 +45,48 @@ export function useCategorizeAuraSortOptions<T>(sorts: AuraSortOptions<T>) {
   }, [sorts]);
 }
 
+export function useSubjectSorts(sortIds: AuraSortId[]) {
+  return useMemo(() => {
+    const sorts: AuraSortOptions<BrightIdConnection> = [
+      {
+        id: AuraSortId.ConnectionLastUpdated,
+        title: 'Last Connection Update',
+        defaultAscending: false,
+        category: FilterOrSortCategory.Default,
+        func: (a, b) =>
+          new Date(b.timestamp ?? 0).getTime() -
+          new Date(a.timestamp ?? 0).getTime(),
+      },
+      {
+        id: AuraSortId.ConnectionMostEvaluations,
+        title: 'Most Evaluations (Not Implemented)',
+        defaultAscending: true,
+        category: FilterOrSortCategory.Default,
+        func: (_a, _b) => 1,
+      },
+      {
+        id: AuraSortId.ConnectionScore,
+        title: 'Score (Not Implemented)',
+        defaultAscending: true,
+        category: FilterOrSortCategory.Default,
+        func: (_a, _b) => 1,
+      },
+      {
+        id: AuraSortId.MostMutualConnections,
+        title: 'Most Mutual Connections (Not Implemented)',
+        defaultAscending: true,
+        category: FilterOrSortCategory.Default,
+        func: (_a, _b) => 1,
+      },
+    ];
+    return sortIds
+      .map((id) => sorts.find((f) => f.id === id))
+      .filter(
+        (item) => item !== undefined,
+      ) as AuraSortOptions<BrightIdConnection>;
+  }, [sortIds]);
+}
+
 export function useEvaluationSorts(sortIds: AuraSortId[]) {
   return useMemo(() => {
     const sorts: AuraSortOptions<AuraRating> = [
@@ -59,13 +106,13 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
         category: FilterOrSortCategory.Default,
         func: (a, b) => Number(b.rating) - Number(a.rating),
       },
-      // TODO: handle this sort function
-      // {
-      //   id: 3,
-      //   title: 'Player Score',
-      //   category: FilterOrSortCategory.Default,
-      //   func: (a, b) => Number(a.updatedAt) - Number(b.updatedAt),
-      // },
+      {
+        id: AuraSortId.EvaluationPlayerScore,
+        title: 'Player Score (Not Implemented)',
+        category: FilterOrSortCategory.Default,
+        defaultAscending: true,
+        func: (_a, _b) => 1,
+      },
     ];
     return sortIds
       .map((id) => sorts.find((f) => f.id === id))

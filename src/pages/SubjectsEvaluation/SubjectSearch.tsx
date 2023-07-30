@@ -1,10 +1,11 @@
 import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';
 import { FiltersModal } from './FiltersModal.tsx';
-import { SortModal } from './SortModal.tsx';
+import { SortsModal } from 'pages/SubjectsEvaluation/SortsModal.tsx';
 import { Connection } from 'types';
 import { useEffect, useMemo, useState } from 'react';
 import useFilterAndSort from 'hooks/useFilterAndSort.ts';
 import { AuraFilterId, useSubjectFilters } from 'hooks/useFilters.ts';
+import { AuraSortId, useSubjectSorts } from 'hooks/useSorts.ts';
 
 export const SubjectSearch = ({
   subjects,
@@ -30,7 +31,17 @@ export const SubjectSearch = ({
       [],
     ),
   );
-  const sorts = useMemo(() => [], []);
+  const sorts = useSubjectSorts(
+    useMemo(
+      () => [
+        AuraSortId.ConnectionLastUpdated,
+        AuraSortId.ConnectionMostEvaluations,
+        AuraSortId.ConnectionScore,
+        AuraSortId.MostMutualConnections,
+      ],
+      [],
+    ),
+  );
   const {
     searchString,
     setSearchString,
@@ -97,7 +108,7 @@ export const SubjectSearch = ({
           openModalHandler={() => setIsSortsModalOpen(true)}
           closeModalHandler={() => setIsSortsModalOpen(false)}
         >
-          <SortModal
+          <SortsModal
             sorts={sorts}
             selectedSortId={selectedSortId}
             setSelectedSort={(...value) => {

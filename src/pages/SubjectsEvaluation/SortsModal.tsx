@@ -7,7 +7,7 @@ import {
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
 
 //TODO: merge this with FiltersModal
-export function SortModal<T>({
+export function SortsModal<T>({
   sorts,
   selectedSortId,
   setSelectedSort,
@@ -24,16 +24,25 @@ export function SortModal<T>({
           {category !== FilterOrSortCategory.Default && (
             <p className="text-black2">{category}</p>
           )}
-          <div className="flex flex-row flex-wrap gap-2">
-            {res[category]?.map((item) => (
-              <ModalItem
-                key={item.id}
-                title={item.title}
-                isSelected={selectedSortId === item.id}
-                onClick={() => setSelectedSort(item.id)}
-              />
-            ))}
-          </div>
+          {res[category]?.map((item) => (
+            <div key={item.id}>
+              <p className="text-black2">{item.title}</p>
+              <div className="flex flex-row flex-wrap gap-2">
+                <ModalItem
+                  title="Ascending"
+                  isSelected={selectedSortId === item.id}
+                  onClick={() => setSelectedSort(item.id, true)}
+                  icon={'/assets/images/Shared/arrow-up-icon'}
+                />
+                <ModalItem
+                  title="Descending"
+                  isSelected={selectedSortId === item.id}
+                  onClick={() => setSelectedSort(item.id, false)}
+                  icon={'/assets/images/Shared/arrow-down-icon'}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       ))}
     </div>
