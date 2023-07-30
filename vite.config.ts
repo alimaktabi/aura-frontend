@@ -5,6 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig(({ mode }) => ({
   server: {
     host: true,
+    port: 3000,
     proxy: {
       '/brightid': {
         target: 'https://recovery.brightid.org',
