@@ -14,7 +14,7 @@ const SubjectsEvaluation = () => {
   return (
     <div className="page page__dashboard h-screen flex flex-col">
       <SubjectSearch
-        subjects={brightIdBackup?.connections}
+        subjects={brightIdBackup ? brightIdBackup.connections : null}
         setFilteredSubjects={setFilteredSubjects}
       />
       <p className="text-lg text-white mb-5 mt-7">

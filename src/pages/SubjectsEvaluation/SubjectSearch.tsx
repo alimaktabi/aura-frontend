@@ -2,20 +2,49 @@ import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithM
 import { FiltersModal } from './FiltersModal.tsx';
 import { SortModal } from './SortModal.tsx';
 import { Connection } from 'types';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useFilterAndSort from 'hooks/useFilterAndSort.ts';
+import { AuraFilterId, useSubjectFilters } from 'hooks/useFilters.ts';
 
 export const SubjectSearch = ({
   subjects,
   setFilteredSubjects,
 }: {
-  subjects: Connection[] | null | undefined;
+  subjects: Connection[] | null;
   setFilteredSubjects: (items: Connection[]) => void;
 }) => {
-  const { searchString, setSearchString, itemsFiltered } = useFilterAndSort(
+  const filters = useSubjectFilters(
+    useMemo(
+      () => [
+        AuraFilterId.ConnectionTierNotYet,
+        AuraFilterId.ConnectionTierSybil,
+        AuraFilterId.ConnectionTierBronze,
+        AuraFilterId.ConnectionTierSilver,
+        AuraFilterId.ConnectionTierGold,
+        AuraFilterId.ConnectionYourEvaluationPositive,
+        AuraFilterId.ConnectionYourEvaluationNegative,
+        AuraFilterId.ConnectionYourEvaluationNotEvaluatedYet,
+        AuraFilterId.ConnectionConnectionTypeJustMet,
+        AuraFilterId.ConnectionConnectionTypeAlreadyKnownPlus,
+      ],
+      [],
+    ),
+  );
+  const sorts = useMemo(() => [], []);
+  const {
+    searchString,
+    setSearchString,
+    itemsFiltered,
+    selectedFilter,
+    selectedFilterId,
+    setSelectedFilterId,
+    selectedSort,
+    selectedSortId,
+    setSelectedSort,
+  } = useFilterAndSort(
     subjects,
-    useMemo(() => [], []),
-    useMemo(() => [], []),
+    filters,
+    sorts,
     useMemo(() => ['id', 'name'], []),
   );
   useEffect(() => {
@@ -23,6 +52,9 @@ export const SubjectSearch = ({
       setFilteredSubjects(itemsFiltered);
     }
   }, [setFilteredSubjects, itemsFiltered]);
+
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+  const [isSortsModalOpen, setIsSortsModalOpen] = useState(false);
   return (
     <div className="card flex flex-col gap-4">
       <div className="card__input flex gap-2 items-center rounded bg-gray30 px-3.5">
@@ -43,16 +75,36 @@ export const SubjectSearch = ({
         <SelectButtonWithModal
           title="Filters"
           iconLeft={false}
-          selectedItem="No filter"
+          selectedItem={selectedFilter?.title ?? 'No filter'}
+          isOpen={isFiltersModalOpen}
+          openModalHandler={() => setIsFiltersModalOpen(true)}
+          closeModalHandler={() => setIsFiltersModalOpen(false)}
         >
-          <FiltersModal />
+          <FiltersModal
+            filters={filters}
+            selectedFilterId={selectedFilterId}
+            setSelectedFilterId={(value) => {
+              setIsFiltersModalOpen(false);
+              setSelectedFilterId(value);
+            }}
+          />
         </SelectButtonWithModal>
         <SelectButtonWithModal
           title="Sort By"
           iconLeft={false}
-          selectedItem="Last created"
+          selectedItem={selectedSort?.title || 'No sort'}
+          isOpen={isSortsModalOpen}
+          openModalHandler={() => setIsSortsModalOpen(true)}
+          closeModalHandler={() => setIsSortsModalOpen(false)}
         >
-          <SortModal />
+          <SortModal
+            sorts={sorts}
+            selectedSortId={selectedSortId}
+            setSelectedSort={(...value) => {
+              setIsSortsModalOpen(false);
+              setSelectedSort(...value);
+            }}
+          />
         </SelectButtonWithModal>
       </div>
     </div>

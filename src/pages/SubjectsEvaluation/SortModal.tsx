@@ -1,93 +1,36 @@
-import { useState } from 'react';
 import { ModalItem } from '../../components/Shared/Modal/ModalItem';
+import {
+  AuraSortId,
+  AuraSortOptions,
+  useCategorizeAuraSortOptions,
+} from 'hooks/useSorts.ts';
+import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
 
-export const SortModal = () => {
-  const [filters] = useState<any>([
-    {
-      id: 1,
-      name: 'Last updated',
-      items: [
-        {
-          id: 1,
-          name: 'Ascending',
-
-          icon: '/assets/images/Shared/arrow-up-icon',
-        },
-        {
-          id: 2,
-          name: 'Descending',
-
-          icon: '/assets/images/Shared/arrow-down-icon',
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Most evaluations',
-      items: [
-        {
-          id: 1,
-          name: 'Ascending',
-
-          icon: '/assets/images/Shared/arrow-up-icon',
-        },
-        {
-          id: 2,
-          name: 'Descending',
-
-          icon: '/assets/images/Shared/arrow-down-icon',
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: 'Score',
-      items: [
-        {
-          id: 1,
-          name: 'Ascending',
-
-          icon: '/assets/images/Shared/arrow-up-icon',
-        },
-        {
-          id: 2,
-          name: 'Descending',
-
-          icon: '/assets/images/Shared/arrow-down-icon',
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: 'Most mutal connections',
-      items: [
-        {
-          id: 1,
-          name: 'Ascending',
-
-          icon: '/assets/images/Shared/arrow-up-icon',
-        },
-        {
-          id: 2,
-          name: 'Descending',
-
-          icon: '/assets/images/Shared/arrow-down-icon',
-        },
-      ],
-    },
-  ]);
+//TODO: merge this with FiltersModal
+export function SortModal<T>({
+  sorts,
+  selectedSortId,
+  setSelectedSort,
+}: {
+  sorts: AuraSortOptions<T>;
+  selectedSortId: AuraSortId | null;
+  setSelectedSort: (id: AuraSortId, ascending?: boolean) => void;
+}) {
+  const res = useCategorizeAuraSortOptions(sorts);
   return (
     <div className="w-full flex flex-col gap-5">
-      {filters.map((filter: any) => (
-        <div className="flex flex-col gap-3">
-          <p className="text-black2">{filter.name}</p>
-          <div className="flex flex-row gap-2">
-            {filter.items.map((item: any) => (
+      {(Object.keys(res) as FilterOrSortCategory[]).map((category) => (
+        <div className="flex flex-col gap-3" key={category}>
+          {category !== FilterOrSortCategory.Default && (
+            <p className="text-black2">{category}</p>
+          )}
+          <div className="flex flex-row flex-wrap gap-2">
+            {res[category]?.map((item) => (
               <ModalItem
-                className="flex-1"
-                title={item.name}
-                isSelected={false}
-                icon={item.icon}
+                key={item.id}
+                title={item.title}
+                isSelected={selectedSortId === item.id}
+                onClick={() => setSelectedSort(item.id)}
               />
             ))}
           </div>
@@ -95,4 +38,4 @@ export const SortModal = () => {
       ))}
     </div>
   );
-};
+}

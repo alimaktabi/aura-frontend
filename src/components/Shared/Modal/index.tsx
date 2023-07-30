@@ -8,7 +8,7 @@ export const Modal: FC<{
   isOpen: boolean;
   noButtonPadding?: boolean;
   children: React.ReactNode;
-  closeModalHandler: () => void;
+  closeModalHandler?: () => void;
 }> = ({
   title,
   children,
@@ -23,7 +23,7 @@ export const Modal: FC<{
       {isOpen && (
         <div
           className={`fixed z-[100] left-0 top-0 w-full h-full overflow-hidden backdrop-blur-sm flex items-center justify-center bg-modal-backdrop ${className}`}
-          onClick={(_e) => closeModalHandler()}
+          onClick={(_e) => closeModalHandler?.()}
           data-testid="modal-wrapper"
         >
           <div
