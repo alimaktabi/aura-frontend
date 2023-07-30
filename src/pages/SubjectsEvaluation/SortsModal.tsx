@@ -21,19 +21,11 @@ export function SortsModal<T>({
   const res = useCategorizeAuraSortOptions(sorts);
   const isSelectedSort = useCallback(
     (id: AuraSortId, ascending: boolean) => {
-      if (!selectedSort) return false;
-      if (selectedSort.id !== id) return false;
-      if (ascending) {
-        return (
-          (selectedSort.defaultAscending && !selectedSort.isReversed) ||
-          (!selectedSort.defaultAscending && selectedSort.isReversed)
-        );
-      } else {
-        return (
-          (selectedSort.defaultAscending && selectedSort.isReversed) ||
-          (!selectedSort.defaultAscending && !selectedSort.isReversed)
-        );
-      }
+      return (
+        selectedSort?.id === id &&
+        ascending ===
+          (selectedSort.defaultAscending !== selectedSort.isReversed)
+      );
     },
     [selectedSort],
   );

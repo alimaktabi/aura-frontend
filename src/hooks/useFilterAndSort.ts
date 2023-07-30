@@ -55,10 +55,7 @@ export default function useFilterAndSort<T>(
       if (obj) {
         setSelectedSortId(id);
         if (ascending !== undefined) {
-          setIsSortReversed(
-            (obj.defaultAscending && !ascending) ||
-              (!obj.defaultAscending && ascending),
-          );
+          setIsSortReversed(obj.defaultAscending != ascending);
         } else {
           setIsSortReversed(false);
         }
