@@ -69,7 +69,7 @@ export default function useFilterAndSort<T>(
 
   const itemsFiltered: T[] | null = useMemo(() => {
     if (items === null) return null;
-    let result = items.filter(selectedFilter?.func ?? ((_item) => true));
+    let result = [...items];
     if (searchString && searchKeys?.length) {
       const searchStringFinal = searchString.trim().toLowerCase();
       result = result.filter((item) =>
@@ -77,12 +77,14 @@ export default function useFilterAndSort<T>(
           String(item[key]).toLowerCase().includes(searchStringFinal),
         ),
       );
+    } else if (selectedFilter) {
+      result = items.filter(selectedFilter.func);
     }
     if (selectedSort) {
       result.sort(selectedSort?.func);
     }
     return selectedSort?.isReversed ? result.reverse() : result;
-  }, [items, selectedFilter?.func, searchString, searchKeys, selectedSort]);
+  }, [items, searchString, searchKeys, selectedFilter, selectedSort]);
 
   const clearSort = useCallback(() => {
     setSelectedSortId(null);
