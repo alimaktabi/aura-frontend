@@ -1,46 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-const ConfidenceDropdown = () => {
+const ConfidenceDropdown = ({
+  confidence,
+  setConfidence,
+}: {
+  confidence: number;
+  setConfidence: (value: number) => void;
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [options] = useState([
-    {
-      id: 1,
-      value: (
-        <p>
-          I have <strong>Low</strong> confidence
-        </p>
-      ),
-    },
-    {
-      id: 2,
-      value: (
-        <p>
-          I have <strong>Medium</strong> confidence
-        </p>
-      ),
-    },
-    {
-      id: 3,
-      value: (
-        <p>
-          I have <strong>High</strong> confidence
-        </p>
-      ),
-    },
-    {
-      id: 4,
-      value: (
-        <p>
-          I have <strong>Very High</strong> confidence
-        </p>
-      ),
-    },
-  ]);
+  const options = useMemo(
+    () => [
+      {
+        id: 1,
+        value: (
+          <p>
+            I have <strong>Low</strong> confidence
+          </p>
+        ),
+      },
+      {
+        id: 2,
+        value: (
+          <p>
+            I have <strong>Medium</strong> confidence
+          </p>
+        ),
+      },
+      {
+        id: 3,
+        value: (
+          <p>
+            I have <strong>High</strong> confidence
+          </p>
+        ),
+      },
+      {
+        id: 4,
+        value: (
+          <p>
+            I have <strong>Very High</strong> confidence
+          </p>
+        ),
+      },
+    ],
+    [],
+  );
 
   const [selectedItem, setSelectedItem] = useState(options[0]);
-
+  useEffect(() => {
+    const item = options.find((o) => o.id === confidence);
+    if (item) {
+      setSelectedItem(item);
+    }
+  }, [confidence, options]);
   return (
-    <div className="dropdown">
+    <div className="dropdown cursor-pointer">
       <div
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className={`flex text-black relative items-center bg-white justify-between rounded-t-lg text-lg pl-5 md:pl-5 pr-3 h-12 md:h-12 cursor-pointer border border-gray10 ${
@@ -63,6 +77,7 @@ const ConfidenceDropdown = () => {
                 key={option.id}
                 onClick={() => {
                   setSelectedItem(option);
+                  setConfidence(option.id);
                   setIsDropdownOpen(false);
                 }}
                 className="dropdown__item flex items-center justify-between px-5 h-12 cursor-pointer hover:bg-gray10"

@@ -28,7 +28,7 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
       {loading ? (
         <></>
       ) : rating === null ? (
-        <NotEvaluatedCard />
+        <NotEvaluatedCard subjectId={subjectId} />
       ) : (
         <EvaluationInfo
           fromSubjectId={authData.brightId}

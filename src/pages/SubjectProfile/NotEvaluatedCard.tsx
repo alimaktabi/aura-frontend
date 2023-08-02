@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import Modal from '../../components/Shared/Modal';
 import EvaluateModalBody from './EvaluateModalBody.tsx';
+import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo.ts';
 
-const NotEvaluatedCard = () => {
+const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
+  const { name } = useSubjectBasicInfo(subjectId);
 
   return (
     <>
       <div className="flex items-center gap-2.5 justify-between">
         <div
           onClick={() => setIsEvaluateNowModalOpen(true)}
-          className="flex-1 flex flex-col max-w-[136px] py-4 justify-center items-center bg-pastel-purple gap-2.5 rounded-lg"
+          className="flex-1 flex flex-col max-w-[136px] py-4 justify-center items-center bg-pastel-purple gap-2.5 rounded-lg cursor-pointer"
         >
           <img
             className="h-8 w-auto -mr-1"
@@ -33,9 +35,12 @@ const NotEvaluatedCard = () => {
       <Modal
         isOpen={isEvaluateNowModalOpen}
         closeModalHandler={() => setIsEvaluateNowModalOpen(false)}
-        title="Endorsing Beigiz"
+        title={`Endorsing ${name}`}
       >
-        <EvaluateModalBody />
+        <EvaluateModalBody
+          subjectId={subjectId}
+          onSubmitted={() => setIsEvaluateNowModalOpen(false)}
+        />
       </Modal>
     </>
   );

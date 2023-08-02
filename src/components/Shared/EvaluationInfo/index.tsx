@@ -1,7 +1,10 @@
 import { useSubjectRating } from '../../../hooks/useSubjectRating.ts';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from '../../../store/profile/selectors.ts';
+import Modal from 'components/Shared/Modal';
+import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody.tsx';
+import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo.ts';
 
 export const EvaluationInfo = ({
   fromSubjectId,
@@ -10,7 +13,9 @@ export const EvaluationInfo = ({
   fromSubjectId: string;
   toSubjectId: string;
 }) => {
+  const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
   const authData = useSelector(selectAuthData);
+  const { name } = useSubjectBasicInfo(toSubjectId);
 
   const { rating, loading, confidenceValue } = useSubjectRating({
     fromSubjectId,
@@ -88,7 +93,10 @@ export const EvaluationInfo = ({
         <div className="flex items-center gap-2">
           <span className="font-medium">{rating?.rating ?? ''}</span>
           {isYourEvaluation && (
-            <div className={`p-1.5 rounded ${styleValues.iconBgColor}`}>
+            <div
+              className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
+              onClick={() => setIsEvaluateNowModalOpen(true)}
+            >
               <img
                 src="/assets/images/Shared/edit-icon.svg"
                 alt=""
@@ -98,6 +106,17 @@ export const EvaluationInfo = ({
           )}
         </div>
       </div>
+
+      <Modal
+        isOpen={isEvaluateNowModalOpen}
+        closeModalHandler={() => setIsEvaluateNowModalOpen(false)}
+        title={`Endorsing ${name}`}
+      >
+        <EvaluateModalBody
+          subjectId={toSubjectId}
+          onSubmitted={() => setIsEvaluateNowModalOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };

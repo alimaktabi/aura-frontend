@@ -83,7 +83,7 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
     tier,
     userHasRecovery,
     auraScore,
-    name: profileInfo?.name ?? profileInfo?.id ?? 'Unknown',
+    name: profileInfo?.name ?? profileInfo?.id ?? 'Unknown User',
     joinedDateString,
     auraPublicProfile,
     isConnection: !!connectionInfo,
