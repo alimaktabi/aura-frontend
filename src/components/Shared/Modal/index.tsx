@@ -34,7 +34,7 @@ export const Modal: FC<{
             data-testid="modal-content"
           >
             <div className="modal-header flex justify-between items-center mb-6">
-              <p className="text-black2 text-sm font-bold">{title}</p>
+              <p className="text-black2 font-bold">{title}</p>
 
               <img
                 className="cursor-pointer"

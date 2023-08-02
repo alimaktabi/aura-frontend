@@ -40,4 +40,8 @@ html {
       @apply w-4 h-4;
     }
   }
+
+  &--big {
+    @apply p-3 font-bold text-lg;
+  }
 }

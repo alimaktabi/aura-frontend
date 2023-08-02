@@ -11,6 +11,7 @@ export default {
         gray40: '#ECECEC',
         gray50: '#CDCDCD',
         purple00: '#C9A2FF',
+        error: '#EB5E55',
         'pastel-purple': '#C9A2FF',
         'pastel-purple-25': '#C9A2FF40',
         'green-card': '#C0E6C9',
