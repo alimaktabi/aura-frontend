@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        gray00: "#393939",
+        gray00: '#393939',
         gray10: '#CFCFCF',
         gray20: '#585858',
         gray30: '#D9D9D9',
@@ -12,6 +12,7 @@ export default {
         gray50: '#CDCDCD',
         purple00: '#C9A2FF',
         'pastel-purple': '#C9A2FF',
+        'pastel-purple-25': '#C9A2FF40',
         'green-card': '#C0E6C9',
         'red-card': '#E6C0C0',
         black2: '#2C2C2C',
@@ -19,7 +20,6 @@ export default {
         pl2: '#72BF83',
         nl1: '#E6C0C0',
         nl2: '#D39090',
-
       },
     },
   },

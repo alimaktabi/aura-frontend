@@ -1,7 +1,7 @@
 import { useSubjectRating } from '../../../hooks/useSubjectRating.ts';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from '../../../store/profile/selectors.ts';
-import { useMemo } from 'react';
 
 export const EvaluationInfo = ({
   fromSubjectId,
@@ -10,15 +10,18 @@ export const EvaluationInfo = ({
   fromSubjectId: string;
   toSubjectId: string;
 }) => {
+  const authData = useSelector(selectAuthData);
+
   const { rating, loading, confidenceValue } = useSubjectRating({
     fromSubjectId,
     toSubjectId,
   });
-  const authData = useSelector(selectAuthData);
+
   const isYourEvaluation = useMemo(
     () => fromSubjectId === authData?.brightId,
     [authData?.brightId, fromSubjectId],
   );
+
   //TODO: get notes from api
   const notes = '';
   const styleValues = useMemo(() => {

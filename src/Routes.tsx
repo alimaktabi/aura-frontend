@@ -66,7 +66,7 @@ const routes = [
         return;
       },
     },
-    requireAuth: true,
+    requireAuth: false,
   },
   {
     path: RoutePath.PERFORMANCE_OVERVIEW,
