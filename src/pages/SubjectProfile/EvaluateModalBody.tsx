@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ConfidenceDropdown from '../../components/Shared/ConfidenceDropdown';
 
 const EvaluateModalBody = () => {
-  const [isYes, setIsYes] = useState(false);
+  const [isYes, setIsYes] = useState(true);
 
   return (
     <div className="">

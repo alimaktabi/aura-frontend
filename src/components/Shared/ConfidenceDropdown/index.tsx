@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const ConfidenceDropdown = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [options] = useState([
     {
       id: 1,
