@@ -22,16 +22,10 @@ export const ModalItem = ({
       `}
       onClick={onClick}
     >
-      {icon && (
-        <img
-          className="w-3 h-4"
-          src={`${icon}${isSelected ? '-white.svg' : '-black.svg'} `}
-          alt=""
-        />
-      )}
+      {icon && <img className="w-3 h-4" src={`${icon}-black.svg`} alt="" />}
       <p
         className={`text-sm ${
-          isSelected ? 'font-bold text-white' : 'font-medium text-black2'
+          isSelected ? 'font-bold text-black' : 'font-medium text-black2'
         }`}
       >
         {title}

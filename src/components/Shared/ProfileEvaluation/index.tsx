@@ -29,8 +29,10 @@ const ProfileEvaluation = ({
           <div className="flex flex-col gap-1 font-medium text-sm">
             <div>{profile.name}</div>
             <div>
-              <span>{inboundConnections?.length || '...'} </span>
-              <span className="text-xs">connections</span>
+              {/* <span>{inboundConnections?.length || '...'} </span>
+              <span className="text-xs">connections</span> */}
+              <span>Player level:</span>
+              <span className="font-bold"> 1</span>
             </div>
           </div>
         </div>

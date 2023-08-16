@@ -3,7 +3,7 @@ import { RoutePath } from '../../Routes.tsx';
 
 const Dashboard = () => {
   const preferredViews = ['Player', 'Trainer', 'Manager'];
-  const preferredView = preferredViews[2];
+  const preferredView = preferredViews[0];
   interface stringValue {
     [key: string]: string;
   }

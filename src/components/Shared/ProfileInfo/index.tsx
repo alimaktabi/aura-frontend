@@ -90,12 +90,12 @@ const ConnectionsButton = ({
         className="card--header__right flex flex-col justify-center bg-pastel-purple rounded h-full py-2 px-3.5"
       >
         <div className="flex w-full justify-between items-center">
-          <div className="font-bold text-white leading-5">
+          <div className="font-bold text-black leading-5">
             {inboundConnections?.length ?? '...'}
           </div>
-          <img src="/assets/images/Shared/arrow-right-icon-white.svg" alt="" />
+          <img src="/assets/images/Shared/arrow-right-icon-black.svg" alt="" />
         </div>
-        <div className="font-bold text-sm text-white leading-5">
+        <div className="font-bold text-sm text-black leading-5">
           Connections
         </div>
       </div>
