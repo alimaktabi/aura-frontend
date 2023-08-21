@@ -8,18 +8,25 @@ import { useInboundConnections } from '../../../hooks/useSubjectConnections.ts';
 export const ProfileInfo = ({
   isPerformance = false,
   subjectId,
+  role = 'Player',
+  color = 'pastel-green',
 }: {
   isPerformance?: boolean;
   subjectId: string | undefined;
+  role?: string;
+  color?: string;
 }) => {
   const { tier, userHasRecovery, name, joinedDateString, auraPublicProfile } =
     useSubjectBasicInfo(subjectId);
+
   return (
     <div className="card">
       <div className="card--header flex justify-between w-full items-center">
         <div className="card--header__left flex gap-4">
           <BrightIdProfilePicture
-            className="card--header__left__avatar rounded-full border border-[3px] border-pastel-purple h-[51px] w-[51px]"
+            className={`card--header__left__avatar rounded-full border border-[3px] ${
+              isPerformance ? 'border-' + color : 'border-pastel-purple'
+            } h-[51px] w-[51px]`}
             subjectId={subjectId}
           />
           <div className="card--header__left__info flex flex-col justify-center">
@@ -42,7 +49,7 @@ export const ProfileInfo = ({
           </div>
         </div>
         {isPerformance ? (
-          <PerformanceInfo />
+          <PerformanceInfo color={color} />
         ) : (
           <ConnectionsButton subjectId={subjectId} />
         )}
@@ -87,7 +94,8 @@ const ConnectionsButton = ({
     <>
       <div
         onClick={() => setIsConnectionsListModalOpen(true)}
-        className="card--header__right flex flex-col justify-center bg-pastel-purple rounded h-full py-2 px-3.5"
+        className={`card--header__right flex flex-col justify-center bg-pastel-purple
+        } rounded h-full py-2 px-3.5`}
       >
         <div className="flex w-full justify-between items-center">
           <div className="font-bold text-black leading-5">
@@ -112,9 +120,13 @@ const ConnectionsButton = ({
   );
 };
 
-const PerformanceInfo = () => {
+const PerformanceInfo = ({ color }: { color: string }) => {
   return (
-    <div className="card--header__right flex flex-col justify-center bg-pastel-purple rounded h-full py-1.5 px-2 items-center">
+    <div
+      className={`card--header__right flex flex-col justify-center ${
+        'bg-' + color
+      } rounded h-full py-1.5 px-2 items-center`}
+    >
       <div className="flex gap-1.5 items-center">
         <img
           className="w-3.5 h-3.5"
