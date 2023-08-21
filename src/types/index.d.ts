@@ -9,6 +9,12 @@ export type AuthDataWithPassword = AuthData & {
   password: string;
 };
 
+export enum SortItemState {
+  ASC = 'ASC',
+  DEC = 'DEC',
+  OFF = 'OFF',
+}
+
 export type ConnectionLevel =
   | 'reported'
   | 'suspicious'
