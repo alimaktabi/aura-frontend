@@ -8,12 +8,10 @@ import { useInboundConnections } from '../../../hooks/useSubjectConnections.ts';
 export const ProfileInfo = ({
   isPerformance = false,
   subjectId,
-  role = 'Player',
   color = 'pastel-green',
 }: {
   isPerformance?: boolean;
   subjectId: string | undefined;
-  role?: string;
   color?: string;
 }) => {
   const { tier, userHasRecovery, name, joinedDateString, auraPublicProfile } =

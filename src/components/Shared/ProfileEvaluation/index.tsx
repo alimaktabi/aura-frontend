@@ -14,7 +14,7 @@ const ProfileEvaluation = ({
   className?: string;
 }) => {
   const profile = useSubjectBasicInfo(fromSubjectId);
-  const { inboundConnections } = useInboundConnections(fromSubjectId);
+  // const { inboundConnections } = useInboundConnections(fromSubjectId);
   return (
     <div
       className={`card__info card flex flex-col gap-3.5
