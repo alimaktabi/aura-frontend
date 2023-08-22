@@ -5,6 +5,7 @@ import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
 import { AuraFilterId, useEvaluationFilters } from 'hooks/useFilters.ts';
 import { AuraSortId, useEvaluationSorts } from 'hooks/useSorts.ts';
 import useFilterAndSort from 'hooks/useFilterAndSort.ts';
+import { useState } from 'react';
 
 export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   const filters = useEvaluationFilters([
@@ -29,8 +30,65 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
     itemsFiltered: inboundRatingsFiltered,
   } = useFilterAndSort(inboundRatings, filters, sorts);
 
+  const isManagerView = true;
+  const [isCurrentEpoch, setIsCurrentEpoch] = useState(true);
+
+  const selectCurrentEpoch = () => {
+    setIsCurrentEpoch(true);
+  };
+
+  const selectPreviousEpoch = () => {
+    setIsCurrentEpoch(false);
+  };
+
   return (
     <div className="flex flex-col gap-[18px] max-h-[600px]">
+      {isManagerView && (
+        <div className="p-1.5 w-full h-[48px] rounded-md border border-white bg-white">
+          <div className={'flex flex-wrap relative h-[34px]'}>
+            <div
+              className={`background absolute w-1/2 top-0 bottom-0 rounded-md transition-all duration-300 ease-in-out ${
+                isCurrentEpoch
+                  ? 'left-0 right-1/2 bg-pastel-orange'
+                  : 'right-0 left-1/2 bg-pastel-blue'
+              }`}
+            ></div>
+            <div
+              className={`flex items-center justify-center gap-1 bg-transparent absolute cursor-pointer w-1/2 left-0 top-1/2 -translate-y-1/2 text-center font-medium transition-all duration-300 ease-in-out ${
+                isCurrentEpoch ? 'text-black' : 'text-black'
+              }`}
+              onClick={() => selectCurrentEpoch()}
+            >
+              <img
+                src={`${
+                  isCurrentEpoch
+                    ? '/assets/images/Shared/trainer-icon-s-black.svg'
+                    : '/assets/images/Shared/trainer-icon-s-orange.svg'
+                }`}
+                alt=""
+              />
+              <span>Trainers</span>
+            </div>
+            <div
+              className={`flex items-center justify-center gap-1 bg-transparent absolute cursor-pointer w-1/2 right-0 top-1/2 -translate-y-1/2 text-center font-medium transition-all duration-300 ease-in-out ${
+                isCurrentEpoch ? 'text-black' : 'text-black'
+              }`}
+              onClick={() => selectPreviousEpoch()}
+            >
+              <img
+                src={`${
+                  isCurrentEpoch
+                    ? '/assets/images/Shared/manager-icon-s-blue.svg'
+                    : '/assets/images/Shared/manager-icon-s-black.svg'
+                }`}
+                alt=""
+              />
+              <span>Managers</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <SelectItems
         title="Filters"
         isOpenInitial={true}
@@ -38,6 +96,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         selectedItemId={selectedFilterId}
         setSelectedItemId={toggleFilterById}
       />
+
       <SelectItems
         title="Sort"
         isOpenInitial={false}
