@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import { RoutePath } from '../../Routes.tsx';
+import { Modal } from '../../components/Shared/Modal';
+import { useState } from 'react';
+import RoleSelectModal from './RoleSelectModal.tsx';
 
 const Dashboard = () => {
   const preferredViews = ['Player', 'Trainer', 'Manager'];
   const preferredView = preferredViews[0];
+  const [isRoleSelectModalOpen, setIsRoleSelectModalOpen] = useState(false);
   interface stringValue {
     [key: string]: string;
   }
@@ -31,7 +35,10 @@ const Dashboard = () => {
           />
           <span className="flex justify-between w-full items-center mt-auto">
             <p className="font-bold">{preferredView}</p>
-            <button className="btn btn--icon">
+            <button
+              className="btn btn--icon"
+              onClick={() => setIsRoleSelectModalOpen(true)}
+            >
               <img src="/assets/images/Dashboard/refresh-icon.svg" alt="" />
             </button>
           </span>
@@ -121,6 +128,15 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
+      <Modal
+        title={'Role Selection'}
+        isOpen={isRoleSelectModalOpen}
+        noButtonPadding={true}
+        closeModalHandler={() => setIsRoleSelectModalOpen(false)}
+        className="select-button-with-modal__modal"
+      >
+        <RoleSelectModal />
+      </Modal>
     </div>
   );
 };
