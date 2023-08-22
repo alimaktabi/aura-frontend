@@ -10,10 +10,9 @@ const ProfileEvaluationMini = () => {
           <div className="text-white text-xs">233k (323)</div>
         </div>
       </div>
-      <div className="mb-4">
+      <div>
         <EvaluationInfo fromSubjectId="1" toSubjectId="2" />
       </div>
-      <button className="btn">View All Evaluations</button>
     </div>
   );
 };

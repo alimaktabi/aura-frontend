@@ -14,7 +14,7 @@ import ActivitiesCard from 'components/Shared/ActivitiesCard/index.tsx';
 
 const SubjectProfile = () => {
   const role = 'Player';
-  const noteExists = true; // new note or old note
+  const noteExists = false; // new note or old note
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
     useState(false);
 
@@ -36,12 +36,10 @@ const SubjectProfile = () => {
       ) : (
         <NewEvaluationCard />
       )}
+      {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
-      <EvaluationsDetails
-        subjectId={subjectId}
-        title="Evaluation by Trainers"
-        hasHeader={true}
-      />
+      <EvaluationsDetails subjectId={subjectId} />
+      {/* could have header based on the role */}
       <div>
         <div className="mb-2 flex justify-between">
           <p className="text-lg text-white">Other Evaluations</p>
