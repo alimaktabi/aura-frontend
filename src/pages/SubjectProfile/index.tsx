@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from '../../store/profile/selectors.ts';
 import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
+import NewEvaluationCard from './NewEvaluationCard.tsx';
 
 const SubjectProfile = () => {
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
@@ -28,6 +29,7 @@ const SubjectProfile = () => {
     <div className="page page__dashboard flex flex-col gap-4">
       <ProfileInfo subjectId={subjectId} />
       <YourEvaluation subjectId={subjectId} />
+      <NewEvaluationCard />
       <EvaluationsDetails subjectId={subjectId} />
       <div>
         <div className="mb-2 flex justify-between">
