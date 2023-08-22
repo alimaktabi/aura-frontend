@@ -5,10 +5,12 @@ import { compactFormat } from '../../../utils/number.ts';
 const EvaluationsDetails = ({
   subjectId,
   title = '',
-  hasHeadersBtn = false,
+  hasHeader = false,
+  hasBtn = false,
 }: {
   subjectId: string;
-  hasHeadersBtn?: boolean;
+  hasHeader?: boolean;
+  hasBtn?: boolean;
   title?: string;
 }) => {
   const { inboundRatings, inboundRatingsStatsString } =
@@ -16,7 +18,7 @@ const EvaluationsDetails = ({
   const { auraScore } = useSubjectBasicInfo(subjectId);
   return (
     <div className="card">
-      {hasHeadersBtn && (
+      {hasHeader && (
         <div className=" mb-4 font-bold text-lg text-black">{title}</div>
       )}
 
@@ -47,9 +49,7 @@ const EvaluationsDetails = ({
           alt=""
         />
       </div>
-      {hasHeadersBtn && (
-        <button className="btn mt-4">View All Evaluations</button>
-      )}
+      {hasBtn && <button className="btn mt-4">View All Evaluations</button>}
     </div>
   );
 };

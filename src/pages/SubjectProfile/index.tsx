@@ -10,8 +10,11 @@ import { useSelector } from 'react-redux';
 import { selectAuthData } from '../../store/profile/selectors.ts';
 import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
 import NewEvaluationCard from './NewEvaluationCard.tsx';
+import ActivitiesCard from 'components/Shared/ActivitiesCard/index.tsx';
 
 const SubjectProfile = () => {
+  const role = 'Player';
+  const noteExists = true; // new note or old note
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
     useState(false);
 
@@ -28,9 +31,17 @@ const SubjectProfile = () => {
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       <ProfileInfo subjectId={subjectId} />
-      <YourEvaluation subjectId={subjectId} />
-      <NewEvaluationCard />
-      <EvaluationsDetails subjectId={subjectId} />
+      {noteExists ? (
+        <YourEvaluation subjectId={subjectId} />
+      ) : (
+        <NewEvaluationCard />
+      )}
+      {role !== 'Player' && <ActivitiesCard />}
+      <EvaluationsDetails
+        subjectId={subjectId}
+        title="Evaluation by Trainers"
+        hasHeader={true}
+      />
       <div>
         <div className="mb-2 flex justify-between">
           <p className="text-lg text-white">Other Evaluations</p>

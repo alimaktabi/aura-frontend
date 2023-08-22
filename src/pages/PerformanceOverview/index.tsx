@@ -27,7 +27,8 @@ const PerformanceOverview = () => {
       <EvaluationsDetails
         subjectId={authData.brightId}
         title="Evaluation by Trainers"
-        hasHeadersBtn={true}
+        hasHeader={true}
+        hasBtn={true}
       />
       <LinkCard />
     </div>
