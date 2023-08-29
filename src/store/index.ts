@@ -1,12 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { profileSlice, ProfileState } from './profile';
+import { profileSlice } from './profile';
 import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
-export type RootState = {
-  profile: ProfileState;
-};
+import reducers from 'BrightID/reducer';
 
 const persistConfig = {
   key: 'root',
@@ -16,6 +13,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
+    ...reducers,
     profile: profileSlice.reducer,
   }),
 );
@@ -36,3 +34,5 @@ export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
 export type AppDispatch = AppStore['dispatch'];
+export type GetState = typeof store.getState;
+export type RootState = ReturnType<GetState>;

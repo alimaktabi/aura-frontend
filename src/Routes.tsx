@@ -3,7 +3,7 @@ import DomainOverview from './pages/DomainOverview';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
 import SubjectProfile from './pages/SubjectProfile';
 import PerformanceOverview from './pages/PerformanceOverview';
-import Login from './pages/Login';
+import RecoveryCodeScreen from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryCodeScreen.tsx';
 
 export enum RoutePath {
   LOGIN = '/',
@@ -14,7 +14,7 @@ export enum RoutePath {
 const routes = [
   {
     path: RoutePath.LOGIN,
-    element: <Login />,
+    element: <RecoveryCodeScreen />,
     header: {
       title: 'Login',
       icon: null,
