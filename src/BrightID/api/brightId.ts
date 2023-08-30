@@ -93,14 +93,6 @@ export class NodeApi {
     return (res.data as UserProfileRes).data;
   }
 
-  async getVerifications(id: string) {
-    const res = await this.api.get<UserVerificationsRes, ErrRes>(
-      `/users/${id}/verifications`,
-    );
-    NodeApi.throwOnError(res);
-    return (res.data as UserVerificationsRes).data.verifications;
-  }
-
   async getConnections(id: string, direction: 'inbound' | 'outbound') {
     const res = await this.api.get<UserConnectionsRes, ErrRes>(
       `/users/${id}/connections/${direction}`,
