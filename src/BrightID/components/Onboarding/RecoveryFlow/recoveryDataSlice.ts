@@ -46,8 +46,6 @@ const recoveryData = createSlice({
       }>,
     ) {
       const { publicKey, secretKey, aesKey } = action.payload;
-      console.log('hi3');
-      console.log({ publicKey, secretKey, aesKey });
       state.publicKey = uInt8ArrayToB64(publicKey ?? new Uint8Array());
       state.secretKey = secretKey;
       state.aesKey = aesKey;

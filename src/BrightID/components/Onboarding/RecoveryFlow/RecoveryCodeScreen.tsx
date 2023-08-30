@@ -116,7 +116,6 @@ const RecoveryCodeScreen = () => {
 
     async function runEffect() {
       if (step === recover_steps.NOT_STARTED) {
-        console.log('hiiiiii');
         dispatch(setRecoverStep(recover_steps.INITIALIZING));
         try {
           // if (action === 'recovery') {

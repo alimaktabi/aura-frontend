@@ -22,8 +22,6 @@ export const setupRecovery =
       const { publicKey, secretKey } = await nacl.sign.keyPair();
       const aesKey = await urlSafeRandomKey(16);
       // setup recovery data slice with new keypair
-      console.log('hi1');
-      console.log({ publicKey, secretKey, aesKey });
       dispatch(init({ publicKey, secretKey, aesKey }));
     } else {
       // we should already have valid recovery data. double-check required data is available.
@@ -35,8 +33,6 @@ export const setupRecovery =
         const { publicKey, secretKey } = await nacl.sign.keyPair();
         const aesKey = await urlSafeRandomKey(16);
         // setup recovery data slice with new keypair
-        console.log('hi2');
-        console.log({ publicKey, secretKey, aesKey });
         dispatch(init({ publicKey, secretKey, aesKey }));
       }
     }
