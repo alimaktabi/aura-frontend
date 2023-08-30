@@ -51,13 +51,14 @@ export const loginByExplorerCode = async (
     key: authKey,
     password,
   };
-
+  console.log('hiiiiiiiiiiiiiii');
+  console.log(body);
   await backendApi.post('/v1/connect/explorer-code', body);
+  console.log('22222222222');
 
   return {
     privateKey,
     publicKey,
     brightId,
-    authKey,
   };
 };

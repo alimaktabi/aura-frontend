@@ -2,7 +2,6 @@ export type AuthData = {
   brightId: string;
   publicKey: string;
   privateKey: string;
-  authKey: string;
 };
 
 export type AuthDataWithPassword = AuthData & {

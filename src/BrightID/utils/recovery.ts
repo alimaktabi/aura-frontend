@@ -9,7 +9,7 @@ export const buildRecoveryChannelQrUrl = ({
   changePrimaryDevice,
 }: {
   aesKey: string;
-  url: URL;
+  url: { href: string };
   t: QrCodeURL_Type;
   changePrimaryDevice: boolean;
 }) => {

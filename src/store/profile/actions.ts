@@ -6,7 +6,7 @@ import {
 import { AuthDataWithPassword } from 'types';
 import { selectAuthData } from './selectors.ts';
 import { RootState } from '../index.ts';
-import { encryptData } from '../../utils/crypto.ts';
+import { encryptData, hash } from '../../utils/crypto.ts';
 
 //TODO: add a way to reload brightId backup
 export const getBrightIdBackupThunk = createAsyncThunk<
@@ -28,7 +28,8 @@ export const loginByExplorerCodeThunk = createAsyncThunk<
   'profile/loginByExplorerCode',
   async ({ explorerCode, password }, { dispatch }) => {
     const brightIdData = await loginByExplorerCode(explorerCode, password);
-    await dispatch(getBrightIdBackupThunk({ authKey: brightIdData.authKey }));
+    const authKey = hash(brightIdData.brightId + password);
+    await dispatch(getBrightIdBackupThunk({ authKey }));
     return {
       ...brightIdData,
       password,

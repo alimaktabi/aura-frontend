@@ -13,6 +13,12 @@ export default defineConfig(({ mode }) => ({
         rewrite: (path) => path.slice('/brightid'.length),
         secure: mode !== 'development',
       },
+      '/auranode': {
+        target: 'https://aura-node.brightid.org',
+        changeOrigin: true,
+        rewrite: (path) => path.slice('/auranode'.length),
+        secure: mode !== 'development',
+      },
     },
   },
   plugins: [tsconfigPaths(), VitePWA({ registerType: 'autoUpdate' })],

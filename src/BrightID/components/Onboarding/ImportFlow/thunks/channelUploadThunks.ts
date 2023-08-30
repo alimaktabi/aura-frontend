@@ -2,16 +2,17 @@ import { b64ToUrlSafeB64 } from 'BrightID/utils/encoding';
 import { encryptData } from 'BrightID/utils/cryptoHelper';
 import ChannelAPI from 'BrightID/api/channelService';
 import { IMPORT_PREFIX, RECOVERY_CHANNEL_TTL } from 'BrightID/utils/constants';
-import { GetState } from 'store';
+import { GetState, RootState } from 'store';
 import { AuthDataWithPassword } from 'types';
 import { pullProfilePhoto } from 'api/login.service.ts';
+import { hash } from 'utils/crypto.ts';
 
 export const getUserInfo = async (
   user: RootState['user'],
   authData: AuthDataWithPassword,
 ) => {
   const photo = await pullProfilePhoto(
-    authData.authKey,
+    hash(user.id + authData.password),
     user.id,
     authData.password,
   );

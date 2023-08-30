@@ -11,6 +11,7 @@ import {
   updateMemberships,
   updateNotifications,
 } from './index';
+import { AURA_NODE_URL } from 'utils/constants.ts';
 
 const fetchUserInfo = (api: NodeApi) => (dispatch: AppDispatch, getState) => {
   return InteractionManager.runAfterInteractions({
@@ -55,7 +56,7 @@ const fetchUserInfo = (api: NodeApi) => (dispatch: AppDispatch, getState) => {
       if (!hasAuraVerification) {
         try {
           const auraApi = new NodeApi({
-            url: import.meta.env.VITE_AURA_NODE_URL,
+            url: AURA_NODE_URL,
             secretKey: undefined,
             id: undefined,
           });

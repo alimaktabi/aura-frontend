@@ -3,6 +3,7 @@ import ChannelAPI from 'BrightID/api/channelService';
 import { selectBaseUrl } from 'BrightID/reducer/settingsSlice';
 import { setRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
 import { uploadRecoveryData } from 'BrightID/utils/recovery';
+import { AppDispatch, GetState } from 'store';
 
 // CONSTANTS
 
@@ -11,7 +12,7 @@ export const CHANNEL_POLL_INTERVAL = 3000;
 // THUNKS
 
 export const createRecoveryChannel =
-  (): AppThunk => async (dispatch: AppDispatch, getState) => {
+  () => async (dispatch: AppDispatch, getState: GetState) => {
     try {
       const { recoveryData } = getState();
       const baseUrl = selectBaseUrl(getState());
@@ -26,7 +27,7 @@ export const createRecoveryChannel =
       console.log(`Finished uploading recovery data to channel ${channelId}`);
     } catch (e) {
       const msg = 'Profile data already exists in channel';
-      if (!e.message.startsWith(msg)) {
+      if (!String(e).startsWith(msg)) {
         throw e;
       }
     }

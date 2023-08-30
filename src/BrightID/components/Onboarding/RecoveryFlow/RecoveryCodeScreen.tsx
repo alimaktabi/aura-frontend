@@ -4,6 +4,7 @@ import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/R
 import { setupRecovery } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks.ts';
 import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
 import { createRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks.ts';
+import qrcode from 'qrcode';
 import {
   resetRecoveryData,
   selectRecoveryStep,
@@ -22,8 +23,10 @@ import {
   urlTypesOfActions,
 } from 'BrightID/utils/constants';
 import { userSelector } from 'BrightID/reducer/userSlice';
-import { __DEV__ } from 'utils/constants.ts';
+import { __DEV__, AURA_PRODUCTION_NODE_URL } from 'utils/constants.ts';
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
+import { getExplorerCode } from 'BrightID/utils/explorer.ts';
 
 /**
  * Recovery Code screen of BrightID/
@@ -41,7 +44,8 @@ const RecoveryCodeScreen = () => {
     [actionParam],
   );
   const navigate = useNavigate();
-  const [qrUrl, setQrUrl] = useState<URL>();
+  const [qrUrl, setQrUrl] = useState<{ href: string } | null>(null);
+  const [qrSvg, setQrSvg] = useState<string | null>(null);
   const recoveryData = useSelector((state) => state.recoveryData);
   const { id } = useSelector(userSelector);
   const isScanned = useSelector(
@@ -119,16 +123,24 @@ const RecoveryCodeScreen = () => {
 
   // set QRCode and SVG
   useEffect(() => {
-    console.log({ url: recoveryData.channel.url });
     if (recoveryData.channel.url && recoveryData.aesKey) {
+      const channelUrl = recoveryData.channel.url;
       const newQrUrl = buildRecoveryChannelQrUrl({
         aesKey: recoveryData.aesKey,
-        url: recoveryData.channel.url,
+        url: channelUrl.href.startsWith(location.origin)
+          ? {
+              href: channelUrl.href.replace(
+                location.origin + '/auranode',
+                AURA_PRODUCTION_NODE_URL,
+              ),
+            }
+          : channelUrl,
         t: urlTypesOfActions[action],
         changePrimaryDevice: false,
       });
       console.log(`new qrCode url: ${newQrUrl.href}`);
       setQrUrl(newQrUrl);
+      qrcode.toString(newQrUrl.href, (_err, qr) => setQrSvg(qr));
     }
   }, [action, recoveryData.aesKey, recoveryData.channel.url]);
 
@@ -165,9 +177,15 @@ const RecoveryCodeScreen = () => {
     recoveryData.errorType,
   ]);
 
+  const user = useSelector((state) => state.user);
   useEffect(() => {
-    if (action === RecoveryCodeScreenAction.IMPORT && isScanned) {
-      navigate('/import');
+    if (action === RecoveryCodeScreenAction.IMPORT && user) {
+      console.log({ user });
+      const explorerCode = getExplorerCode(user.id, user.password);
+      console.log({ explorerCode });
+      dispatch(
+        loginByExplorerCodeThunk({ explorerCode, password: user.password }),
+      );
     } else if (action === RecoveryCodeScreenAction.SYNC && isScanned) {
       navigate({
         pathname: '/devices',
@@ -177,7 +195,7 @@ const RecoveryCodeScreen = () => {
         })})`,
       });
     }
-  }, [action, isScanned, navigate]);
+  }, [action, dispatch, isScanned, navigate, user]);
 
   const copyQr = () => {
     if (!qrUrl) return;
@@ -213,9 +231,9 @@ const RecoveryCodeScreen = () => {
     <>
       <div>
         <p>Please scan this QR code using your other device</p>
-        {qrUrl ? (
+        {qrSvg ? (
           <div>
-            {String(qrUrl)}
+            <img src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`} />
             <button onClick={copyQr}>Copy</button>
             {__DEV__ && (
               <div>

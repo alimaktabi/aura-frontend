@@ -8,6 +8,7 @@ import reducers from 'BrightID/reducer';
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['recoveryData'], // won't be persisted
 };
 
 const persistedReducer = persistReducer(

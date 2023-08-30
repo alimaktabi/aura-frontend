@@ -5,6 +5,7 @@ import {
 } from '../store/profile/selectors.ts';
 import { useSelector } from 'react-redux';
 import { pullProfilePhoto } from '../api/login.service.ts';
+import { hash } from 'utils/crypto.ts';
 
 const BrightIdProfilePicture = ({
   subjectId,
@@ -26,7 +27,7 @@ const BrightIdProfilePicture = ({
       )
         return;
       const profilePhoto = await pullProfilePhoto(
-        authData.authKey,
+        hash(authData.brightId + authData.password),
         subjectId,
         authData.password,
       );
