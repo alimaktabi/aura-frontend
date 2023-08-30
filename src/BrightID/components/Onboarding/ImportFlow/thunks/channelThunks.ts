@@ -15,6 +15,7 @@ import {
 } from 'BrightID/components/Onboarding/ImportFlow/thunks/channelUploadThunks.ts';
 import { IMPORT_PREFIX } from 'BrightID/utils/constants';
 import { selectBaseUrl } from 'BrightID/reducer/settingsSlice.ts';
+import { AppDispatch, GetState } from 'store';
 
 export const setupSync =
   (): AppThunk => async (dispatch: AppDispatch, getState) => {
@@ -125,7 +126,7 @@ export const clearImportChannel = () => {
 };
 
 export const checkImportChannel =
-  (): AppThunk<Promise<void>> => async (dispatch: AppDispatch, getState) => {
+  () => async (dispatch: AppDispatch, getState: GetState) => {
     const {
       recoveryData: {
         channel: { channelId, url },

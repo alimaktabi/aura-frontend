@@ -26,7 +26,13 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        ignoredActions: [
+          'persist/PERSIST',
+          'persist/REHYDRATE',
+          'recoveryData/setRecoveryChannel',
+          'recoveryData/init',
+        ],
+        ignoredPaths: ['recoveryData'],
       },
     }),
 });

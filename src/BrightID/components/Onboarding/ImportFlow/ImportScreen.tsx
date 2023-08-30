@@ -41,7 +41,12 @@ const ImportScreen = ({ route }) => {
         );
       }
     }
-  }, [recoveryData, dispatch, importCompleted]);
+  }, [
+    recoveryData,
+    dispatch,
+    importCompleted,
+    route.params.changePrimaryDevice,
+  ]);
 
   return (
     <div style={styles.container}>

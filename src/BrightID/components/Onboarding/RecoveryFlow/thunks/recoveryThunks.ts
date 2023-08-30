@@ -3,6 +3,7 @@ import { urlSafeRandomKey } from 'BrightID/utils/encoding';
 import { setKeypair } from 'BrightID/actions';
 import { init } from '../recoveryDataSlice';
 import { verifyKeypair } from 'BrightID/utils/cryptoHelper';
+import { AppDispatch, GetState } from 'store';
 
 // HELPERS
 
@@ -21,6 +22,8 @@ export const setupRecovery =
       const { publicKey, secretKey } = await nacl.sign.keyPair();
       const aesKey = await urlSafeRandomKey(16);
       // setup recovery data slice with new keypair
+      console.log('hi1');
+      console.log({ publicKey, secretKey, aesKey });
       dispatch(init({ publicKey, secretKey, aesKey }));
     } else {
       // we should already have valid recovery data. double-check required data is available.
@@ -32,6 +35,8 @@ export const setupRecovery =
         const { publicKey, secretKey } = await nacl.sign.keyPair();
         const aesKey = await urlSafeRandomKey(16);
         // setup recovery data slice with new keypair
+        console.log('hi2');
+        console.log({ publicKey, secretKey, aesKey });
         dispatch(init({ publicKey, secretKey, aesKey }));
       }
     }
@@ -104,7 +109,7 @@ export const setupRecovery =
 // };
 
 export const setRecoveryKeys =
-  (): AppThunk => (dispatch: AppDispatch, getState) => {
+  () => (dispatch: AppDispatch, getState: GetState) => {
     const { publicKey, secretKey } = getState().recoveryData;
     verifyKeypair({ publicKey, secretKey });
     dispatch(setKeypair({ publicKey, secretKey }));

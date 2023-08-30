@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RESET_STORE } from 'BrightID/actions/resetStore';
+import { RootState } from 'store';
 
 const initialState: Keypair = {
   publicKey: '',

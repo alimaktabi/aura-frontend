@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'store/hooks';
 import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError.ts';
-import { setupRecovery } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks.ts';
+import {
+  setRecoveryKeys,
+  setupRecovery,
+} from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks.ts';
 import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
 import { createRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks.ts';
 import qrcode from 'qrcode';
@@ -83,6 +86,7 @@ const RecoveryCodeScreen = () => {
   // ]);
 
   // create recovery data and start polling channel
+
   useEffect(() => {
     // const runRecoveryEffect = async () => {
     //   // create publicKey, secretKey, aesKey for user
@@ -110,23 +114,37 @@ const RecoveryCodeScreen = () => {
       dispatch(pollImportChannel());
     };
 
-    if (step === recover_steps.NOT_STARTED) {
-      // if (action === 'recovery') {
-      //   if (!id) {
-      //     console.log(`initializing recovery process`);
-      //     runRecoveryEffect();
-      //   } else {
-      //     console.log(`Not starting recovery process, user has id!`);
-      //   }
-      // } else
-      if (action === RecoveryCodeScreenAction.IMPORT) {
-        console.log(`initializing import process`);
-        runImportEffect();
-      } else if (action === RecoveryCodeScreenAction.SYNC) {
-        console.log(`initializing sync process`);
-        runSyncEffect();
+    async function runEffect() {
+      if (step === recover_steps.NOT_STARTED) {
+        console.log('hiiiiii');
+        dispatch(setRecoverStep(recover_steps.INITIALIZING));
+        try {
+          // if (action === 'recovery') {
+          //   if (!id) {
+          //     console.log(`initializing recovery process`);
+          //     runRecoveryEffect();
+          //   } else {
+          //     console.log(`Not starting recovery process, user has id!`);
+          //   }
+          // } else
+          if (action === RecoveryCodeScreenAction.IMPORT) {
+            console.log(`initializing import process`);
+            await runImportEffect();
+            dispatch(setRecoverStep(recover_steps.INITIALIZED));
+          } else if (action === RecoveryCodeScreenAction.SYNC) {
+            console.log(`initializing sync process`);
+            await runSyncEffect();
+            dispatch(setRecoverStep(recover_steps.INITIALIZED));
+          } else {
+            dispatch(setRecoverStep(recover_steps.NOT_STARTED));
+          }
+        } catch (_e) {
+          dispatch(setRecoverStep(recover_steps.NOT_STARTED));
+        }
       }
     }
+
+    runEffect();
   }, [action, dispatch, id, step]);
 
   // set QRCode and SVG
@@ -197,14 +215,16 @@ const RecoveryCodeScreen = () => {
     }
   }, [routerLocation.pathname, navigate, query]);
   useEffect(() => {
-    const brightId = recoveryData.id || user.id;
     if (action === RecoveryCodeScreenAction.IMPORT) {
       if (userIsLogged) {
         redirectAfterLogin();
-      } else if (brightId && user.password) {
+      } else if (recoveryData.id && user.password) {
         setImportedUserData(true);
-        dispatch(setUserId(brightId));
-        const explorerCode = getExplorerCode(brightId, user.password);
+        clearImportChannel();
+        dispatch(setRecoveryKeys());
+        dispatch(resetRecoveryData());
+        dispatch(setUserId(recoveryData.id));
+        const explorerCode = getExplorerCode(recoveryData.id, user.password);
         console.log({ explorerCode });
         dispatch(
           loginByExplorerCodeThunk({ explorerCode, password: user.password }),

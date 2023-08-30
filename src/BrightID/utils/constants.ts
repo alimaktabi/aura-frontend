@@ -136,6 +136,8 @@ export enum recover_steps {
   RESTORING,
   ERROR,
   COMPLETE,
+  INITIALIZING,
+  INITIALIZED,
 }
 
 export const SOCIAL_MEDIA_SIG_WAIT_TIME = day;
