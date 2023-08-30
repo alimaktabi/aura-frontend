@@ -8,6 +8,7 @@ import {
   OPERATION_TRACE_TIME,
 } from 'BrightID/utils/constants';
 import { NodeApi } from 'BrightID/api/brightId';
+import { AppDispatch, GetState } from 'store';
 
 const handleOpUpdate = (
   _dispatch: AppDispatch,
@@ -74,8 +75,7 @@ const handleOpUpdate = (
 };
 
 export const pollOperations =
-  (api: NodeApi): AppThunk<Promise<void>> =>
-  async (dispatch: AppDispatch, getState) => {
+  (api: NodeApi) => async (dispatch: AppDispatch, getState: GetState) => {
     const operations = selectPendingOperations(getState());
     const { id } = getState().user;
     const { secretKey } = getState().keypair;
