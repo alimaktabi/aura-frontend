@@ -230,12 +230,17 @@ const RecoveryCodeScreen = () => {
     user,
     userIsLogged,
   ]);
-
+  const universalLink = useMemo(
+    () =>
+      qrUrl
+        ? `https://app.brightid.org/connection-code/${encodeURIComponent(
+            qrUrl.href,
+          )}`
+        : null,
+    [qrUrl],
+  );
   const copyQr = () => {
-    if (!qrUrl) return;
-    const universalLink = `https://app.brightid.org/connection-code/${encodeURIComponent(
-      qrUrl.href,
-    )}`;
+    if (!universalLink) return;
 
     let alertText = '';
     let clipboardMsg = '';
@@ -275,15 +280,20 @@ const RecoveryCodeScreen = () => {
               <img
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
               />
-              <div className="card mt-2">
-                <p>Or open this link on your mobile phone:</p>
-                <a className="mt-2 text-blue-900 underline" href={qrUrl?.href}>
-                  {qrUrl?.href}
-                </a>
-                <button className="btn mt-4" onClick={copyQr}>
-                  Copy
-                </button>
-              </div>
+              {universalLink && (
+                <div className="card mt-2 break-words">
+                  <p>Or open this link on your mobile phone:</p>
+                  <a
+                    className="mt-2 text-blue-900 underline"
+                    href={universalLink}
+                  >
+                    {universalLink}
+                  </a>
+                  <button className="btn mt-4" onClick={copyQr}>
+                    Copy
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div>loading...</div>
