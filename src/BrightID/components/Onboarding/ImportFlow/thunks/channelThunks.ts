@@ -1,10 +1,7 @@
-import { hash, urlSafeRandomKey } from 'BrightID/utils/encoding';
+import { hash } from 'BrightID/utils/encoding';
 import ChannelAPI from 'BrightID/api/channelService';
 import { CHANNEL_POLL_INTERVAL } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks.ts';
-import {
-  init,
-  setRecoveryChannel,
-} from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
+import { setRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
 import {
   checkCompletedFlags,
   downloadUserInfo,
@@ -18,18 +15,19 @@ import { selectBaseUrl } from 'BrightID/reducer/settingsSlice.ts';
 import { AppDispatch, GetState } from 'store';
 
 export const setupSync =
-  (): AppThunk => async (dispatch: AppDispatch, getState) => {
+  () => async (_dispatch: AppDispatch, getState: GetState) => {
     const { recoveryData } = getState();
     // setup recovery data
     if (!recoveryData.aesKey) {
-      const aesKey = await urlSafeRandomKey(16);
+      // TODO: fix and uncomment this
+      // const aesKey = await urlSafeRandomKey(16);
       // setup recovery data slice with sync info
-      dispatch(init({ aesKey }));
+      // dispatch(init({ aesKey }));
     }
   };
 
 export const createSyncChannel =
-  (): AppThunk => async (dispatch: AppDispatch, getState) => {
+  () => async (dispatch: AppDispatch, getState: GetState) => {
     const {
       recoveryData: { aesKey },
     } = getState();
@@ -99,26 +97,25 @@ export const pollOtherSideDeviceInfo = async (
 let channelIntervalId: IntervalId;
 let checkInProgress = false;
 
-export const pollImportChannel =
-  (): AppThunk => async (dispatch: AppDispatch) => {
-    clearInterval(channelIntervalId);
+export const pollImportChannel = () => async (dispatch: AppDispatch) => {
+  clearInterval(channelIntervalId);
 
-    channelIntervalId = setInterval(() => {
-      if (!checkInProgress) {
-        checkInProgress = true;
-        dispatch(checkImportChannel())
-          .then(() => {
-            checkInProgress = false;
-          })
-          .catch((err) => {
-            checkInProgress = false;
-            console.error(`error polling sync/import channel: ${err.message}`);
-          });
-      }
-    }, CHANNEL_POLL_INTERVAL);
+  channelIntervalId = setInterval(() => {
+    if (!checkInProgress) {
+      checkInProgress = true;
+      dispatch(checkImportChannel())
+        .then(() => {
+          checkInProgress = false;
+        })
+        .catch((err) => {
+          checkInProgress = false;
+          console.error(`error polling sync/import channel: ${err.message}`);
+        });
+    }
+  }, CHANNEL_POLL_INTERVAL);
 
-    console.log(`start polling sync/import channel (${channelIntervalId})`);
-  };
+  console.log(`start polling sync/import channel (${channelIntervalId})`);
+};
 
 export const clearImportChannel = () => {
   console.log(`stop polling sync/import channel (${channelIntervalId})`);
@@ -133,12 +130,14 @@ export const checkImportChannel =
       },
       // settings: { isPrimaryDevice },
     } = getState();
-    const channelApi = new ChannelAPI(url.href);
-    const dataIds = await channelApi.list(channelId);
-    await dispatch(downloadUserInfo({ channelApi, dataIds }));
-    // await dispatch(downloadConnections({ channelApi, dataIds }));
-    // await dispatch(downloadGroups({ channelApi, dataIds }));
-    // await dispatch(downloadContextInfo({ channelApi, dataIds }));
-    // await dispatch(downloadBlindSigs({ channelApi, dataIds }));
-    await dispatch(checkCompletedFlags({ channelApi, dataIds }));
+    if (url) {
+      const channelApi = new ChannelAPI(url.href);
+      const dataIds = await channelApi.list(channelId);
+      await dispatch(downloadUserInfo({ channelApi, dataIds }));
+      // await dispatch(downloadConnections({ channelApi, dataIds }));
+      // await dispatch(downloadGroups({ channelApi, dataIds }));
+      // await dispatch(downloadContextInfo({ channelApi, dataIds }));
+      // await dispatch(downloadBlindSigs({ channelApi, dataIds }));
+      await dispatch(checkCompletedFlags({ channelApi, dataIds }));
+    }
   };

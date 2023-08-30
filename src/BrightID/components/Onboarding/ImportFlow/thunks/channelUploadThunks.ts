@@ -2,7 +2,7 @@ import { b64ToUrlSafeB64 } from 'BrightID/utils/encoding';
 import { encryptData } from 'BrightID/utils/cryptoHelper';
 import ChannelAPI from 'BrightID/api/channelService';
 import { IMPORT_PREFIX, RECOVERY_CHANNEL_TTL } from 'BrightID/utils/constants';
-import { GetState, RootState } from 'store';
+import { AppDispatch, GetState, RootState } from 'store';
 import { AuthDataWithPassword } from 'types';
 import { pullProfilePhoto } from 'api/login.service.ts';
 import { hash } from 'utils/crypto.ts';
@@ -29,8 +29,7 @@ export const getUserInfo = async (
 };
 
 export const uploadAllInfoAfter =
-  (_after: number): AppThunk<Promise<void>> =>
-  async (_dispatch: AppDispatch, getState: GetState) => {
+  (_after: number) => async (_dispatch: AppDispatch, getState: GetState) => {
     const {
       user,
       profile: { authData },
@@ -127,7 +126,7 @@ export const uploadAllInfoAfter =
   };
 
 export const uploadDeviceInfo =
-  (): AppThunk<Promise<void>> => async (dispatch: AppDispatch, getState) => {
+  () => async (_dispatch: AppDispatch, getState: GetState) => {
     const {
       recoveryData: {
         channel: { url, channelId },
@@ -141,11 +140,13 @@ export const uploadDeviceInfo =
       isPrimaryDevice,
     };
     const data = JSON.stringify(dataObj);
-    const channelApi = new ChannelAPI(url.href);
-    await channelApi.upload({
-      channelId,
-      data,
-      dataId: `${IMPORT_PREFIX}data`,
-      requestedTtl: RECOVERY_CHANNEL_TTL,
-    });
+    if (url) {
+      const channelApi = new ChannelAPI(url.href);
+      await channelApi.upload({
+        channelId,
+        data,
+        dataId: `${IMPORT_PREFIX}data`,
+        requestedTtl: RECOVERY_CHANNEL_TTL,
+      });
+    }
   };
