@@ -8,9 +8,7 @@ const AURA_PRODUCTION_NODE_URL = import.meta.env.VITE_AURA_NODE_URL;
 if (!AURA_PRODUCTION_NODE_URL) {
   throw Error('VITE_AURA_NODE_URL not provided');
 }
-const AURA_NODE_URL = IS_PRODUCTION
-  ? AURA_PRODUCTION_NODE_URL
-  : `${location.origin}/auranode`;
+const AURA_NODE_URL = `${location.origin}/auranode`;
 export { AURA_PRODUCTION_NODE_URL, AURA_NODE_URL };
 
 export const CONNECTION_SEARCH_SEED = 5;
