@@ -267,23 +267,27 @@ const RecoveryCodeScreen = () => {
         <div>Logging in to Arua...</div>
       ) : (
         <div>
-          <p>Please scan this QR code using your other device</p>
+          <p className="card mb-2">
+            Please scan this QR code using your other device
+          </p>
           {qrSvg ? (
             <div>
               <img
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
               />
-              <button onClick={copyQr}>Copy</button>
-              {__DEV__ && (
-                <div>
-                  <span>{qrUrl?.href}</span>
-                </div>
-              )}
+              <div className="card mt-2">
+                <p>Or open this link on your mobile phone:</p>
+                <a className="mt-2 text-blue-900 underline" href={qrUrl?.href}>
+                  {qrUrl?.href}
+                </a>
+                <button className="btn mt-4" onClick={copyQr}>
+                  Copy
+                </button>
+              </div>
             </div>
           ) : (
             <div>loading...</div>
           )}
-          <p>This QR code should be scanned using your other device</p>
         </div>
       )}
     </>
