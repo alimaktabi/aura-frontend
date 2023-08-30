@@ -5,7 +5,6 @@ import { useState } from 'react';
 import RoleSelectModal from './RoleSelectModal.tsx';
 import { resetStore } from 'BrightID/actions';
 import { useDispatch } from 'store/hooks.ts';
-import { __DEV__ } from 'utils/constants.ts';
 
 const Dashboard = () => {
   const preferredViews = ['Player', 'Trainer', 'Manager'];
@@ -133,11 +132,9 @@ const Dashboard = () => {
             <br /> Settings
           </p>
         </div>
-        {__DEV__ && (
-          <button className={'btn'} onClick={() => dispatch(resetStore())}>
-            Logout
-          </button>
-        )}
+        <button className={'btn'} onClick={() => dispatch(resetStore())}>
+          Logout
+        </button>
       </div>
       <Modal
         title={'Role Selection'}
