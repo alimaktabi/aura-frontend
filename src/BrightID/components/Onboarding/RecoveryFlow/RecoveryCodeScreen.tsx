@@ -289,7 +289,7 @@ const RecoveryCodeScreen = () => {
   return (
     <>
       {importedUserData ? (
-        <div>Logging in to Arua...</div>
+        <div className="card">Logging in to Arua...</div>
       ) : (
         <div>
           <p className="card mb-2">
