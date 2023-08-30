@@ -108,7 +108,7 @@ export const checkCompletedFlags =
     channelApi: ChannelAPI;
     dataIds: Array<string>;
   }) =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: GetState) => {
     try {
       const {
         keypair: { publicKey: signingKey },
@@ -121,7 +121,7 @@ export const checkCompletedFlags =
       const prefix = `${IMPORT_PREFIX}completed_`;
       const isCompleted = (id: string) => id.startsWith(prefix);
       const completedBy = (id: string) => id.replace(prefix, '');
-      const uploader = (id) => id.replace(prefix, '').split(':')[1];
+      const uploader = (id: string) => id.replace(prefix, '').split(':')[1];
 
       const completedDataIds = dataIds.filter(
         (dataId) =>

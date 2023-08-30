@@ -8,6 +8,7 @@ import {
   LOCAL_OPERATION_KEEP_THRESHOLD,
   operation_states,
 } from 'BrightID/utils/constants';
+import { AppDispatch, GetState, RootState } from 'store';
 
 export type Operation = SubmittedOp & {
   state: (typeof operation_states)[keyof typeof operation_states];
@@ -93,7 +94,7 @@ export const selectOutdatedOperations = createSelector(
   },
 );
 
-export const scrubOps = (): AppThunk => (dispatch: AppDispatch, getState) => {
+export const scrubOps = () => (dispatch: AppDispatch, getState: GetState) => {
   const removeOpIds = selectOutdatedOperations(getState());
   console.log(
     `Scrubbing ${removeOpIds.length} outdated operations: ${removeOpIds}`,
