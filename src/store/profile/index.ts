@@ -5,6 +5,7 @@ import {
   refreshKeyPairThunk,
 } from './actions.ts';
 import { AuthDataWithPassword } from '../../types';
+import { RESET_STORE } from 'BrightID/actions';
 
 export type ProfileState = {
   //TODO: rename this to authData
@@ -22,14 +23,21 @@ export const profileSlice = createSlice({
   initialState: initialProfileState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
-      state.authData = action.payload;
-    });
-    builder.addCase(refreshKeyPairThunk.fulfilled, (state, action) => {
-      state.authData = action.payload;
-    });
-    builder.addCase(getBrightIdBackupThunk.fulfilled, (state, action) => {
-      state.brightIdBackupEncrypted = action.payload;
-    });
+    builder
+      .addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
+        state.authData = action.payload;
+      })
+      .addCase(refreshKeyPairThunk.fulfilled, (state, action) => {
+        state.authData = action.payload;
+      })
+      .addCase(getBrightIdBackupThunk.fulfilled, (state, action) => {
+        state.brightIdBackupEncrypted = action.payload;
+      })
+      .addMatcher(
+        (action) => action.type === RESET_STORE,
+        () => {
+          return initialProfileState;
+        },
+      );
   },
 });

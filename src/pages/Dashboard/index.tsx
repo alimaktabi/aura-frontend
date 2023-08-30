@@ -3,19 +3,25 @@ import { RoutePath } from '../../Routes.tsx';
 import { Modal } from '../../components/Shared/Modal';
 import { useState } from 'react';
 import RoleSelectModal from './RoleSelectModal.tsx';
+import { resetStore } from 'BrightID/actions';
+import { useDispatch } from 'store/hooks.ts';
+import { __DEV__ } from 'utils/constants.ts';
 
 const Dashboard = () => {
   const preferredViews = ['Player', 'Trainer', 'Manager'];
   const preferredView = preferredViews[0];
   const [isRoleSelectModalOpen, setIsRoleSelectModalOpen] = useState(false);
+
   interface stringValue {
     [key: string]: string;
   }
+
   const preferredViewIcon: stringValue = {
     Player: '/assets/images/Dashboard/account-icon.svg',
     Trainer: '/assets/images/Dashboard/trainer-icon.svg',
     Manager: '/assets/images/Dashboard/manager-icon.svg',
   };
+  const dispatch = useDispatch();
   return (
     <div className="page page__dashboard">
       <div className="row mb-4">
@@ -127,6 +133,11 @@ const Dashboard = () => {
             <br /> Settings
           </p>
         </div>
+        {__DEV__ && (
+          <button className={'btn'} onClick={() => dispatch(resetStore())}>
+            Logout
+          </button>
+        )}
       </div>
       <Modal
         title={'Role Selection'}
