@@ -22,11 +22,17 @@ import {
   RecoveryCodeScreenAction,
   urlTypesOfActions,
 } from 'BrightID/utils/constants';
-import { userSelector } from 'BrightID/reducer/userSlice';
+import { setUserId, userSelector } from 'BrightID/reducer/userSlice';
 import { __DEV__, AURA_PRODUCTION_NODE_URL } from 'utils/constants.ts';
-import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import {
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
 import { getExplorerCode } from 'BrightID/utils/explorer.ts';
+import { RoutePath } from 'Routes.tsx';
 
 /**
  * Recovery Code screen of BrightID/
@@ -178,14 +184,26 @@ const RecoveryCodeScreen = () => {
   ]);
 
   const user = useSelector((state) => state.user);
+  const [query] = useSearchParams();
+  const [importedUserData, setImportedUserData] = useState(false);
   useEffect(() => {
-    if (action === RecoveryCodeScreenAction.IMPORT && user) {
-      console.log({ user });
-      const explorerCode = getExplorerCode(user.id, user.password);
+    if (
+      action === RecoveryCodeScreenAction.IMPORT &&
+      recoveryData.id &&
+      user.password
+    ) {
+      setImportedUserData(true);
+      dispatch(setUserId(recoveryData.id));
+      const explorerCode = getExplorerCode(recoveryData.id, user.password);
       console.log({ explorerCode });
       dispatch(
         loginByExplorerCodeThunk({ explorerCode, password: user.password }),
-      );
+      ).then(() => {
+        if (location.pathname === RoutePath.LOGIN) {
+          const next = query.get('next');
+          navigate(next ?? RoutePath.DASHBOARD, { replace: true });
+        }
+      });
     } else if (action === RecoveryCodeScreenAction.SYNC && isScanned) {
       navigate({
         pathname: '/devices',
@@ -195,7 +213,7 @@ const RecoveryCodeScreen = () => {
         })})`,
       });
     }
-  }, [action, dispatch, isScanned, navigate, user]);
+  }, [action, dispatch, isScanned, navigate, query, recoveryData.id, user]);
 
   const copyQr = () => {
     if (!qrUrl) return;
@@ -229,23 +247,29 @@ const RecoveryCodeScreen = () => {
 
   return (
     <>
-      <div>
-        <p>Please scan this QR code using your other device</p>
-        {qrSvg ? (
-          <div>
-            <img src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`} />
-            <button onClick={copyQr}>Copy</button>
-            {__DEV__ && (
-              <div>
-                <span>{qrUrl?.href}</span>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div>loading...</div>
-        )}
-        <p>This QR code should be scanned using your other device</p>
-      </div>
+      {importedUserData ? (
+        <div>Logging in to Arua...</div>
+      ) : (
+        <div>
+          <p>Please scan this QR code using your other device</p>
+          {qrSvg ? (
+            <div>
+              <img
+                src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
+              />
+              <button onClick={copyQr}>Copy</button>
+              {__DEV__ && (
+                <div>
+                  <span>{qrUrl?.href}</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>loading...</div>
+          )}
+          <p>This QR code should be scanned using your other device</p>
+        </div>
+      )}
     </>
   );
 };

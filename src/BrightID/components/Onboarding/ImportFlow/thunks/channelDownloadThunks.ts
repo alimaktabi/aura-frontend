@@ -10,7 +10,6 @@ import {
   setIsSponsoredv6,
   setName,
   setPassword,
-  setUserId,
 } from 'BrightID/reducer/userSlice';
 import ChannelAPI from 'BrightID/api/channelService';
 import { IMPORT_PREFIX } from 'BrightID/utils/constants';
@@ -54,7 +53,6 @@ export const downloadUserInfo =
       });
       const info = decryptData(encrypted, aesKey);
       dispatch(setRecoveryId(info.id));
-      dispatch(setUserId(info.id));
       if (
         !updateTimestamps.name ||
         info.updateTimestamps.name > updateTimestamps.name
