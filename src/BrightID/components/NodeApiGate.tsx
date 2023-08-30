@@ -4,6 +4,7 @@ import { selectBaseUrl } from 'BrightID/reducer/settingsSlice';
 import { NodeApi } from 'BrightID/api/brightId';
 import { pollOperations } from 'BrightID/utils/operations';
 import { useDispatch, useSelector } from 'store/hooks';
+import { RootState } from 'store';
 
 type ApiContext = NodeApi | null;
 
@@ -24,11 +25,11 @@ let globalNodeApi: ApiContext = null;
 export const getGlobalNodeApi = () => globalNodeApi;
 
 const NodeApiGate = (props: React.PropsWithChildren<unknown>) => {
-  const id = useSelector<string>((state: RootState) => state.user.id);
+  const id = useSelector((state: RootState) => state.user.id);
   const secretKey = useSelector<Uint8Array>(
     (state: RootState) => state.keypair.secretKey,
   );
-  const url = useSelector<string>(selectBaseUrl);
+  const url = useSelector(selectBaseUrl);
   const [nodeError, setNodeError] = useState(false);
   const [api, setApi] = useState<NodeApi | null>(null);
   const [gateState, setGateState] = useState<ApiGateState>(
