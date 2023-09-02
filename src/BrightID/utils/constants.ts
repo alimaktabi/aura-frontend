@@ -110,18 +110,19 @@ export const report_reasons = {
 };
 
 export enum RecoveryCodeScreenAction {
-  IMPORT = 'import',
   SYNC = 'sync',
+  ADD_SUPER_USER_APP = 'superapp',
 }
 
 export enum qrCodeURL_types {
-  IMPORT = '3', // qrcode url is for import channel
   SYNC = '4', // qrcode url is for syncing devices channel
+  ADD_SUPER_USER_APP = '5', // qrcode url is for adding super user app
 }
 
 export const urlTypesOfActions = {
-  [RecoveryCodeScreenAction.IMPORT]: qrCodeURL_types.IMPORT,
   [RecoveryCodeScreenAction.SYNC]: qrCodeURL_types.SYNC,
+  [RecoveryCodeScreenAction.ADD_SUPER_USER_APP]:
+    qrCodeURL_types.ADD_SUPER_USER_APP,
 };
 
 export enum report_sources {

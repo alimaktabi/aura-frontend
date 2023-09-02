@@ -7,15 +7,20 @@ export const buildRecoveryChannelQrUrl = ({
   url,
   t,
   changePrimaryDevice,
+  name,
 }: {
   aesKey: string;
   url: { href: string };
   t: QrCodeURL_Type;
   changePrimaryDevice: boolean;
+  name?: string;
 }) => {
   const qrUrl = new URL(url.href);
   qrUrl.searchParams.append('aes', aesKey);
   qrUrl.searchParams.append('t', t);
+  if (name) {
+    qrUrl.searchParams.append('n', name);
+  }
   qrUrl.searchParams.append('p', String(changePrimaryDevice));
   return qrUrl;
 };

@@ -51,7 +51,7 @@ const RecoveryCodeScreen = () => {
     () =>
       actionParam
         ? (actionParam as RecoveryCodeScreenAction)
-        : RecoveryCodeScreenAction.IMPORT,
+        : RecoveryCodeScreenAction.ADD_SUPER_USER_APP,
     [actionParam],
   );
   const navigate = useNavigate();
@@ -126,7 +126,7 @@ const RecoveryCodeScreen = () => {
           //     console.log(`Not starting recovery process, user has id!`);
           //   }
           // } else
-          if (action === RecoveryCodeScreenAction.IMPORT) {
+          if (action === RecoveryCodeScreenAction.ADD_SUPER_USER_APP) {
             console.log(`initializing import process`);
             await runImportEffect();
             dispatch(setRecoverStep(recover_steps.INITIALIZED));
@@ -162,6 +162,7 @@ const RecoveryCodeScreen = () => {
           : channelUrl,
         t: urlTypesOfActions[action],
         changePrimaryDevice: false,
+        name: 'Aura',
       });
       console.log(`new qrCode url: ${newQrUrl.href}`);
       setQrUrl(newQrUrl);
@@ -187,7 +188,7 @@ const RecoveryCodeScreen = () => {
               : 'An unknown error occured';
       }
       alert('Account recovery failed: ' + message);
-      if (action === RecoveryCodeScreenAction.IMPORT) {
+      if (action === RecoveryCodeScreenAction.ADD_SUPER_USER_APP) {
         clearImportChannel();
       }
       dispatch(resetRecoveryData());
@@ -214,7 +215,7 @@ const RecoveryCodeScreen = () => {
     }
   }, [routerLocation.pathname, navigate, query]);
   useEffect(() => {
-    if (action === RecoveryCodeScreenAction.IMPORT) {
+    if (action === RecoveryCodeScreenAction.ADD_SUPER_USER_APP) {
       if (userIsLogged) {
         redirectAfterLogin();
       } else if (recoveryData.id && user.password) {
@@ -264,9 +265,8 @@ const RecoveryCodeScreen = () => {
     let alertText = '';
     let clipboardMsg = '';
     switch (action) {
-      case RecoveryCodeScreenAction.IMPORT:
-        alertText =
-          'Open this link with the BrightID app that should be imported.';
+      case RecoveryCodeScreenAction.ADD_SUPER_USER_APP:
+        alertText = 'Open this link with the BrightID app.';
         clipboardMsg = universalLink;
         break;
       case RecoveryCodeScreenAction.SYNC:
