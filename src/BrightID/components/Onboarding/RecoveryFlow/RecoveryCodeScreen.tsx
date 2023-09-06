@@ -249,42 +249,40 @@ const RecoveryCodeScreen = () => {
     user,
     userIsLogged,
   ]);
-  const universalLink = useMemo(
+  const deepLink = useMemo(
     () =>
       qrUrl
-        ? `https://app.brightid.org/connection-code/${encodeURIComponent(
-            qrUrl.href,
-          )}`
+        ? `brightid://connection-code/${encodeURIComponent(qrUrl.href)}`
         : null,
     [qrUrl],
   );
 
   useEffect(() => {
-    if (universalLink) {
-      qrcode.toString(universalLink, (_err, qr) => setQrSvg(qr));
+    if (deepLink) {
+      qrcode.toString(deepLink, (_err, qr) => setQrSvg(qr));
     }
-  }, [universalLink]);
+  }, [deepLink]);
   const copyQr = () => {
-    if (!universalLink) return;
+    if (!deepLink) return;
 
     let alertText = '';
     let clipboardMsg = '';
     switch (action) {
       case RecoveryCodeScreenAction.ADD_SUPER_USER_APP:
         alertText = 'Open this link with the BrightID app.';
-        clipboardMsg = universalLink;
+        clipboardMsg = deepLink;
         break;
       case RecoveryCodeScreenAction.SYNC:
         alertText =
           'Open this link with the BrightID app that should be synced.';
-        clipboardMsg = universalLink;
+        clipboardMsg = deepLink;
         break;
       default:
         break;
     }
 
     if (__DEV__) {
-      clipboardMsg = universalLink;
+      clipboardMsg = deepLink;
     }
 
     alert(alertText + '\n' + clipboardMsg);
@@ -304,14 +302,11 @@ const RecoveryCodeScreen = () => {
               <img
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
               />
-              {universalLink && (
+              {deepLink && (
                 <div className="card mt-2 break-words">
                   <p>Or open this link on your mobile phone:</p>
-                  <a
-                    className="mt-2 text-blue-900 underline"
-                    href={universalLink}
-                  >
-                    {universalLink}
+                  <a className="mt-2 text-blue-900 underline" href={deepLink}>
+                    {deepLink}
                   </a>
                   <button className="btn mt-4" onClick={copyQr}>
                     Copy
