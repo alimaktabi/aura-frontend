@@ -166,7 +166,6 @@ const RecoveryCodeScreen = () => {
       });
       console.log(`new qrCode url: ${newQrUrl.href}`);
       setQrUrl(newQrUrl);
-      qrcode.toString(newQrUrl.href, (_err, qr) => setQrSvg(qr));
     }
   }, [action, recoveryData.aesKey, recoveryData.channel.url]);
 
@@ -259,6 +258,12 @@ const RecoveryCodeScreen = () => {
         : null,
     [qrUrl],
   );
+
+  useEffect(() => {
+    if (universalLink) {
+      qrcode.toString(universalLink, (_err, qr) => setQrSvg(qr));
+    }
+  }, [universalLink]);
   const copyQr = () => {
     if (!universalLink) return;
 
