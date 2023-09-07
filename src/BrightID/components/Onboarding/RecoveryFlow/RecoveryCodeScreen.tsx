@@ -249,40 +249,42 @@ const RecoveryCodeScreen = () => {
     user,
     userIsLogged,
   ]);
-  const deepLink = useMemo(
+  const universalLink = useMemo(
     () =>
       qrUrl
-        ? `brightid://connection-code/${encodeURIComponent(qrUrl.href)}`
+        ? `https://app.brightid.org/connection-code/${encodeURIComponent(
+            qrUrl.href,
+          )}`
         : null,
     [qrUrl],
   );
 
   useEffect(() => {
-    if (deepLink) {
-      qrcode.toString(deepLink, (_err, qr) => setQrSvg(qr));
+    if (universalLink) {
+      qrcode.toString(universalLink, (_err, qr) => setQrSvg(qr));
     }
-  }, [deepLink]);
+  }, [universalLink]);
   const copyQr = () => {
-    if (!deepLink) return;
+    if (!universalLink) return;
 
     let alertText = '';
     let clipboardMsg = '';
     switch (action) {
       case RecoveryCodeScreenAction.ADD_SUPER_USER_APP:
         alertText = 'Open this link with the BrightID app.';
-        clipboardMsg = deepLink;
+        clipboardMsg = universalLink;
         break;
       case RecoveryCodeScreenAction.SYNC:
         alertText =
           'Open this link with the BrightID app that should be synced.';
-        clipboardMsg = deepLink;
+        clipboardMsg = universalLink;
         break;
       default:
         break;
     }
 
     if (__DEV__) {
-      clipboardMsg = deepLink;
+      clipboardMsg = universalLink;
     }
 
     alert(alertText + '\n' + clipboardMsg);
@@ -302,11 +304,14 @@ const RecoveryCodeScreen = () => {
               <img
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
               />
-              {deepLink && (
+              {universalLink && (
                 <div className="card mt-2 break-words">
                   <p>Or open this link on your mobile phone:</p>
-                  <a className="mt-2 text-blue-900 underline" href={deepLink}>
-                    {deepLink}
+                  <a
+                    className="mt-2 text-blue-900 underline"
+                    href={universalLink}
+                  >
+                    {universalLink}
                   </a>
                   <button className="btn mt-4" onClick={copyQr}>
                     Copy
