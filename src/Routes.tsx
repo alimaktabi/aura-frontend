@@ -4,12 +4,7 @@ import SubjectsEvaluation from './pages/SubjectsEvaluation';
 import SubjectProfile from './pages/SubjectProfile';
 import PerformanceOverview from './pages/PerformanceOverview';
 import RecoveryCodeScreen from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryCodeScreen.tsx';
-
-export enum RoutePath {
-  LOGIN = '/',
-  DASHBOARD = '/dashboard',
-  PERFORMANCE_OVERVIEW = '/performance-overview',
-}
+import { RoutePath } from 'types/router.ts';
 
 const routes = [
   {
@@ -33,7 +28,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: '/domain-overview',
+    path: RoutePath.DOMAIN_OVERVIEW,
     element: <DomainOverview />,
     header: {
       title: 'Domain overview',
@@ -45,7 +40,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: '/subjects-evaluation',
+    path: RoutePath.SUBJECTS_EVALUATION,
     element: <SubjectsEvaluation />,
     header: {
       title: 'Subjects evaluation',
@@ -57,7 +52,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: '/subject/:subjectIdProp',
+    path: RoutePath.SUBJECT_PROFILE,
     element: <SubjectProfile />,
     header: {
       title: 'Subject profile',

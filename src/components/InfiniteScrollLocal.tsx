@@ -19,20 +19,16 @@ export default function InfiniteScrollLocal<T>({
     setItemsLocal([]);
   }, [items]);
 
-  const loadMore = useCallback(
-    (_page: number) => {
-      console.log({ _page });
-      if (!items) return;
-      setItemsLocal((itemsLocalPrev) => [
-        ...itemsLocalPrev,
-        ...items.slice(
-          itemsLocalPrev.length,
-          itemsLocalPrev.length + (pageSize ?? 10),
-        ),
-      ]);
-    },
-    [items, pageSize],
-  );
+  const loadMore = useCallback(() => {
+    if (!items) return;
+    setItemsLocal((itemsLocalPrev) => [
+      ...itemsLocalPrev,
+      ...items.slice(
+        itemsLocalPrev.length,
+        itemsLocalPrev.length + (pageSize ?? 10),
+      ),
+    ]);
+  }, [items, pageSize]);
 
   const hasMore = useMemo(
     () => !!items && items.length > itemsLocal.length,

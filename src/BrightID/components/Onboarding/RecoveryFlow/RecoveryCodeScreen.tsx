@@ -26,7 +26,6 @@ import {
   urlTypesOfActions,
 } from 'BrightID/utils/constants';
 import { setUserId, userSelector } from 'BrightID/reducer/userSlice';
-import { __DEV__, AURA_PRODUCTION_NODE_URL } from 'utils/constants.ts';
 import {
   createSearchParams,
   useLocation,
@@ -36,8 +35,10 @@ import {
 } from 'react-router-dom';
 import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
 import { getExplorerCode } from 'BrightID/utils/explorer.ts';
-import { RoutePath } from 'Routes.tsx';
 import { selectIsLoggedIn } from 'store/profile/selectors.ts';
+import { __DEV__ } from 'utils/env.ts';
+import { RoutePath } from 'types/router.ts';
+import { copyToClipboard } from 'utils/copyToClipboard';
 
 /**
  * Recovery Code screen of BrightID/
@@ -156,7 +157,7 @@ const RecoveryCodeScreen = () => {
           ? {
               href: channelUrl.href.replace(
                 location.origin + '/auranode',
-                AURA_PRODUCTION_NODE_URL,
+                import.meta.env.VITE_AURA_NODE_URL,
               ),
             }
           : channelUrl,
@@ -282,6 +283,7 @@ const RecoveryCodeScreen = () => {
       default:
         break;
     }
+    copyToClipboard(universalLink);
 
     if (__DEV__) {
       clipboardMsg = universalLink;

@@ -83,6 +83,7 @@ export const SubjectSearch = ({
       </div>
       <div className="card__filters flex gap-3">
         <SelectButtonWithModal
+          testidPrefix={'subject-filter'}
           title="Filters"
           iconLeft={false}
           selectedItem={selectedFilter?.title ?? 'No filter'}
@@ -91,6 +92,7 @@ export const SubjectSearch = ({
           closeModalHandler={() => setIsFiltersModalOpen(false)}
         >
           <FiltersModal
+            testidPrefix={'subject-filter'}
             filters={filters}
             selectedFilterId={selectedFilterId}
             setSelectedFilterId={(value) => {

@@ -8,7 +8,13 @@ import { useSubjectRating } from 'hooks/useSubjectRating.ts';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from 'store/profile/selectors.ts';
 
-export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
+export const SubjectCard = ({
+  subjectId,
+  index,
+}: {
+  subjectId: string;
+  index?: string | number;
+}) => {
   const { tier, name, auraScore } = useSubjectBasicInfo(subjectId);
   const { inboundRatingsStatsString } = useInboundRatings(subjectId);
   const authData = useSelector(selectAuthData);
@@ -38,7 +44,12 @@ export const SubjectCard = ({ subjectId }: { subjectId: string }) => {
             />
           </div>
           <div className="evaluation__info flex flex-col">
-            <p className="text-black font-medium">{name}</p>
+            <p
+              className="text-black font-medium"
+              data-testid={`user-item-${subjectId}-name-${index}`}
+            >
+              {name}
+            </p>
             <p className="text-gray20">
               Tier: <span className="font-medium text-black">{tier}</span>
             </p>

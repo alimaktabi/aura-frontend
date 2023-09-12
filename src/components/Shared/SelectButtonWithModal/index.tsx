@@ -9,6 +9,7 @@ export const SelectButtonWithModal = ({
   isOpen,
   openModalHandler,
   closeModalHandler,
+  testidPrefix,
 }: {
   title: string;
   iconLeft?: boolean;
@@ -17,6 +18,7 @@ export const SelectButtonWithModal = ({
   isOpen: boolean;
   openModalHandler?: () => void;
   closeModalHandler?: () => void;
+  testidPrefix?: string;
 }) => {
   return (
     <div className="flex flex-col w-full gap-2">
@@ -24,6 +26,7 @@ export const SelectButtonWithModal = ({
         {title}:
       </div>
       <div
+        data-testid={`${testidPrefix}-button`}
         onClick={openModalHandler}
         className="select-button-with-modal__button flex items-center justify-between bg-catskill-white rounded pl-3 md:pl-5 pr-4 h-10 md:h-14 cursor-pointer border border-gray10"
       >

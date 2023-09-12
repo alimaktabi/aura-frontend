@@ -1,15 +1,7 @@
 import { AuraRating, ConnectionLevel } from 'types';
 
-export const IS_PRODUCTION =
-  (import.meta.env.VITE_VERCEL_ENV || import.meta.env.NODE_ENV) ===
-  'production';
-
-const AURA_PRODUCTION_NODE_URL = import.meta.env.VITE_AURA_NODE_URL;
-if (!AURA_PRODUCTION_NODE_URL) {
-  throw Error('VITE_AURA_NODE_URL not provided');
-}
 const AURA_NODE_URL = `${location.origin}/auranode`;
-export { AURA_PRODUCTION_NODE_URL, AURA_NODE_URL };
+export { AURA_NODE_URL };
 
 export const CONNECTION_SEARCH_SEED = 5;
 
@@ -34,10 +26,6 @@ export function getConfidenceValue(auraRating: AuraRating | null | undefined) {
   if (score >= 1) return 'Low';
   return 'Very Low';
 }
-
-export const __DEV__ =
-  (import.meta.env.VITE_VERCEL_ENV || import.meta.env.NODE_ENV) !==
-  'development';
 
 export const brightIdBaseURL = 'http://184.72.224.75';
 

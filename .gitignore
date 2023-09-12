@@ -1,3 +1,7 @@
+cypress/videos
+cypress/screenshots
+cypress/utils/mock-contracts/types
+
 # Logs
 logs
 *.log

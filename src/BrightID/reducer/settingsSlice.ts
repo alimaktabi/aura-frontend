@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RESET_STORE } from 'BrightID/actions/resetStore';
-import { __DEV__, AURA_NODE_URL } from 'utils/constants';
+import { AURA_NODE_URL } from 'utils/constants';
 import { RootState } from 'store';
+import { __DEV__ } from 'utils/env.ts';
 
 const ProdCandidates = [AURA_NODE_URL];
 const TestCandidates = [AURA_NODE_URL];

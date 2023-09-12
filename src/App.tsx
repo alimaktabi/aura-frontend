@@ -1,9 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import routes, { RoutePath } from 'Routes';
+import routes from 'Routes';
 import React, { FC } from 'react';
 import { selectIsLoggedIn } from './store/profile/selectors.ts';
 import { useSelector } from 'react-redux';
 import Index from './components/Header';
+import { RoutePath } from 'types/router.ts';
 
 const RequireAuth: FC<{ children: React.ReactElement }> = ({ children }) => {
   const userIsLogged = useSelector(selectIsLoggedIn); // Your hook to get login status

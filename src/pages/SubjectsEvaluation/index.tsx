@@ -27,7 +27,9 @@ const SubjectsEvaluation = () => {
             className={'flex flex-col gap-3'}
             items={filteredSubjects}
             //TODO: optimize rendering by caching the rendered components
-            renderItem={(conn) => <SubjectCard subjectId={conn.id} />}
+            renderItem={(conn, index) => (
+              <SubjectCard index={index} subjectId={conn.id} />
+            )}
           />
         </div>
       ) : (

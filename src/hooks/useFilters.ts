@@ -55,7 +55,6 @@ export function useCategorizeAuraFilterOptions<T>(
 export function useSubjectFilters(filterIds: AuraFilterId[]) {
   const brightIdBackup = useSelector(selectBrightIdBackup);
   const { outboundRatings } = useOutboundRatings(brightIdBackup?.userData.id);
-  console.log({ outboundRatings });
   return useMemo(() => {
     const filters: AuraFilterOptions<BrightIdConnection> = [
       {

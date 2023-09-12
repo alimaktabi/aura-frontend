@@ -1,0 +1,146 @@
+import { Connection } from 'types';
+
+import { RoutePath } from 'types/router.ts';
+import {
+  connectionsInConnectionsPageFilterAll,
+  connectionsInConnectionsPageJustMet,
+} from '../utils/rating.ts';
+
+describe('Connections Page', () => {
+  beforeEach(() => {
+    cy.setupProfile();
+  });
+
+  function checkConnectionOrderInViewTab(brightId: string, index: number) {
+    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('exist');
+  }
+
+  function assertOrder(orderedConnections: Connection[]) {
+    orderedConnections.forEach((r, i) => {
+      checkConnectionOrderInViewTab(r.id, i);
+    });
+    cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
+      'not.exist',
+    );
+  }
+
+  it('filters and sorts connections', () => {
+    cy.visit(RoutePath.SUBJECTS_EVALUATION);
+    assertOrder(connectionsInConnectionsPageFilterAll);
+
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMet,
+    );
+
+    cy.get('[data-testid=subject-filter-button]').click();
+    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    assertOrder(connectionsInConnectionsPageJustMet);
+  });
+
+  // it('sorts connections', () => {
+  //   cy.visit(`/connections/`);
+  //   assertOrder(connectionsInConnectionsPageFilterAll);
+  //
+  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+  //     connectionsInConnectionsPageFilterAllSortedByNameAscending,
+  //   );
+  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+  //     connectionsInConnectionsPageFilterAllSortedByNameDescending,
+  //   );
+  //
+  //   cy.get('[data-testid=filter-Name-inactive').click();
+  //   assertOrder(connectionsInConnectionsPageFilterAllSortedByNameAscending);
+  //
+  //   cy.get('[data-testid=filter-Name-ascending').click();
+  //   assertOrder(connectionsInConnectionsPageFilterAllSortedByNameDescending);
+  //
+  //   cy.get('[data-testid=filter-Name-descending').should('exist');
+  // });
+  //
+  // it('orders filtered list', () => {
+  //   cy.visit(`/connections/`);
+  //   assertOrder(connectionsInConnectionsPageFilterAll);
+  //
+  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+  //     connectionsInConnectionsPageJustMet,
+  //   );
+  //   expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
+  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
+  //   );
+  //   expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
+  //     connectionsInConnectionsPageJustMetSortedByNameDescending,
+  //   );
+  //
+  //   cy.get('[data-testid=custom-select]').click();
+  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
+  //   assertOrder(connectionsInConnectionsPageJustMet);
+  //
+  //   cy.get('[data-testid=filter-Name-inactive').click();
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
+  //
+  //   cy.get('[data-testid=filter-Name-ascending').click();
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameDescending);
+  //
+  //   cy.get('[data-testid=filter-Name-descending').should('exist');
+  // });
+  //
+  // it('filters ordered list', () => {
+  //   cy.visit(`/connections/`);
+  //   assertOrder(connectionsInConnectionsPageFilterAll);
+  //
+  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+  //     connectionsInConnectionsPageFilterAllSortedByNameAscending,
+  //   );
+  //   expect(
+  //     connectionsInConnectionsPageFilterAllSortedByNameAscending,
+  //   ).to.not.deep.equal(
+  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
+  //   );
+  //
+  //   cy.get('[data-testid=filter-Name-inactive').click();
+  //   assertOrder(connectionsInConnectionsPageFilterAllSortedByNameAscending);
+  //
+  //   cy.get('[data-testid=custom-select]').click();
+  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
+  //
+  //   cy.get('[data-testid=filter-Name-ascending').should('exist');
+  // });
+  //
+  // it('keeps filters when navigating', () => {
+  //   cy.visit(`/connections/`);
+  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
+  //   );
+  //
+  //   assertOrder(connectionsInConnectionsPageFilterAll);
+  //   cy.get('[data-testid=custom-select]').click();
+  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
+  //   cy.get('[data-testid=filter-Name-inactive').click();
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
+  //
+  //   // navigate to another page
+  //   cy.visit('/contact-us/');
+  //   cy.go(-1);
+  //
+  //   // eslint-disable-next-line cypress/no-unnecessary-waiting
+  //   cy.wait(500);
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
+  // });
+  //
+  // it('keeps filters after reload', () => {
+  //   cy.visit(`/connections/`);
+  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
+  //   );
+  //
+  //   assertOrder(connectionsInConnectionsPageFilterAll);
+  //   cy.get('[data-testid=custom-select]').click();
+  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
+  //   cy.get('[data-testid=filter-Name-inactive').click();
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
+  //
+  //   cy.reload();
+  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
+  // });
+});

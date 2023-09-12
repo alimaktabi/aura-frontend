@@ -6,3 +6,12 @@ export function compactFormat(
     maximumFractionDigits: 1,
   }).format(value);
 }
+
+export const toRoundedPercentage = (
+  amount: number,
+  total: number,
+  decimals = 2,
+) => {
+  if (!total || !amount) return 0;
+  return Number(((Number(amount) / Number(total)) * 100).toFixed(decimals));
+};
