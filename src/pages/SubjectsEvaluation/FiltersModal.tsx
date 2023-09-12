@@ -28,10 +28,9 @@ export function FiltersModal<T>({
           <div className="flex flex-row flex-wrap gap-2">
             {res[category]?.map((item) => (
               <ModalItem
-                data-testid={`${testidPrefix}-option-${item.title.replace(
-                  ' ',
-                  '',
-                )}`}
+                data-testid={`${testidPrefix}-option-${item.title
+                  .split(' ')
+                  .join('')}`}
                 key={item.id}
                 title={item.title}
                 isSelected={selectedFilterId === item.id}

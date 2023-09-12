@@ -103,6 +103,7 @@ export const SubjectSearch = ({
         </SelectButtonWithModal>
         <SelectButtonWithModal
           title="Sort By"
+          testidPrefix={'subject-sort'}
           iconLeft={false}
           selectedItem={selectedSort?.title || 'No sort'}
           isOpen={isSortsModalOpen}
@@ -110,6 +111,7 @@ export const SubjectSearch = ({
           closeModalHandler={() => setIsSortsModalOpen(false)}
         >
           <SortsModal
+            testidPrefix={'subject-sort'}
             sorts={sorts}
             selectedSort={selectedSort}
             setSelectedSort={(...value) => {

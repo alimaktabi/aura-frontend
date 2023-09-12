@@ -125,13 +125,17 @@ export const connectionsInConnectionsPageFilterAll = [
   ...BRIGHT_ID_BACKUP.connections,
 ];
 
-export const connectionsInConnectionsPageFilterAllSortedByNameAscending = [
-  ...connectionsInConnectionsPageFilterAll,
-].sort((a, b) => a.name.localeCompare(b.name));
+export const connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending =
+  [...connectionsInConnectionsPageFilterAll].sort(
+    (a, b) =>
+      new Date(a.timestamp ?? 0).getTime() -
+      new Date(b.timestamp ?? 0).getTime(),
+  );
 
-export const connectionsInConnectionsPageFilterAllSortedByNameDescending = [
-  ...connectionsInConnectionsPageFilterAllSortedByNameAscending,
-].reverse();
+export const connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending =
+  [
+    ...connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+  ].reverse();
 
 export const connectionsInConnectionsPageAlreadyKnownPlus =
   connectionsInConnectionsPageFilterAll.filter(
@@ -143,13 +147,17 @@ export const connectionsInConnectionsPageJustMet =
     (user) => user.level === 'just met',
   );
 
-export const connectionsInConnectionsPageJustMetSortedByNameAscending = [
-  ...connectionsInConnectionsPageJustMet,
-].sort((a, b) => a.name.localeCompare(b.name));
+export const connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending =
+  [...connectionsInConnectionsPageJustMet].sort(
+    (a, b) =>
+      new Date(a.timestamp ?? 0).getTime() -
+      new Date(b.timestamp ?? 0).getTime(),
+  );
 
-export const connectionsInConnectionsPageJustMetSortedByNameDescending = [
-  ...connectionsInConnectionsPageJustMetSortedByNameAscending,
-].reverse();
+export const connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending =
+  [
+    ...connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+  ].reverse();
 
 export function getConnectionResponse(
   connection: Connection,

@@ -3,6 +3,8 @@ import { Connection } from 'types';
 import { RoutePath } from 'types/router.ts';
 import {
   connectionsInConnectionsPageFilterAll,
+  connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+  connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
   connectionsInConnectionsPageJustMet,
 } from '../utils/rating.ts';
 
@@ -37,26 +39,34 @@ describe('Connections Page', () => {
     assertOrder(connectionsInConnectionsPageJustMet);
   });
 
-  // it('sorts connections', () => {
-  //   cy.visit(`/connections/`);
-  //   assertOrder(connectionsInConnectionsPageFilterAll);
-  //
-  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
-  //     connectionsInConnectionsPageFilterAllSortedByNameAscending,
-  //   );
-  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
-  //     connectionsInConnectionsPageFilterAllSortedByNameDescending,
-  //   );
-  //
-  //   cy.get('[data-testid=filter-Name-inactive').click();
-  //   assertOrder(connectionsInConnectionsPageFilterAllSortedByNameAscending);
-  //
-  //   cy.get('[data-testid=filter-Name-ascending').click();
-  //   assertOrder(connectionsInConnectionsPageFilterAllSortedByNameDescending);
-  //
-  //   cy.get('[data-testid=filter-Name-descending').should('exist');
-  // });
-  //
+  it('sorts connections', () => {
+    cy.visit(RoutePath.SUBJECTS_EVALUATION);
+    assertOrder(connectionsInConnectionsPageFilterAll);
+
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+    );
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
+    );
+
+    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(
+      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+    ).click();
+    assertOrder(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+    );
+
+    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(
+      '[data-testid=subject-sort-option-LastConnectionUpdate-descending]',
+    ).click();
+    assertOrder(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
+    );
+  });
+
   // it('orders filtered list', () => {
   //   cy.visit(`/connections/`);
   //   assertOrder(connectionsInConnectionsPageFilterAll);

@@ -13,10 +13,12 @@ export function SortsModal<T>({
   sorts,
   selectedSort,
   setSelectedSort,
+  testidPrefix,
 }: {
   sorts: AuraSortOptions<T>;
   selectedSort: AuraSelectedSort<T> | null;
   setSelectedSort: (id: AuraSortId, ascending?: boolean) => void;
+  testidPrefix?: string;
 }) {
   const res = useCategorizeAuraSortOptions(sorts);
   const isSelectedSort = useCallback(
@@ -41,6 +43,9 @@ export function SortsModal<T>({
               <p className="text-black2">{item.title}</p>
               <div className="flex flex-row gap-2">
                 <ModalItem
+                  data-testid={`${testidPrefix}-option-${item.title
+                    .split(' ')
+                    .join('')}-ascending`}
                   title="Ascending"
                   isSelected={isSelectedSort(item.id, true)}
                   onClick={() => setSelectedSort(item.id, true)}
@@ -49,6 +54,9 @@ export function SortsModal<T>({
                 />
                 <ModalItem
                   title="Descending"
+                  data-testid={`${testidPrefix}-option-${item.title
+                    .split(' ')
+                    .join('')}-descending`}
                   isSelected={isSelectedSort(item.id, false)}
                   onClick={() => setSelectedSort(item.id, false)}
                   icon={'/assets/images/Shared/arrow-down-icon'}

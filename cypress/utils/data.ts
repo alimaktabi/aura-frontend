@@ -39,7 +39,7 @@ const toSigningKey = (s: string) => {
 export const unratedConnection: Connection = {
   id: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08',
   name: 'Unrated Connection',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 500,
   photo: {
     filename: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08.jpg',
   },
@@ -49,14 +49,14 @@ export const unratedConnection: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 500,
   incomingLevel: 'already known',
 };
 
 export const justMet: Connection = {
   id: 'k8rKbTInhbHxgQg7bJrhBfsMhhLz_VpXMQqhDwphX08',
   name: 'Just Met',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 5000,
   photo: {
     filename: 'k8rKbTInhbHxgQg7bJrhBfsMhhLz_VpXMQqhDwphX08.jpg',
   },
@@ -66,14 +66,14 @@ export const justMet: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 5000,
   incomingLevel: 'just met',
 };
 
 export const justMet2: Connection = {
   id: 'TInQg7bJrhBfsMQqhhbHxMhhLz_VpXgk8rKbDwphX08',
   name: 'Just Met 2',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 1000,
   photo: {
     filename: 'TInQg7bJrhBfsMQqhhbHxMhhLz_VpXgk8rKbDwphX08.jpg',
   },
@@ -83,14 +83,14 @@ export const justMet2: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 1000,
   incomingLevel: 'just met',
 };
 
 export const justMet3: Connection = {
   id: 'qhhbHxMhhLz_VpXgk8TInQg7bJrhBfsMQrKbDwphX08',
   name: 'Just Met 3',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 200,
   photo: {
     filename: 'qhhbHxMhhLz_VpXgk8TInQg7bJrhBfsMQrKbDwphX08.jpg',
   },
@@ -100,14 +100,14 @@ export const justMet3: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 200,
   incomingLevel: 'just met',
 };
 
 export const ratedConnection: Connection = {
   id: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q',
   name: 'Rated Connection',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 20,
   photo: {
     filename: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q.jpg',
   },
@@ -117,14 +117,14 @@ export const ratedConnection: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 20,
   incomingLevel: 'already known',
 };
 
 export const ratedConnection2: Connection = {
   id: 'zx-DOpXZuDsiyh2MUBQGnSKhIADI9erfF2bR0tUgf7q',
   name: 'Rated Connection 2',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 30000,
   photo: {
     filename: 'zx-DOpXZuDsiyh2MUBQGnSKhIADI9erfF2bR0tUgf7q.jpg',
   },
@@ -134,14 +134,14 @@ export const ratedConnection2: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 30000,
   incomingLevel: 'already known',
 };
 
 export const ratedConnection3: Connection = {
   id: 'px-9erfF2bR0DOpXZuDsiyh2MUBQGnSKhIADItUgf7q',
   name: 'Rated Connection 3',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 2000,
   photo: {
     filename: 'px-9erfF2bR0DOpXZuDsiyh2MUBQGnSKhIADItUgf7q.jpg',
   },
@@ -151,14 +151,14 @@ export const ratedConnection3: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 2000,
   incomingLevel: 'recovery',
 };
 
 export const ratedConnectionWithoutEnergy: Connection = {
   id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
   name: 'Rated Without Energy',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP + 2500,
   photo: {
     filename: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb.jpg',
   },
@@ -168,14 +168,14 @@ export const ratedConnectionWithoutEnergy: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP + 2500,
   incomingLevel: 'already known',
 };
 
 export const ratedConnectionNegative: Connection = {
   id: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q',
   name: 'Rated Connection Negative',
-  connectionDate: RANDOM_TIMESTAMP,
+  connectionDate: RANDOM_TIMESTAMP - 300,
   photo: {
     filename: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q.jpg',
   },
@@ -185,7 +185,7 @@ export const ratedConnectionNegative: Connection = {
   socialMedia: [],
   verifications: [],
   reportReason: null,
-  timestamp: RANDOM_TIMESTAMP,
+  timestamp: RANDOM_TIMESTAMP - 300,
   incomingLevel: 'already known',
 };
 
