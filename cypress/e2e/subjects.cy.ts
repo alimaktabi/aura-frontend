@@ -6,11 +6,14 @@ import {
   connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
   connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
   connectionsInConnectionsPageJustMet,
+  connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+  connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
 } from '../utils/rating.ts';
 
 describe('Connections Page', () => {
   beforeEach(() => {
     cy.setupProfile();
+    cy.visit(RoutePath.SUBJECTS_EVALUATION);
   });
 
   function checkConnectionOrderInViewTab(brightId: string, index: number) {
@@ -27,7 +30,6 @@ describe('Connections Page', () => {
   }
 
   it('filters and sorts connections', () => {
-    cy.visit(RoutePath.SUBJECTS_EVALUATION);
     assertOrder(connectionsInConnectionsPageFilterAll);
 
     expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
@@ -40,7 +42,6 @@ describe('Connections Page', () => {
   });
 
   it('sorts connections', () => {
-    cy.visit(RoutePath.SUBJECTS_EVALUATION);
     assertOrder(connectionsInConnectionsPageFilterAll);
 
     expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
@@ -67,58 +68,68 @@ describe('Connections Page', () => {
     );
   });
 
-  // it('orders filtered list', () => {
-  //   cy.visit(`/connections/`);
-  //   assertOrder(connectionsInConnectionsPageFilterAll);
-  //
-  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
-  //     connectionsInConnectionsPageJustMet,
-  //   );
-  //   expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
-  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
-  //   );
-  //   expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
-  //     connectionsInConnectionsPageJustMetSortedByNameDescending,
-  //   );
-  //
-  //   cy.get('[data-testid=custom-select]').click();
-  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
-  //   assertOrder(connectionsInConnectionsPageJustMet);
-  //
-  //   cy.get('[data-testid=filter-Name-inactive').click();
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
-  //
-  //   cy.get('[data-testid=filter-Name-ascending').click();
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameDescending);
-  //
-  //   cy.get('[data-testid=filter-Name-descending').should('exist');
-  // });
-  //
-  // it('filters ordered list', () => {
-  //   cy.visit(`/connections/`);
-  //   assertOrder(connectionsInConnectionsPageFilterAll);
-  //
-  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
-  //     connectionsInConnectionsPageFilterAllSortedByNameAscending,
-  //   );
-  //   expect(
-  //     connectionsInConnectionsPageFilterAllSortedByNameAscending,
-  //   ).to.not.deep.equal(
-  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
-  //   );
-  //
-  //   cy.get('[data-testid=filter-Name-inactive').click();
-  //   assertOrder(connectionsInConnectionsPageFilterAllSortedByNameAscending);
-  //
-  //   cy.get('[data-testid=custom-select]').click();
-  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
-  //
-  //   cy.get('[data-testid=filter-Name-ascending').should('exist');
-  // });
-  //
+  it('orders filtered list', () => {
+    assertOrder(connectionsInConnectionsPageFilterAll);
+
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMet,
+    );
+    expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+    expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
+    );
+
+    cy.get('[data-testid=subject-filter-button]').click();
+    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    assertOrder(connectionsInConnectionsPageJustMet);
+
+    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(
+      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+    ).click();
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+
+    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(
+      '[data-testid=subject-sort-option-LastConnectionUpdate-descending]',
+    ).click();
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
+    );
+  });
+
+  it.only('filters ordered list', () => {
+    assertOrder(connectionsInConnectionsPageFilterAll);
+
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+    );
+    expect(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+    ).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
+    );
+
+    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(
+      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+    ).click();
+    assertOrder(
+      connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
+    );
+
+    cy.get('[data-testid=subject-filter-button]').click();
+    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+  });
+
   // it('keeps filters when navigating', () => {
-  //   cy.visit(`/connections/`);
   //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
   //     connectionsInConnectionsPageJustMetSortedByNameAscending,
   //   );
@@ -139,7 +150,6 @@ describe('Connections Page', () => {
   // });
   //
   // it('keeps filters after reload', () => {
-  //   cy.visit(`/connections/`);
   //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
   //     connectionsInConnectionsPageJustMetSortedByNameAscending,
   //   );
