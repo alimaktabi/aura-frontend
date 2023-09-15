@@ -26,7 +26,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
     selectedFilterId,
     toggleFilterById,
     selectedSortId,
-    setSelectedSortId,
+    setSelectedSort,
     itemsFiltered: inboundRatingsFiltered,
   } = useFilterAndSort(inboundRatings, filters, sorts);
 
@@ -102,7 +102,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         isOpenInitial={false}
         items={sorts}
         selectedItemId={selectedSortId}
-        setSelectedItemId={setSelectedSortId}
+        setSelectedItemId={(id) => setSelectedSort(id)}
       />
       <div className={'overflow-auto'}>
         <InfiniteScrollLocal

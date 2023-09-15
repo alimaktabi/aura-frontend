@@ -1,3 +1,6 @@
+import { AuraFilterId } from 'hooks/useFilters.ts';
+import { AuraSortId } from 'hooks/useSorts.ts';
+
 export type AuthData = {
   brightId: string;
   publicKey: string;
@@ -158,4 +161,9 @@ export type AuraConnectionResponse = {
 export type AppToast = {
   text: string;
   color: 'success' | 'danger';
+};
+
+export type FilterAndSortLocalStorage = {
+  selectedFilterId: AuraFilterId | null;
+  selectedSortId: AuraSortId | null;
 };

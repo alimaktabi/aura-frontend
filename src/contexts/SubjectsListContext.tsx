@@ -67,6 +67,7 @@ export const SubjectsListContextProvider: React.FC<PlatformsProviderProps> = ({
     filters,
     sorts,
     useMemo(() => ['id', 'name'], []),
+    'subjectsList',
   );
 
   return (

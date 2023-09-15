@@ -10,7 +10,7 @@ export const SubjectSearch = () => {
     setSearchString,
     selectedFilter,
     selectedFilterId,
-    setSelectedFilterId,
+    setAndSaveSelectedFilterId,
     selectedSort,
     setSelectedSort,
     filters,
@@ -49,9 +49,9 @@ export const SubjectSearch = () => {
             testidPrefix={'subject-filter'}
             filters={filters}
             selectedFilterId={selectedFilterId}
-            setSelectedFilterId={(value) => {
+            setAndSaveSelectedFilterId={(value) => {
               setIsFiltersModalOpen(false);
-              setSelectedFilterId(value);
+              setAndSaveSelectedFilterId(value);
             }}
           />
         </SelectButtonWithModal>

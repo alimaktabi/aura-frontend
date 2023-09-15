@@ -9,12 +9,12 @@ import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
 export function FiltersModal<T>({
   filters,
   selectedFilterId,
-  setSelectedFilterId,
+  setAndSaveSelectedFilterId,
   testidPrefix,
 }: {
   filters: AuraFilterOptions<T>;
   selectedFilterId: AuraFilterId | null;
-  setSelectedFilterId: (item: AuraFilterId | null) => void;
+  setAndSaveSelectedFilterId: (item: AuraFilterId | null) => void;
   testidPrefix?: string;
 }) {
   const res = useCategorizeAuraFilterOptions(filters);
@@ -34,7 +34,7 @@ export function FiltersModal<T>({
                 key={item.id}
                 title={item.title}
                 isSelected={selectedFilterId === item.id}
-                onClick={() => setSelectedFilterId(item.id)}
+                onClick={() => setAndSaveSelectedFilterId(item.id)}
               />
             ))}
           </div>

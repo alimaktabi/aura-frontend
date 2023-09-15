@@ -127,7 +127,7 @@ describe('Connections Page', () => {
     );
   });
 
-  it.only('keeps filters when navigating', () => {
+  it('keeps filters when navigating', () => {
     expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
@@ -152,19 +152,27 @@ describe('Connections Page', () => {
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
   });
-  //
-  // it('keeps filters after reload', () => {
-  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
-  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
-  //   );
-  //
-  //   assertOrder(connectionsInConnectionsPageFilterAll);
-  //   cy.get(getTestSelector('custom-select')).click();
-  //   cy.get(getTestSelector('custom-select-option-Justmet')).click();
-  //   cy.get(getTestSelector('filter-Name-inactive').click();
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
-  //
-  //   cy.reload();
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
-  // });
+
+  it('keeps filters after reload', () => {
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+
+    assertOrder(connectionsInConnectionsPageFilterAll);
+    cy.get(getTestSelector('subject-sort-button')).click();
+    cy.get(
+      getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
+    ).click();
+
+    cy.get(getTestSelector('subject-filter-button')).click();
+    cy.get(getTestSelector('subject-filter-option-JustMet')).click();
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+
+    cy.reload();
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+  });
 });

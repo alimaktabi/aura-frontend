@@ -4,7 +4,7 @@ import {
   AuraSortId,
   AuraSortOptions,
 } from 'hooks/useSorts.ts';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export enum FilterOrSortCategory {
   Default = 'Default',
@@ -18,6 +18,7 @@ export default function useFilterAndSort<T>(
   filters: AuraFilterOptions<T>,
   sorts: AuraSortOptions<T>,
   searchKeys?: (keyof T)[],
+  localStoragePrefix?: string,
 ) {
   const [selectedFilterId, setSelectedFilterId] = useState<AuraFilterId | null>(
     null,
@@ -31,8 +32,73 @@ export default function useFilterAndSort<T>(
     [],
   );
 
+  const setAndSaveSelectedFilterId = useCallback(
+    (value: AuraFilterId | null) => {
+      setSelectedFilterId(value);
+      if (localStoragePrefix) {
+        if (value !== null) {
+          localStorage.setItem(localStoragePrefix + 'FilterId', String(value));
+        } else {
+          localStorage.removeItem(localStoragePrefix + 'FilterId');
+        }
+      }
+    },
+    [localStoragePrefix],
+  );
+
   const [selectedSortId, setSelectedSortId] = useState<AuraSortId | null>(null);
   const [isSortReversed, setIsSortReversed] = useState(false);
+
+  const setSelectedSort = useCallback(
+    (id: AuraSortId | null, ascending?: boolean) => {
+      let sortId: AuraSortId | null = null;
+      let isSortReversed = false;
+      if (id) {
+        const obj = sorts.find((s) => s.id === id);
+        if (obj) {
+          sortId = id;
+          if (ascending !== undefined) {
+            isSortReversed = obj.defaultAscending != ascending;
+          } else {
+            isSortReversed = false;
+          }
+        } else {
+          return;
+        }
+      }
+      if (localStoragePrefix) {
+        if (sortId !== null) {
+          localStorage.setItem(localStoragePrefix + 'SortId', String(sortId));
+        } else {
+          localStorage.removeItem(localStoragePrefix + 'SortId');
+        }
+        localStorage.setItem(
+          localStoragePrefix + 'IsSortReversed',
+          String(isSortReversed),
+        );
+      }
+      setSelectedSortId(sortId);
+      setIsSortReversed(isSortReversed);
+    },
+    [localStoragePrefix, sorts],
+  );
+
+  useEffect(() => {
+    if (localStoragePrefix) {
+      const filterId = localStorage.getItem(localStoragePrefix + 'FilterId');
+      if (filterId) {
+        setSelectedFilterId(Number(filterId));
+      }
+      const sortId = localStorage.getItem(localStoragePrefix + 'SortId');
+      if (sortId) {
+        setSelectedSortId(Number(sortId));
+      }
+      setIsSortReversed(
+        localStorage.getItem(localStoragePrefix + 'IsSortReversed') === 'true',
+      );
+    }
+  }, [localStoragePrefix]);
+
   const [searchString, setSearchString] = useState('');
   const selectedFilter = useMemo(
     () => filters.find((f) => f.id === selectedFilterId),
@@ -48,21 +114,6 @@ export default function useFilterAndSort<T>(
     }
     return null;
   }, [isSortReversed, selectedSortId, sorts]);
-
-  const setSelectedSort = useCallback(
-    (id: AuraSortId, ascending?: boolean) => {
-      const obj = sorts.find((s) => s.id === id);
-      if (obj) {
-        setSelectedSortId(id);
-        if (ascending !== undefined) {
-          setIsSortReversed(obj.defaultAscending != ascending);
-        } else {
-          setIsSortReversed(false);
-        }
-      }
-    },
-    [sorts],
-  );
 
   const itemsFiltered: T[] | null = useMemo(() => {
     if (items === null) return null;
@@ -84,24 +135,22 @@ export default function useFilterAndSort<T>(
   }, [items, searchString, searchKeys, selectedFilter, selectedSort]);
 
   const clearSort = useCallback(() => {
-    setSelectedSortId(null);
-    setIsSortReversed(false);
-  }, []);
+    setSelectedSort(null);
+  }, [setSelectedSort]);
 
   const clearSortAndFilter = useCallback(() => {
     clearSort();
-    setSelectedFilterId(null);
-  }, [clearSort]);
+    setAndSaveSelectedFilterId(null);
+  }, [clearSort, setAndSaveSelectedFilterId]);
 
   return {
     selectedFilter,
     selectedSort,
     selectedFilterId,
-    setSelectedFilterId,
+    setAndSaveSelectedFilterId,
     toggleFilterById,
     selectedSortId,
     setSelectedSort,
-    setSelectedSortId,
     searchString,
     setSearchString,
     itemsFiltered,
