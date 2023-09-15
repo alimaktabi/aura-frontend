@@ -2,7 +2,6 @@ import { defineConfig } from 'cypress';
 import Browser = Cypress.Browser;
 
 export default defineConfig({
-  defaultCommandTimeout: 24000, // 2x average block time
   chromeWebSecurity: false,
   e2e: {
     setupNodeEvents(_on, config) {
@@ -10,7 +9,6 @@ export default defineConfig({
       if (!chrome) return config;
       return {
         ...config,
-        // Only enable Chrome.
         browsers: [
           chrome,
           {
@@ -18,6 +16,7 @@ export default defineConfig({
             name: 'brave',
             path: 'brave-browser',
             displayName: 'brave',
+            version: 'unknown',
           } as Browser,
         ],
       };

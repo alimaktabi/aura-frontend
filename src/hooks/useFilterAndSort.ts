@@ -30,7 +30,7 @@ export default function useFilterAndSort<T>(
     },
     [],
   );
-  //TODO: handle ascending and decending sort
+
   const [selectedSortId, setSelectedSortId] = useState<AuraSortId | null>(null);
   const [isSortReversed, setIsSortReversed] = useState(false);
   const [searchString, setSearchString] = useState('');

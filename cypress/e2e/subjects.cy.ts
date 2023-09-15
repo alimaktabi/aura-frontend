@@ -102,7 +102,7 @@ describe('Connections Page', () => {
     );
   });
 
-  it.only('filters ordered list', () => {
+  it('filters ordered list', () => {
     assertOrder(connectionsInConnectionsPageFilterAll);
 
     expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
@@ -129,25 +129,31 @@ describe('Connections Page', () => {
     );
   });
 
-  // it('keeps filters when navigating', () => {
-  //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
-  //     connectionsInConnectionsPageJustMetSortedByNameAscending,
-  //   );
-  //
-  //   assertOrder(connectionsInConnectionsPageFilterAll);
-  //   cy.get('[data-testid=custom-select]').click();
-  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
-  //   cy.get('[data-testid=filter-Name-inactive').click();
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
-  //
-  //   // navigate to another page
-  //   cy.visit('/contact-us/');
-  //   cy.go(-1);
-  //
-  //   // eslint-disable-next-line cypress/no-unnecessary-waiting
-  //   cy.wait(500);
-  //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
-  // });
+  it.only('keeps filters when navigating', () => {
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+
+    assertOrder(connectionsInConnectionsPageFilterAll);
+    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(
+      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+    ).click();
+
+    cy.get('[data-testid=subject-filter-button]').click();
+    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+
+    // navigate to another page
+    cy.visit(RoutePath.DASHBOARD);
+    cy.go(-1);
+
+    assertOrder(
+      connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
+    );
+  });
   //
   // it('keeps filters after reload', () => {
   //   expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
