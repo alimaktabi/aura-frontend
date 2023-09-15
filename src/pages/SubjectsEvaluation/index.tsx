@@ -3,20 +3,14 @@ import { SubjectSearch } from './SubjectSearch.tsx';
 import { selectBrightIdBackup } from '../../store/profile/selectors.ts';
 import { useSelector } from 'react-redux';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
-import { useState } from 'react';
-import { Connection } from 'types';
+import { useSubjectsListContext } from 'contexts/SubjectsListContext.tsx';
 
 const SubjectsEvaluation = () => {
   const brightIdBackup = useSelector(selectBrightIdBackup);
-  const [filteredSubjects, setFilteredSubjects] = useState<Connection[] | null>(
-    null,
-  );
+  const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
   return (
     <div className="page page__dashboard h-screen flex flex-col">
-      <SubjectSearch
-        subjects={brightIdBackup ? brightIdBackup.connections : null}
-        setFilteredSubjects={setFilteredSubjects}
-      />
+      <SubjectSearch />
       <p className="text-lg text-white mb-5 mt-7">
         Subjects{' '}
         <strong>({brightIdBackup?.connections.length ?? '...'})</strong>

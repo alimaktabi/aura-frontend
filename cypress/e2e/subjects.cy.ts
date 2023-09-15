@@ -16,13 +16,10 @@ describe('Connections Page', () => {
     cy.visit(RoutePath.SUBJECTS_EVALUATION);
   });
 
-  function checkConnectionOrderInViewTab(brightId: string, index: number) {
-    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('exist');
-  }
-
   function assertOrder(orderedConnections: Connection[]) {
-    orderedConnections.forEach((r, i) => {
-      checkConnectionOrderInViewTab(r.id, i);
+    orderedConnections.forEach((c, index) => {
+      cy.get(`[data-testid=user-item-${index}]`).should('exist');
+      cy.get(`[data-testid=user-item-${index}-name]`).contains(c.name);
     });
     cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
       'not.exist',
@@ -147,7 +144,7 @@ describe('Connections Page', () => {
     );
 
     // navigate to another page
-    cy.visit(RoutePath.DASHBOARD);
+    cy.get(`[data-testid=user-item-0]`).click();
     cy.go(-1);
 
     assertOrder(

@@ -1,67 +1,21 @@
 import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';
 import { FiltersModal } from './FiltersModal.tsx';
 import { SortsModal } from 'pages/SubjectsEvaluation/SortsModal.tsx';
-import { Connection } from 'types';
-import { useEffect, useMemo, useState } from 'react';
-import useFilterAndSort from 'hooks/useFilterAndSort.ts';
-import { AuraFilterId, useSubjectFilters } from 'hooks/useFilters.ts';
-import { AuraSortId, useSubjectSorts } from 'hooks/useSorts.ts';
+import { useState } from 'react';
+import { useSubjectsListContext } from 'contexts/SubjectsListContext.tsx';
 
-export const SubjectSearch = ({
-  subjects,
-  setFilteredSubjects,
-}: {
-  subjects: Connection[] | null;
-  setFilteredSubjects: (items: Connection[]) => void;
-}) => {
-  const filters = useSubjectFilters(
-    useMemo(
-      () => [
-        AuraFilterId.ConnectionTierNotYet,
-        AuraFilterId.ConnectionTierSybil,
-        AuraFilterId.ConnectionTierBronze,
-        AuraFilterId.ConnectionTierSilver,
-        AuraFilterId.ConnectionTierGold,
-        AuraFilterId.ConnectionYourEvaluationPositive,
-        AuraFilterId.ConnectionYourEvaluationNegative,
-        AuraFilterId.ConnectionYourEvaluationNotEvaluatedYet,
-        AuraFilterId.ConnectionConnectionTypeJustMet,
-        AuraFilterId.ConnectionConnectionTypeAlreadyKnownPlus,
-      ],
-      [],
-    ),
-  );
-  const sorts = useSubjectSorts(
-    useMemo(
-      () => [
-        AuraSortId.ConnectionLastUpdated,
-        AuraSortId.ConnectionMostEvaluations,
-        AuraSortId.ConnectionScore,
-        AuraSortId.MostMutualConnections,
-      ],
-      [],
-    ),
-  );
+export const SubjectSearch = () => {
   const {
     searchString,
     setSearchString,
-    itemsFiltered,
     selectedFilter,
     selectedFilterId,
     setSelectedFilterId,
     selectedSort,
     setSelectedSort,
-  } = useFilterAndSort(
-    subjects,
     filters,
     sorts,
-    useMemo(() => ['id', 'name'], []),
-  );
-  useEffect(() => {
-    if (itemsFiltered) {
-      setFilteredSubjects(itemsFiltered);
-    }
-  }, [setFilteredSubjects, itemsFiltered]);
+  } = useSubjectsListContext();
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [isSortsModalOpen, setIsSortsModalOpen] = useState(false);

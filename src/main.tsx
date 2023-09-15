@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { refreshKeyPairThunk } from './store/profile/actions.ts';
 import { backendApi, isThereProblemWithEncryption } from './api';
 import NodeApiGateContextProvider from 'BrightID/components/NodeApiGate.tsx';
+import { SubjectsListContextProvider } from 'contexts/SubjectsListContext.tsx';
 
 backendApi.interceptors.response.use(
   (response) => response,
@@ -34,13 +35,15 @@ backendApi.interceptors.response.use(
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <NodeApiGateContextProvider>
-        <PersistGate persistor={persistor}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </PersistGate>
-      </NodeApiGateContextProvider>
+      <PersistGate persistor={persistor}>
+        <SubjectsListContextProvider>
+          <NodeApiGateContextProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </NodeApiGateContextProvider>
+        </SubjectsListContextProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
 );

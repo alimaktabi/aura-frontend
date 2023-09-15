@@ -34,6 +34,7 @@ export const SubjectCard = ({
     <Link
       to={'/subject/' + subjectId}
       className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full ${styleValues}`}
+      data-testid={`user-item-${index}`}
     >
       <div className="evaluation-left flex flex-col gap-2">
         <div className="evaluation-left__top flex gap-3">
@@ -46,7 +47,7 @@ export const SubjectCard = ({
           <div className="evaluation__info flex flex-col">
             <p
               className="text-black font-medium"
-              data-testid={`user-item-${subjectId}-name-${index}`}
+              data-testid={`user-item-${index}-name`}
             >
               {name}
             </p>
