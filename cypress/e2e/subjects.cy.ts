@@ -9,6 +9,7 @@ import {
   connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
   connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
 } from '../utils/rating.ts';
+import { getTestSelector } from '../utils';
 
 describe('Connections Page', () => {
   beforeEach(() => {
@@ -33,8 +34,8 @@ describe('Connections Page', () => {
       connectionsInConnectionsPageJustMet,
     );
 
-    cy.get('[data-testid=subject-filter-button]').click();
-    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    cy.get(getTestSelector('subject-filter-button')).click();
+    cy.get(getTestSelector('subject-filter-option-JustMet')).click();
     assertOrder(connectionsInConnectionsPageJustMet);
   });
 
@@ -48,17 +49,17 @@ describe('Connections Page', () => {
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
     );
 
-    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
-      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+      getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
     ).click();
     assertOrder(
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
     );
 
-    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
-      '[data-testid=subject-sort-option-LastConnectionUpdate-descending]',
+      getTestSelector('subject-sort-option-LastConnectionUpdate-descending'),
     ).click();
     assertOrder(
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
@@ -78,21 +79,21 @@ describe('Connections Page', () => {
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
     );
 
-    cy.get('[data-testid=subject-filter-button]').click();
-    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    cy.get(getTestSelector('subject-filter-button')).click();
+    cy.get(getTestSelector('subject-filter-option-JustMet')).click();
     assertOrder(connectionsInConnectionsPageJustMet);
 
-    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
-      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+      getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
     ).click();
     assertOrder(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
 
-    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
-      '[data-testid=subject-sort-option-LastConnectionUpdate-descending]',
+      getTestSelector('subject-sort-option-LastConnectionUpdate-descending'),
     ).click();
     assertOrder(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
@@ -111,16 +112,16 @@ describe('Connections Page', () => {
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
     );
 
-    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
-      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+      getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
     ).click();
     assertOrder(
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
     );
 
-    cy.get('[data-testid=subject-filter-button]').click();
-    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    cy.get(getTestSelector('subject-filter-button')).click();
+    cy.get(getTestSelector('subject-filter-option-JustMet')).click();
     assertOrder(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
@@ -132,13 +133,13 @@ describe('Connections Page', () => {
     );
 
     assertOrder(connectionsInConnectionsPageFilterAll);
-    cy.get('[data-testid=subject-sort-button]').click();
+    cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
-      '[data-testid=subject-sort-option-LastConnectionUpdate-ascending]',
+      getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
     ).click();
 
-    cy.get('[data-testid=subject-filter-button]').click();
-    cy.get('[data-testid=subject-filter-option-JustMet]').click();
+    cy.get(getTestSelector('subject-filter-button')).click();
+    cy.get(getTestSelector('subject-filter-option-JustMet')).click();
     assertOrder(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
@@ -158,9 +159,9 @@ describe('Connections Page', () => {
   //   );
   //
   //   assertOrder(connectionsInConnectionsPageFilterAll);
-  //   cy.get('[data-testid=custom-select]').click();
-  //   cy.get('[data-testid=custom-select-option-Justmet]').click();
-  //   cy.get('[data-testid=filter-Name-inactive').click();
+  //   cy.get(getTestSelector('custom-select')).click();
+  //   cy.get(getTestSelector('custom-select-option-Justmet')).click();
+  //   cy.get(getTestSelector('filter-Name-inactive').click();
   //   assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending);
   //
   //   cy.reload();
