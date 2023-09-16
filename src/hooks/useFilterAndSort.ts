@@ -24,24 +24,21 @@ export default function useFilterAndSort<T>(
     null,
   );
   const toggleFilterById = useCallback(
-    (filterId: AuraFilterId | null | undefined, forceNewValue = false) => {
-      if (filterId) {
-        setSelectedFilterId((value) => {
-          const newValue =
-            forceNewValue || value !== filterId ? filterId : null;
-          if (localStoragePrefix) {
-            if (newValue !== null) {
-              localStorage.setItem(
-                localStoragePrefix + 'FilterId',
-                String(newValue),
-              );
-            } else {
-              localStorage.removeItem(localStoragePrefix + 'FilterId');
-            }
+    (filterId: AuraFilterId | null, forceNewValue = false) => {
+      setSelectedFilterId((value) => {
+        const newValue = forceNewValue || value !== filterId ? filterId : null;
+        if (localStoragePrefix) {
+          if (newValue !== null) {
+            localStorage.setItem(
+              localStoragePrefix + 'FilterId',
+              String(newValue),
+            );
+          } else {
+            localStorage.removeItem(localStoragePrefix + 'FilterId');
           }
-          return newValue;
-        });
-      }
+        }
+        return newValue;
+      });
     },
     [localStoragePrefix],
   );
