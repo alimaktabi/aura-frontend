@@ -24,23 +24,23 @@ export default function useFilterAndSort<T>(
     null,
   );
   const toggleFilterById = useCallback(
-    (filterId: AuraFilterId | null | undefined) => {
+    (filterId: AuraFilterId | null | undefined, forceNewValue = false) => {
       if (filterId) {
-        setSelectedFilterId((value) => (value === filterId ? null : filterId));
-      }
-    },
-    [],
-  );
-
-  const setAndSaveSelectedFilterId = useCallback(
-    (value: AuraFilterId | null) => {
-      setSelectedFilterId(value);
-      if (localStoragePrefix) {
-        if (value !== null) {
-          localStorage.setItem(localStoragePrefix + 'FilterId', String(value));
-        } else {
-          localStorage.removeItem(localStoragePrefix + 'FilterId');
-        }
+        setSelectedFilterId((value) => {
+          const newValue =
+            forceNewValue || value !== filterId ? filterId : null;
+          if (localStoragePrefix) {
+            if (newValue !== null) {
+              localStorage.setItem(
+                localStoragePrefix + 'FilterId',
+                String(newValue),
+              );
+            } else {
+              localStorage.removeItem(localStoragePrefix + 'FilterId');
+            }
+          }
+          return newValue;
+        });
       }
     },
     [localStoragePrefix],
@@ -140,14 +140,13 @@ export default function useFilterAndSort<T>(
 
   const clearSortAndFilter = useCallback(() => {
     clearSort();
-    setAndSaveSelectedFilterId(null);
-  }, [clearSort, setAndSaveSelectedFilterId]);
+    toggleFilterById(null);
+  }, [clearSort, toggleFilterById]);
 
   return {
     selectedFilter,
     selectedSort,
     selectedFilterId,
-    setAndSaveSelectedFilterId,
     toggleFilterById,
     selectedSortId,
     setSelectedSort,
