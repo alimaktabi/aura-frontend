@@ -15,7 +15,7 @@ export const ProfileInfo = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { tier, userHasRecovery, name, joinedDateString, auraPublicProfile } =
+  const { level, userHasRecovery, name, joinedDateString, auraPublicProfile } =
     useSubjectBasicInfo(subjectId);
 
   return (
@@ -33,12 +33,12 @@ export const ProfileInfo = ({
             <div className="leading-5">
               {isPerformance ? (
                 <>
-                  <span>Player Tier: </span>
+                  <span>Player Level: </span>
                   <span className="font-medium">1</span>
                 </>
-              ) : tier ? (
+              ) : level ? (
                 <>
-                  <span className="font-medium">{tier} </span>
+                  <span className="font-medium">{level} </span>
                   <span>Subject</span>
                 </>
               ) : (

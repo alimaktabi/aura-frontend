@@ -15,7 +15,7 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
   const isOwn = useMemo(() => {
     return subjectId === authData?.brightId;
   }, [authData?.brightId, subjectId]);
-  const [tier, setTier] = useState<string | null>(null);
+  const [level, setLevel] = useState<string | null>(null);
   const [auraScore, setAuraScore] = useState<number | null>(null);
   const [userHasRecovery, setUserHasRecovery] = useState<boolean | null>(null);
 
@@ -60,7 +60,7 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
           const auraVerification = verifications.find(
             (verification) => verification.name === 'Aura',
           );
-          setTier(auraVerification?.level ?? 'Not yet');
+          setLevel(auraVerification?.level ?? 'Not yet');
           if (auraVerification?.score !== undefined) {
             setAuraScore(auraVerification.score);
           }
@@ -81,7 +81,7 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
   }, [subjectId]);
 
   return {
-    tier,
+    level,
     userHasRecovery,
     auraScore,
     name: profileInfo?.name ?? profileInfo?.id ?? 'Unknown User',

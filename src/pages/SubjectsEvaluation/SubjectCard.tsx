@@ -16,7 +16,7 @@ export const SubjectCard = ({
   subjectId: string;
   index?: string | number;
 }) => {
-  const { tier, name, auraScore } = useSubjectBasicInfo(subjectId);
+  const { level, name, auraScore } = useSubjectBasicInfo(subjectId);
   const { inboundRatingsStatsString } = useInboundRatings(subjectId);
   const authData = useSelector(selectAuthData);
 
@@ -53,7 +53,7 @@ export const SubjectCard = ({
               {name}
             </p>
             <p className="text-gray20">
-              Tier: <span className="font-medium text-black">{tier}</span>
+              Level: <span className="font-medium text-black">{level}</span>
             </p>
           </div>
         </div>

@@ -1,14 +1,10 @@
 import useFilterAndSort from 'hooks/useFilterAndSort';
-import {
-  AuraFilterId,
-  AuraFilterOptions,
-  useSubjectFilters,
-} from 'hooks/useFilters';
-import { AuraSortId, AuraSortOptions, useSubjectSorts } from 'hooks/useSorts';
-import React, { createContext, ReactNode, useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from 'store/profile/selectors';
-import { BrightIdConnection, Connection } from 'types';
+import {AuraFilterId, AuraFilterOptions, useSubjectFilters,} from 'hooks/useFilters';
+import {AuraSortId, AuraSortOptions, useSubjectSorts} from 'hooks/useSorts';
+import React, {createContext, ReactNode, useContext, useMemo} from 'react';
+import {useSelector} from 'react-redux';
+import {selectBrightIdBackup} from 'store/profile/selectors';
+import {BrightIdConnection, Connection} from 'types';
 
 // Define the context
 const SubjectsListContext = createContext<
@@ -32,11 +28,11 @@ export const SubjectsListContextProvider: React.FC<PlatformsProviderProps> = ({
   const filters = useSubjectFilters(
     useMemo(
       () => [
-        AuraFilterId.ConnectionTierNotYet,
-        AuraFilterId.ConnectionTierSybil,
-        AuraFilterId.ConnectionTierBronze,
-        AuraFilterId.ConnectionTierSilver,
-        AuraFilterId.ConnectionTierGold,
+        AuraFilterId.ConnectionLevelNotYet,
+        AuraFilterId.ConnectionLevelSybil,
+        AuraFilterId.ConnectionLevelBronze,
+        AuraFilterId.ConnectionLevelSilver,
+        AuraFilterId.ConnectionLevelGold,
         AuraFilterId.ConnectionYourEvaluationPositive,
         AuraFilterId.ConnectionYourEvaluationNegative,
         AuraFilterId.ConnectionYourEvaluationNotEvaluatedYet,
