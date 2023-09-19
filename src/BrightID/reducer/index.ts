@@ -1,13 +1,15 @@
-import user from './userSlice';
+import recoveryData from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice';
+
 import keypair from './keypairSlice';
 import operations from './operationsSlice';
 import settings from './settingsSlice';
-import recoveryData from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
+import user from './userSlice';
 
-export default {
+const reducers = {
   recoveryData,
   settings,
   operations,
   keypair,
   user,
 };
+export default reducers;

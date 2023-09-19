@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { AURA_NODE_URL } from 'utils/constants.ts';
+import { AURA_NODE_URL_PROXY } from 'constants/urls';
 
 export const backendApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 export const recoveryApi = axios.create({
@@ -18,7 +18,7 @@ export const brightIdNodeApi = axios.create({
 });
 
 export const auraBrightIdNodeApi = axios.create({
-  baseURL: AURA_NODE_URL,
+  baseURL: AURA_NODE_URL_PROXY,
   // @ts-ignore
   mode: 'no-cors',
 });

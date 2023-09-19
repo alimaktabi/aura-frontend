@@ -1,7 +1,7 @@
-import { hash } from 'BrightID/utils/encoding';
 import ChannelAPI from 'BrightID/api/channelService';
+import { setRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice';
 import { selectBaseUrl } from 'BrightID/reducer/settingsSlice';
-import { setRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
+import { hash } from 'BrightID/utils/encoding';
 import { uploadRecoveryData } from 'BrightID/utils/recovery';
 import { AppDispatch, GetState } from 'store';
 

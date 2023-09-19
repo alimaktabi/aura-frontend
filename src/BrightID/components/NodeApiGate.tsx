@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
 import { ApiResponse } from 'apisauce';
-import { selectBaseUrl } from 'BrightID/reducer/settingsSlice';
 import { NodeApi } from 'BrightID/api/brightId';
+import { selectBaseUrl } from 'BrightID/reducer/settingsSlice';
 import { pollOperations } from 'BrightID/utils/operations';
-import { useDispatch, useSelector } from 'store/hooks';
+import React, { useEffect, useState } from 'react';
 import { RootState } from 'store';
+import { useDispatch, useSelector } from 'store/hooks';
 
 type ApiContext = NodeApi | null;
 
 export const NodeApiContext = React.createContext<ApiContext>(null);
 
-export const ApiGateState = {
-  INITIAL: 'INITIAL',
-  SEARCH_REQUESTED: 'SEARCH_REQUESTED', // should start looking for node
-  SEARCHING_NODE: 'SEARCHING', // currently looking for working node
-  NODE_AVAILABLE: 'NODE_AVAILABLE', // All good, valid node is set
-  ERROR_NO_NODE: 'ERROR_NO_NODE', // Failed to find a working node
-} as const;
-export type ApiGateState = (typeof ApiGateState)[keyof typeof ApiGateState];
+export enum ApiGateState {
+  INITIAL = 'INITIAL',
+  SEARCH_REQUESTED = 'SEARCH_REQUESTED', // should start looking for node
+  SEARCHING_NODE = 'SEARCHING', // currently looking for working node
+  NODE_AVAILABLE = 'NODE_AVAILABLE', // All good, valid node is set
+  ERROR_NO_NODE = 'ERROR_NO_NODE', // Failed to find a working node
+}
 
 // some thunks require access to the current NodeAPI, so also
 // make it available as a global var.
@@ -47,9 +46,7 @@ const NodeApiGate = (props: React.PropsWithChildren<unknown>) => {
 
   // Manage NodeAPI instance
   useEffect(() => {
-    let responseCounter = 0;
     const apiMonitor = (response: ApiResponse<NodeApiRes, ErrRes>) => {
-      responseCounter++;
       if (!response.ok) {
         switch (response.problem) {
           case 'SERVER_ERROR':
@@ -65,12 +62,6 @@ const NodeApiGate = (props: React.PropsWithChildren<unknown>) => {
             console.log(`Node monitor: Ignoring problem ${response.problem}`);
         }
       }
-      /*
-      if (responseCounter % 5 === 0) {
-        console.log(`Pretending server error`);
-        setNodeError(true);
-      }
-       */
     };
 
     if (url) {
@@ -98,18 +89,21 @@ const NodeApiGate = (props: React.PropsWithChildren<unknown>) => {
 
   // Manage polling for operations
   useEffect(() => {
+    let timerId: NodeJS.Timeout | null = null;
     if (api) {
       // subscribe to operations
-      const timerId = setInterval(() => {
+      timerId = setInterval(() => {
         dispatch(pollOperations(api));
       }, 5000);
       console.log(`Started pollOperationsTimer ${timerId}`);
+    }
 
-      return () => {
+    return () => {
+      if (timerId !== null) {
         console.log(`Stop pollOperationsTimer ${timerId}`);
         clearInterval(timerId);
-      };
-    }
+      }
+    };
   }, [api, dispatch]);
 
   if (url && api && gateState === ApiGateState.NODE_AVAILABLE) {

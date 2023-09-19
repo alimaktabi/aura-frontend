@@ -1,9 +1,10 @@
-import { SubjectCard } from './SubjectCard.tsx';
-import { SubjectSearch } from './SubjectSearch.tsx';
-import { selectBrightIdBackup } from '../../store/profile/selectors.ts';
+import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
+import { useSubjectsListContext } from 'contexts/SubjectsListContext';
 import { useSelector } from 'react-redux';
-import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
-import { useSubjectsListContext } from 'contexts/SubjectsListContext.tsx';
+
+import { selectBrightIdBackup } from '../../store/profile/selectors';
+import { SubjectCard } from './SubjectCard';
+import { SubjectSearch } from './SubjectSearch';
 
 const SubjectsEvaluation = () => {
   const brightIdBackup = useSelector(selectBrightIdBackup);

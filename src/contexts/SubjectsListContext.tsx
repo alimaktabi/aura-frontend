@@ -1,17 +1,13 @@
-import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import useFilterAndSort from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
   AuraFilterOptions,
   useSubjectFilters,
-} from 'hooks/useFilters.ts';
-import {
-  AuraSortId,
-  AuraSortOptions,
-  useSubjectSorts,
-} from 'hooks/useSorts.ts';
-import useFilterAndSort from 'hooks/useFilterAndSort.ts';
+} from 'hooks/useFilters';
+import { AuraSortId, AuraSortOptions, useSubjectSorts } from 'hooks/useSorts';
+import React, { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from 'store/profile/selectors.ts';
+import { selectBrightIdBackup } from 'store/profile/selectors';
 import { BrightIdConnection, Connection } from 'types';
 
 // Define the context

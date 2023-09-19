@@ -1,7 +1,8 @@
-import { selectPrivateKey } from '../store/profile/selectors.ts';
-import { store } from '../store';
 import { toByteArray } from 'base64-js';
 import nacl from 'tweetnacl';
+
+import { store } from '../store';
+import { selectPrivateKey } from '../store/profile/selectors';
 
 export const encryptStringWithPrivateKey = (data: string) => {
   const privateKey = selectPrivateKey(store.getState());

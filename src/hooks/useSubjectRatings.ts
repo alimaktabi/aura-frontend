@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
+
+import { getInboundRatings, getOutboundRatings } from '../api/rate.service';
 import { AuraRating } from '../types';
-import { getInboundRatings, getOutboundRatings } from '../api/rate.service.ts';
 
 export const useInboundRatings = (subjectId: string | null | undefined) => {
   const [inboundRatings, setInboundRatings] = useState<AuraRating[] | null>(

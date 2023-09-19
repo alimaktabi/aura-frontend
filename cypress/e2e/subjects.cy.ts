@@ -1,6 +1,7 @@
 import { Connection } from 'types';
+import { RoutePath } from 'types/router';
 
-import { RoutePath } from 'types/router.ts';
+import { getRoute, getTestSelector } from '../utils';
 import {
   connectionsInConnectionsPageFilterAll,
   connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
@@ -8,13 +9,12 @@ import {
   connectionsInConnectionsPageJustMet,
   connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
   connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDescending,
-} from '../utils/rating.ts';
-import { getTestSelector } from '../utils';
+} from '../utils/rating';
 
 describe('Connections Page', () => {
   beforeEach(() => {
     cy.setupProfile();
-    cy.visit(RoutePath.SUBJECTS_EVALUATION);
+    cy.visit(getRoute(RoutePath.SUBJECTS_EVALUATION));
   });
 
   function assertOrder(orderedConnections: Connection[]) {

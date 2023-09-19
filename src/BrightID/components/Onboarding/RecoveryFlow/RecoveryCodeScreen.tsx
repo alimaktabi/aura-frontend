@@ -1,31 +1,33 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'store/hooks';
-import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError.ts';
-import {
-  setRecoveryKeys,
-  setupRecovery,
-} from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks.ts';
-import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
-import { createRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks.ts';
-import qrcode from 'qrcode';
-import {
-  resetRecoveryData,
-  selectRecoveryStep,
-  setRecoverStep,
-  uploadCompletedByOtherSide,
-} from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
 import {
   clearImportChannel,
   createSyncChannel,
   pollImportChannel,
   setupSync,
-} from 'BrightID/components/Onboarding/ImportFlow/thunks/channelThunks.ts';
+} from 'BrightID/components/Onboarding/ImportFlow/thunks/channelThunks';
+import {
+  resetRecoveryData,
+  selectRecoveryStep,
+  setRecoverStep,
+  uploadCompletedByOtherSide,
+} from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice';
+import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError';
+import { createRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks';
+import {
+  setRecoveryKeys,
+  setupRecovery,
+} from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks';
+import { setUserId, userSelector } from 'BrightID/reducer/userSlice';
 import {
   recover_steps,
   RecoveryCodeScreenAction,
   urlTypesOfActions,
 } from 'BrightID/utils/constants';
-import { setUserId, userSelector } from 'BrightID/reducer/userSlice';
+import { getExplorerCode } from 'BrightID/utils/explorer';
+import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
+import { LOCATION_ORIGIN } from 'constants/index';
+import { AURA_NODE_URL } from 'constants/urls';
+import qrcode from 'qrcode';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   createSearchParams,
   useLocation,
@@ -33,12 +35,12 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom';
-import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
-import { getExplorerCode } from 'BrightID/utils/explorer.ts';
-import { selectIsLoggedIn } from 'store/profile/selectors.ts';
-import { __DEV__ } from 'utils/env.ts';
-import { RoutePath } from 'types/router.ts';
+import { useDispatch, useSelector } from 'store/hooks';
+import { loginByExplorerCodeThunk } from 'store/profile/actions';
+import { selectIsLoggedIn } from 'store/profile/selectors';
+import { RoutePath } from 'types/router';
 import { copyToClipboard } from 'utils/copyToClipboard';
+import { __DEV__ } from 'utils/env';
 
 /**
  * Recovery Code screen of BrightID/
@@ -153,11 +155,11 @@ const RecoveryCodeScreen = () => {
       const channelUrl = recoveryData.channel.url;
       const newQrUrl = buildRecoveryChannelQrUrl({
         aesKey: recoveryData.aesKey,
-        url: channelUrl.href.startsWith(location.origin)
+        url: channelUrl.href.startsWith(LOCATION_ORIGIN)
           ? {
               href: channelUrl.href.replace(
-                location.origin + '/auranode',
-                import.meta.env.VITE_AURA_NODE_URL,
+                LOCATION_ORIGIN + '/auranode',
+                AURA_NODE_URL,
               ),
             }
           : channelUrl,
@@ -305,6 +307,7 @@ const RecoveryCodeScreen = () => {
             <div>
               <img
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
+                alt="qrcode"
               />
               {universalLink && (
                 <div className="card mt-2 break-words">

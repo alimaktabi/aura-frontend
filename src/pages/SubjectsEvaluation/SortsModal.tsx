@@ -1,12 +1,13 @@
-import { ModalItem } from '../../components/Shared/Modal/ModalItem';
+import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import {
   AuraSelectedSort,
   AuraSortId,
   AuraSortOptions,
   useCategorizeAuraSortOptions,
-} from 'hooks/useSorts.ts';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
+} from 'hooks/useSorts';
 import { useCallback } from 'react';
+
+import { ModalItem } from '../../components/Shared/Modal/ModalItem';
 
 //TODO: merge this with FiltersModal
 export function SortsModal<T>({

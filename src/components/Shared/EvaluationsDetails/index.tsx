@@ -1,6 +1,6 @@
-import { useInboundRatings } from '../../../hooks/useSubjectRatings.ts';
-import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
-import { compactFormat } from '../../../utils/number.ts';
+import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo';
+import { useInboundRatings } from '../../../hooks/useSubjectRatings';
+import { compactFormat } from '../../../utils/number';
 
 const EvaluationsDetails = ({
   subjectId,
@@ -41,7 +41,7 @@ const EvaluationsDetails = ({
         </div>
         <div className="body__info flex justify-between w-full">
           <div className="font-medium">Evaluation Impact:</div>
-          <div className="underline text-sm text-gray00">What's this?</div>
+          <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
         <img
           className="body__chart w-full"

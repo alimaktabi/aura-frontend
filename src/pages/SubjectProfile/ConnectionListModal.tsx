@@ -1,10 +1,11 @@
-import { ModalItem } from '../../components/Shared/Modal/ModalItem';
-import { SubjectCard } from '../SubjectsEvaluation/SubjectCard';
-import { useInboundConnections } from '../../hooks/useSubjectConnections.ts';
-import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
-import useFilterAndSort from 'hooks/useFilterAndSort.ts';
+import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
+import useFilterAndSort from 'hooks/useFilterAndSort';
+import { AuraFilterId, useSubjectFilters } from 'hooks/useFilters';
 import { useMemo } from 'react';
-import { AuraFilterId, useSubjectFilters } from 'hooks/useFilters.ts';
+
+import { ModalItem } from '../../components/Shared/Modal/ModalItem';
+import { useInboundConnections } from '../../hooks/useSubjectConnections';
+import { SubjectCard } from '../SubjectsEvaluation/SubjectCard';
 
 export const ConnectionListModal = ({
   subjectId,

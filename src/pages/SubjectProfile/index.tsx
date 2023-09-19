@@ -1,16 +1,17 @@
+import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
+import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
 import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
+import { Modal } from '../../components/Shared/Modal';
 import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
+import { useInboundRatings } from '../../hooks/useSubjectRatings';
+import { selectAuthData } from '../../store/profile/selectors';
+import { EvaluationListModal } from './EvaluationListModal';
+import NewEvaluationCard from './NewEvaluationCard';
 import { YourEvaluation } from './YourEvaluation';
-import { useMemo, useState } from 'react';
-import { Modal } from '../../components/Shared/Modal';
-import { EvaluationListModal } from './EvaluationListModal.tsx';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectAuthData } from '../../store/profile/selectors.ts';
-import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
-import NewEvaluationCard from './NewEvaluationCard.tsx';
-import ActivitiesCard from 'components/Shared/ActivitiesCard/index.tsx';
 
 const SubjectProfile = () => {
   const role = 'Player';

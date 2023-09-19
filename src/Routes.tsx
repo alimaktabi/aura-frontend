@@ -1,10 +1,11 @@
+import RecoveryCodeScreen from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryCodeScreen';
+import { RoutePath } from 'types/router';
+
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
-import SubjectsEvaluation from './pages/SubjectsEvaluation';
-import SubjectProfile from './pages/SubjectProfile';
 import PerformanceOverview from './pages/PerformanceOverview';
-import RecoveryCodeScreen from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryCodeScreen.tsx';
-import { RoutePath } from 'types/router.ts';
+import SubjectProfile from './pages/SubjectProfile';
+import SubjectsEvaluation from './pages/SubjectsEvaluation';
 
 const routes = [
   {

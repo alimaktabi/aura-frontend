@@ -1,4 +1,4 @@
-import { urlSafeRandomKey } from 'BrightID/utils/encoding';
+import ChannelAPI from 'BrightID/api/channelService';
 import {
   CHANNEL_INFO_VERSION_1,
   CHANNEL_INFO_VERSION_2,
@@ -8,7 +8,7 @@ import {
   SINGLE_CHANNEL_TTL,
   STAR_CHANNEL_TTL,
 } from 'BrightID/utils/constants';
-import ChannelAPI from 'BrightID/api/channelService';
+import { urlSafeRandomKey } from 'BrightID/utils/encoding';
 
 export const generateChannelData = async (
   channelType: ChannelType,

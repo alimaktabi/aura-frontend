@@ -15,6 +15,10 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+import { CONNECTION_SEARCH_SEED } from 'constants/index';
+import { Connection } from 'types';
+
 import {
   AURA_CONNECTIONS,
   AURA_GENERAL_PROFILE,
@@ -28,17 +32,15 @@ import {
   verificationsResponse,
 } from '../utils/data';
 import {
+  connectionIncomingConnectionsResponse,
+  connectionOutboundConnectionsResponse,
+} from '../utils/mutual-connections';
+import {
   getConnectionResponse,
   oldRatings,
   userIncomingRatingsResponse,
   userRatingsResponse,
 } from '../utils/rating';
-import { CONNECTION_SEARCH_SEED } from 'utils/constants';
-import {
-  connectionIncomingConnectionsResponse,
-  connectionOutboundConnectionsResponse,
-} from '../utils/mutual-connections';
-import { Connection } from 'types';
 
 function connectionIntercepts(connection: Connection) {
   cy.intercept(

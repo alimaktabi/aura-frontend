@@ -1,6 +1,6 @@
+import { b64ToUint8Array, UInt8ArrayEqual } from 'BrightID/utils/encoding';
 import CryptoJS from 'crypto-js';
 import nacl from 'tweetnacl';
-import { b64ToUint8Array, UInt8ArrayEqual } from 'BrightID/utils/encoding';
 
 export const encryptData = (dataObj: any, aesKey: string) => {
   const dataStr = JSON.stringify(dataObj);

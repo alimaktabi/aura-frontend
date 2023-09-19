@@ -10,7 +10,6 @@
     // avoid clobbering the build tsbuildinfo
     "types": [
       "cypress",
-      "@types/crypto-js",
       "node"
     ]
   },

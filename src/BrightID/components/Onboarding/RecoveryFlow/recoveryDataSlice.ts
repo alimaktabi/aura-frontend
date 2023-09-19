@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { original } from 'immer';
-import { uInt8ArrayToB64 } from 'BrightID/utils/encoding';
+import { RESET_STORE } from 'BrightID/actions';
 import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError';
 import { recover_steps, RECOVERY_CHANNEL_TTL } from 'BrightID/utils/constants';
-import { RESET_STORE } from 'BrightID/actions';
+import { uInt8ArrayToB64 } from 'BrightID/utils/encoding';
+import { original } from 'immer';
 import { RootState } from 'store';
 
 export const initialState: RecoveryData = {

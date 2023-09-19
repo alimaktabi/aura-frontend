@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
-import { Modal } from '../../components/Shared/Modal';
-import { useState } from 'react';
-import RoleSelectModal from './RoleSelectModal.tsx';
 import { resetStore } from 'BrightID/actions';
-import { useDispatch } from 'store/hooks.ts';
-import { RoutePath } from 'types/router.ts';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'store/hooks';
+import { RoutePath } from 'types/router';
+
+import { Modal } from '../../components/Shared/Modal';
+import RoleSelectModal from './RoleSelectModal';
 
 const Dashboard = () => {
   const preferredViews = ['Player', 'Trainer', 'Manager'];

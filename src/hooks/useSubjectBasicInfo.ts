@@ -1,12 +1,13 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+
+import { getVerifications } from '../api/auranode.service';
+import { getProfile } from '../api/connections.service';
 import {
   selectAuthData,
   selectBrightIdBackup,
-} from '../store/profile/selectors.ts';
-import { useEffect, useMemo, useState } from 'react';
+} from '../store/profile/selectors';
 import { AuraPublicProfile } from '../types';
-import { getVerifications } from '../api/auranode.service.ts';
-import { getProfile } from '../api/connections.service.ts';
 
 export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
   const authData = useSelector(selectAuthData);

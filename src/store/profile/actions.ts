@@ -1,12 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AuthDataWithPassword } from 'types';
+
 import {
   loginByExplorerCode,
   pullEncryptedUserData,
 } from '../../api/login.service';
-import { AuthDataWithPassword } from 'types';
-import { selectAuthData } from './selectors.ts';
-import { RootState } from '../index.ts';
-import { encryptData, hash } from '../../utils/crypto.ts';
+import { encryptData, hash } from '../../utils/crypto';
+import { RootState } from '../index';
+import { selectAuthData } from './selectors';
 
 //TODO: add a way to reload brightId backup
 export const getBrightIdBackupThunk = createAsyncThunk<

@@ -1,10 +1,11 @@
-import { useSubjectRating } from '../../../hooks/useSubjectRating.ts';
+import Modal from 'components/Shared/Modal';
+import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectAuthData } from '../../../store/profile/selectors.ts';
-import Modal from 'components/Shared/Modal';
-import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody.tsx';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo.ts';
+
+import { useSubjectRating } from '../../../hooks/useSubjectRating';
+import { selectAuthData } from '../../../store/profile/selectors';
 
 export const EvaluationInfo = ({
   fromSubjectId,

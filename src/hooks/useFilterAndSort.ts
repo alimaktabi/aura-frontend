@@ -1,9 +1,5 @@
-import { AuraFilterId, AuraFilterOptions } from 'hooks/useFilters.ts';
-import {
-  AuraSelectedSort,
-  AuraSortId,
-  AuraSortOptions,
-} from 'hooks/useSorts.ts';
+import { AuraFilterId, AuraFilterOptions } from 'hooks/useFilters';
+import { AuraSelectedSort, AuraSortId, AuraSortOptions } from 'hooks/useSorts';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export enum FilterOrSortCategory {
@@ -55,7 +51,7 @@ export default function useFilterAndSort<T>(
         if (obj) {
           sortId = id;
           if (ascending !== undefined) {
-            isSortReversed = obj.defaultAscending != ascending;
+            isSortReversed = obj.defaultAscending !== ascending;
           } else {
             isSortReversed = false;
           }

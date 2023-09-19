@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { auraBrightIdNodeApi } from './index.ts';
+
+import { auraBrightIdNodeApi } from './index';
 
 export type AuraVerification = 'Bronze' | 'Silver' | 'Gold';
 export type AuraVerificationString = AuraVerification | 'Not yet';

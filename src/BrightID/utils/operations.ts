@@ -3,11 +3,11 @@ import {
   selectPendingOperations,
   updateOperation,
 } from 'BrightID/actions';
+import { NodeApi } from 'BrightID/api/brightId';
 import {
   operation_states,
   OPERATION_TRACE_TIME,
 } from 'BrightID/utils/constants';
-import { NodeApi } from 'BrightID/api/brightId';
 import { AppDispatch, GetState } from 'store';
 
 const handleOpUpdate = (

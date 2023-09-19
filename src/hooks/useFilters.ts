@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from 'store/profile/selectors.ts';
-import { AuraRating, BrightIdConnection } from 'types';
+import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { useOutboundRatings } from 'hooks/useSubjectRatings';
 import { useMemo } from 'react';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
-import { useOutboundRatings } from 'hooks/useSubjectRatings.ts';
+import { useSelector } from 'react-redux';
+import { selectBrightIdBackup } from 'store/profile/selectors';
+import { AuraRating, BrightIdConnection } from 'types';
 
 export enum AuraFilterId {
   EvaluationMutualConnections = 1,

@@ -1,7 +1,6 @@
-import CryptoJS from 'crypto-js';
-
-import nacl from 'tweetnacl';
 import { fromByteArray } from 'base64-js';
+import CryptoJS from 'crypto-js';
+import nacl from 'tweetnacl';
 import { BrightIdBackup } from 'types';
 
 export function encryptData(data: string, password: string) {

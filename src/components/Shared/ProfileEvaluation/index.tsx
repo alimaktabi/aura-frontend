@@ -1,7 +1,7 @@
+import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo';
+import { compactFormat } from '../../../utils/number';
+import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 import { EvaluationInfo } from '../EvaluationInfo';
-import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
-import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
-import { compactFormat } from '../../../utils/number.ts';
 
 const ProfileEvaluation = ({
   fromSubjectId,

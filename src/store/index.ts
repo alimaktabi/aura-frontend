@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { profileSlice } from './profile';
+import reducers from 'BrightID/reducer';
 import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import reducers from 'BrightID/reducer';
+
+import { profileSlice } from './profile';
 
 const persistConfig = {
   key: 'root',

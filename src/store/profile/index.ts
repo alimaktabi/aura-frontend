@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RESET_STORE } from 'BrightID/actions';
+
+import { AuthDataWithPassword } from '../../types';
 import {
   getBrightIdBackupThunk,
   loginByExplorerCodeThunk,
   refreshKeyPairThunk,
-} from './actions.ts';
-import { AuthDataWithPassword } from '../../types';
-import { RESET_STORE } from 'BrightID/actions';
+} from './actions';
 
 export type ProfileState = {
   //TODO: rename this to authData

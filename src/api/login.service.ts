@@ -4,8 +4,9 @@ import {
   generateB64Keypair,
   hash,
 } from 'utils/crypto';
-import { backendApi, recoveryApi } from './index';
+
 import { AuthData } from '../types';
+import { backendApi, recoveryApi } from './index';
 
 export async function pullDecryptedUserData(key: string, password: string) {
   return decryptUserData((await pullEncryptedUserData(key)).data, password);

@@ -1,12 +1,19 @@
+import { RouteProp as _RouteProp } from '@react-navigation/native';
 import {
   AnyAction,
   EntityState as _EntityState,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { RouteProp as _RouteProp } from '@react-navigation/native';
-import { CountryCode } from 'react-native-country-picker-modal';
-import { BigInteger } from 'jsbn';
 import ChannelAPI from 'BrightID/api/channelService';
+import {
+  SocialMediaShareActionType,
+  SocialMediaShareType,
+  SocialMediaShareTypeDisplay,
+  SocialMediaType,
+  SocialMediaVariationIds,
+} from 'BrightID/components/EditProfile/socialMediaVariations';
+import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError';
+import { pendingConnection_states } from 'BrightID/components/PendingConnections/pendingConnectionSlice';
 import {
   app_linking_steps,
   channel_states,
@@ -16,15 +23,8 @@ import {
   qrCodeURL_types,
   report_reasons,
 } from 'BrightID/utils/constants';
-import { pendingConnection_states } from 'BrightID/components/PendingConnections/pendingConnectionSlice';
-import {
-  SocialMediaShareActionType,
-  SocialMediaShareType,
-  SocialMediaShareTypeDisplay,
-  SocialMediaType,
-  SocialMediaVariationIds,
-} from 'BrightID/components/EditProfile/socialMediaVariations';
-import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError';
+import { BigInteger } from 'jsbn';
+import { CountryCode } from 'react-native-country-picker-modal';
 import { AppDispatch, AppStore, RootState } from 'store';
 
 declare global {

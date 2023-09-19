@@ -1,7 +1,8 @@
+import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useState } from 'react';
+
 import Modal from '../../components/Shared/Modal';
-import EvaluateModalBody from './EvaluateModalBody.tsx';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo.ts';
+import EvaluateModalBody from './EvaluateModalBody';
 
 const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);

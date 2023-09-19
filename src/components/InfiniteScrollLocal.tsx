@@ -1,6 +1,6 @@
-import InfiniteScroll from 'react-infinite-scroller';
 import * as React from 'react';
 import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 
 interface InfiniteScrollLocalProps<T> extends React.HTMLProps<InfiniteScroll> {
   items: T[] | null | undefined;

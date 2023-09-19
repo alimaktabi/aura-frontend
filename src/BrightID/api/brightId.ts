@@ -1,8 +1,8 @@
 import { ApiOkResponse, ApiResponse, ApisauceInstance, create } from 'apisauce';
-import stringify from 'fast-json-stable-stringify';
-import { hash } from 'BrightID/utils/encoding';
 import BrightidError from 'BrightID/api/brightidError';
 import { operation_states } from 'BrightID/utils/constants';
+import { hash } from 'BrightID/utils/encoding';
+import stringify from 'fast-json-stable-stringify';
 
 const v = 6;
 

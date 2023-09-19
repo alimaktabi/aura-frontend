@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import ConfidenceDropdown from '../../components/Shared/ConfidenceDropdown';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo.ts';
-import { rateUser } from 'api/rate.service.ts';
-import { selectAuthData } from 'store/profile/selectors.ts';
-import { useSelector } from 'react-redux';
 import { backendApi } from 'api';
+import { rateUser } from 'api/rate.service';
+import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { selectAuthData } from 'store/profile/selectors';
+
+import ConfidenceDropdown from '../../components/Shared/ConfidenceDropdown';
 
 const EvaluateModalBody = ({
   prevRating,

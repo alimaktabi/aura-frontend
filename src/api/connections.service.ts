@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { CONNECTION_SEARCH_SEED } from 'utils/constants';
+import { CONNECTION_SEARCH_SEED } from 'constants/index';
 import {
   AuraConnectionResponse,
   AuraConnectionsResponse,
@@ -8,7 +8,8 @@ import {
   BrightIdConnectionsResponse,
 } from 'types';
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
-import { backendApi, brightIdNodeApi } from './index.ts';
+
+import { backendApi, brightIdNodeApi } from './index';
 
 export const getConnections = (
   backendApi: AxiosInstance,

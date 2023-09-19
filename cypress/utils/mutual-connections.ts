@@ -1,3 +1,4 @@
+import { connectionLevelMap } from 'constants/index';
 import {
   AuraProfile,
   AuraRating,
@@ -6,7 +7,7 @@ import {
   Connection,
   ConnectionLevel,
 } from 'types';
-import { connectionLevelMap } from 'utils/constants';
+
 import {
   justMet2,
   justMet3,

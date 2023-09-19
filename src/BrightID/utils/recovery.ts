@@ -1,6 +1,6 @@
 import ChannelAPI from 'BrightID/api/channelService';
-import { hash } from 'BrightID/utils/encoding';
 import { RECOVERY_CHANNEL_TTL } from 'BrightID/utils/constants';
+import { hash } from 'BrightID/utils/encoding';
 
 export const buildRecoveryChannelQrUrl = ({
   aesKey,

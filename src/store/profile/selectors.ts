@@ -1,7 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '..';
 import { decryptUserData } from 'utils/crypto';
+
 import { BrightIdBackup } from '../../types';
+import { RootState } from '..';
 
 export const selectAuthData = createSelector(
   (state: RootState) => state.profile,

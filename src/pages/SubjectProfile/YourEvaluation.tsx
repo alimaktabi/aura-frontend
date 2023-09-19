@@ -1,8 +1,9 @@
-import { EvaluationInfo } from '../../components/Shared/EvaluationInfo';
 import { useSelector } from 'react-redux';
-import { selectAuthData } from '../../store/profile/selectors.ts';
-import { useSubjectRating } from '../../hooks/useSubjectRating.ts';
-import NotEvaluatedCard from './NotEvaluatedCard.tsx';
+
+import { EvaluationInfo } from '../../components/Shared/EvaluationInfo';
+import { useSubjectRating } from '../../hooks/useSubjectRating';
+import { selectAuthData } from '../../store/profile/selectors';
+import NotEvaluatedCard from './NotEvaluatedCard';
 
 export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
   const authData = useSelector(selectAuthData);

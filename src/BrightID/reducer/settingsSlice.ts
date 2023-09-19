@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RESET_STORE } from 'BrightID/actions/resetStore';
-import { AURA_NODE_URL } from 'utils/constants';
+import { AURA_NODE_URL_PROXY } from 'constants/urls';
 import { RootState } from 'store';
-import { __DEV__ } from 'utils/env.ts';
+import { __DEV__ } from 'utils/env';
 
-const ProdCandidates = [AURA_NODE_URL];
-const TestCandidates = [AURA_NODE_URL];
+const ProdCandidates = [AURA_NODE_URL_PROXY];
+const TestCandidates = [AURA_NODE_URL_PROXY];
 
 interface SettingsSlice {
   baseUrl: string | null;
@@ -16,7 +16,7 @@ interface SettingsSlice {
 }
 
 const initialState: SettingsSlice = {
-  baseUrl: AURA_NODE_URL,
+  baseUrl: AURA_NODE_URL_PROXY,
   nodeUrls: __DEV__ ? TestCandidates : ProdCandidates,
   isPrimaryDevice: true,
   lastSyncTime: 0,
@@ -101,7 +101,7 @@ export const {
 
 export const selectBaseUrl = (state: RootState) => state.settings.baseUrl;
 export const selectAllNodeUrls = (state: RootState) => state.settings.nodeUrls;
-export const selectDefaultNodeUrls = (_: RootState) => initialState.nodeUrls;
+export const selectDefaultNodeUrls = () => initialState.nodeUrls;
 export const selectIsPrimaryDevice = (state: RootState) =>
   state.settings.isPrimaryDevice;
 export const selectLastSyncTime = (state: RootState) =>

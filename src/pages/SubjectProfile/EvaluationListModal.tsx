@@ -1,11 +1,12 @@
-import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
-import { useInboundRatings } from '../../hooks/useSubjectRatings.ts';
-import { SelectItems } from '../../components/Shared/SelectItems.tsx';
-import InfiniteScrollLocal from 'components/InfiniteScrollLocal.tsx';
-import { AuraFilterId, useEvaluationFilters } from 'hooks/useFilters.ts';
-import { AuraSortId, useEvaluationSorts } from 'hooks/useSorts.ts';
-import useFilterAndSort from 'hooks/useFilterAndSort.ts';
+import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
+import useFilterAndSort from 'hooks/useFilterAndSort';
+import { AuraFilterId, useEvaluationFilters } from 'hooks/useFilters';
+import { AuraSortId, useEvaluationSorts } from 'hooks/useSorts';
 import { useState } from 'react';
+
+import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
+import { SelectItems } from '../../components/Shared/SelectItems';
+import { useInboundRatings } from '../../hooks/useSubjectRatings';
 
 export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   const filters = useEvaluationFilters([

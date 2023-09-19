@@ -1,7 +1,8 @@
+import { getConfidenceValue } from 'constants/index';
 import { useEffect, useMemo, useRef, useState } from 'react';
+
+import { getConnection } from '../api/connections.service';
 import { AuraRating } from '../types';
-import { getConnection } from '../api/connections.service.ts';
-import { getConfidenceValue } from '../utils/constants.ts';
 
 export const useSubjectRating = ({
   fromSubjectId,

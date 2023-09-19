@@ -1,17 +1,17 @@
-import { hash } from 'BrightID/utils/encoding';
 import ChannelAPI from 'BrightID/api/channelService';
-import { CHANNEL_POLL_INTERVAL } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks.ts';
-import { setRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice.ts';
 import {
   checkCompletedFlags,
   downloadUserInfo,
-} from 'BrightID/components/Onboarding/ImportFlow/thunks/channelDownloadThunks.ts';
+} from 'BrightID/components/Onboarding/ImportFlow/thunks/channelDownloadThunks';
 import {
   uploadAllInfoAfter,
   uploadDeviceInfo,
-} from 'BrightID/components/Onboarding/ImportFlow/thunks/channelUploadThunks.ts';
+} from 'BrightID/components/Onboarding/ImportFlow/thunks/channelUploadThunks';
+import { setRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice';
+import { CHANNEL_POLL_INTERVAL } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks';
+import { selectBaseUrl } from 'BrightID/reducer/settingsSlice';
 import { IMPORT_PREFIX } from 'BrightID/utils/constants';
-import { selectBaseUrl } from 'BrightID/reducer/settingsSlice.ts';
+import { hash } from 'BrightID/utils/encoding';
 import { AppDispatch, GetState } from 'store';
 
 export const setupSync =

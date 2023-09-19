@@ -1,9 +1,10 @@
-import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal.tsx';
-import Modal from '../Modal';
 import { useState } from 'react';
-import BrightIdProfilePicture from '../../BrightIdProfilePicture.tsx';
-import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo.ts';
-import { useInboundConnections } from '../../../hooks/useSubjectConnections.ts';
+
+import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo';
+import { useInboundConnections } from '../../../hooks/useSubjectConnections';
+import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal';
+import BrightIdProfilePicture from '../../BrightIdProfilePicture';
+import Modal from '../Modal';
 
 export const ProfileInfo = ({
   isPerformance = false,

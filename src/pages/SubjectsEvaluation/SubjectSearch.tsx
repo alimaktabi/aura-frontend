@@ -1,8 +1,9 @@
-import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';
-import { FiltersModal } from './FiltersModal.tsx';
-import { SortsModal } from 'pages/SubjectsEvaluation/SortsModal.tsx';
+import { useSubjectsListContext } from 'contexts/SubjectsListContext';
+import { SortsModal } from 'pages/SubjectsEvaluation/SortsModal';
 import { useState } from 'react';
-import { useSubjectsListContext } from 'contexts/SubjectsListContext.tsx';
+
+import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';
+import { FiltersModal } from './FiltersModal';
 
 export const SubjectSearch = () => {
   const {

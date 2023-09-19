@@ -1,9 +1,10 @@
-import ProfileInfo from '../../components/Shared/ProfileInfo';
-import LinkCard from './LinkCard';
+import EvaluationsDetails from 'components/Shared/EvaluationsDetails/index';
 import { useSelector } from 'react-redux';
-import { selectAuthData } from '../../store/profile/selectors.ts';
-import ActivitiesCard from '../../components/Shared/ActivitiesCard/index.tsx';
-import EvaluationsDetails from 'components/Shared/EvaluationsDetails/index.tsx';
+
+import ActivitiesCard from '../../components/Shared/ActivitiesCard/index';
+import ProfileInfo from '../../components/Shared/ProfileInfo';
+import { selectAuthData } from '../../store/profile/selectors';
+import LinkCard from './LinkCard';
 
 const PerformanceOverview = () => {
   const color = {

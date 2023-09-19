@@ -2,9 +2,9 @@
 
 export const LOCAL_HTTP_SERVER_PORT = 9025;
 
-export const INVITE_ACTIVE = 'active';
-export const INVITE_REJECTED = 'rejected';
-export const INVITE_ACCEPTED = 'accepted';
+export const INREACT_APP_ACTIVE = 'active';
+export const INREACT_APP_REJECTED = 'rejected';
+export const INREACT_APP_ACCEPTED = 'accepted';
 
 export const group_states = {
   INITIATED: 'initiated',

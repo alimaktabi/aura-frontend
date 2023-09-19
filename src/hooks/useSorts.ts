@@ -1,6 +1,6 @@
-import { AuraRating, BrightIdConnection } from 'types';
+import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import { useMemo } from 'react';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
+import { AuraRating, BrightIdConnection } from 'types';
 
 export enum AuraSortId {
   RecentEvaluation = 1,

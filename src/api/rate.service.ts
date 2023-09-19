@@ -1,7 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { AuraRating, AuraRatingRetrieveResponse } from 'types';
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
-import { backendApi } from './index.ts';
+
+import { backendApi } from './index';
 
 export const rateUser = async (
   backendApi: AxiosInstance,

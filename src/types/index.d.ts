@@ -1,5 +1,5 @@
-import { AuraFilterId } from 'hooks/useFilters.ts';
-import { AuraSortId } from 'hooks/useSorts.ts';
+import { AuraFilterId } from 'hooks/useFilters';
+import { AuraSortId } from 'hooks/useSorts';
 
 export type AuthData = {
   brightId: string;

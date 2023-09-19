@@ -1,5 +1,6 @@
 import { Key, useState } from 'react';
-import { ModalItem } from './Modal/ModalItem.tsx';
+
+import { ModalItem } from './Modal/ModalItem';
 
 interface SelectableItem<T extends Key> {
   id: T;

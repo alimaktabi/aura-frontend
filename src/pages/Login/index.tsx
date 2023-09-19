@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from 'store';
-import { loginByExplorerCodeThunk } from 'store/profile/actions.ts';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { selectIsLoggedIn } from '../../store/profile/selectors.ts';
-import { decryptData } from '../../utils/crypto.ts';
-import { RoutePath } from 'types/router.ts';
+import { AppDispatch } from 'store';
+import { loginByExplorerCodeThunk } from 'store/profile/actions';
+import { RoutePath } from 'types/router';
+
+import { selectIsLoggedIn } from '../../store/profile/selectors';
+import { decryptData } from '../../utils/crypto';
 
 const Login = () => {
   const [explorerCode, setExplorerCode] = useState('');

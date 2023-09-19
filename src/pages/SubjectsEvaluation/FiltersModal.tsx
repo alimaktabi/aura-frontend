@@ -1,10 +1,11 @@
-import { ModalItem } from '../../components/Shared/Modal/ModalItem';
+import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
   AuraFilterOptions,
   useCategorizeAuraFilterOptions,
-} from 'hooks/useFilters.ts';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort.ts';
+} from 'hooks/useFilters';
+
+import { ModalItem } from '../../components/Shared/Modal/ModalItem';
 
 export function FiltersModal<T>({
   filters,
