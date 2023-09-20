@@ -7,14 +7,17 @@ const Index = () => {
   // Todo: Implement route stack
   const location = useLocation();
   const currentRouteObject = useMemo(
-    () => routes.find((route) => route.path === location.pathname),
+    //TODO: this slice 5 is a hotfix for handling parameters
+    () =>
+      routes.find(
+        (route) => route.path.slice(5) === location.pathname.slice(5),
+      ),
     [location.pathname],
   );
   let headerComponent = currentRouteObject?.header;
   const navigate = useNavigate();
   const onIconClick = useCallback(() => {
-    if (!currentRouteObject) return;
-    if (currentRouteObject.path === RoutePath.SUBJECTS_EVALUATION)
+    if (currentRouteObject?.path === RoutePath.SUBJECTS_EVALUATION)
       navigate(RoutePath.DASHBOARD);
     else navigate(-1);
   }, [currentRouteObject, navigate]);
@@ -22,7 +25,7 @@ const Index = () => {
   if (!headerComponent) {
     headerComponent = {
       title: '',
-      icon: 'back',
+      icon: '/assets/images/Header/back.svg',
     };
   }
 

@@ -49,7 +49,7 @@ const routes = [
     element: <SubjectProfile />,
     header: {
       title: 'Subject profile',
-      icon: '/assets/images/Dashboard/back.svg',
+      icon: '/assets/images/Header/back.svg',
     },
     requireAuth: false,
   },
