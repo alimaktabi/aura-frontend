@@ -50,7 +50,7 @@ export const ProfileInfo = ({
         {isPerformance ? (
           <PerformanceInfo color={color} />
         ) : (
-          <ConnectionsButton subjectId={subjectId} />
+          <ConnectionsButton subjectId={subjectId} name={name} />
         )}
       </div>
       <hr className="my-5 border-dashed" />
@@ -82,13 +82,16 @@ export const ProfileInfo = ({
 
 const ConnectionsButton = ({
   subjectId,
+  name,
 }: {
   subjectId: string | undefined;
+  name: string;
 }) => {
   const { inboundConnections } = useInboundConnections(subjectId);
 
   const [isConnectionsListModalOpen, setIsConnectionsListModalOpen] =
     useState(false);
+
   return (
     <>
       <div
@@ -107,7 +110,7 @@ const ConnectionsButton = ({
         </div>
       </div>
       <Modal
-        title={'Connections List'}
+        title={`${name}'s Connections List`}
         isOpen={isConnectionsListModalOpen}
         noButtonPadding={true}
         closeModalHandler={() => setIsConnectionsListModalOpen(false)}
