@@ -25,14 +25,22 @@ export const useSubjectRating = ({
   useEffect(() => {
     if (!fromSubjectId) return;
     setLoading(true);
-    getConnection(fromSubjectId, toSubjectId).then((conn) => {
-      if (mounted.current) {
-        if (conn.previousRating) {
-          setRating(conn.previousRating);
+    getConnection(fromSubjectId, toSubjectId)
+      .then((conn) => {
+        if (mounted.current) {
+          if (conn.previousRating) {
+            setRating(conn.previousRating);
+          }
+          setLoading(false);
         }
-        setLoading(false);
-      }
-    });
+      })
+      .catch((e) => {
+        if (e?.response?.data === 'No connection between these two brightId') {
+          setLoading(false);
+        } else {
+          throw e;
+        }
+      });
   }, [fromSubjectId, toSubjectId]);
 
   const confidenceValue = useMemo(
