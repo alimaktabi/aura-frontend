@@ -53,6 +53,10 @@ export const useSubjectBasicInfo = (subjectId: string | null | undefined) => {
 
   useEffect(() => {
     let mounted = true;
+    setLevel(null);
+    setUserHasRecovery(null);
+    setAuraPublicProfile(null);
+    setAuraScore(null);
     if (subjectId) {
       getVerifications(subjectId).then((verificationsResponse) => {
         if (mounted) {

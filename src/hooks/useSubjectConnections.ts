@@ -12,6 +12,7 @@ export const useInboundConnections = (subjectId: string | null | undefined) => {
   >(null);
   useEffect(() => {
     let mounted = true;
+    setInboundConnections(null);
     if (subjectId) {
       getInboundConnections(subjectId).then((connections) => {
         if (mounted) {
@@ -37,6 +38,7 @@ export const useOutboundConnections = (
   >(null);
   useEffect(() => {
     let mounted = true;
+    setOutboundConnections(null);
     if (subjectId) {
       getOutboundConnections(subjectId).then((connections) => {
         if (mounted) {

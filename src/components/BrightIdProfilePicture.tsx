@@ -8,13 +8,14 @@ import {
   selectBrightIdBackup,
 } from '../store/profile/selectors';
 
+const DEFAULT_PROFILE_PICTURE = '/assets/images/avatar-thumb.jpg';
 const BrightIdProfilePicture = ({
   subjectId,
   ...props
 }: React.HTMLAttributes<HTMLImageElement> & {
   subjectId: string | undefined;
 }) => {
-  const [imgSrc, setImgSrc] = useState('/assets/images/avatar-thumb.jpg');
+  const [imgSrc, setImgSrc] = useState(DEFAULT_PROFILE_PICTURE);
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useSelector(selectBrightIdBackup);
   useEffect(() => {
@@ -27,6 +28,7 @@ const BrightIdProfilePicture = ({
         !brightIdBackup.connections.find((conn) => conn.id === subjectId)
       )
         return;
+      setImgSrc(DEFAULT_PROFILE_PICTURE);
       try {
         const profilePhoto = await pullProfilePhoto(
           hash(authData.brightId + authData.password),

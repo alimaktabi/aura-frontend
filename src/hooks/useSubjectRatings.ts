@@ -9,6 +9,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
   );
   useEffect(() => {
     let mounted = true;
+    setInboundRatings(null);
     if (subjectId) {
       getInboundRatings(subjectId).then((ratings) => {
         if (mounted) {
@@ -43,6 +44,7 @@ export const useOutboundRatings = (subjectId: string | null | undefined) => {
   );
   useEffect(() => {
     let mounted = true;
+    setOutboundRatings(null);
     if (subjectId) {
       getOutboundRatings(subjectId).then((ratings) => {
         if (mounted) {
