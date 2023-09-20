@@ -14,7 +14,6 @@ const routes = [
     header: {
       title: 'Login',
       icon: null,
-      iconClicked: null,
     },
     requireAuth: false,
   },
@@ -24,7 +23,6 @@ const routes = [
     header: {
       title: 'Dashboard',
       icon: null,
-      iconClicked: null,
     },
     requireAuth: true,
   },
@@ -33,10 +31,7 @@ const routes = [
     element: <DomainOverview />,
     header: {
       title: 'Domain overview',
-      icon: 'home',
-      iconClicked: () => {
-        window.location.href = '/';
-      },
+      icon: '/assets/images/Header/home.svg',
     },
     requireAuth: true,
   },
@@ -45,10 +40,7 @@ const routes = [
     element: <SubjectsEvaluation />,
     header: {
       title: 'Subjects evaluation',
-      icon: 'back',
-      iconClicked: () => {
-        return;
-      },
+      icon: '/assets/images/Dashboard/setting-icon.svg',
     },
     requireAuth: true,
   },
@@ -57,10 +49,7 @@ const routes = [
     element: <SubjectProfile />,
     header: {
       title: 'Subject profile',
-      icon: 'back',
-      iconClicked: () => {
-        return;
-      },
+      icon: '/assets/images/Dashboard/back.svg',
     },
     requireAuth: false,
   },
@@ -69,10 +58,7 @@ const routes = [
     element: <PerformanceOverview />,
     header: {
       title: 'Player performance overview',
-      icon: 'back',
-      iconClicked: () => {
-        return;
-      },
+      icon: '/assets/images/Header/home.svg',
     },
     requireAuth: true,
   },

@@ -23,9 +23,6 @@ const Index = () => {
     headerComponent = {
       title: '',
       icon: 'back',
-      iconClicked: () => {
-        window.history.back();
-      },
     };
   }
 
@@ -39,11 +36,7 @@ const Index = () => {
       <span className="header-right flex items-center">
         {headerComponent.icon && (
           <span onClick={onIconClick} className="header-icon">
-            <img
-              className="w-6 h-6"
-              src={'/assets/images/Header/' + headerComponent.icon + '.svg'}
-              alt={''}
-            />
+            <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
           </span>
         )}
       </span>
