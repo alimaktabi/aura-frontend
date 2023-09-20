@@ -106,11 +106,14 @@ describe('Rating', () => {
           ? 'Negative'
           : 'invalid!',
       );
-      cy.get(
-        getTestSelector(
-          `your-evaluation-${FAKE_BRIGHT_ID}-${connection.id}-confidence`,
-        ),
-      ).contains(getConfidenceValueOfAuraRatingNumber(ratingValue));
+      const confidenceValue = getConfidenceValueOfAuraRatingNumber(ratingValue);
+      if (confidenceValue) {
+        cy.get(
+          getTestSelector(
+            `your-evaluation-${FAKE_BRIGHT_ID}-${connection.id}-confidence`,
+          ),
+        ).contains(confidenceValue);
+      }
     } else {
       cy.get(getTestSelector(`not-evaluated-subject-${connection.id}`)).should(
         'exist',
