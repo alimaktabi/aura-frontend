@@ -18,7 +18,7 @@ const Login = () => {
   const redirectAfterLogin = useCallback(() => {
     if (location.pathname === RoutePath.LOGIN) {
       const next = query.get('next');
-      navigate(next ?? RoutePath.DASHBOARD, { replace: true });
+      navigate(next ?? RoutePath.SUBJECTS_EVALUATION, { replace: true });
     }
   }, [location.pathname, navigate, query]);
 

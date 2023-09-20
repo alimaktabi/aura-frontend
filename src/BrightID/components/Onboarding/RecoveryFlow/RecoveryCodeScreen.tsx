@@ -213,7 +213,7 @@ const RecoveryCodeScreen = () => {
   const redirectAfterLogin = useCallback(() => {
     if (routerLocation.pathname === RoutePath.LOGIN) {
       const next = query.get('next');
-      navigate(next ?? RoutePath.DASHBOARD, { replace: true });
+      navigate(next ?? RoutePath.SUBJECTS_EVALUATION, { replace: true });
     }
   }, [routerLocation.pathname, navigate, query]);
   useEffect(() => {

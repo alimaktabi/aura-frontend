@@ -1,13 +1,23 @@
-import { useLocation } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import routes from 'Routes';
+import { RoutePath } from 'types/router';
 
 const Index = () => {
   // Todo: Implement route stack
   const location = useLocation();
-
-  let headerComponent = routes.find(
-    (route) => route.path === location.pathname,
-  )?.header;
+  const currentRouteObject = useMemo(
+    () => routes.find((route) => route.path === location.pathname),
+    [location.pathname],
+  );
+  let headerComponent = currentRouteObject?.header;
+  const navigate = useNavigate();
+  const onIconClick = useCallback(() => {
+    if (!currentRouteObject) return;
+    if (currentRouteObject.path === RoutePath.SUBJECTS_EVALUATION)
+      navigate(RoutePath.DASHBOARD);
+    else navigate(-1);
+  }, [currentRouteObject, navigate]);
 
   if (!headerComponent) {
     headerComponent = {
@@ -27,11 +37,10 @@ const Index = () => {
         </span>
       </span>
       <span className="header-right flex items-center">
-        {headerComponent.icon && headerComponent.iconClicked && (
-          <span onClick={headerComponent.iconClicked} className="header-icon">
+        {headerComponent.icon && (
+          <span onClick={onIconClick} className="header-icon">
             <img
               className="w-6 h-6"
-              onClick={headerComponent.iconClicked}
               src={'/assets/images/Header/' + headerComponent.icon + '.svg'}
               alt={''}
             />
