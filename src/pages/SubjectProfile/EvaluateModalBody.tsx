@@ -1,10 +1,12 @@
 import { backendApi } from 'api';
 import { rateUser } from 'api/rate.service';
+import { useBrowserHistoryContext } from 'contexts/BrowserHistoryContext';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { selectAuthData } from 'store/profile/selectors';
+import { RoutePath } from 'types/router';
 
 import ConfidenceDropdown from '../../components/Shared/ConfidenceDropdown';
 
@@ -28,23 +30,44 @@ const EvaluateModalBody = ({
   const [loading, setLoading] = useState(false);
   const authData = useSelector(selectAuthData);
   const navigate = useNavigate();
+  const { isFirstVisitedRoute } = useBrowserHistoryContext();
   const submitEvaluation = useCallback(async () => {
     if (loading || !authData?.brightId) return;
     setLoading(true);
     try {
-      await rateUser(backendApi, {
-        rating: isYes ? confidence : -1 * confidence,
-        fromBrightId: authData.brightId,
-        toBrightId: subjectId,
+      const newRating = isYes ? confidence : -1 * confidence;
+      console.log({
+        newRating,
+        prevRating,
       });
-      alert('Submitted!');
+      if (newRating !== prevRating) {
+        await rateUser(backendApi, {
+          rating: newRating,
+          fromBrightId: authData.brightId,
+          toBrightId: subjectId,
+        });
+      }
       onSubmitted();
-      navigate(-1);
+      if (isFirstVisitedRoute) {
+        navigate(RoutePath.SUBJECTS_EVALUATION);
+      } else {
+        navigate(-1);
+      }
     } catch (e) {
       alert(String(e));
     }
     setLoading(false);
-  }, [authData, confidence, isYes, loading, navigate, onSubmitted, subjectId]);
+  }, [
+    loading,
+    authData,
+    isYes,
+    confidence,
+    prevRating,
+    onSubmitted,
+    isFirstVisitedRoute,
+    subjectId,
+    navigate,
+  ]);
   return (
     <div className="">
       <p className="subtitle -mt-6 mb-6">
@@ -67,6 +90,7 @@ const EvaluateModalBody = ({
             className={`bg-transparent absolute w-1/2 left-0 top-1/2 -translate-y-1/2 text-center font-bold text-lg transition-all duration-300 ease-in-out ${
               isYes ? 'text-white' : 'text-black'
             }`}
+            data-testid={`evaluate-positive`}
             onClick={() => setIsYes(true)}
           >
             Yes
@@ -75,6 +99,7 @@ const EvaluateModalBody = ({
             className={`cursor-pointer bg-transparent absolute w-1/2 right-0 top-1/2 -translate-y-1/2 text-center font-bold text-lg transition-all duration-300 ease-in-out ${
               isYes ? 'text-black' : 'text-white'
             }`}
+            data-testid={`evaluate-negative`}
             onClick={() => setIsYes(false)}
           >
             No
@@ -87,7 +112,11 @@ const EvaluateModalBody = ({
         confidence={confidence}
         setConfidence={setConfidence}
       />
-      <button className="btn btn--big w-full mt-36" onClick={submitEvaluation}>
+      <button
+        data-testid="submit-evaluation"
+        className="btn btn--big w-full mt-36"
+        onClick={submitEvaluation}
+      >
         {loading ? '...' : 'Submit Evaluation'}
       </button>
     </div>

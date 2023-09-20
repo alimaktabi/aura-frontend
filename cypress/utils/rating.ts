@@ -1,4 +1,5 @@
 import { AuraConnectionResponse, AuraRating, Connection } from 'types';
+
 import {
   BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
@@ -97,7 +98,7 @@ export const newRatings: AuraRating[] = [
   },
   {
     ...getRatingObject(ratedConnectionNegative.id, oldRatings)!,
-    rating: '0.5',
+    rating: '1',
     updatedAt: '2021-07-13T20:59:03.036Z',
   },
   {

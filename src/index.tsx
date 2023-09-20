@@ -2,6 +2,7 @@ import './assets/fonts/fonts.css';
 import './App.scss';
 
 import NodeApiGateContextProvider from 'BrightID/components/NodeApiGate';
+import { BrowserHistoryContextProvider } from 'contexts/BrowserHistoryContext';
 import { SubjectsListContextProvider } from 'contexts/SubjectsListContext';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -41,7 +42,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <SubjectsListContextProvider>
           <NodeApiGateContextProvider>
             <BrowserRouter>
-              <App />
+              <BrowserHistoryContextProvider>
+                <App />
+              </BrowserHistoryContextProvider>
             </BrowserRouter>
           </NodeApiGateContextProvider>
         </SubjectsListContextProvider>

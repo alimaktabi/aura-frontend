@@ -15,7 +15,7 @@ import { YourEvaluation } from './YourEvaluation';
 
 const SubjectProfile = () => {
   const role = 'Player';
-  const noteExists = false; // new note or old note
+  const noteExists = useMemo(() => true, []); // new note or old note
   const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
     useState(false);
 
@@ -26,13 +26,22 @@ const SubjectProfile = () => {
     [authData?.brightId, subjectIdProp],
   );
   const { inboundRatings } = useInboundRatings(subjectId);
+  const hasNoteOrEvaluated = useMemo(() => {
+    if (noteExists) return true;
+    if (!authData?.brightId) return false;
+    const rating = inboundRatings?.find(
+      (r) => r.fromBrightId === authData?.brightId,
+    )?.rating;
+    return rating && Math.abs(Number(rating)) > 0;
+  }, [authData?.brightId, inboundRatings, noteExists]);
+
   if (!subjectId) {
     return <div>Unknown subject id</div>;
   }
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       <ProfileInfo subjectId={subjectId} />
-      {noteExists ? (
+      {hasNoteOrEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
       ) : (
         <NewEvaluationCard />

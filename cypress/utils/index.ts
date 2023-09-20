@@ -1,4 +1,4 @@
-import { RoutePath } from 'types/router';
+import { BRIGHT_ID_BACKUP } from './data';
 
 export const getTestSelector = (selectorId: string) =>
   `[data-testid=${selectorId}]`;
@@ -6,7 +6,6 @@ export const getTestSelector = (selectorId: string) =>
 export const getTestSelectorStartsWith = (selectorId: string) =>
   `[data-testid^=${selectorId}]`;
 
-export function getRoute(routePath: RoutePath) {
-  // return 'http://localhost:3000' + routePath
-  return routePath;
+export function getConnectionIndex(id: string) {
+  return BRIGHT_ID_BACKUP.connections.findIndex((c) => c.id === id);
 }

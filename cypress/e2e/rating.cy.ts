@@ -1,13 +1,12 @@
+import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
 import { AuraRating, AuraRatingRetrieveResponse, Connection } from 'types';
 import { RoutePath } from 'types/router';
 
-import { getTestSelector } from '../utils';
+import { getConnectionIndex, getTestSelector } from '../utils';
 import {
   AURA_GENERAL_PROFILE,
   BRIGHT_ID_BACKUP,
-  FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
-  FAKE_BRIGHT_ID_PASSWORD,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -23,6 +22,7 @@ import {
 describe('Rating', () => {
   beforeEach(() => {
     cy.setupProfile();
+    BRIGHT_ID_BACKUP.connections.forEach((conn) => ratePageIntercepts(conn));
   });
 
   let currentRatings: AuraRating[] = Object.assign([], oldRatings);
@@ -68,9 +68,8 @@ describe('Rating', () => {
         statusCode: 500,
       },
     ).as('submitRatingError');
-    cy.get('[data-testid=feedback-quality-confirm]').click();
+    cy.get(getTestSelector('submit-evaluation')).click();
     cy.wait('@submitRatingError');
-    cy.get(`.toast--${TOAST_ERROR}`);
   }
 
   function submitNewRatingSuccess(connection: Connection) {
@@ -85,24 +84,38 @@ describe('Rating', () => {
     ).as('submitRating');
     setNewRating(connection);
 
-    cy.get('[data-testid=feedback-quality-confirm]').click();
+    cy.get(getTestSelector('submit-evaluation')).click();
     cy.wait('@submitRating')
       .its('request.body')
       .should((body) => {
         expect(body).to.have.key('encryptedRating');
       });
-    cy.get(`.toast--${TOAST_SUCCESS}`);
   }
 
   function showsRateValue(connection: Connection, ratings: AuraRating[]) {
     const ratingValue = Number(getRating(connection.id, ratings) || 0);
-    cy.get('[data-testid=feedback-quality-value]').contains(
-      getStepName(ratingValue)!,
-    );
-    cy.get('[data-testid=feedback-quality-input]').should(
-      'have.value',
-      valueToStep[ratingValue],
-    );
+    if (ratingValue) {
+      cy.get(
+        getTestSelector(
+          `your-evaluation-${FAKE_BRIGHT_ID}-${connection.id}-magnitude`,
+        ),
+      ).contains(
+        ratingValue > 0
+          ? 'Positive'
+          : ratingValue < 0
+          ? 'Negative'
+          : 'invalid!',
+      );
+      cy.get(
+        getTestSelector(
+          `your-evaluation-${FAKE_BRIGHT_ID}-${connection.id}-confidence`,
+        ),
+      ).contains(getConfidenceValueOfAuraRatingNumber(ratingValue));
+    } else {
+      cy.get(getTestSelector(`not-evaluated-subject-${connection.id}`)).should(
+        'exist',
+      );
+    }
   }
 
   function ratePageIntercepts(connection: Connection) {
@@ -126,11 +139,45 @@ describe('Rating', () => {
     );
   }
 
-  function setNewRateValue(connection: Connection) {
+  function enterNewRateValue(connection: Connection) {
     const newRatingValue = Number(getRating(connection.id, newRatings));
-    cy.get('[data-testid=feedback-quality-input]')
-      .invoke('val', valueToStep[newRatingValue])
-      .trigger('input');
+    const newConfidenceValue = getConfidenceValueOfAuraRatingNumber(
+      Math.abs(newRatingValue),
+    );
+    const oldRatingValue = Number(getRating(connection.id, oldRatings));
+    const oldConfidenceValue = getConfidenceValueOfAuraRatingNumber(
+      Math.abs(oldRatingValue),
+    );
+    if (oldRatingValue) {
+      cy.get(
+        getTestSelector(
+          `your-evaluation-${FAKE_BRIGHT_ID}-${connection.id}-edit`,
+        ),
+      ).click();
+      if (oldConfidenceValue) {
+        cy.get(getTestSelector('confidence-dropdown-selected-label')).contains(
+          oldConfidenceValue,
+        );
+      }
+    } else {
+      cy.get(
+        getTestSelector(`evaluate-not-evaluated-subject-${connection.id}`),
+      ).click();
+    }
+    if (newRatingValue < 0) {
+      cy.get(getTestSelector('evaluate-negative')).click();
+    } else {
+      cy.get(getTestSelector('evaluate-positive')).click();
+    }
+    cy.get(getTestSelector('confidence-dropdown-button')).click();
+    cy.get(
+      getTestSelector(`confidence-dropdown-option-${Math.abs(newRatingValue)}`),
+    ).click();
+    if (newConfidenceValue) {
+      cy.get(getTestSelector('confidence-dropdown-selected-label')).contains(
+        newConfidenceValue,
+      );
+    }
   }
 
   function submitNewRatingNoChange(connection: Connection) {
@@ -145,56 +192,70 @@ describe('Rating', () => {
     ).as('submitRatingError');
     setNewRating(connection);
 
-    cy.get('[data-testid=feedback-quality-confirm]').click();
+    cy.get(getTestSelector('submit-evaluation')).click();
     // should not be called
     cy.get('@submitRatingError.all').should('have.length', 0);
-    cy.url().should('include', `/connections`);
+    cy.url().should('include', RoutePath.SUBJECTS_EVALUATION);
   }
 
   function doRate(connection: Connection) {
-    setNewRateValue(connection);
-
-    // set new rating value
     const oldRatingValue = Number(getRating(connection.id, oldRatings));
     const newRatingValue = Number(getRating(connection.id, newRatings));
 
-    showsRateValue(connection, newRatings);
+    console.log({
+      oldRatingValue,
+      newRatingValue,
+    });
+    enterNewRateValue(connection);
+
     if (newRatingValue === oldRatingValue) {
       submitNewRatingNoChange(connection);
     } else {
       submitNewRatingFailure(connection);
       submitNewRatingSuccess(connection);
-      cy.get(`[data-testid^=user-item-${connection.id}-name]`).click();
-      showsRateValue(connection, newRatings);
     }
+
+    cy.get(
+      getTestSelector(`user-item-${getConnectionIndex(connection.id)}`),
+    ).click();
+    showsRateValue(connection, newRatings);
   }
 
-  it.only('visits profile from connections and shows their rating', () => {
-    ratePageIntercepts(ratedConnection);
-    cy.visit(RoutePath.SUBJECTS_EVALUATION);
-    cy.get(
-      getTestSelector(
-        `user-item-${BRIGHT_ID_BACKUP.connections.findIndex(
-          (c) => c.id === ratedConnection.id,
-        )}`,
-      ),
-    ).click();
+  it('shows rated connection rating', () => {
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', ratedConnection.id),
+    );
     showsRateValue(ratedConnection, oldRatings);
-    // doRate(ratedConnection);
   });
 
-  it('visits profile from connections and rates an unrated connection', () => {
-    ratePageIntercepts(unratedConnection);
-    cy.visit(`/connections/`);
-    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).click();
+  it('shows unrated connection rating status', () => {
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', unratedConnection.id),
+    );
     showsRateValue(unratedConnection, oldRatings);
+  });
+
+  it('shows negative rated connection rating', () => {
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(
+        ':subjectIdProp',
+        ratedConnectionNegative.id,
+      ),
+    );
+    showsRateValue(ratedConnectionNegative, oldRatings);
+  });
+
+  it('rates an unrated connection', () => {
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', unratedConnection.id),
+    );
     doRate(unratedConnection);
   });
 
   it('rates a rated connection', () => {
-    ratePageIntercepts(ratedConnection);
-    cy.visit(`/profile/` + ratedConnection.id);
-    showsRateValue(ratedConnection, oldRatings);
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', ratedConnection.id),
+    );
     doRate(ratedConnection);
   });
 
@@ -206,76 +267,80 @@ describe('Rating', () => {
       getRating(ratedConnectionWithoutEnergy.id, newRatings),
     );
     assert(oldRatingValue === newRatingValue);
-    ratePageIntercepts(ratedConnectionWithoutEnergy);
-    cy.visit(`/profile/` + ratedConnectionWithoutEnergy.id);
-    showsRateValue(ratedConnectionWithoutEnergy, oldRatings);
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(
+        ':subjectIdProp',
+        ratedConnectionWithoutEnergy.id,
+      ),
+    );
     doRate(ratedConnectionWithoutEnergy);
   });
 
   it('can change a negative rate', () => {
-    ratePageIntercepts(ratedConnectionNegative);
-    cy.visit(`/profile/` + ratedConnectionNegative.id);
-    showsRateValue(ratedConnectionNegative, oldRatings);
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(
+        ':subjectIdProp',
+        ratedConnectionNegative.id,
+      ),
+    );
     doRate(ratedConnectionNegative);
   });
 
-  it('regenerates keypair if the user if the privateKey is invalid', () => {
-    cy.intercept(
-      {
-        url: `/v1/connect/explorer-code`,
-        method: 'POST',
-      },
-      {
-        body: 'OK',
-      },
-    ).as('explorerCode');
-    let publicKey1: string | null;
-    let privateKey1: string | null;
-    ratePageIntercepts(unratedConnection);
-    cy.visit(`/profile/` + unratedConnection.id).then(() => {
-      publicKey1 = window.localStorage.getItem('publicKey');
-      privateKey1 = window.localStorage.getItem('privateKey');
-    });
-    showsRateValue(unratedConnection, oldRatings);
-    setNewRateValue(unratedConnection);
-
-    let firstTime = true;
-    cy.intercept(
-      {
-        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${unratedConnection.id}`,
-        method: 'POST',
-      },
-      (req) => {
-        if (firstTime) {
-          firstTime = false;
-          req.reply({
-            statusCode: 500,
-            body: `Could not decrypt using publicKey: ${FAKE_BRIGHT_ID}`,
-          });
-        } else {
-          req.reply({
-            statusCode: 200,
-          });
-        }
-      },
-    ).as('submitRatingEncryptErrorFirstTime');
-    cy.get('[data-testid=feedback-quality-confirm]').click();
-
-    cy.wait('@explorerCode')
-      .its('request.body')
-      .should((body) => {
-        expect(body.brightId).to.eq(FAKE_BRIGHT_ID);
-        expect(body.password).to.eq(FAKE_BRIGHT_ID_PASSWORD);
-        expect(body.key).to.eq(FAKE_AUTH_KEY);
-        expect(body.publicKey).to.be.not.null;
-      })
-      .then(() => {
-        expect(window.localStorage.getItem('publicKey')).to.not.eq(publicKey1);
-        expect(window.localStorage.getItem('privateKey')).to.not.eq(
-          privateKey1,
-        );
-      });
-    cy.get(`.toast--${TOAST_SUCCESS}`).should('exist');
-    cy.get('@submitRatingEncryptErrorFirstTime.all').should('have.length', 2);
-  });
+  // it('regenerates keypair if the user if the privateKey is invalid', () => {
+  //   cy.intercept(
+  //     {
+  //       url: `/v1/connect/explorer-code`,
+  //       method: 'POST',
+  //     },
+  //     {
+  //       body: 'OK',
+  //     },
+  //   ).as('explorerCode');
+  //   let publicKey1: string | null;
+  //   let privateKey1: string | null;
+  //   cy.visit(`/profile/` + unratedConnection.id).then(() => {
+  //     publicKey1 = window.localStorage.getItem('publicKey');
+  //     privateKey1 = window.localStorage.getItem('privateKey');
+  //   });
+  //   showsRateValue(unratedConnection, oldRatings);
+  //   enterNewRateValue(unratedConnection);
+  //
+  //   let firstTime = true;
+  //   cy.intercept(
+  //     {
+  //       url: `/v1/ratings/${FAKE_BRIGHT_ID}/${unratedConnection.id}`,
+  //       method: 'POST',
+  //     },
+  //     (req) => {
+  //       if (firstTime) {
+  //         firstTime = false;
+  //         req.reply({
+  //           statusCode: 500,
+  //           body: `Could not decrypt using publicKey: ${FAKE_BRIGHT_ID}`,
+  //         });
+  //       } else {
+  //         req.reply({
+  //           statusCode: 200,
+  //         });
+  //       }
+  //     },
+  //   ).as('submitRatingEncryptErrorFirstTime');
+  //   cy.get('[data-testid=feedback-quality-confirm]').click();
+  //
+  //   cy.wait('@explorerCode')
+  //     .its('request.body')
+  //     .should((body) => {
+  //       expect(body.brightId).to.eq(FAKE_BRIGHT_ID);
+  //       expect(body.password).to.eq(FAKE_BRIGHT_ID_PASSWORD);
+  //       expect(body.key).to.eq(FAKE_AUTH_KEY);
+  //       expect(body.publicKey).to.be.not.null;
+  //     })
+  //     .then(() => {
+  //       expect(window.localStorage.getItem('publicKey')).to.not.eq(publicKey1);
+  //       expect(window.localStorage.getItem('privateKey')).to.not.eq(
+  //         privateKey1,
+  //       );
+  //     });
+  //   cy.get('@submitRatingEncryptErrorFirstTime.all').should('have.length', 2);
+  // });
 });

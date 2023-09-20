@@ -94,6 +94,15 @@ function connectionIntercepts(connection: Connection) {
       body: getConnectionResponse(connection, oldRatings),
     },
   );
+  cy.intercept(
+    {
+      url: `/node/v6/users/${connection.id}/connections/inbound`,
+      method: 'GET',
+    },
+    {
+      body: connectionIncomingConnectionsResponse,
+    },
+  );
 }
 
 Cypress.Commands.add('blockApiRequests', () => {
@@ -136,6 +145,15 @@ Cypress.Commands.add('profileIntercepts', () => {
   cy.intercept(
     {
       url: `/v1/profile/${FAKE_BRIGHT_ID}`,
+      method: 'GET',
+    },
+    {
+      body: AURA_PROFILE,
+    },
+  );
+  cy.intercept(
+    {
+      url: `/v1/profile/public/${FAKE_BRIGHT_ID}`,
       method: 'GET',
     },
     {

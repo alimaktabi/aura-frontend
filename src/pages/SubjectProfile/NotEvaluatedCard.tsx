@@ -12,6 +12,7 @@ const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
     <>
       <div className="flex items-center gap-2.5 justify-between">
         <div
+          data-testid={`evaluate-not-evaluated-subject-${subjectId}`}
           onClick={() => setIsEvaluateNowModalOpen(true)}
           className="flex-1 flex flex-col max-w-[136px] py-4 justify-center items-center bg-pastel-purple gap-2.5 rounded-lg cursor-pointer"
         >

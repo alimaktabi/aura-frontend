@@ -19,22 +19,27 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
 
   return (
     <div className="card flex flex-col gap-2.5">
-      <div className="font-medium">
-        {loading
-          ? '...'
-          : rating === null
-          ? 'You haven’t evaluated this subject yet'
-          : 'Your evaluation'}
-      </div>
       {loading ? (
-        <></>
+        <>...</>
       ) : rating === null ? (
-        <NotEvaluatedCard subjectId={subjectId} />
+        <>
+          <div
+            className="font-medium"
+            data-testid={`not-evaluated-subject-${subjectId}`}
+          >
+            You haven’t evaluated this subject yet
+          </div>
+          <NotEvaluatedCard subjectId={subjectId} />
+        </>
       ) : (
-        <EvaluationInfo
-          fromSubjectId={authData.brightId}
-          toSubjectId={subjectId}
-        />
+        <>
+          <div className="font-medium">Your evaluation</div>
+          <EvaluationInfo
+            isYourEvaluation={true}
+            fromSubjectId={authData.brightId}
+            toSubjectId={subjectId}
+          />
+        </>
       )}
     </div>
   );

@@ -2,31 +2,25 @@ import Modal from 'components/Shared/Modal';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { useSubjectRating } from '../../../hooks/useSubjectRating';
-import { selectAuthData } from '../../../store/profile/selectors';
 
 export const EvaluationInfo = ({
   fromSubjectId,
   toSubjectId,
+  isYourEvaluation = false,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  isYourEvaluation?: boolean;
 }) => {
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
-  const authData = useSelector(selectAuthData);
   const { name } = useSubjectBasicInfo(toSubjectId);
 
   const { rating, loading, confidenceValue } = useSubjectRating({
     fromSubjectId,
     toSubjectId,
   });
-
-  const isYourEvaluation = useMemo(
-    () => fromSubjectId === authData?.brightId,
-    [authData?.brightId, fromSubjectId],
-  );
 
   //TODO: get notes from api
   const notes = '';
@@ -85,8 +79,20 @@ export const EvaluationInfo = ({
           </div>
         ) : (
           <div>
-            <span className="font-medium">{styleValues.text}</span>
-            <span className="font-bold">
+            <span
+              className="font-medium"
+              data-testid={`${
+                isYourEvaluation ? 'your-' : ''
+              }evaluation-${fromSubjectId}-${toSubjectId}-magnitude`}
+            >
+              {styleValues.text}
+            </span>
+            <span
+              className="font-bold"
+              data-testid={`${
+                isYourEvaluation ? 'your-' : ''
+              }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}
+            >
               {confidenceValue ? ` - ${confidenceValue}` : ''}
             </span>
           </div>
@@ -96,6 +102,7 @@ export const EvaluationInfo = ({
           {isYourEvaluation && (
             <div
               className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
+              data-testid={`your-evaluation-${fromSubjectId}-${toSubjectId}-edit`}
               onClick={() => setIsEvaluateNowModalOpen(true)}
             >
               <img
@@ -114,6 +121,7 @@ export const EvaluationInfo = ({
         title={`Endorsing ${name}`}
       >
         <EvaluateModalBody
+          prevRating={rating?.rating ? Number(rating.rating) : undefined}
           subjectId={toSubjectId}
           onSubmitted={() => setIsEvaluateNowModalOpen(false)}
         />

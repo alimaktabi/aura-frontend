@@ -1,4 +1,4 @@
-import { getConfidenceValue } from 'constants/index';
+import { getConfidenceValueOfAuraRatingObject } from 'constants/index';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { getConnection } from '../api/connections.service';
@@ -35,7 +35,10 @@ export const useSubjectRating = ({
     });
   }, [fromSubjectId, toSubjectId]);
 
-  const confidenceValue = useMemo(() => getConfidenceValue(rating), [rating]);
+  const confidenceValue = useMemo(
+    () => getConfidenceValueOfAuraRatingObject(rating),
+    [rating],
+  );
 
   return { rating, loading, confidenceValue };
 };

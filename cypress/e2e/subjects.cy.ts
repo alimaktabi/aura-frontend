@@ -1,7 +1,7 @@
 import { Connection } from 'types';
 import { RoutePath } from 'types/router';
 
-import { getRoute, getTestSelector } from '../utils';
+import { getTestSelector } from '../utils';
 import {
   connectionsInConnectionsPageFilterAll,
   connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
@@ -14,7 +14,7 @@ import {
 describe('Connections Page', () => {
   beforeEach(() => {
     cy.setupProfile();
-    cy.visit(getRoute(RoutePath.SUBJECTS_EVALUATION));
+    cy.visit(RoutePath.SUBJECTS_EVALUATION);
   });
 
   function assertOrder(orderedConnections: Connection[]) {

@@ -11,32 +11,32 @@ const ConfidenceDropdown = ({
   const options = useMemo(
     () => [
       {
-        id: 1,
-        value: (
+        value: 1,
+        label: (
           <p>
             I have <strong>Low</strong> confidence
           </p>
         ),
       },
       {
-        id: 2,
-        value: (
+        value: 2,
+        label: (
           <p>
             I have <strong>Medium</strong> confidence
           </p>
         ),
       },
       {
-        id: 3,
-        value: (
+        value: 3,
+        label: (
           <p>
             I have <strong>High</strong> confidence
           </p>
         ),
       },
       {
-        id: 4,
-        value: (
+        value: 4,
+        label: (
           <p>
             I have <strong>Very High</strong> confidence
           </p>
@@ -48,7 +48,7 @@ const ConfidenceDropdown = ({
 
   const [selectedItem, setSelectedItem] = useState(options[0]);
   useEffect(() => {
-    const item = options.find((o) => o.id === confidence);
+    const item = options.find((o) => o.value === confidence);
     if (item) {
       setSelectedItem(item);
     }
@@ -56,13 +56,17 @@ const ConfidenceDropdown = ({
   return (
     <div className="dropdown cursor-pointer">
       <div
+        data-testid="confidence-dropdown-button"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className={`flex text-black relative items-center bg-white justify-between rounded-t-lg text-lg pl-5 md:pl-5 pr-3 h-12 md:h-12 cursor-pointer border border-gray10 ${
           !isDropdownOpen && 'rounded-b-lg'
         }`}
       >
-        <span className="flex gap-1.5 md:gap-2.5 items-center">
-          <p className="font-medium">{selectedItem.value}</p>
+        <span
+          className="flex gap-1.5 md:gap-2.5 items-center"
+          data-testid="confidence-dropdown-selected-label"
+        >
+          <p className="font-medium">{selectedItem.label}</p>
         </span>
 
         <img
@@ -74,15 +78,16 @@ const ConfidenceDropdown = ({
           <div className="dropdown__body absolute w-full top-full bg-white left-0 rounded-b-lg border border-gray10 ">
             {options.map((option) => (
               <div
-                key={option.id}
+                data-testid={`confidence-dropdown-option-${option.value}`}
+                key={option.value}
                 onClick={() => {
                   setSelectedItem(option);
-                  setConfidence(option.id);
+                  setConfidence(option.value);
                   setIsDropdownOpen(false);
                 }}
                 className="dropdown__item flex items-center justify-between px-5 h-12 cursor-pointer hover:bg-gray10"
               >
-                {option.value}
+                {option.label}
               </div>
             ))}
           </div>

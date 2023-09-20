@@ -1,10 +1,14 @@
 import useFilterAndSort from 'hooks/useFilterAndSort';
-import {AuraFilterId, AuraFilterOptions, useSubjectFilters,} from 'hooks/useFilters';
-import {AuraSortId, AuraSortOptions, useSubjectSorts} from 'hooks/useSorts';
-import React, {createContext, ReactNode, useContext, useMemo} from 'react';
-import {useSelector} from 'react-redux';
-import {selectBrightIdBackup} from 'store/profile/selectors';
-import {BrightIdConnection, Connection} from 'types';
+import {
+  AuraFilterId,
+  AuraFilterOptions,
+  useSubjectFilters,
+} from 'hooks/useFilters';
+import { AuraSortId, AuraSortOptions, useSubjectSorts } from 'hooks/useSorts';
+import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { selectBrightIdBackup } from 'store/profile/selectors';
+import { BrightIdConnection, Connection } from 'types';
 
 // Define the context
 const SubjectsListContext = createContext<
@@ -15,12 +19,12 @@ const SubjectsListContext = createContext<
   | null
 >(null);
 
-interface PlatformsProviderProps {
+interface ProviderProps {
   children: ReactNode;
 }
 
 // Define the Provider component
-export const SubjectsListContextProvider: React.FC<PlatformsProviderProps> = ({
+export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
   children,
 }) => {
   const brightIdBackup = useSelector(selectBrightIdBackup);
@@ -71,7 +75,6 @@ export const SubjectsListContextProvider: React.FC<PlatformsProviderProps> = ({
   );
 };
 
-// Use this hook in your components to get access to asset platform data
 export const useSubjectsListContext = () => {
   const context = useContext(SubjectsListContext);
   if (context === null) {
