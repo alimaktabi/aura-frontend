@@ -1,15 +1,15 @@
 import {
-  encryptData,
-  encryptUserData,
-  generateB64Keypair,
-  hash,
-} from 'utils/crypto';
-import {
   AuraConnectionsResponse,
   AuraProfile,
   BrightIdBackup,
   Connection,
 } from 'types';
+import {
+  encryptData,
+  encryptUserData,
+  generateB64Keypair,
+  hash,
+} from 'utils/crypto';
 
 const { publicKey, privateKey } = generateB64Keypair();
 export const FAKE_PRIVATE_KEY = privateKey;
@@ -291,5 +291,23 @@ export const verificationsResponse = {
         level: AURA_LEVEL,
       },
     ],
+  },
+};
+
+export const recoveryUserInfo = {
+  id: FAKE_BRIGHT_ID,
+  name: BRIGHT_ID_BACKUP.userData.name,
+  photo: BRIGHT_ID_BACKUP.userData.photo,
+  isSponsored: false,
+  isSponsoredv6: false,
+  backupCompleted: true,
+  password: FAKE_BRIGHT_ID_PASSWORD,
+  updateTimestamps: {
+    backupCompleted: 1668202684523,
+    isSponsored: 1668202684523,
+    isSponsoredv6: 0,
+    photo: 1668202684523,
+    name: 1668202684523,
+    password: 1668202684523,
   },
 };

@@ -38,7 +38,11 @@ const Index = () => {
       </span>
       <span className="header-right flex items-center">
         {headerComponent.icon && (
-          <span onClick={onIconClick} className="header-icon">
+          <span
+            onClick={onIconClick}
+            className="header-icon"
+            data-testid="nav-button"
+          >
             <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
           </span>
         )}

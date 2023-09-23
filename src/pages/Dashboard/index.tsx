@@ -133,7 +133,11 @@ const Dashboard = () => {
             <br /> Settings
           </p>
         </div>
-        <button className={'btn'} onClick={() => dispatch(resetStore())}>
+        <button
+          className={'btn'}
+          onClick={() => dispatch(resetStore())}
+          data-testid="logout-button"
+        >
           Logout
         </button>
       </div>

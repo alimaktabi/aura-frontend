@@ -110,6 +110,14 @@ Cypress.Commands.add('blockApiRequests', () => {
       statusCode: 404,
     },
   );
+  cy.intercept(
+    {
+      url: `**/auranode/**`,
+    },
+    {
+      statusCode: 404,
+    },
+  );
 });
 Cypress.Commands.add('profileIntercepts', () => {
   cy.intercept(

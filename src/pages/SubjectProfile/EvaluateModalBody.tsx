@@ -36,10 +36,6 @@ const EvaluateModalBody = ({
     setLoading(true);
     try {
       const newRating = isYes ? confidence : -1 * confidence;
-      console.log({
-        newRating,
-        prevRating,
-      });
       if (newRating !== prevRating) {
         await rateUser(backendApi, {
           rating: newRating,

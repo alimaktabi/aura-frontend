@@ -315,6 +315,7 @@ const RecoveryCodeScreen = () => {
                   <a
                     className="mt-2 text-blue-900 underline"
                     href={universalLink}
+                    data-testid="import-universal-link"
                   >
                     {universalLink}
                   </a>
