@@ -36,7 +36,6 @@ import {
   connectionOutboundConnectionsResponse,
 } from '../utils/mutual-connections';
 import {
-  getConnectionResponse,
   oldRatings,
   userIncomingRatingsResponse,
   userRatingsResponse,
@@ -83,15 +82,6 @@ function connectionIntercepts(connection: Connection) {
           (rating) => rating.toBrightId === connection.id,
         ),
       },
-    },
-  );
-  cy.intercept(
-    {
-      url: `/v1/connections/${FAKE_BRIGHT_ID}/${connection.id}`,
-      method: 'GET',
-    },
-    {
-      body: getConnectionResponse(connection, oldRatings),
     },
   );
   cy.intercept(

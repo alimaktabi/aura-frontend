@@ -149,15 +149,6 @@ export type AuraRatingRetrieveResponse = {
   ratings: AuraRating[];
 };
 
-export type AuraConnectionResponse = {
-  connectedTimestamp: number;
-  energyAllocated?: {
-    amount: number;
-  };
-  fourUnrated: AuraConnection[];
-  previousRating?: AuraRating;
-};
-
 export type AppToast = {
   text: string;
   color: 'success' | 'danger';

@@ -1,4 +1,4 @@
-import { AuraConnectionResponse, AuraRating, Connection } from 'types';
+import { AuraRating } from 'types';
 
 import {
   BRIGHT_ID_BACKUP,
@@ -159,18 +159,3 @@ export const connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateDesc
   [
     ...connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
   ].reverse();
-
-export function getConnectionResponse(
-  connection: Connection,
-  ratings: AuraRating[],
-) {
-  const obj: AuraConnectionResponse = {
-    connectedTimestamp: connection.timestamp,
-    fourUnrated: [],
-  };
-  const ratingObj = getRatingObject(connection.id, ratings);
-  if (ratingObj) {
-    obj.previousRating = ratingObj;
-  }
-  return obj;
-}

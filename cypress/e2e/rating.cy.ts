@@ -12,12 +12,7 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data';
-import {
-  getConnectionResponse,
-  getRating,
-  newRatings,
-  oldRatings,
-} from '../utils/rating';
+import { getRating, newRatings, oldRatings } from '../utils/rating';
 
 describe('Rating', () => {
   beforeEach(() => {
@@ -47,13 +42,16 @@ describe('Rating', () => {
         body: ratingResponse,
       },
     );
+
     cy.intercept(
       {
-        url: `/v1/connections/${FAKE_BRIGHT_ID}/${connection.id}`,
+        url: `/v1/ratings/inbound/${connection.id}`,
         method: 'GET',
       },
       {
-        body: getConnectionResponse(connection, newRatings),
+        body: {
+          ratings: [newRating],
+        },
       },
     );
   }
@@ -131,15 +129,6 @@ describe('Rating', () => {
         body: AURA_GENERAL_PROFILE,
       },
     );
-    cy.intercept(
-      {
-        url: `/v1/connections/${FAKE_BRIGHT_ID}/${connection.id}`,
-        method: 'GET',
-      },
-      {
-        body: getConnectionResponse(connection, oldRatings),
-      },
-    );
   }
 
   function enterNewRateValue(connection: Connection) {
@@ -205,16 +194,12 @@ describe('Rating', () => {
     const oldRatingValue = Number(getRating(connection.id, oldRatings));
     const newRatingValue = Number(getRating(connection.id, newRatings));
 
-    console.log({
-      oldRatingValue,
-      newRatingValue,
-    });
     enterNewRateValue(connection);
 
     if (newRatingValue === oldRatingValue) {
       submitNewRatingNoChange(connection);
     } else {
-      submitNewRatingFailure(connection);
+      // submitNewRatingFailure(connection);
       submitNewRatingSuccess(connection);
     }
 

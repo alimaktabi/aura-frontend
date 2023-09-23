@@ -1,7 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { CONNECTION_SEARCH_SEED } from 'constants/index';
 import {
-  AuraConnectionResponse,
   AuraConnectionsResponse,
   AuraProfile,
   AuraPublicProfile,
@@ -35,21 +34,6 @@ export const getOutboundConnections = async (toBrightId: string) => {
     `/node/v6/users/${toBrightId}/connections/outbound`,
   );
   return res.data.data.connections;
-};
-
-export const getConnection = async (
-  fromBrightId: string,
-  toBrightId: string,
-) => {
-  const res = await backendApi.get<AuraConnectionResponse>(
-    '/v1/connections/' + fromBrightId + '/' + toBrightId,
-  );
-
-  if (!res.data) {
-    throw new Error('data is not defined');
-  }
-
-  return res.data;
 };
 
 type ProfileApiResponse = AxiosResponse<AuraProfile | AuraPublicProfile>;

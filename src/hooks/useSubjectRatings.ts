@@ -7,12 +7,15 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
   const [inboundRatings, setInboundRatings] = useState<AuraRating[] | null>(
     null,
   );
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     let mounted = true;
+    setLoading(true);
     setInboundRatings(null);
     if (subjectId) {
       getInboundRatings(subjectId).then((ratings) => {
         if (mounted) {
+          setLoading(false);
           setInboundRatings(ratings);
         }
       });
@@ -33,6 +36,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     return `${inboundPositiveRatingsCount} Pos / ${inboundNegativeRatingsCount} Neg`;
   }, [inboundRatings]);
   return {
+    loading,
     inboundRatings,
     inboundRatingsStatsString,
   };
