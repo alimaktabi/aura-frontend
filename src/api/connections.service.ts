@@ -1,7 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { CONNECTION_SEARCH_SEED } from 'constants/index';
 import {
-  AuraConnectionsResponse,
   AuraProfile,
   AuraPublicProfile,
   BrightIdConnectionsResponse,
@@ -9,18 +7,6 @@ import {
 import { encryptDataWithPrivateKey } from 'utils/encryptWithPrivateKey';
 
 import { backendApi, brightIdNodeApi } from './index';
-
-export const getConnections = (
-  backendApi: AxiosInstance,
-  fromBrightId: string,
-) => {
-  return backendApi.get<AuraConnectionsResponse>('/v1/connections/search', {
-    params: {
-      fromBrightId,
-      seed: CONNECTION_SEARCH_SEED,
-    },
-  });
-};
 
 export const getInboundConnections = async (toBrightId: string) => {
   const res = await brightIdNodeApi.get<BrightIdConnectionsResponse>(

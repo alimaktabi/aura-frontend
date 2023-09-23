@@ -16,11 +16,9 @@
 // Import commands.js using ES2015 syntax:
 import './commands';
 
-import { CONNECTION_SEARCH_SEED } from 'constants/index';
 import { Connection } from 'types';
 
 import {
-  AURA_CONNECTIONS,
   AURA_GENERAL_PROFILE,
   AURA_PROFILE,
   BRIGHT_ID_BACKUP,
@@ -166,15 +164,6 @@ Cypress.Commands.add('profileIntercepts', () => {
     },
     {
       body: userIncomingRatingsResponse,
-    },
-  );
-  cy.intercept(
-    {
-      url: `/v1/connections/search?fromBrightId=${FAKE_BRIGHT_ID}&seed=${CONNECTION_SEARCH_SEED}`,
-      method: 'GET',
-    },
-    {
-      body: AURA_CONNECTIONS,
     },
   );
   // node api
