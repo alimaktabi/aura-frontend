@@ -128,7 +128,7 @@ Cypress.Commands.add('profileIntercepts', () => {
     {
       body: PROFILE_PICTURE,
     },
-  );
+  ).as('fakeProfilePicture');
   cy.intercept(
     {
       url: `/brightid/backups/${FAKE_AUTH_KEY}/data`,

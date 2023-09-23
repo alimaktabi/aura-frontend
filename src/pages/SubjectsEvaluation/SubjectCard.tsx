@@ -59,7 +59,10 @@ export const SubjectCard = ({
         </div>
         <div className="evaluation-left__bottom">
           <p className="text-sm text-gray20">Your evaluation</p>
-          <p className="font-medium">
+          <p
+            className="font-medium"
+            data-testid={`user-item-${index}-evaluation`}
+          >
             {loading ? (
               <span className="text-gray20">...</span>
             ) : Number(rating?.rating) > 0 ? (

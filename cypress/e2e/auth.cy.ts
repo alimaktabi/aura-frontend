@@ -171,8 +171,7 @@ describe('Auth', () => {
       },
     ).as('explorerCode');
     doLogin();
-    cy.get(getTestSelector(`user-item-0`))
-      .should('exist')
+    cy.wait('@fakeProfilePicture') // wait until page tries to load data
       .then(() => {
         const profileSliceData = JSON.parse(
           JSON.parse(window.localStorage.getItem('persist:root') || '{}')
