@@ -232,3 +232,8 @@ Cypress.on('uncaught:exception', () => {
   // returning false here prevents Cypress from failing the test
   return false;
 });
+
+Cypress.Commands.overwrite('intercept', (original, arg1, arg2, ...args) =>
+  // @ts-ignore
+  original(arg1, { ...arg2, log: false }, ...args),
+);
