@@ -19,10 +19,10 @@ describe('Connections Page', () => {
 
   function assertOrder(orderedConnections: Connection[]) {
     orderedConnections.forEach((c, index) => {
-      cy.get(`[data-testid=user-item-${index}]`).should('exist');
-      cy.get(`[data-testid=user-item-${index}-name]`).contains(c.name);
+      cy.get(getTestSelector(`user-item-${index}`)).should('exist');
+      cy.get(getTestSelector(`user-item-${index}-name`)).contains(c.name);
     });
-    cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
+    cy.get(getTestSelector(`user-item-${orderedConnections.length}`)).should(
       'not.exist',
     );
   }
@@ -145,7 +145,7 @@ describe('Connections Page', () => {
     );
 
     // navigate to another page
-    cy.get(`[data-testid=user-item-0]`).click();
+    cy.get(getTestSelector(`user-item-0`)).click();
     cy.go(-1);
 
     assertOrder(

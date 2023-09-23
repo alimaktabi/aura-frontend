@@ -171,8 +171,8 @@ describe('Auth', () => {
       },
     ).as('explorerCode');
     doLogin();
-    cy.url()
-      .should('include', RoutePath.SUBJECTS_EVALUATION)
+    cy.get(getTestSelector(`user-item-0`))
+      .should('exist')
       .then(() => {
         const profileSliceData = JSON.parse(
           JSON.parse(window.localStorage.getItem('persist:root') || '{}')
