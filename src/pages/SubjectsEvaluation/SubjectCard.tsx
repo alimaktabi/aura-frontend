@@ -1,3 +1,4 @@
+import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useSubjectRating } from 'hooks/useSubjectRating';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -5,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { selectAuthData } from 'store/profile/selectors';
 
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
-import { useSubjectBasicInfo } from '../../hooks/useSubjectBasicInfo';
 import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { compactFormat } from '../../utils/number';
 
@@ -16,7 +16,7 @@ export const SubjectCard = ({
   subjectId: string;
   index?: string | number;
 }) => {
-  const { level, name, auraScore } = useSubjectBasicInfo(subjectId);
+  const { level, name, auraScore } = useSubjectInfo(subjectId);
   const { inboundRatingsStatsString } = useInboundRatings(subjectId);
   const authData = useSelector(selectAuthData);
 

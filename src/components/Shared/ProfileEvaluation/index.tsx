@@ -1,4 +1,5 @@
-import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo';
+import { useSubjectInfo } from 'hooks/useSubjectInfo';
+
 import { compactFormat } from '../../../utils/number';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 import { EvaluationInfo } from '../EvaluationInfo';
@@ -12,7 +13,7 @@ const ProfileEvaluation = ({
   toSubjectId: string;
   className?: string;
 }) => {
-  const profile = useSubjectBasicInfo(fromSubjectId);
+  const profile = useSubjectInfo(fromSubjectId);
   // const { inboundConnections } = useInboundConnections(fromSubjectId);
   return (
     <div

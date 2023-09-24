@@ -1,4 +1,5 @@
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
+import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -25,6 +26,7 @@ const SubjectProfile = () => {
     () => subjectIdProp ?? authData?.brightId,
     [authData?.brightId, subjectIdProp],
   );
+  const { name } = useSubjectBasicInfo(subjectId);
   const { inboundRatings } = useInboundRatings(subjectId);
   const hasNoteOrEvaluated = useMemo(() => {
     if (noteExists) return true;
@@ -79,7 +81,7 @@ const SubjectProfile = () => {
         </div>
       </div>
       <Modal
-        title={'Evaluation List'}
+        title={`Evaluations on ${name}`}
         isOpen={isEvaluationListModalOpen}
         noButtonPadding={true}
         closeModalHandler={() => setIsEvaluationListModalOpen(false)}

@@ -1,4 +1,5 @@
-import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo';
+import { useSubjectInfo } from 'hooks/useSubjectInfo';
+
 import { useInboundRatings } from '../../../hooks/useSubjectRatings';
 import { compactFormat } from '../../../utils/number';
 
@@ -15,7 +16,7 @@ const EvaluationsDetails = ({
 }) => {
   const { inboundRatings, inboundRatingsStatsString } =
     useInboundRatings(subjectId);
-  const { auraScore } = useSubjectBasicInfo(subjectId);
+  const { auraScore } = useSubjectInfo(subjectId);
   return (
     <div className="card">
       {hasHeader && (

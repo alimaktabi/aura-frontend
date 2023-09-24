@@ -1,6 +1,6 @@
+import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useState } from 'react';
 
-import { useSubjectBasicInfo } from '../../../hooks/useSubjectBasicInfo';
 import { useInboundConnections } from '../../../hooks/useSubjectConnections';
 import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
@@ -16,7 +16,7 @@ export const ProfileInfo = ({
   color?: string;
 }) => {
   const { level, userHasRecovery, name, joinedDateString, auraPublicProfile } =
-    useSubjectBasicInfo(subjectId);
+    useSubjectInfo(subjectId);
 
   return (
     <div className="card">
