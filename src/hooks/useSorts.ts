@@ -16,6 +16,8 @@ export type AuraSortOption<T> = {
   id: AuraSortId;
   title: string;
   defaultAscending: boolean;
+  ascendingLabel?: string;
+  descendingLabel?: string;
   category: FilterOrSortCategory;
   func: (a: T, b: T) => number;
 };
@@ -54,6 +56,8 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
         title: 'Last Connection Update',
         defaultAscending: false,
         category: FilterOrSortCategory.Default,
+        ascendingLabel: 'Oldest',
+        descendingLabel: 'Newest',
         func: (a, b) =>
           new Date(b.timestamp ?? 0).getTime() -
           new Date(a.timestamp ?? 0).getTime(),

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface ModalItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ModalItemProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   icon?: string | null;
   isSelected: boolean;

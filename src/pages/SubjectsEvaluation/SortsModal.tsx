@@ -2,12 +2,52 @@ import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import {
   AuraSelectedSort,
   AuraSortId,
+  AuraSortOption,
   AuraSortOptions,
   useCategorizeAuraSortOptions,
 } from 'hooks/useSorts';
+import * as React from 'react';
 import { useCallback } from 'react';
 
 import { ModalItem } from '../../components/Shared/Modal/ModalItem';
+
+interface SortModalItemProps<T> extends React.HTMLAttributes<HTMLDivElement> {
+  isAscending: boolean;
+  testidPrefix?: string;
+  isSelectedSort: (id: AuraSortId, ascending: boolean) => boolean;
+  setSelectedSort: (id: AuraSortId, ascending?: boolean) => void;
+  item: AuraSortOption<T>;
+}
+
+function SortModalItem<T>({
+  isAscending,
+  testidPrefix,
+  item,
+  isSelectedSort,
+  setSelectedSort,
+  ...props
+}: SortModalItemProps<T>) {
+  return (
+    <ModalItem
+      data-testid={`${testidPrefix}-option-${item.title.split(' ').join('')}-${
+        isAscending ? 'ascending' : 'descending'
+      }`}
+      title={
+        isAscending
+          ? item.ascendingLabel || 'Ascending'
+          : item.descendingLabel || 'Descending'
+      }
+      isSelected={isSelectedSort(item.id, isAscending)}
+      onClick={() => setSelectedSort(item.id, isAscending)}
+      icon={
+        isAscending
+          ? '/assets/images/Shared/arrow-up-icon'
+          : '/assets/images/Shared/arrow-down-icon'
+      }
+      className="flex-1"
+    />
+  );
+}
 
 //TODO: merge this with FiltersModal
 export function SortsModal<T>({
@@ -43,25 +83,19 @@ export function SortsModal<T>({
             <div key={item.id}>
               <p className="text-black2">{item.title}</p>
               <div className="flex flex-row gap-2">
-                <ModalItem
-                  data-testid={`${testidPrefix}-option-${item.title
-                    .split(' ')
-                    .join('')}-ascending`}
-                  title="Ascending"
-                  isSelected={isSelectedSort(item.id, true)}
-                  onClick={() => setSelectedSort(item.id, true)}
-                  icon={'/assets/images/Shared/arrow-up-icon'}
-                  className="flex-1"
+                <SortModalItem
+                  testidPrefix={testidPrefix}
+                  item={item}
+                  isSelectedSort={isSelectedSort}
+                  setSelectedSort={setSelectedSort}
+                  isAscending={item.defaultAscending}
                 />
-                <ModalItem
-                  title="Descending"
-                  data-testid={`${testidPrefix}-option-${item.title
-                    .split(' ')
-                    .join('')}-descending`}
-                  isSelected={isSelectedSort(item.id, false)}
-                  onClick={() => setSelectedSort(item.id, false)}
-                  icon={'/assets/images/Shared/arrow-down-icon'}
-                  className="flex-1"
+                <SortModalItem
+                  testidPrefix={testidPrefix}
+                  item={item}
+                  isSelectedSort={isSelectedSort}
+                  setSelectedSort={setSelectedSort}
+                  isAscending={!item.defaultAscending}
                 />
               </div>
             </div>
