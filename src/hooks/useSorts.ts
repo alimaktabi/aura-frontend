@@ -97,8 +97,10 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
     const sorts: AuraSortOptions<AuraRating> = [
       {
         id: AuraSortId.RecentEvaluation,
-        title: 'Recent',
-        defaultAscending: true,
+        title: 'Recent Evaluation',
+        defaultAscending: false,
+        ascendingLabel: 'Oldest',
+        descendingLabel: 'Newest',
         category: FilterOrSortCategory.Default,
         func: (a, b) =>
           new Date(b.updatedAt ?? 0).getTime() -
@@ -107,7 +109,7 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
       {
         id: AuraSortId.EvaluationScore,
         title: 'Evaluation Score',
-        defaultAscending: true,
+        defaultAscending: false,
         category: FilterOrSortCategory.Default,
         func: (a, b) => Number(b.rating) - Number(a.rating),
       },

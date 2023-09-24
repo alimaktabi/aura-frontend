@@ -1,8 +1,10 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
+import { ModalItem } from 'components/Shared/Modal/ModalItem';
 import useFilterAndSort from 'hooks/useFilterAndSort';
 import { AuraFilterId, useEvaluationFilters } from 'hooks/useFilters';
-import { AuraSortId, useEvaluationSorts } from 'hooks/useSorts';
-import { useState } from 'react';
+import { AuraSortId, AuraSortOption, useEvaluationSorts } from 'hooks/useSorts';
+import { useCallback, useState } from 'react';
+import { AuraRating } from 'types';
 
 import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { SelectItems } from '../../components/Shared/SelectItems';
@@ -29,6 +31,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
     selectedSortId,
     setSelectedSort,
     itemsFiltered: inboundRatingsFiltered,
+    selectedSort,
   } = useFilterAndSort(inboundRatings, filters, sorts);
 
   const isManagerView = false;
@@ -42,6 +45,14 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
     setIsCurrentEpoch(false);
   };
 
+  const isSortItemAscending = useCallback(
+    function (item: AuraSortOption<AuraRating>) {
+      return selectedSort?.id === item.id
+        ? selectedSort.defaultAscending !== selectedSort.isReversed
+        : item.defaultAscending;
+    },
+    [selectedSort],
+  );
   return (
     <div className="flex flex-col gap-[18px] max-h-[600px]">
       {isManagerView && (
@@ -96,6 +107,15 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         items={filters}
         selectedItemId={selectedFilterId}
         setSelectedItemId={toggleFilterById}
+        renderItem={(item) => (
+          <ModalItem
+            key={item.id}
+            className="w-auto min-w-min"
+            title={item.title}
+            isSelected={item.id === selectedFilterId}
+            onClick={() => toggleFilterById(item.id)}
+          />
+        )}
       />
 
       <SelectItems
@@ -104,6 +124,32 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
         items={sorts}
         selectedItemId={selectedSortId}
         setSelectedItemId={(id) => setSelectedSort(id)}
+        renderItem={(item) => {
+          const isSelected = item.id === selectedSortId;
+          const ascending = isSortItemAscending(item);
+          const sortDirectionLabel = ascending
+            ? item.ascendingLabel
+            : item.descendingLabel;
+          return (
+            <ModalItem
+              key={item.id}
+              className="w-auto min-w-min"
+              title={
+                item.title +
+                (sortDirectionLabel ? ` (${sortDirectionLabel})` : '')
+              }
+              icon={
+                ascending
+                  ? '/assets/images/Shared/arrow-up-icon'
+                  : '/assets/images/Shared/arrow-down-icon'
+              }
+              isSelected={isSelected}
+              onClick={() =>
+                setSelectedSort(item.id, isSelected ? !ascending : ascending)
+              }
+            />
+          );
+        }}
       />
       <div className={'overflow-auto'}>
         <InfiniteScrollLocal
