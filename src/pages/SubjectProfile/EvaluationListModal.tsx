@@ -31,7 +31,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
     itemsFiltered: inboundRatingsFiltered,
   } = useFilterAndSort(inboundRatings, filters, sorts);
 
-  const isManagerView = true;
+  const isManagerView = false;
   const [isCurrentEpoch, setIsCurrentEpoch] = useState(true);
 
   const selectCurrentEpoch = () => {

@@ -27,8 +27,18 @@ export function SelectItems<T extends Key>({
       <div className="flex justify-between">
         <div className="flex gap-1">
           <p>{title}</p>
-          <span> (1)</span>
-          <span className="text-nl3 font-bold"> clear</span>
+          {selectedItemId !== null && (
+            <>
+              <span> (1)</span>
+              <span
+                className="text-nl3 font-bold cursor-pointer"
+                onClick={() => setSelectedItemId(null)}
+              >
+                {' '}
+                clear
+              </span>
+            </>
+          )}
         </div>
         <img
           className="cursor-pointer"

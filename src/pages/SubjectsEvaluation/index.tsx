@@ -15,11 +15,13 @@ const SubjectsEvaluation = () => {
       <p className="text-lg text-white mb-5 mt-7">
         Subjects{' '}
         <strong>({brightIdBackup?.connections.length ?? '...'})</strong>
-        {filteredSubjects?.length !== brightIdBackup?.connections.length && (
-          <span className="pl-2">
-            ({filteredSubjects?.length} filter results)
-          </span>
-        )}
+        {filteredSubjects !== null &&
+          filteredSubjects.length !== brightIdBackup?.connections.length && (
+            <span className="pl-2">
+              ({filteredSubjects.length} filter result
+              {filteredSubjects.length !== 1 ? 's' : ''})
+            </span>
+          )}
       </p>
       {filteredSubjects ? (
         <div className="overflow-auto flex-grow">
