@@ -21,7 +21,7 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
     <div className="card flex flex-col gap-2.5">
       {loading ? (
         <>...</>
-      ) : rating === null ? (
+      ) : rating === null || Number(rating.rating) === 0 ? (
         <>
           <div
             className="font-medium"
@@ -33,7 +33,7 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
         </>
       ) : (
         <>
-          <div className="font-medium flex">Your evaluation </div>
+          <div className="font-medium flex">Your evaluation</div>
           <EvaluationInfo
             isYourEvaluation={true}
             fromSubjectId={authData.brightId}

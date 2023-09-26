@@ -30,6 +30,16 @@ const EvaluateModalBody = ({
   const navigate = useNavigate();
   const { isFirstVisitedRoute } = useBrowserHistoryContext();
   const { submitEvaluation, loading } = useEvaluateSubject();
+
+  const onSubmittedLocal = useCallback(() => {
+    if (isFirstVisitedRoute) {
+      navigate(RoutePath.SUBJECTS_EVALUATION);
+    } else {
+      navigate(-1);
+    }
+    onSubmitted();
+  }, [isFirstVisitedRoute, navigate, onSubmitted]);
+
   const submit = useCallback(async () => {
     if (loading || !authData?.brightId) return;
     try {
@@ -37,26 +47,19 @@ const EvaluateModalBody = ({
       if (newRating !== prevRating) {
         await submitEvaluation(subjectId, newRating);
       }
-      onSubmitted();
-      if (isFirstVisitedRoute) {
-        navigate(RoutePath.SUBJECTS_EVALUATION);
-      } else {
-        navigate(-1);
-      }
+      onSubmittedLocal();
     } catch (e) {
       alert(String(e));
     }
   }, [
-    loading,
     authData,
-    isYes,
     confidence,
+    isYes,
+    loading,
+    onSubmittedLocal,
     prevRating,
-    onSubmitted,
-    isFirstVisitedRoute,
-    submitEvaluation,
     subjectId,
-    navigate,
+    submitEvaluation,
   ]);
 
   return (
@@ -69,7 +72,9 @@ const EvaluateModalBody = ({
       {prevRating && (
         <button
           className="-mt-3 mb-3 bg-red-500 text-white p-1.5 rounded-xl transition-colors duration-200 transform hover:bg-red-600 focus:outline-none focus:bg-red-600"
-          onClick={() => submitEvaluation(subjectId, 0)}
+          onClick={() => {
+            submitEvaluation(subjectId, 0).then(onSubmittedLocal);
+          }}
         >
           {loading ? 'Removing...' : 'Remove Your Evaluation'}
         </button>

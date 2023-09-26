@@ -93,7 +93,9 @@ export const EvaluationInfo = ({
                 isYourEvaluation ? 'your-' : ''
               }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}
             >
-              {confidenceValue ? ` - ${confidenceValue}` : ''}
+              {rating && Number(rating.rating) !== 0 && confidenceValue
+                ? ` - ${confidenceValue}`
+                : ''}
             </span>
           </div>
         )}
