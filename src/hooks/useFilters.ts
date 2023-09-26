@@ -188,5 +188,5 @@ export function useEvaluationFilters(filterIds: AuraFilterId[]) {
       .filter(
         (item) => item !== undefined,
       ) as AuraFilterOptions<AuraInboundConnectionAndRatingData>;
-  }, [filterIds]);
+  }, [brightIdBackup?.connections, filterIds]);
 }

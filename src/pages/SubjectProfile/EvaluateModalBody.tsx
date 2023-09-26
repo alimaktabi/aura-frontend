@@ -1,6 +1,5 @@
-import { backendApi } from 'api';
-import { rateUser } from 'api/rate.service';
 import { useBrowserHistoryContext } from 'contexts/BrowserHistoryContext';
+import { useEvaluateSubject } from 'hooks/useEvaluateSubject';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -27,21 +26,16 @@ const EvaluateModalBody = ({
     setConfidence(Math.abs(prevRating));
   }, [prevRating]);
   const { name } = useSubjectBasicInfo(subjectId);
-  const [loading, setLoading] = useState(false);
   const authData = useSelector(selectAuthData);
   const navigate = useNavigate();
   const { isFirstVisitedRoute } = useBrowserHistoryContext();
-  const submitEvaluation = useCallback(async () => {
+  const { submitEvaluation, loading } = useEvaluateSubject();
+  const submit = useCallback(async () => {
     if (loading || !authData?.brightId) return;
-    setLoading(true);
     try {
       const newRating = isYes ? confidence : -1 * confidence;
       if (newRating !== prevRating) {
-        await rateUser(backendApi, {
-          rating: newRating,
-          fromBrightId: authData.brightId,
-          toBrightId: subjectId,
-        });
+        await submitEvaluation(subjectId, newRating);
       }
       onSubmitted();
       if (isFirstVisitedRoute) {
@@ -52,7 +46,6 @@ const EvaluateModalBody = ({
     } catch (e) {
       alert(String(e));
     }
-    setLoading(false);
   }, [
     loading,
     authData,
@@ -61,15 +54,26 @@ const EvaluateModalBody = ({
     prevRating,
     onSubmitted,
     isFirstVisitedRoute,
+    submitEvaluation,
     subjectId,
     navigate,
   ]);
+
   return (
-    <div className="">
+    <div>
       <p className="subtitle -mt-6 mb-6">
         as a <span className="font-bold">subject</span> in{' '}
         <span className="font-bold">brightID</span> domain
       </p>
+
+      {prevRating && (
+        <button
+          className="-mt-3 mb-3 bg-red-500 text-white p-1.5 rounded-xl transition-colors duration-200 transform hover:bg-red-600 focus:outline-none focus:bg-red-600"
+          onClick={() => submitEvaluation(subjectId, 0)}
+        >
+          {loading ? 'Removing...' : 'Remove Your Evaluation'}
+        </button>
+      )}
 
       <p className="font-medium mb-2">
         Is this the account of {name} that should be Aura verified?
@@ -108,13 +112,15 @@ const EvaluateModalBody = ({
         confidence={confidence}
         setConfidence={setConfidence}
       />
-      <button
-        data-testid="submit-evaluation"
-        className="btn btn--big w-full mt-36"
-        onClick={submitEvaluation}
-      >
-        {loading ? '...' : 'Submit Evaluation'}
-      </button>
+      <div className="mt-36">
+        <button
+          data-testid="submit-evaluation"
+          className="btn btn--big w-full"
+          onClick={submit}
+        >
+          {loading ? '...' : 'Submit Evaluation'}
+        </button>
+      </div>
     </div>
   );
 };

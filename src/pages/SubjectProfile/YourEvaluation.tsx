@@ -33,7 +33,7 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
         </>
       ) : (
         <>
-          <div className="font-medium">Your evaluation</div>
+          <div className="font-medium flex">Your evaluation </div>
           <EvaluationInfo
             isYourEvaluation={true}
             fromSubjectId={authData.brightId}
