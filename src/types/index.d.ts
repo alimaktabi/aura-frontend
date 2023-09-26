@@ -145,6 +145,13 @@ export type AuraRating = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type AuraInboundConnectionAndRatingData = {
+  fromSubjectId: string;
+  rating?: AuraRating;
+  inboundConnection?: BrightIdConnection;
+};
+
 export type AuraRatingRetrieveResponse = {
   ratings: AuraRating[];
 };

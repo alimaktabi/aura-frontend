@@ -199,7 +199,7 @@ describe('Rating', () => {
     if (newRatingValue === oldRatingValue) {
       submitNewRatingNoChange(connection);
     } else {
-      // submitNewRatingFailure(connection);
+      // submitNewRatingFailure(inboundConnection);
       submitNewRatingSuccess(connection);
     }
 
@@ -209,21 +209,21 @@ describe('Rating', () => {
     showsRateValue(connection, newRatings);
   }
 
-  it('shows rated connection rating', () => {
+  it('shows rated inboundConnection rating', () => {
     cy.visit(
       RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', ratedConnection.id),
     );
     showsRateValue(ratedConnection, oldRatings);
   });
 
-  it('shows unrated connection rating status', () => {
+  it('shows unrated inboundConnection rating status', () => {
     cy.visit(
       RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', unratedConnection.id),
     );
     showsRateValue(unratedConnection, oldRatings);
   });
 
-  it('shows negative rated connection rating', () => {
+  it('shows negative rated inboundConnection rating', () => {
     cy.visit(
       RoutePath.SUBJECT_PROFILE.replace(
         ':subjectIdProp',
@@ -233,14 +233,14 @@ describe('Rating', () => {
     showsRateValue(ratedConnectionNegative, oldRatings);
   });
 
-  it('rates an unrated connection', () => {
+  it('rates an unrated inboundConnection', () => {
     cy.visit(
       RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', unratedConnection.id),
     );
     doRate(unratedConnection);
   });
 
-  it('rates a rated connection', () => {
+  it('rates a rated inboundConnection', () => {
     cy.visit(
       RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', ratedConnection.id),
     );

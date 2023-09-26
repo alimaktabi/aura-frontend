@@ -1,12 +1,13 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import { ModalItem } from 'components/Shared/Modal/ModalItem';
+import ProfileEvaluationByOthers from 'components/Shared/ProfileEvaluation/ProfileEvaluationByOthers';
 import useFilterAndSort from 'hooks/useFilterAndSort';
 import { AuraFilterId, useEvaluationFilters } from 'hooks/useFilters';
 import { AuraSortId, AuraSortOption, useEvaluationSorts } from 'hooks/useSorts';
-import { useCallback, useState } from 'react';
-import { AuraRating } from 'types';
+import { useSubjectConnections } from 'hooks/useSubjectConnections';
+import { useCallback, useMemo, useState } from 'react';
+import { AuraInboundConnectionAndRatingData } from 'types';
 
-import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { SelectItems } from '../../components/Shared/SelectItems';
 import { useInboundRatings } from '../../hooks/useSubjectRatings';
 
@@ -24,15 +25,38 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   ]);
 
   const { inboundRatings } = useInboundRatings(subjectId);
+  const subjectConnections = useSubjectConnections(subjectId);
+
+  const inboundOpinions: AuraInboundConnectionAndRatingData[] = useMemo(() => {
+    const inboundConnections = subjectConnections.inboundConnections;
+    if (!inboundConnections || inboundRatings === null) return [];
+    const inboundOpinions: AuraInboundConnectionAndRatingData[] =
+      inboundConnections.map((c) => ({
+        fromSubjectId: c.id,
+        rating: inboundRatings.find((r) => r.fromBrightId === c.id),
+        inboundConnection: c,
+      }));
+    inboundRatings.forEach((r) => {
+      const isNotConnection =
+        inboundConnections.findIndex((c) => c.id === r.fromBrightId) === -1;
+      if (isNotConnection) {
+        inboundOpinions.push({
+          fromSubjectId: r.fromBrightId,
+          rating: r,
+        });
+      }
+    });
+    return inboundOpinions;
+  }, [inboundRatings, subjectConnections.inboundConnections]);
 
   const {
     selectedFilterId,
     toggleFilterById,
     selectedSortId,
     setSelectedSort,
-    itemsFiltered: inboundRatingsFiltered,
+    itemsFiltered: inboundOpinionsFiltered,
     selectedSort,
-  } = useFilterAndSort(inboundRatings, filters, sorts);
+  } = useFilterAndSort(inboundOpinions, filters, sorts);
 
   const isManagerView = false;
   const [isCurrentEpoch, setIsCurrentEpoch] = useState(true);
@@ -46,7 +70,7 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
   };
 
   const isSortItemAscending = useCallback(
-    function (item: AuraSortOption<AuraRating>) {
+    function (item: AuraSortOption<AuraInboundConnectionAndRatingData>) {
       return selectedSort?.id === item.id
         ? selectedSort.defaultAscending !== selectedSort.isReversed
         : item.defaultAscending;
@@ -154,11 +178,13 @@ export const EvaluationListModal = ({ subjectId }: { subjectId: string }) => {
       <div className={'overflow-auto'}>
         <InfiniteScrollLocal
           className={'flex flex-col gap-2.5 w-full -mb-5 pb-5'}
-          items={inboundRatingsFiltered}
-          renderItem={(rating) => (
-            <SubjectEvaluation
-              fromSubjectId={rating.fromBrightId}
-              toSubjectId={rating.toBrightId}
+          items={inboundOpinionsFiltered}
+          renderItem={(item) => (
+            <ProfileEvaluationByOthers
+              evaluatorOpinionAboutSubject={item}
+              subjectConnections={subjectConnections}
+              evaluatorId={item.fromSubjectId}
+              subjectId={subjectId}
               className="!min-w-[305px] !py-5"
             />
           )}

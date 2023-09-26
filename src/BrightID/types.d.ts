@@ -156,10 +156,10 @@ declare global {
   type PendingConnectionState = keyof typeof pendingConnection_states;
 
   /**
-   * PendingConnectionData contains all available info about a pending connection
-   * - existingConnection, if there already is a connection to this user
-   * - sharedProfile: The connection data that was shared via channel
-   * - profileInfo: The connection data that was obtained via brightID node API
+   * PendingConnectionData contains all available info about a pending inboundConnection
+   * - existingConnection, if there already is a inboundConnection to this user
+   * - sharedProfile: The inboundConnection data that was shared via channel
+   * - profileInfo: The inboundConnection data that was obtained via brightID node API
    */
   type PendingConnectionData = {
     existingConnection?: Connection;
@@ -170,10 +170,10 @@ declare global {
   };
 
   /**
-   * Pending connection is made of
+   * Pending inboundConnection is made of
    * - identifier (channelId, profileId)
    * - state
-   * The actual connection data is downloaded from a channel and stored in pendingConnectionData.
+   * The actual inboundConnection data is downloaded from a channel and stored in pendingConnectionData.
    */
   type PendingConnection = {
     profileId: string;

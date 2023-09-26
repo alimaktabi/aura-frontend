@@ -54,7 +54,7 @@ export const loadRecoveryData = async (
   const data = JSON.parse(dataString);
   if (!data.signingKey || !data.timestamp) {
     throw new Error(
-      'Please ask the connection to reload their QR code and try again',
+      'Please ask the inboundConnection to reload their QR code and try again',
     );
   }
   return data;

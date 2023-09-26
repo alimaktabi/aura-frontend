@@ -1,6 +1,6 @@
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import { useMemo } from 'react';
-import { AuraRating, BrightIdConnection } from 'types';
+import { AuraInboundConnectionAndRatingData, BrightIdConnection } from 'types';
 
 export enum AuraSortId {
   RecentEvaluation = 1,
@@ -94,7 +94,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
 
 export function useEvaluationSorts(sortIds: AuraSortId[]) {
   return useMemo(() => {
-    const sorts: AuraSortOptions<AuraRating> = [
+    const sorts: AuraSortOptions<AuraInboundConnectionAndRatingData> = [
       {
         id: AuraSortId.RecentEvaluation,
         title: 'Recent Evaluation',
@@ -103,15 +103,19 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
         descendingLabel: 'Newest',
         category: FilterOrSortCategory.Default,
         func: (a, b) =>
-          new Date(b.updatedAt ?? 0).getTime() -
-          new Date(a.updatedAt ?? 0).getTime(),
+          new Date(b.rating?.updatedAt ?? 0).getTime() -
+          new Date(a.rating?.updatedAt ?? 0).getTime(),
       },
       {
         id: AuraSortId.EvaluationScore,
         title: 'Evaluation Score',
         defaultAscending: false,
         category: FilterOrSortCategory.Default,
-        func: (a, b) => Number(b.rating) - Number(a.rating),
+        func: (a, b) => {
+          return (
+            Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
+          );
+        },
       },
       {
         id: AuraSortId.EvaluationPlayerScore,
@@ -123,6 +127,8 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
     ];
     return sortIds
       .map((id) => sorts.find((f) => f.id === id))
-      .filter((item) => item !== undefined) as AuraSortOptions<AuraRating>;
+      .filter(
+        (item) => item !== undefined,
+      ) as AuraSortOptions<AuraInboundConnectionAndRatingData>;
   }, [sortIds]);
 }

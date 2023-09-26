@@ -3,7 +3,7 @@ import { useOutboundRatings } from 'hooks/useSubjectRatings';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectBrightIdBackup } from 'store/profile/selectors';
-import { AuraRating, BrightIdConnection } from 'types';
+import { AuraInboundConnectionAndRatingData, BrightIdConnection } from 'types';
 
 export enum AuraFilterId {
   EvaluationMutualConnections = 1,
@@ -158,31 +158,35 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
 export function useEvaluationFilters(filterIds: AuraFilterId[]) {
   const brightIdBackup = useSelector(selectBrightIdBackup);
   return useMemo(() => {
-    const filters: AuraFilterOptions<AuraRating> = [
+    const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
       {
         id: AuraFilterId.EvaluationMutualConnections,
         category: FilterOrSortCategory.Default,
         title: 'Mutual Connections',
         func: (item) =>
           !!brightIdBackup?.connections.find(
-            (conn) => item.fromBrightId === conn.id,
+            (conn) => item.rating?.fromBrightId === conn.id,
           ),
       },
       {
         id: AuraFilterId.EvaluationPositiveEvaluations,
         category: FilterOrSortCategory.Default,
         title: 'Positive Evaluations',
-        func: (item) => Number(item.rating) > 0,
+        func: (item) =>
+          item.rating !== undefined && Number(item.rating.rating) > 0,
       },
       {
         id: AuraFilterId.EvaluationNegativeEvaluations,
         category: FilterOrSortCategory.Default,
         title: 'Negative Evaluations',
-        func: (item) => Number(item.rating) < 0,
+        func: (item) =>
+          item.rating !== undefined && Number(item.rating.rating) < 0,
       },
     ];
     return filterIds
       .map((id) => filters.find((f) => f.id === id))
-      .filter((item) => item !== undefined) as AuraFilterOptions<AuraRating>;
-  }, [brightIdBackup?.connections, filterIds]);
+      .filter(
+        (item) => item !== undefined,
+      ) as AuraFilterOptions<AuraInboundConnectionAndRatingData>;
+  }, [filterIds]);
 }

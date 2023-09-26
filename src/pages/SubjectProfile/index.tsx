@@ -1,4 +1,5 @@
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
+import SubjectEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluationByMe';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -6,7 +7,6 @@ import { useParams } from 'react-router-dom';
 
 import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import { Modal } from '../../components/Shared/Modal';
-import SubjectEvaluation from '../../components/Shared/ProfileEvaluation';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { selectAuthData } from '../../store/profile/selectors';
@@ -37,10 +37,9 @@ const SubjectProfile = () => {
     return rating && Math.abs(Number(rating)) > 0;
   }, [authData?.brightId, inboundRatings, noteExists]);
 
-  if (!subjectId) {
-    return <div>Unknown subject id</div>;
-  }
-  return (
+  return !subjectId ? (
+    <div>Unknown subject id</div>
+  ) : (
     <div className="page page__dashboard flex flex-col gap-4">
       <ProfileInfo subjectId={subjectId} />
       {hasNoteOrEvaluated ? (
