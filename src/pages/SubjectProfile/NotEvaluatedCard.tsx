@@ -18,10 +18,10 @@ const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
         >
           <img
             className="h-8 w-auto -mr-1"
-            src="/assets/images/SubjectProfile/evaluate-now.svg"
+            src="/assets/images/SubjectProfile/evaluate-now-black.svg"
             alt=""
           />
-          <p className="font-bold text-sm text-white">Evaluate now!</p>
+          <p className="font-bold text-sm">Evaluate now!</p>
         </div>
         <p className="font-medium text-sm">Or</p>
         <div className="flex-1 flex flex-col max-w-[136px] py-4 justify-center items-center bg-pastel-purple-25 gap-2.5 rounded-lg">
