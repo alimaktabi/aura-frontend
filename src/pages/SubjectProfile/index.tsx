@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import { Modal } from '../../components/Shared/Modal';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
+import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { selectAuthData } from '../../store/profile/selectors';
 import { EvaluationListModal } from './EvaluationListModal';
@@ -37,6 +38,8 @@ const SubjectProfile = () => {
     return rating && Math.abs(Number(rating)) > 0;
   }, [authData?.brightId, inboundRatings, noteExists]);
 
+  const [isOverviewSelected, setIsOverviewSelected] = useState(true);
+
   return !subjectId ? (
     <div>Unknown subject id</div>
   ) : (
@@ -49,6 +52,12 @@ const SubjectProfile = () => {
       )}
       {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
+      <ToggleInput
+        option1="Overview"
+        option2="Detailed List"
+        isChecked={isOverviewSelected}
+        setIsChecked={setIsOverviewSelected}
+      />
       <EvaluationsDetails subjectId={subjectId} />
       {/* could have header based on the role */}
       <div>
