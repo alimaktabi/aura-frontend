@@ -23,7 +23,26 @@ const EvaluationsDetails = ({
         <div className=" mb-4 font-bold text-lg text-black">{title}</div>
       )}
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1.5">
+        <ShowData title="Connections" value={186} details={null} />
+        <div className="filters flex items-center justify-end gap-1">
+          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+            <img src="/assets/images/Shared/already-known-icon.svg" alt="" />
+            <p className="text-sm text-black">32</p>
+          </span>
+          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+            <img src="/assets/images/Shared/happy-icon.svg" alt="" />
+            <p className="text-sm text-black">2</p>
+          </span>
+          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+            <img src="/assets/images/Shared/poker-icon.svg" alt="" />
+            <p className="text-sm text-black">232</p>
+          </span>
+          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+            <img src="/assets/images/Shared/sad-icon.svg" alt="" />
+            <p className="text-sm text-black">12</p>
+          </span>
+        </div>
         <div className="header__info flex flex-col gap-1">
           <ShowData
             title="Evaluations"
