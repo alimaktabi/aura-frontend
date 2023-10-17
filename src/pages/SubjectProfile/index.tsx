@@ -58,26 +58,10 @@ const SubjectProfile = () => {
         isChecked={isOverviewSelected}
         setIsChecked={setIsOverviewSelected}
       />
-      <EvaluationsDetails subjectId={subjectId} />
-      {/* could have header based on the role */}
-      <div>
-        <div className="mb-2 flex justify-between">
-          <p className="text-lg text-white">Other Evaluations</p>
-          <div className="flex items-center gap-1.5">
-            <p
-              onClick={() => setIsEvaluationListModalOpen(true)}
-              className="underline text-sm text-white cursor-pointer"
-            >
-              See all
-            </p>
-            <img
-              src="/assets/images/Shared/arrow-right-icon-white.svg"
-              alt=""
-              className="w-4 h-4"
-            />
-          </div>
-        </div>
-        <div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">
+      {isOverviewSelected ? (
+        <EvaluationsDetails subjectId={subjectId} />
+      ) : (
+        <>
           {inboundRatings?.slice(0, 4).map((rating) => (
             <SubjectEvaluation
               key={rating.id}
@@ -86,8 +70,37 @@ const SubjectProfile = () => {
               className="!min-w-[305px] !py-5"
             />
           ))}
-        </div>
-      </div>
+        </>
+      )}
+      {/* could have header based on the role */}
+      {/*<div>*/}
+      {/*	<div className="mb-2 flex justify-between">*/}
+      {/*		<p className="text-lg text-white">Other Evaluations</p>*/}
+      {/*		<div className="flex items-center gap-1.5">*/}
+      {/*			<p*/}
+      {/*				onClick={() => setIsEvaluationListModalOpen(true)}*/}
+      {/*				className="underline text-sm text-white cursor-pointer"*/}
+      {/*			>*/}
+      {/*				See all*/}
+      {/*			</p>*/}
+      {/*			<img*/}
+      {/*				src="/assets/images/Shared/arrow-right-icon-white.svg"*/}
+      {/*				alt=""*/}
+      {/*				className="w-4 h-4"*/}
+      {/*			/>*/}
+      {/*		</div>*/}
+      {/*	</div>*/}
+      {/*	<div className="flex gap-2.5 w-full overflow-x-auto !min-w-[100vw] -ml-5 px-5">*/}
+      {/*		{inboundRatings?.slice(0, 4).map((rating) => (*/}
+      {/*			<SubjectEvaluation*/}
+      {/*				key={rating.id}*/}
+      {/*				fromSubjectId={rating.fromBrightId}*/}
+      {/*				toSubjectId={rating.toBrightId}*/}
+      {/*				className="!min-w-[305px] !py-5"*/}
+      {/*			/>*/}
+      {/*		))}*/}
+      {/*	</div>*/}
+      {/*</div>*/}
       <Modal
         title={`Evaluations on ${name}`}
         isOpen={isEvaluationListModalOpen}
