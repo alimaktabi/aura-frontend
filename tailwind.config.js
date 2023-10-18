@@ -19,6 +19,7 @@ export default {
         'pastel-blue': '#A5C4FF',
         'green-card': '#C0E6C9',
         'red-card': '#E6C0C0',
+        'soft-bright': '#FFEAD1',
         black2: '#2C2C2C',
         pl1: '#C0E6C9',
         pl2: '#72BF83',

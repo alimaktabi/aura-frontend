@@ -11,6 +11,7 @@ import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { selectAuthData } from '../../store/profile/selectors';
+import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
 import { EvaluationListModal } from './EvaluationListModal';
 import NewEvaluationCard from './NewEvaluationCard';
 import { YourEvaluation } from './YourEvaluation';
@@ -62,6 +63,8 @@ const SubjectProfile = () => {
         <EvaluationsDetails subjectId={subjectId} />
       ) : (
         <>
+          <SubjectSearch />
+
           {inboundRatings?.slice(0, 4).map((rating) => (
             <SubjectEvaluation
               key={rating.id}
