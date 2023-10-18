@@ -241,7 +241,10 @@ Cypress.on('uncaught:exception', () => {
   return false;
 });
 
-Cypress.Commands.overwrite('intercept', (original, arg1, arg2, ...args) =>
-  // @ts-ignore
-  original(arg1, { ...arg2, log: false }, ...args),
-);
+Cypress.Commands.overwrite('intercept', (original, arg1, arg2, ...args) => {
+  if (typeof arg2 === 'object' && arg2.constructor !== RegExp) {
+    // @ts-ignore
+    return original(arg1, { ...arg2, log: false }, ...args);
+  }
+  return original(arg1, arg2, ...args);
+});
