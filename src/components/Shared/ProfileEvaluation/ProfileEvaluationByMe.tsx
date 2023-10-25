@@ -50,13 +50,7 @@ const ProfileEvaluationByMe = ({
               )}
               <p className="text-black">:</p>
               {Math.random() > 0.5 ? (
-                <div className="flex rounded bg-soft-bright justify-evenly w-[55px] h-6 items-center">
-                  <img
-                    src="/assets/images/Shared/left-arrow.svg"
-                    className="w-3.5 h-3.5"
-                    alt=""
-                  />
-                  <img src="/assets/images/Shared/dash-line.svg" alt="" />
+                <div className="flex rounded bg-soft-bright justify-evenly w-[30px] h-6 items-center">
                   <img
                     src="/assets/images/Shared/already-known-icon-black.svg"
                     className="w-3.5 h-3.5"
