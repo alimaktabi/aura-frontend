@@ -41,6 +41,7 @@ export const profileSlice = createSlice({
       .addMatcher(
         (action) => action.type === RESET_STORE,
         () => {
+          console.log('logout called');
           return initialProfileState;
         },
       );
