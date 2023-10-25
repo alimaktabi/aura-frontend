@@ -1,7 +1,7 @@
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
 import SubjectEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluationByMe';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { selectAuthData } from '../../store/profile/selectors';
+import EvaluateOverlayCard from '../SubjectsEvaluation/EvaluateOverlayCard';
 import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
 import { EvaluationListModal } from './EvaluationListModal';
 import NewEvaluationCard from './NewEvaluationCard';
@@ -41,10 +42,49 @@ const SubjectProfile = () => {
 
   const [isOverviewSelected, setIsOverviewSelected] = useState(true);
 
+  const [showEvaluateOverlayCard, setShowEvaluateOverlayCard] = useState(false);
+
+  const handleScroll = () => {
+    console.log(
+      'handleScroll',
+      document.getElementsByClassName('page')[0]?.scrollTop,
+    );
+    const scrollPosition =
+      document.getElementsByClassName('page')[0]?.scrollTop; // => scroll position
+    if (scrollPosition > 350) {
+      setShowEvaluateOverlayCard(true);
+    } else {
+      setShowEvaluateOverlayCard(false);
+    }
+  };
+
+  useEffect(() => {
+    handleScroll();
+    document
+      .getElementsByClassName('page')[0]
+      ?.addEventListener('scroll', handleScroll);
+    return () => {
+      document
+        .getElementsByClassName('page')[0]
+        ?.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return !subjectId ? (
     <div>Unknown subject id</div>
   ) : (
     <div className="page page__dashboard flex flex-col gap-4">
+      {!isOverviewSelected && (
+        <EvaluateOverlayCard
+          className={`absolute top-24 z-10 right-5 left-5 min-h-[89px] transition-all ${
+            showEvaluateOverlayCard
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-60 opacity-0'
+          }`}
+          subjectId={subjectId}
+        />
+      )}
+
       <ProfileInfo subjectId={subjectId} />
       {hasNoteOrEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
