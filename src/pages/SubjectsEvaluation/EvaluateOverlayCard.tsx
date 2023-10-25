@@ -43,7 +43,7 @@ const EvaluateOverlayCard = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center bg-pastel-purple text-black min-w-[90px] py-2 rounded-md">
+        <div className="flex flex-col justify-center cursor-pointer items-center bg-pastel-purple text-black min-w-[90px] py-2 rounded-md">
           <img
             src="/assets/images/SubjectProfile/subject-evaluation.svg"
             alt=""
