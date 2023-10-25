@@ -7,7 +7,7 @@ import { __DEV__ } from 'utils/env';
 const ProdCandidates = [AURA_NODE_URL_PROXY];
 const TestCandidates = [AURA_NODE_URL_PROXY];
 
-interface SettingsSlice {
+export interface SettingsSlice {
   baseUrl: string | null;
   nodeUrls: Array<string>;
   isPrimaryDevice: boolean;
