@@ -27,12 +27,16 @@ export const profileSlice = createSlice({
     builder
       .addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
         state.authData = action.payload;
+        console.log('loginByExplorerCodeThunk.fulfilled');
+        console.log(state);
       })
       .addCase(refreshKeyPairThunk.fulfilled, (state, action) => {
         state.authData = action.payload;
       })
       .addCase(getBrightIdBackupThunk.fulfilled, (state, action) => {
         state.brightIdBackupEncrypted = action.payload;
+        console.log('getBrightIdBackupThunk.fulfilled');
+        console.log(state);
       })
       .addMatcher(
         (action) => action.type === RESET_STORE,
