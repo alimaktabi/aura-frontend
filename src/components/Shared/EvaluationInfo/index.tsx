@@ -103,7 +103,7 @@ export const EvaluationInfo = ({
               </div>
             )}
             <div className="flex items-center gap-2">
-              <span className="font-medium">{'%12'}</span>
+              <span className="font-medium">{'12%'}</span>
               {isYourEvaluation && (
                 <div
                   className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
