@@ -68,7 +68,7 @@ const EvaluationsDetails = ({
         <div className="header__info flex flex-col gap-1">
           <ShowData
             title="Evaluations"
-            value={inboundRatings?.length}
+            value={inboundRatings?.filter((r) => Number(r.rating)).length}
             details={
               inboundRatingsStatsString
                 ? `(${inboundRatingsStatsString})`
