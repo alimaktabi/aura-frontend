@@ -45,10 +45,6 @@ const SubjectProfile = () => {
   const [showEvaluateOverlayCard, setShowEvaluateOverlayCard] = useState(false);
 
   const handleScroll = () => {
-    console.log(
-      'handleScroll',
-      document.getElementsByClassName('page')[0]?.scrollTop,
-    );
     const scrollPosition =
       document.getElementsByClassName('page')[0]?.scrollTop; // => scroll position
     if (scrollPosition > 100) {
