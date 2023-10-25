@@ -10,7 +10,7 @@ export const ToggleInput = ({
   setIsChecked: (isChecked: boolean) => void;
 }) => {
   return (
-    <div className="px-1.5 py-1.5 w-full h-[48px] rounded-lg bg-white-90-card">
+    <div className="px-1.5 py-1.5 w-full min-h-[48px] rounded-lg bg-white-90-card">
       <div className={'flex flex-wrap relative h-full'}>
         <p
           className={`background bg-pastel-purple absolute w-1/2 top-0 bottom-0 rounded-md transition-all duration-300 ease-in-out ${
