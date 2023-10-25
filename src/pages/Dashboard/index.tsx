@@ -1,4 +1,3 @@
-import { resetStore } from 'BrightID/actions';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'store/hooks';
@@ -133,13 +132,6 @@ const Dashboard = () => {
             <br /> Settings
           </p>
         </div>
-        <button
-          className={'btn'}
-          onClick={() => dispatch(resetStore())}
-          data-testid="logout-button"
-        >
-          Logout
-        </button>
       </div>
       <Modal
         title={'Role Selection'}
