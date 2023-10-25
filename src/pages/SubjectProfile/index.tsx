@@ -51,7 +51,7 @@ const SubjectProfile = () => {
     );
     const scrollPosition =
       document.getElementsByClassName('page')[0]?.scrollTop; // => scroll position
-    if (scrollPosition > 350) {
+    if (scrollPosition > 100) {
       setShowEvaluateOverlayCard(true);
     } else {
       setShowEvaluateOverlayCard(false);
@@ -76,7 +76,7 @@ const SubjectProfile = () => {
     <div className="page page__dashboard flex flex-col gap-4">
       {!isOverviewSelected && (
         <EvaluateOverlayCard
-          className={`absolute top-24 z-10 right-5 left-5 min-h-[89px] transition-all ${
+          className={`absolute top-24 z-10 min-h-[89px] transition-all min-w-[403px] max-w-[403px] ${
             showEvaluateOverlayCard
               ? 'translate-y-0 opacity-100'
               : '-translate-y-60 opacity-0'
