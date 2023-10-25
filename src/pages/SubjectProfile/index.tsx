@@ -105,7 +105,7 @@ const SubjectProfile = () => {
         <>
           <SubjectSearch />
 
-          {inboundRatings?.slice(0, 4).map((rating) => (
+          {inboundRatings?.map((rating) => (
             <SubjectEvaluation
               key={rating.id}
               fromSubjectId={rating.fromBrightId}

@@ -1,3 +1,4 @@
+import { useInboundConnections } from 'hooks/useSubjectConnections';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
 
 import { useInboundRatings } from '../../../hooks/useSubjectRatings';
@@ -17,6 +18,8 @@ const EvaluationsDetails = ({
   const { inboundRatings, inboundRatingsStatsString } =
     useInboundRatings(subjectId);
   const { auraScore } = useSubjectInfo(subjectId);
+  const { inboundConnections } = useInboundConnections(subjectId);
+
   return (
     <div className="card">
       {hasHeader && (
@@ -24,23 +27,42 @@ const EvaluationsDetails = ({
       )}
 
       <div className="flex flex-col gap-1.5">
-        <ShowData title="Connections" value={186} details={null} />
+        <ShowData
+          title="Connections"
+          value={inboundConnections?.length ?? '...'}
+          details={null}
+        />
         <div className="filters flex items-center justify-end gap-1">
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img src="/assets/images/Shared/already-known-icon.svg" alt="" />
-            <p className="text-sm text-black">32</p>
+            <p className="text-sm text-black">
+              {inboundConnections?.filter((conn) => conn.level === 'recovery')
+                .length ?? '...'}
+            </p>
           </span>
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img src="/assets/images/Shared/happy-icon.svg" alt="" />
-            <p className="text-sm text-black">2</p>
+            <p className="text-sm text-black">
+              {inboundConnections?.filter(
+                (conn) => conn.level === 'already known',
+              ).length ?? '...'}
+            </p>
           </span>
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img src="/assets/images/Shared/poker-icon.svg" alt="" />
-            <p className="text-sm text-black">232</p>
+            <p className="text-sm text-black">
+              {inboundConnections?.filter((conn) => conn.level === 'just met')
+                .length ?? '...'}
+            </p>
           </span>
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img src="/assets/images/Shared/sad-icon.svg" alt="" />
-            <p className="text-sm text-black">12</p>
+            <p className="text-sm text-black">
+              {inboundConnections?.filter(
+                (conn) =>
+                  conn.level === 'suspicious' || conn.level === 'reported',
+              ).length ?? '...'}
+            </p>
           </span>
         </div>
         <div className="header__info flex flex-col gap-1">
