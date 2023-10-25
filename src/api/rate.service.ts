@@ -66,7 +66,6 @@ export const getInboundRatings = async (
     if (!res?.data?.ratings) {
       throw new Error('Data is not defined');
     }
-    console.log(res.data);
     return res.data.ratings;
   } catch (error: any) {
     if (error?.response?.data === 'No public key defined for brightId') {
