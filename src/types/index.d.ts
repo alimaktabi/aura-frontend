@@ -1,6 +1,3 @@
-import { AuraFilterId } from 'hooks/useFilters';
-import { AuraSortId } from 'hooks/useSorts';
-
 export type AuthData = {
   brightId: string;
   publicKey: string;
@@ -10,12 +7,6 @@ export type AuthData = {
 export type AuthDataWithPassword = AuthData & {
   password: string;
 };
-
-export enum SortItemState {
-  ASC = 'ASC',
-  DEC = 'DEC',
-  OFF = 'OFF',
-}
 
 export type ConnectionLevel =
   | 'reported'
@@ -62,19 +53,6 @@ export type BrightIdBackup = {
   groups: any[];
 };
 
-export type LocalBrightIdBackup = {
-  connections: Connection[];
-  groups: any[];
-  profile: {
-    id: string;
-    name: string;
-    photo: {
-      filename: string;
-    };
-    password: string;
-  };
-};
-
 export type InboundEnergyAllocationItem = {
   fromBrightId: string;
   amount: number;
@@ -98,45 +76,6 @@ export type EnergyAllocationUpdateResponse = {
   energyAllocation: EnergyAllocationList;
 };
 
-export type AuraConnection = {
-  _id: string;
-  _key: string;
-  _rev: string;
-  createdAt: number;
-  // eslint-disable-next-line camelcase
-  eligible_groups?: [];
-  // eslint-disable-next-line camelcase
-  eligible_timestamp?: number;
-  parent: string;
-  signingKeys: string[];
-  conn?: {
-    _key: string;
-    _id: string;
-    _from: string;
-    _to: string;
-    _rev: string;
-    initTimestamp: number;
-    level: string;
-    replacedWith: null;
-    reportReason: string | null;
-    timestamp: number;
-  };
-};
-export type AuraConnectionsResponse = {
-  connections: AuraConnection[];
-};
-
-export type AuraPublicProfile = {
-  createdAt: number;
-  numOfConnections: number;
-  rating: number;
-};
-
-export type AuraProfile = AuraPublicProfile & {
-  fourUnrated: AuraConnection[];
-  nicknames: any[];
-};
-
 export type AuraRating = {
   id: number;
   toBrightId: string;
@@ -154,14 +93,4 @@ export type AuraInboundConnectionAndRatingData = {
 
 export type AuraRatingRetrieveResponse = {
   ratings: AuraRating[];
-};
-
-export type AppToast = {
-  text: string;
-  color: 'success' | 'danger';
-};
-
-export type FilterAndSortLocalStorage = {
-  selectedFilterId: AuraFilterId | null;
-  selectedSortId: AuraSortId | null;
 };

@@ -19,15 +19,13 @@ import './commands';
 import { Connection } from 'types';
 
 import {
-  AURA_GENERAL_PROFILE,
-  AURA_PROFILE,
   BRIGHT_ID_BACKUP,
   BRIGHT_ID_BACKUP_ENCRYPTED,
+  brightIdProfileResponse,
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
   LOCAL_STORAGE_DATA,
   PROFILE_PICTURE,
-  verificationsResponse,
 } from '../utils/data';
 import {
   connectionIncomingConnectionsResponse,
@@ -40,24 +38,6 @@ import {
 } from '../utils/rating';
 
 function connectionIntercepts(connection: Connection) {
-  cy.intercept(
-    {
-      url: `/v1/profile/${connection.id}`,
-      method: 'GET',
-    },
-    {
-      body: AURA_GENERAL_PROFILE,
-    },
-  );
-  cy.intercept(
-    {
-      url: `/v1/profile/public/${connection.id}`,
-      method: 'GET',
-    },
-    {
-      body: AURA_GENERAL_PROFILE,
-    },
-  );
   cy.intercept(
     {
       url: `/v1/ratings/${connection.id}`,
@@ -140,24 +120,6 @@ Cypress.Commands.add('profileIntercepts', () => {
   );
   cy.intercept(
     {
-      url: `/v1/profile/${FAKE_BRIGHT_ID}`,
-      method: 'GET',
-    },
-    {
-      body: AURA_PROFILE,
-    },
-  );
-  cy.intercept(
-    {
-      url: `/v1/profile/public/${FAKE_BRIGHT_ID}`,
-      method: 'GET',
-    },
-    {
-      body: AURA_PROFILE,
-    },
-  );
-  cy.intercept(
-    {
       url: `/v1/ratings/${FAKE_BRIGHT_ID}`,
       method: 'GET',
     },
@@ -177,11 +139,11 @@ Cypress.Commands.add('profileIntercepts', () => {
   // node api
   cy.intercept(
     {
-      url: `auranode/brightid/v6/users/*/verifications`,
+      url: `auranode/brightid/v6/users/*/profile`,
       method: 'GET',
     },
     {
-      body: verificationsResponse,
+      body: brightIdProfileResponse,
     },
   );
 

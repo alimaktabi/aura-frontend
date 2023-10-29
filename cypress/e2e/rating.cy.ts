@@ -4,8 +4,6 @@ import { RoutePath } from 'types/router';
 
 import { getConnectionIndex, getTestSelector } from '../utils';
 import {
-  AURA_GENERAL_PROFILE,
-  BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
   ratedConnection,
   ratedConnectionNegative,
@@ -17,7 +15,6 @@ import { getRating, newRatings, oldRatings } from '../utils/rating';
 describe('Rating', () => {
   beforeEach(() => {
     cy.setupProfile();
-    BRIGHT_ID_BACKUP.connections.forEach((conn) => ratePageIntercepts(conn));
   });
 
   let currentRatings: AuraRating[] = Object.assign([], oldRatings);
@@ -117,18 +114,6 @@ describe('Rating', () => {
         'exist',
       );
     }
-  }
-
-  function ratePageIntercepts(connection: Connection) {
-    cy.intercept(
-      {
-        url: `/v1/profile/${connection.id}`,
-        method: 'GET',
-      },
-      {
-        body: AURA_GENERAL_PROFILE,
-      },
-    );
   }
 
   function enterNewRateValue(connection: Connection) {

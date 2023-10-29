@@ -1,9 +1,5 @@
-import {
-  AuraConnectionsResponse,
-  AuraProfile,
-  BrightIdBackup,
-  Connection,
-} from 'types';
+import { BrightIdProfile, Verifications } from 'api/auranode.service';
+import { BrightIdBackup, Connection } from 'types';
 import {
   encryptData,
   encryptUserData,
@@ -228,51 +224,6 @@ export const LOCAL_STORAGE_DATA = {
   }),
   _persist: JSON.stringify({ version: -1, rehydrated: true }),
 };
-export const AURA_CONNECTIONS: AuraConnectionsResponse = {
-  connections: BRIGHT_ID_BACKUP.connections.map((connection) => ({
-    _id: `users/${connection.id}`,
-    _key: connection.id,
-    _rev: '_dK3nJ5y-1-',
-    createdAt: RANDOM_TIMESTAMP,
-    eligible_groups: [],
-    eligible_timestamp: RANDOM_TIMESTAMP + 1000000000,
-    parent: RANDOM_HASH,
-    signingKeys: [toSigningKey(connection.id)],
-    conn: {
-      _key: '97656970088',
-      _id: 'connections/97656970088',
-      _from: `users/${FAKE_BRIGHT_ID}`,
-      _to: `users/${connection.id}`,
-      _rev: '_dK3anJ5y-A',
-      initTimestamp: RANDOM_TIMESTAMP,
-      level: connection.level,
-      replacedWith: null,
-      reportReason: connection.reportReason,
-      timestamp: RANDOM_TIMESTAMP,
-    },
-  })),
-};
-
-export const AURA_PROFILE: AuraProfile = {
-  numOfConnections: BRIGHT_ID_BACKUP.connections.length,
-  createdAt: RANDOM_TIMESTAMP,
-  fourUnrated: [
-    AURA_CONNECTIONS.connections.find(
-      (con) => con._id.replace('users/', '') === unratedConnection.id,
-    )!,
-  ],
-  rating: 0,
-  nicknames: [],
-};
-
-export const AURA_GENERAL_PROFILE: AuraProfile = {
-  numOfConnections: 5,
-  createdAt: RANDOM_TIMESTAMP,
-  fourUnrated: [],
-  rating: 0,
-  nicknames: [],
-};
-
 export const PROFILE_PICTURE = encryptData(
   'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAC0ALQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwb/xAAcEAEBAQACAwEAAAAAAAAAAAAAEQEhQTFRYZH/xAAZAQEBAQEBAQAAAAAAAAAAAAAAAQIDBgf/xAAWEQEBAQAAAAAAAAAAAAAAAAAAEQH/2gAMAwEAAhEDEQA/APTqDyr6YAIAsASKKCCiAAIAQAWCUTFBAAABQSCiJXMWDo0AqIigCKABgqUQi4FABAASgKCIoBQihRBRKMAOigEAIolCAIABRekwiggsBEVRN0RQQABAFQTBQSueYKOlbAEoAQA8qBQFRKkFCoAIALClRQQTFAQqLBKE+CgRz0FdG0FVEqCgUAQEUEAxcSlSKFBAVERRRUhFBABAACsCjdaABAgqUSCwEBFASLDMQSKsIAAiioCUFIlKi4EEAAYMUbaqKAFAKiKKioRQAVEqACFBSFRFAABNAUKIKFGExTG2gUECCoqQKCBoqUqKQEAANASgoACkSlIAIuCAMYBjbQUAoKJUIAAAgChQhBUEigUoAIAIAoVQBBzWEHQAAD8FiUQiwCgogGAIAAAqCKCUwAADFxKILwCVzFHStEBUEUCpQBABQQXMCqAIACICgUBUqIoAYGArEAddUAZQAXVX2AgAAZyAgTkwERVgGoigiiAopnQAQBB//9k=',
   FAKE_BRIGHT_ID_PASSWORD,
@@ -280,17 +231,25 @@ export const PROFILE_PICTURE = encryptData(
 
 export const AURA_LEVEL = 'Bronze';
 
-export const verificationsResponse = {
+export const verificationsResponse: { data: { verifications: Verifications } } =
+  {
+    data: {
+      verifications: [
+        {
+          name: 'Aura',
+          block: 11760650,
+          timestamp: 1698721975910,
+          score: 100223.774421,
+          level: AURA_LEVEL,
+        },
+      ],
+    },
+  };
+
+export const brightIdProfileResponse: { data: BrightIdProfile } = {
   data: {
-    verifications: [
-      {
-        name: 'Aura',
-        block: 11760650,
-        timestamp: 1698721975910,
-        score: 100223.774421,
-        level: AURA_LEVEL,
-      },
-    ],
+    verifications: verificationsResponse.data.verifications,
+    createdAt: RANDOM_TIMESTAMP,
   },
 };
 

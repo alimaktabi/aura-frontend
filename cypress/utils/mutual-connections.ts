@@ -1,6 +1,5 @@
 import { connectionLevelMap } from 'constants/index';
 import {
-  AuraProfile,
   AuraRating,
   BrightIdConnection,
   BrightIdConnectionsResponse,
@@ -63,15 +62,6 @@ export const connectionOutboundConnectionsResponse: BrightIdConnectionsResponse 
       connections: connectionOutboundConnections,
     },
   };
-
-export const connectionProfile: AuraProfile = {
-  numOfConnections:
-    connectionIncomingConnectionsResponse.data.connections.length,
-  createdAt: RANDOM_TIMESTAMP,
-  fourUnrated: [],
-  rating: 0,
-  nicknames: [],
-};
 
 export const connectionIncomingRatings: AuraRating[] = [
   {
