@@ -1,7 +1,9 @@
+import { resetStore } from 'BrightID/actions';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'store/hooks';
 import { RoutePath } from 'types/router';
+import { __DEV__ } from 'utils/env';
 
 import { Modal } from '../../components/Shared/Modal';
 import RoleSelectModal from './RoleSelectModal';
@@ -132,6 +134,15 @@ const Dashboard = () => {
             <br /> Settings
           </p>
         </div>
+        {(__DEV__ || process.env.REACT_APP_IS_CYPRESS === 'true') && (
+          <button
+            className={'btn'}
+            onClick={() => dispatch(resetStore())}
+            data-testid="logout-button"
+          >
+            Logout
+          </button>
+        )}
       </div>
       <Modal
         title={'Role Selection'}
