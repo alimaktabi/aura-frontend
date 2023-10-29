@@ -15,7 +15,9 @@ export const getBrightIdBackupThunk = createAsyncThunk<
   { authKey: string }
 >('profile/getBrightIdBackup', async ({ authKey }) => {
   try {
-    return (await pullEncryptedUserData(authKey)).data;
+    const backupData = (await pullEncryptedUserData(authKey)).data;
+    console.log({ backupData });
+    return backupData;
   } catch (error) {
     console.log(error);
     throw error;
@@ -29,7 +31,9 @@ export const loginByExplorerCodeThunk = createAsyncThunk<
   'profile/loginByExplorerCode',
   async ({ explorerCode, password }, { dispatch }) => {
     const brightIdData = await loginByExplorerCode(explorerCode, password);
+    console.log({ brightIdData });
     const authKey = hash(brightIdData.brightId + password);
+    console.log({ authKey });
     await dispatch(getBrightIdBackupThunk({ authKey }));
     return {
       ...brightIdData,
