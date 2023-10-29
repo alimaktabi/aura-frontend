@@ -1,24 +1,18 @@
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useEffect, useMemo, useState } from 'react';
 
-import { getVerifications } from '../api/auranode.service';
-import { getProfile } from '../api/connections.service';
-import { AuraPublicProfile } from '../types';
+import { BrightIdProfile, getBrightIdProfile } from '../api/auranode.service';
 
 export const useSubjectInfo = (subjectId: string | null | undefined) => {
-  const [level, setLevel] = useState<string | null>(null);
-  const [auraScore, setAuraScore] = useState<number | null>(null);
-  const [userHasRecovery, setUserHasRecovery] = useState<boolean | null>(null);
-
-  const [auraPublicProfile, setAuraPublicProfile] =
-    useState<AuraPublicProfile | null>(null);
+  const [brightIdProfile, setBrightIdProfile] =
+    useState<BrightIdProfile | null>(null);
 
   const joinedDateString = useMemo(() => {
     const today = new Date();
-    if (!auraPublicProfile?.brightIdDate) {
+    if (!brightIdProfile?.createdAt) {
       return '';
     }
-    const reg = new Date(auraPublicProfile.brightIdDate);
+    const reg = new Date(brightIdProfile.createdAt);
 
     const difDate = today.getTime() - reg.getTime();
     const diffYears = Math.floor(difDate / (365 * 24 * 3600 * 1000));
@@ -32,34 +26,14 @@ export const useSubjectInfo = (subjectId: string | null | undefined) => {
     }
 
     return '< 1 month';
-  }, [auraPublicProfile]);
+  }, [brightIdProfile]);
 
   useEffect(() => {
     let mounted = true;
-    setLevel(null);
-    setUserHasRecovery(null);
-    setAuraPublicProfile(null);
-    setAuraScore(null);
+    setBrightIdProfile(null);
     if (subjectId) {
-      getVerifications(subjectId).then((verificationsResponse) => {
-        if (mounted) {
-          const verifications = verificationsResponse.data.verifications;
-          const auraVerification = verifications.find(
-            (verification) => verification.name === 'Aura',
-          );
-          setLevel(auraVerification?.level ?? 'Not yet');
-          if (auraVerification?.score !== undefined) {
-            setAuraScore(auraVerification.score);
-          }
-          setUserHasRecovery(
-            !!verifications.find(
-              (verification) => verification.name === 'SocialRecoverySetup',
-            ),
-          );
-        }
-        getProfile(subjectId).then((res) => {
-          if (mounted) setAuraPublicProfile(res);
-        });
+      getBrightIdProfile(subjectId).then((res) => {
+        if (mounted) setBrightIdProfile(res.data);
       });
     }
     return () => {
@@ -67,12 +41,31 @@ export const useSubjectInfo = (subjectId: string | null | undefined) => {
     };
   }, [subjectId]);
 
+  const userHasRecovery = useMemo(() => {
+    if (!brightIdProfile) return null;
+    return !!brightIdProfile.verifications.find(
+      (verification) => verification.name === 'SocialRecoverySetup',
+    );
+  }, [brightIdProfile]);
+
+  const [auraScore, level] = useMemo(() => {
+    if (!brightIdProfile) return [null, null];
+    const verifications = brightIdProfile.verifications;
+    const auraVerification = verifications.find(
+      (verification) => verification.name === 'Aura',
+    );
+    return [
+      auraVerification?.score ?? null,
+      auraVerification?.level ?? 'Not yet',
+    ];
+  }, [brightIdProfile]);
+
   return {
     ...useSubjectBasicInfo(subjectId),
     level,
     userHasRecovery,
     auraScore,
     joinedDateString,
-    auraPublicProfile,
+    brightIdProfile,
   };
 };

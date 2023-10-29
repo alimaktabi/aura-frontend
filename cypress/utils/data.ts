@@ -255,7 +255,7 @@ export const AURA_CONNECTIONS: AuraConnectionsResponse = {
 
 export const AURA_PROFILE: AuraProfile = {
   numOfConnections: BRIGHT_ID_BACKUP.connections.length,
-  brightIdDate: RANDOM_TIMESTAMP,
+  createdAt: RANDOM_TIMESTAMP,
   fourUnrated: [
     AURA_CONNECTIONS.connections.find(
       (con) => con._id.replace('users/', '') === unratedConnection.id,
@@ -267,7 +267,7 @@ export const AURA_PROFILE: AuraProfile = {
 
 export const AURA_GENERAL_PROFILE: AuraProfile = {
   numOfConnections: 5,
-  brightIdDate: RANDOM_TIMESTAMP,
+  createdAt: RANDOM_TIMESTAMP,
   fourUnrated: [],
   rating: 0,
   nicknames: [],

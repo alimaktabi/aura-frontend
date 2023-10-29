@@ -127,7 +127,7 @@ export type AuraConnectionsResponse = {
 };
 
 export type AuraPublicProfile = {
-  brightIdDate: number;
+  createdAt: number;
   numOfConnections: number;
   rating: number;
 };

@@ -67,7 +67,7 @@ export const connectionOutboundConnectionsResponse: BrightIdConnectionsResponse 
 export const connectionProfile: AuraProfile = {
   numOfConnections:
     connectionIncomingConnectionsResponse.data.connections.length,
-  brightIdDate: RANDOM_TIMESTAMP,
+  createdAt: RANDOM_TIMESTAMP,
   fourUnrated: [],
   rating: 0,
   nicknames: [],

@@ -16,7 +16,7 @@ export const ProfileInfo = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { level, name, joinedDateString, auraPublicProfile } =
+  const { level, name, joinedDateString, brightIdProfile } =
     useSubjectInfo(subjectId);
   // const { userHasRecovery } = useSubjectInfo(subjectId);
 
@@ -51,10 +51,10 @@ export const ProfileInfo = ({
         </div>
         <div className="flex flex-col text-sm text-black min-w-[90px]">
           <p>Joined at:</p>
-          {auraPublicProfile ? (
+          {brightIdProfile ? (
             <>
               <p className="font-medium">
-                {new Date(auraPublicProfile.brightIdDate).toLocaleDateString()}
+                {new Date(brightIdProfile.createdAt).toLocaleDateString()}
               </p>
               <p className="font-medium">({joinedDateString} ago)</p>
             </>
@@ -71,11 +71,11 @@ export const ProfileInfo = ({
         {/*)}*/}
       </div>
       {/*<div className="card--body text-sm">*/}
-      {/*  {auraPublicProfile ? (*/}
+      {/*  {brightIdProfile ? (*/}
       {/*    <>*/}
       {/*      <span className="font-normal">Joined at </span>*/}
       {/*      <span className="font-medium">*/}
-      {/*        {new Date(auraPublicProfile.brightIdDate).toLocaleDateString()} (*/}
+      {/*        {new Date(brightIdProfile.createdAt).toLocaleDateString()} (*/}
       {/*        {joinedDateString} ago)*/}
       {/*      </span>*/}
       {/*    </>*/}
