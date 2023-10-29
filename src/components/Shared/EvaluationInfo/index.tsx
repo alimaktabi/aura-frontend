@@ -1,6 +1,6 @@
 import Modal from 'components/Shared/Modal';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
-import { useSubjectEvaluation } from 'hooks/useSubjectEvaluation';
+import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
 import { connectionLevelIconsBlack } from 'utils/connection';
@@ -18,7 +18,7 @@ export const EvaluationInfo = ({
   const { name } = useSubjectBasicInfo(toSubjectId);
 
   const { rating, loading, confidenceValue, inboundConnectionInfo } =
-    useSubjectEvaluation({
+    useSubjectEvaluationFromContext({
       fromSubjectId,
       toSubjectId,
     });

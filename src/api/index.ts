@@ -11,12 +11,6 @@ export const recoveryApi = axios.create({
   mode: 'no-cors',
 });
 
-export const brightIdNodeApi = axios.create({
-  baseURL: 'https://app.brightid.org/',
-  // @ts-ignore
-  mode: 'no-cors',
-});
-
 export const auraBrightIdNodeApi = axios.create({
   baseURL: AURA_NODE_URL_PROXY,
   // @ts-ignore
