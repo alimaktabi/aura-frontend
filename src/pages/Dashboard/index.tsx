@@ -1,6 +1,7 @@
 import { resetStore } from 'BrightID/actions';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { store } from 'store';
 import { useDispatch } from 'store/hooks';
 import { RoutePath } from 'types/router';
 import { __DEV__ } from 'utils/env';
@@ -22,9 +23,48 @@ const Dashboard = () => {
     Trainer: '/assets/images/Dashboard/trainer-icon.svg',
     Manager: '/assets/images/Dashboard/manager-icon.svg',
   };
+
   const dispatch = useDispatch();
+
+  const saveStringAsFile = (data: string, filename = 'aura-data.txt') => {
+    const blob = new Blob([data], { type: 'text/plain' });
+    const elem = window.document.createElement('a');
+    elem.href = window.URL.createObjectURL(blob);
+    elem.download = filename;
+    document.body.appendChild(elem);
+    elem.click();
+    URL.revokeObjectURL(elem.href);
+    document.body.removeChild(elem);
+  };
+
+  const downloadData = () => {
+    const state = store.getState();
+    const stateJsons: { [key: string]: string } = {};
+    for (const key of Object.keys(state)) {
+      const obj = state[key as keyof typeof state];
+      if (key === 'profile') {
+        // @ts-ignore
+        obj['brightIdBackupEncrypted'] = obj['brightIdBackupEncrypted'].length;
+      }
+      try {
+        stateJsons[key] = JSON.stringify(obj);
+      } catch (e) {
+        stateJsons[key] = String(e);
+      }
+    }
+    let finalString = '';
+    try {
+      finalString = JSON.stringify(stateJsons);
+    } catch (e) {
+      finalString = String(e);
+    }
+    saveStringAsFile(finalString);
+  };
   return (
     <div className="page page__dashboard">
+      <button onClick={downloadData} className="btn mb-3 w-full">
+        Download Data
+      </button>
       <div className="row mb-4">
         <div className="card">
           <p className="text-sm">Domain</p>
