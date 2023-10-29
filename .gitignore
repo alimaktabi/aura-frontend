@@ -3,6 +3,8 @@ cypress/videos
 cypress/screenshots
 cypress/utils/mock-contracts/types
 
+.env.local
+
 # Logs
 logs
 *.log

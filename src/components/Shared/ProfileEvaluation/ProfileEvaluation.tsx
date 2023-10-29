@@ -4,7 +4,7 @@ import { compactFormat } from '../../../utils/number';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 import { EvaluationInfo } from '../EvaluationInfo';
 
-const ProfileEvaluationByMe = ({
+const ProfileEvaluation = ({
   fromSubjectId,
   toSubjectId,
   className,
@@ -97,4 +97,4 @@ const ProfileEvaluationByMe = ({
   );
 };
 
-export default ProfileEvaluationByMe;
+export default ProfileEvaluation;

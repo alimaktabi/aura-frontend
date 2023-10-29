@@ -20,8 +20,8 @@ export enum SortItemState {
 export type ConnectionLevel =
   | 'reported'
   | 'suspicious'
-  | 'already known'
   | 'just met'
+  | 'already known'
   | 'recovery';
 
 export type BrightIdConnection = {

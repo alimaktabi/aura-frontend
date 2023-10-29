@@ -1,7 +1,7 @@
-import { useInboundConnections } from 'hooks/useSubjectConnections';
+import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import { connectionLevelIcons } from 'utils/connection';
 
-import { useInboundRatings } from '../../../hooks/useSubjectRatings';
 import { compactFormat } from '../../../utils/number';
 
 const EvaluationsDetails = ({
@@ -15,10 +15,9 @@ const EvaluationsDetails = ({
   hasBtn?: boolean;
   title?: string;
 }) => {
-  const { inboundRatings, inboundRatingsStatsString } =
-    useInboundRatings(subjectId);
+  const { inboundRatings, inboundRatingsStatsString, inboundConnections } =
+    useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectInfo(subjectId);
-  const { inboundConnections } = useInboundConnections(subjectId);
 
   return (
     <div className="card">
@@ -34,14 +33,20 @@ const EvaluationsDetails = ({
         />
         <div className="filters flex items-center justify-end gap-1">
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
-            <img src="/assets/images/Shared/already-known-icon.svg" alt="" />
+            <img
+              src={`/assets/images/Shared/${connectionLevelIcons.recovery}.svg`}
+              alt=""
+            />
             <p className="text-sm text-black">
               {inboundConnections?.filter((conn) => conn.level === 'recovery')
                 .length ?? '...'}
             </p>
           </span>
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
-            <img src="/assets/images/Shared/happy-icon.svg" alt="" />
+            <img
+              src={`/assets/images/Shared/${connectionLevelIcons['already known']}.svg`}
+              alt=""
+            />
             <p className="text-sm text-black">
               {inboundConnections?.filter(
                 (conn) => conn.level === 'already known',
@@ -49,14 +54,20 @@ const EvaluationsDetails = ({
             </p>
           </span>
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
-            <img src="/assets/images/Shared/poker-icon.svg" alt="" />
+            <img
+              src={`/assets/images/Shared/${connectionLevelIcons['just met']}.svg`}
+              alt=""
+            />
             <p className="text-sm text-black">
               {inboundConnections?.filter((conn) => conn.level === 'just met')
                 .length ?? '...'}
             </p>
           </span>
           <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
-            <img src="/assets/images/Shared/sad-icon.svg" alt="" />
+            <img
+              src={`/assets/images/Shared/${connectionLevelIcons.suspicious}.svg`}
+              alt=""
+            />
             <p className="text-sm text-black">
               {inboundConnections?.filter(
                 (conn) =>

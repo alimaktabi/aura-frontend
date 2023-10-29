@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   getInboundConnections,
@@ -26,6 +26,7 @@ export const useInboundConnections = (subjectId: string | null | undefined) => {
   }, [subjectId]);
 
   return {
+    loading: useMemo(() => inboundConnections === null, [inboundConnections]),
     inboundConnections,
   };
 };

@@ -1,36 +1,30 @@
+import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
-import SubjectEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluationByMe';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import SubjectEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
+import {
+  SubjectInboundEvaluationsContextProvider,
+  useSubjectInboundEvaluationsContext,
+} from 'contexts/SubjectInboundEvaluationsContext';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
-import { Modal } from '../../components/Shared/Modal';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
-import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { selectAuthData } from '../../store/profile/selectors';
 import EvaluateOverlayCard from '../SubjectsEvaluation/EvaluateOverlayCard';
 import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
-import { EvaluationListModal } from './EvaluationListModal';
 import NewEvaluationCard from './NewEvaluationCard';
 import { YourEvaluation } from './YourEvaluation';
 
-const SubjectProfile = () => {
+const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
   const noteExists = useMemo(() => true, []); // new note or old note
-  const [isEvaluationListModalOpen, setIsEvaluationListModalOpen] =
-    useState(false);
 
-  const { subjectIdProp } = useParams();
   const authData = useSelector(selectAuthData);
-  const subjectId = useMemo(
-    () => subjectIdProp ?? authData?.brightId,
-    [authData?.brightId, subjectIdProp],
-  );
-  const { name } = useSubjectBasicInfo(subjectId);
-  const { inboundRatings } = useInboundRatings(subjectId);
+
+  const { inboundRatings } = useSubjectInboundEvaluationsContext(subjectId);
   const hasNoteOrEvaluated = useMemo(() => {
     if (noteExists) return true;
     if (!authData?.brightId) return false;
@@ -66,9 +60,7 @@ const SubjectProfile = () => {
     };
   }, []);
 
-  return !subjectId ? (
-    <div>Unknown subject id</div>
-  ) : (
+  return (
     <div className="page page__dashboard flex flex-col gap-4">
       {!isOverviewSelected && (
         <EvaluateOverlayCard
@@ -100,15 +92,18 @@ const SubjectProfile = () => {
       ) : (
         <>
           <SubjectSearch />
-
-          {inboundRatings?.map((rating) => (
-            <SubjectEvaluation
-              key={rating.id}
-              fromSubjectId={rating.fromBrightId}
-              toSubjectId={rating.toBrightId}
-              className="!min-w-[305px] !py-5"
-            />
-          ))}
+          <InfiniteScrollLocal
+            className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+            items={inboundRatings}
+            renderItem={(rating) => (
+              <SubjectEvaluation
+                key={rating.id}
+                fromSubjectId={rating.fromBrightId}
+                toSubjectId={rating.toBrightId}
+                className="!min-w-[305px] !py-5"
+              />
+            )}
+          />
         </>
       )}
       {/* could have header based on the role */}
@@ -140,16 +135,23 @@ const SubjectProfile = () => {
       {/*		))}*/}
       {/*	</div>*/}
       {/*</div>*/}
-      <Modal
-        title={`Evaluations on ${name}`}
-        isOpen={isEvaluationListModalOpen}
-        noButtonPadding={true}
-        closeModalHandler={() => setIsEvaluationListModalOpen(false)}
-        className="select-button-with-modal__modal"
-      >
-        <EvaluationListModal subjectId={subjectId} />
-      </Modal>
     </div>
+  );
+};
+const SubjectProfile = () => {
+  const { subjectIdProp } = useParams();
+  const authData = useSelector(selectAuthData);
+  const subjectId = useMemo(
+    () => subjectIdProp ?? authData?.brightId,
+    [authData?.brightId, subjectIdProp],
+  );
+
+  return !subjectId ? (
+    <div>Unknown subject id</div>
+  ) : (
+    <SubjectInboundEvaluationsContextProvider subjectId={subjectId}>
+      <SubjectProfileBody subjectId={subjectId} />
+    </SubjectInboundEvaluationsContextProvider>
   );
 };
 

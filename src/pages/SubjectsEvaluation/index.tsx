@@ -1,4 +1,5 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
+import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
 import { useSelector } from 'react-redux';
 
@@ -30,7 +31,9 @@ const SubjectsEvaluation = () => {
             items={filteredSubjects}
             //TODO: optimize rendering by caching the rendered components
             renderItem={(conn, index) => (
-              <SubjectCard index={index} subjectId={conn.id} />
+              <SubjectInboundEvaluationsContextProvider subjectId={conn.id}>
+                <SubjectCard index={index} subjectId={conn.id} />
+              </SubjectInboundEvaluationsContextProvider>
             )}
           />
         </div>

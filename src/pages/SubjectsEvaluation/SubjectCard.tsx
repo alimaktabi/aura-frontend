@@ -1,3 +1,4 @@
+import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useSubjectRating } from 'hooks/useSubjectRating';
 import { useMemo } from 'react';
@@ -6,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { selectAuthData } from 'store/profile/selectors';
 
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
-import { useInboundRatings } from '../../hooks/useSubjectRatings';
 import { compactFormat } from '../../utils/number';
 
 export const SubjectCard = ({
@@ -17,7 +17,8 @@ export const SubjectCard = ({
   index?: string | number;
 }) => {
   const { level, name, auraScore } = useSubjectInfo(subjectId);
-  const { inboundRatingsStatsString } = useInboundRatings(subjectId);
+  const { inboundRatingsStatsString } =
+    useSubjectInboundEvaluationsContext(subjectId);
   const authData = useSelector(selectAuthData);
 
   const { rating, loading, confidenceValue } = useSubjectRating({

@@ -1,9 +1,9 @@
 import Modal from 'components/Shared/Modal';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useSubjectEvaluation } from 'hooks/useSubjectEvaluation';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
-
-import { useSubjectRating } from '../../../hooks/useSubjectRating';
+import { connectionLevelIconsBlack } from 'utils/connection';
 
 export const EvaluationInfo = ({
   fromSubjectId,
@@ -17,10 +17,11 @@ export const EvaluationInfo = ({
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
   const { name } = useSubjectBasicInfo(toSubjectId);
 
-  const { rating, loading, confidenceValue } = useSubjectRating({
-    fromSubjectId,
-    toSubjectId,
-  });
+  const { rating, loading, confidenceValue, inboundConnectionInfo } =
+    useSubjectEvaluation({
+      fromSubjectId,
+      toSubjectId,
+    });
 
   //TODO: get notes from api
   const notes = '';
@@ -52,9 +53,17 @@ export const EvaluationInfo = ({
       text: 'Not Rated',
     };
   }, [rating, loading]);
+
+  if (loading)
+    return (
+      <div>
+        <span className="font-medium">...</span>
+      </div>
+    );
+
   return (
     <div>
-      {Math.random() > 0.5 ? (
+      {Number(rating?.rating) || isYourEvaluation ? (
         <div className="flex gap-1 items-center text-sm">
           <div
             className={`p-2.5 rounded-md h-[38px] w-[38px] ${
@@ -75,33 +84,27 @@ export const EvaluationInfo = ({
               styleValues.bgAndTextColor
             } ${isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}
           >
-            {loading ? (
-              <div>
-                <span className="font-medium">...</span>
-              </div>
-            ) : (
-              <div>
-                <span
-                  className="font-medium"
-                  data-testid={`${
-                    isYourEvaluation ? 'your-' : ''
-                  }evaluation-${fromSubjectId}-${toSubjectId}-magnitude`}
-                >
-                  {styleValues.text}
-                </span>
-                <span
-                  className="font-medium"
-                  data-testid={`${
-                    isYourEvaluation ? 'your-' : ''
-                  }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}
-                >
-                  {rating && Number(rating.rating) !== 0 && confidenceValue
-                    ? ` - ${confidenceValue}`
-                    : ''}
-                  {rating?.rating ? ` (${rating.rating})` : ''}
-                </span>
-              </div>
-            )}
+            <div>
+              <span
+                className="font-medium"
+                data-testid={`${
+                  isYourEvaluation ? 'your-' : ''
+                }evaluation-${fromSubjectId}-${toSubjectId}-magnitude`}
+              >
+                {styleValues.text}
+              </span>
+              <span
+                className="font-medium"
+                data-testid={`${
+                  isYourEvaluation ? 'your-' : ''
+                }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}
+              >
+                {rating && Number(rating.rating) !== 0 && confidenceValue
+                  ? ` - ${confidenceValue}`
+                  : ''}
+                {rating?.rating ? ` (${rating.rating})` : ''}
+              </span>
+            </div>
             <div className="flex items-center gap-2">
               <span className="font-medium">{'12%'}</span>
               {isYourEvaluation && (
@@ -127,7 +130,7 @@ export const EvaluationInfo = ({
             />
           </div>
         </div>
-      ) : (
+      ) : inboundConnectionInfo ? (
         <div className="flex justify-between w-full items-center gap-2.5">
           <img
             src="/assets/images/Shared/brightid-icon.svg"
@@ -141,11 +144,13 @@ export const EvaluationInfo = ({
           </p>
           <div className="flex rounded bg-soft-bright justify-evenly flex-1 items-center h-[38px] ">
             <img
-              src="/assets/images/Shared/already-known-icon-black.svg"
+              src={`/assets/images/Shared/${
+                connectionLevelIconsBlack[inboundConnectionInfo.level]
+              }.svg`}
               className="w-5 h-5"
               alt=""
             />
-            <p className="text-sm font-bold">Already Known+</p>
+            <p className="text-sm font-bold">{inboundConnectionInfo.level}</p>
           </div>
           <div className="bg-pastel-purple p-2 rounded-md flex items-center justify-center w-[38px] h-[38px]">
             <img
@@ -154,6 +159,10 @@ export const EvaluationInfo = ({
               className="w-6 h-6"
             />
           </div>
+        </div>
+      ) : (
+        <div>
+          <span className="font-medium">...</span>
         </div>
       )}
 
