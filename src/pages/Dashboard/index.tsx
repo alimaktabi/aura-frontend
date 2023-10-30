@@ -38,27 +38,32 @@ const Dashboard = () => {
   };
 
   const downloadData = () => {
-    const state = store.getState();
-    const stateJsons: { [key: string]: string } = {};
-    for (const key of Object.keys(state)) {
-      const obj = state[key as keyof typeof state];
-      if (key === 'profile') {
-        // @ts-ignore
-        obj['brightIdBackupEncrypted'] = obj['brightIdBackupEncrypted'].length;
-      }
-      try {
-        stateJsons[key] = JSON.stringify(obj);
-      } catch (e) {
-        stateJsons[key] = String(e);
-      }
-    }
-    let finalString = '';
     try {
-      finalString = JSON.stringify(stateJsons);
+      const state = store.getState();
+      const stateJsons: { [key: string]: string } = {};
+      for (const key of Object.keys(state)) {
+        const obj = state[key as keyof typeof state];
+        if (key === 'profile' && obj && 'brightIdBackupEncrypted' in obj) {
+          obj['brightIdBackupEncrypted'] = String(
+            obj['brightIdBackupEncrypted']?.length,
+          );
+        }
+        try {
+          stateJsons[key] = JSON.stringify(obj);
+        } catch (e) {
+          stateJsons[key] = String(e);
+        }
+      }
+      let finalString = '';
+      try {
+        finalString = JSON.stringify(stateJsons);
+      } catch (e) {
+        finalString = String(e);
+      }
+      saveStringAsFile(finalString);
     } catch (e) {
-      finalString = String(e);
+      alert(String(e));
     }
-    saveStringAsFile(finalString);
   };
   return (
     <div className="page page__dashboard">
