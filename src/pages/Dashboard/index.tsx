@@ -61,6 +61,7 @@ const Dashboard = () => {
         finalString = String(e);
       }
       saveStringAsFile(finalString);
+      alert('save file success');
     } catch (e) {
       alert(String(e));
     }
