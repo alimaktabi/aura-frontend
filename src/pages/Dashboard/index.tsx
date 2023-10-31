@@ -42,11 +42,14 @@ const Dashboard = () => {
       const state = store.getState();
       const stateJsons: { [key: string]: string } = {};
       for (const key of Object.keys(state)) {
-        const obj = state[key as keyof typeof state];
+        let obj = state[key as keyof typeof state];
         if (key === 'profile' && obj && 'brightIdBackupEncrypted' in obj) {
-          obj['brightIdBackupEncrypted'] = String(
-            obj['brightIdBackupEncrypted']?.length,
-          );
+          obj = {
+            ...obj,
+            brightIdBackupEncrypted: String(
+              obj['brightIdBackupEncrypted']?.length,
+            ),
+          };
         }
         try {
           stateJsons[key] = JSON.stringify(obj);
