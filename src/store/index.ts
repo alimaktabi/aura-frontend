@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducers from 'BrightID/reducer';
+import localForage from 'localforage';
 import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 
 import { profileSlice } from './profile';
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: localForage,
   blacklist: ['recoveryData'], // won't be persisted
 };
 
