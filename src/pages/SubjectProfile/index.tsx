@@ -83,7 +83,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {role !== 'Player' && <ActivitiesCard />}
       <ToggleInput
         option1="Overview"
-        option2="Detailed List"
+        option2="Evidence List"
         isChecked={isOverviewSelected}
         setIsChecked={setIsOverviewSelected}
       />

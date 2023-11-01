@@ -9,7 +9,8 @@ import SubjectsEvaluation from './pages/SubjectsEvaluation';
 
 const routes = [
   {
-    path: RoutePath.LOGIN,
+    path: RoutePath.LOGIN, // /
+    pathRegex: new RegExp(/^\/$/),
     element: <RecoveryCodeScreen />,
     header: {
       title: 'Login',
@@ -18,7 +19,8 @@ const routes = [
     requireAuth: false,
   },
   {
-    path: RoutePath.DASHBOARD,
+    path: RoutePath.DASHBOARD, // /dashboard
+    pathRegex: new RegExp(/^\/dashboard/),
     element: <Dashboard />,
     header: {
       title: 'Dashboard',
@@ -27,7 +29,8 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: RoutePath.DOMAIN_OVERVIEW,
+    path: RoutePath.DOMAIN_OVERVIEW, // /domain-overview
+    pathRegex: new RegExp(/^\/domain-overview/),
     element: <DomainOverview />,
     header: {
       title: 'Domain overview',
@@ -36,7 +39,8 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: RoutePath.SUBJECTS_EVALUATION,
+    path: RoutePath.SUBJECTS_EVALUATION, // /subjects-evaluation
+    pathRegex: new RegExp(/^\/subjects-evaluation/),
     element: <SubjectsEvaluation />,
     header: {
       title: 'Subjects evaluation',
@@ -45,7 +49,8 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: RoutePath.SUBJECT_PROFILE,
+    path: RoutePath.SUBJECT_PROFILE, // /subject/:subjectId
+    pathRegex: new RegExp(/^\/subject\/[a-zA-Z0-9_-]+/),
     element: <SubjectProfile />,
     header: {
       title: 'Subject profile',
@@ -54,7 +59,8 @@ const routes = [
     requireAuth: false,
   },
   {
-    path: RoutePath.PERFORMANCE_OVERVIEW,
+    path: RoutePath.PERFORMANCE_OVERVIEW, // /performance-overview
+    pathRegex: new RegExp(/^\/performance-overview/),
     element: <PerformanceOverview />,
     header: {
       title: 'Player performance overview',

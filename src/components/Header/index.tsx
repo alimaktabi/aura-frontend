@@ -7,11 +7,7 @@ const Index = () => {
   // Todo: Implement route stack
   const location = useLocation();
   const currentRouteObject = useMemo(
-    //TODO: this slice 5 is a hotfix for handling parameters
-    () =>
-      routes.find(
-        (route) => route.path.slice(5) === location.pathname.slice(5),
-      ),
+    () => routes.find((route) => route.pathRegex.test(location.pathname)),
     [location.pathname],
   );
   let headerComponent = currentRouteObject?.header;
