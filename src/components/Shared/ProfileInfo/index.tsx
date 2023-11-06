@@ -32,37 +32,47 @@ export const ProfileInfo = ({
           />
           <div className="card--header__left__info flex flex-col justify-center">
             <h3 className="text-lg font-medium leading-5">{name}</h3>
-            <div className="leading-5">
-              {isPerformance ? (
-                <>
-                  <span>Player Level: </span>
-                  <span className="font-medium">1</span>
-                </>
-              ) : level ? (
-                <>
-                  <span className="font-medium">{level} </span>
-                  <span>Subject</span>
-                </>
-              ) : (
-                <span className="font-medium">Loading...</span>
-              )}
+            <div className="flex gap-1">
+              <img src="/assets/images/Shared/already-known-icon.svg" alt="" />
+              <strong>Level 1</strong>
             </div>
+            {/*<div className="leading-5">*/}
+            {/*  {isPerformance ? (*/}
+            {/*    <>*/}
+            {/*      <span>Player Level: </span>*/}
+            {/*      <span className="font-medium">1</span>*/}
+            {/*    </>*/}
+            {/*  ) : level ? (*/}
+            {/*    <>*/}
+            {/*      <span className="font-medium">{level} </span>*/}
+            {/*      <span>Subject</span>*/}
+            {/*    </>*/}
+            {/*  ) : (*/}
+            {/*    <span className="font-medium">Loading...</span>*/}
+            {/*  )}*/}
+            {/*</div>*/}
           </div>
         </div>
-        <div className="flex flex-col text-sm text-black min-w-[90px]">
-          <p>Joined at:</p>
-          {brightIdProfile ? (
-            <>
-              <p className="font-medium">
-                {new Date(brightIdProfile.createdAt).toLocaleDateString()}
-              </p>
-              <p className="font-medium">({joinedDateString} ago)</p>
-            </>
-          ) : (
-            <>
-              <p className="mb-5">loading...</p>
-            </>
-          )}
+        <div className="flex flex-col gap-1.5 items-end text-sm text-black min-w-[90px]">
+          <div className="bg-orange px-2 py-1.5 rounded cursor-pointer">
+            <p className="text-white font-bold text-xs">Has Recovery</p>
+          </div>
+          <p className="text-sm">
+            Last Activity: <strong>323d ago</strong>
+          </p>
+          {/*<p>Joined at:</p>*/}
+          {/*{brightIdProfile ? (*/}
+          {/*  <>*/}
+          {/*    <p className="font-medium">*/}
+          {/*      {new Date(brightIdProfile.createdAt).toLocaleDateString()}*/}
+          {/*    </p>*/}
+          {/*    <p className="font-medium">({joinedDateString} ago)</p>*/}
+          {/*  </>*/}
+          {/*) : (*/}
+          {/*  <>*/}
+          {/*    <p className="mb-5">loading...</p>*/}
+          {/*  </>*/}
+          {/*)}*/}
         </div>
         {/*{isPerformance ? (*/}
         {/*  <PerformanceInfo color={color} />*/}
