@@ -2,8 +2,8 @@ import Modal from 'components/Shared/Modal';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
-import { useMemo, useState } from 'react';
-import { connectionLevelIconsBlack } from 'utils/connection';
+import { useState } from 'react';
+// import { connectionLevelIconsBlack } from 'utils/connection';
 
 export const EvaluationInfo = ({
   fromSubjectId,
@@ -17,42 +17,41 @@ export const EvaluationInfo = ({
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
   const { name } = useSubjectBasicInfo(toSubjectId);
 
-  const { rating, loading, confidenceValue, inboundConnectionInfo } =
-    useSubjectEvaluationFromContext({
-      fromSubjectId,
-      toSubjectId,
-    });
+  const { rating, loading } = useSubjectEvaluationFromContext({
+    fromSubjectId,
+    toSubjectId,
+  });
 
   //TODO: get notes from api
-  const notes = '';
-  const styleValues = useMemo(() => {
-    if (loading) {
-      return {
-        bgAndTextColor: 'bg-gray20 text-white',
-        iconBgColor: 'bg-gray50',
-        text: '...',
-      };
-    }
-    if (rating?.rating) {
-      if (Number(rating.rating) > 0)
-        return {
-          bgAndTextColor: 'bg-pl1',
-          iconBgColor: 'bg-pl2',
-          text: 'Positive',
-        };
-      if (Number(rating.rating) < 0)
-        return {
-          bgAndTextColor: 'bg-nl1',
-          iconBgColor: 'bg-nl2',
-          text: 'Negative',
-        };
-    }
-    return {
-      bgAndTextColor: 'bg-gray20 text-white',
-      iconBgColor: 'bg-gray50',
-      text: 'Not Rated',
-    };
-  }, [rating, loading]);
+  // const notes = '';
+  // const styleValues = useMemo(() => {
+  //   if (loading) {
+  //     return {
+  //       bgAndTextColor: 'bg-gray20 text-white',
+  //       iconBgColor: 'bg-gray50',
+  //       text: '...',
+  //     };
+  //   }
+  //   if (rating?.rating) {
+  //     if (Number(rating.rating) > 0)
+  //       return {
+  //         bgAndTextColor: 'bg-pl1',
+  //         iconBgColor: 'bg-pl2',
+  //         text: 'Positive',
+  //       };
+  //     if (Number(rating.rating) < 0)
+  //       return {
+  //         bgAndTextColor: 'bg-nl1',
+  //         iconBgColor: 'bg-nl2',
+  //         text: 'Negative',
+  //       };
+  //   }
+  //   return {
+  //     bgAndTextColor: 'bg-gray20 text-white',
+  //     iconBgColor: 'bg-gray50',
+  //     text: 'Not Rated',
+  //   };
+  // }, [rating, loading]);
 
   if (loading)
     return (
@@ -62,109 +61,129 @@ export const EvaluationInfo = ({
     );
 
   return (
-    <div>
-      {Number(rating?.rating) || isYourEvaluation ? (
-        <div className="flex gap-1 items-center text-sm">
-          <div
-            className={`p-2.5 rounded-md h-[38px] w-[38px] ${
-              !notes ? 'bg-gray50' : styleValues.iconBgColor
-            }`}
-          >
-            <img
-              src={`${
-                notes
-                  ? '/assets/images/Shared/note-icon-white.svg'
-                  : '/assets/images/Shared/note-icon-gray.svg'
-              }`}
-              alt=""
-            />
-          </div>
-          <div
-            className={`flex flex-1 justify-between rounded-md items-center h-[38px] p-1.5 ${
-              styleValues.bgAndTextColor
-            } ${isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}
-          >
-            <div>
-              <span
-                className="font-medium"
-                data-testid={`${
-                  isYourEvaluation ? 'your-' : ''
-                }evaluation-${fromSubjectId}-${toSubjectId}-magnitude`}
-              >
-                {styleValues.text}
-              </span>
-              <span
-                className="font-medium"
-                data-testid={`${
-                  isYourEvaluation ? 'your-' : ''
-                }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}
-              >
-                {rating && Number(rating.rating) !== 0 && confidenceValue
-                  ? ` - ${confidenceValue}`
-                  : ''}
-                {rating?.rating ? ` (${rating.rating})` : ''}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium">{'12%'}</span>
-              {isYourEvaluation && (
-                <div
-                  className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
-                  data-testid={`your-evaluation-${fromSubjectId}-${toSubjectId}-edit`}
-                  onClick={() => setIsEvaluateNowModalOpen(true)}
-                >
-                  <img
-                    src="/assets/images/Shared/edit-icon.svg"
-                    alt=""
-                    className="w-4 h-4"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="bg-pastel-purple p-2 rounded-md flex items-center justify-center w-[38px] h-[38px]">
-            <img
-              src="/assets/images/Shared/more-icon.svg"
-              alt=""
-              className="w-6 h-6"
-            />
-          </div>
+    <div className="flex gap-1 justify-between">
+      <div className="text-white text-xs bg-gray00 rounded px-2 py-1.5">
+        <p className="mb-1">
+          {Math.random() > 0.5 ? 'Player' : 'Subject'} level <strong>3</strong>
+          <strong className="ml-4">33.4M</strong>
+        </p>
+        <p>
+          <strong>32</strong> Pos | <strong>3</strong> Neg
+        </p>
+      </div>
+      <div className="bg-pl1 rounded px-2 py-1.5 text-xs">
+        <div className="flex items-center gap-1 mb-1">
+          <p className="mr-2">Your evaluation:</p>
+          <img src="/assets/images/Shared/thumbs-up.svg" alt="" />
+          <strong className="">Very High (4)</strong>
         </div>
-      ) : inboundConnectionInfo ? (
-        <div className="flex justify-between w-full items-center gap-2.5">
-          <img
-            src="/assets/images/Shared/brightid-icon.svg"
-            alt=""
-            className="w-6 h-6"
-          />
-          <p className="text-black text-[13px] font-medium">
-            BrightID
-            <br />
-            Connection
-          </p>
-          <div className="flex rounded bg-soft-bright justify-evenly flex-1 items-center h-[38px] ">
-            <img
-              src={`/assets/images/Shared/${
-                connectionLevelIconsBlack[inboundConnectionInfo.level]
-              }.svg`}
-              className="w-5 h-5"
-              alt=""
-            />
-            <p className="text-sm font-bold">{inboundConnectionInfo.level}</p>
-          </div>
-          <div className="bg-pastel-purple p-2 rounded-md flex items-center justify-center w-[38px] h-[38px]">
-            <img
-              src="/assets/images/Shared/more-icon.svg"
-              alt=""
-              className="w-6 h-6"
-            />
-          </div>
+        <div className="flex justify-between items-center">
+          <p>Impact:</p>
+          <strong>12%</strong>
         </div>
-      ) : (
-        <div>
-          <span className="font-medium">...</span>
-        </div>
-      )}
+      </div>
+      {/*{Number(rating?.rating) || isYourEvaluation ? (*/}
+      {/*  <div className="flex gap-1 items-center text-sm">*/}
+      {/*    <div*/}
+      {/*      className={`p-2.5 rounded-md h-[38px] w-[38px] ${*/}
+      {/*        !notes ? 'bg-gray50' : styleValues.iconBgColor*/}
+      {/*      }`}*/}
+      {/*    >*/}
+      {/*      <img*/}
+      {/*        src={`${*/}
+      {/*          notes*/}
+      {/*            ? '/assets/images/Shared/note-icon-white.svg'*/}
+      {/*            : '/assets/images/Shared/note-icon-gray.svg'*/}
+      {/*        }`}*/}
+      {/*        alt=""*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*    <div*/}
+      {/*      className={`flex flex-1 justify-between rounded-md items-center h-[38px] p-1.5 ${*/}
+      {/*        styleValues.bgAndTextColor*/}
+      {/*      } ${isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}*/}
+      {/*    >*/}
+      {/*      <div>*/}
+      {/*        <span*/}
+      {/*          className="font-medium"*/}
+      {/*          data-testid={`${*/}
+      {/*            isYourEvaluation ? 'your-' : ''*/}
+      {/*          }evaluation-${fromSubjectId}-${toSubjectId}-magnitude`}*/}
+      {/*        >*/}
+      {/*          {styleValues.text}*/}
+      {/*        </span>*/}
+      {/*        <span*/}
+      {/*          className="font-medium"*/}
+      {/*          data-testid={`${*/}
+      {/*            isYourEvaluation ? 'your-' : ''*/}
+      {/*          }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}*/}
+      {/*        >*/}
+      {/*          {rating && Number(rating.rating) !== 0 && confidenceValue*/}
+      {/*            ? ` - ${confidenceValue}`*/}
+      {/*            : ''}*/}
+      {/*          {rating?.rating ? ` (${rating.rating})` : ''}*/}
+      {/*        </span>*/}
+      {/*      </div>*/}
+      {/*      <div className="flex items-center gap-2">*/}
+      {/*        <span className="font-medium">{'12%'}</span>*/}
+      {/*        {isYourEvaluation && (*/}
+      {/*          <div*/}
+      {/*            className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}*/}
+      {/*            data-testid={`your-evaluation-${fromSubjectId}-${toSubjectId}-edit`}*/}
+      {/*            onClick={() => setIsEvaluateNowModalOpen(true)}*/}
+      {/*          >*/}
+      {/*            <img*/}
+      {/*              src="/assets/images/Shared/edit-icon.svg"*/}
+      {/*              alt=""*/}
+      {/*              className="w-4 h-4"*/}
+      {/*            />*/}
+      {/*          </div>*/}
+      {/*        )}*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    <div className="bg-pastel-purple p-2 rounded-md flex items-center justify-center w-[38px] h-[38px]">*/}
+      {/*      <img*/}
+      {/*        src="/assets/images/Shared/more-icon.svg"*/}
+      {/*        alt=""*/}
+      {/*        className="w-6 h-6"*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*) : inboundConnectionInfo ? (*/}
+      {/*  <div className="flex justify-between w-full items-center gap-2.5">*/}
+      {/*    <img*/}
+      {/*      src="/assets/images/Shared/brightid-icon.svg"*/}
+      {/*      alt=""*/}
+      {/*      className="w-6 h-6"*/}
+      {/*    />*/}
+      {/*    <p className="text-black text-[13px] font-medium">*/}
+      {/*      BrightID*/}
+      {/*      <br />*/}
+      {/*      Connection*/}
+      {/*    </p>*/}
+      {/*    <div className="flex rounded bg-soft-bright justify-evenly flex-1 items-center h-[38px] ">*/}
+      {/*      <img*/}
+      {/*        src={`/assets/images/Shared/${*/}
+      {/*          connectionLevelIconsBlack[inboundConnectionInfo.level]*/}
+      {/*        }.svg`}*/}
+      {/*        className="w-5 h-5"*/}
+      {/*        alt=""*/}
+      {/*      />*/}
+      {/*      <p className="text-sm font-bold">{inboundConnectionInfo.level}</p>*/}
+      {/*    </div>*/}
+      {/*    <div className="bg-pastel-purple p-2 rounded-md flex items-center justify-center w-[38px] h-[38px]">*/}
+      {/*      <img*/}
+      {/*        src="/assets/images/Shared/more-icon.svg"*/}
+      {/*        alt=""*/}
+      {/*        className="w-6 h-6"*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*) : (*/}
+      {/*  <div>*/}
+      {/*    <span className="font-medium">...</span>*/}
+      {/*  </div>*/}
+      {/*)}*/}
 
       <Modal
         isOpen={isEvaluateNowModalOpen}
