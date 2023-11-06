@@ -58,10 +58,10 @@ const EvaluatedCardBody = ({
   return (
     <>
       <div className="card__top-row flex justify-between w-full">
-        <div className="card__top-row__left flex items-center gap-1">
+        <div className="card__top-row__left flex items-start gap-1">
           <BrightIdProfilePicture
             subjectId={fromSubjectId}
-            className={`w-[52px] h-[52px] rounded-lg border-2 border-pastel-purple`}
+            className={`w-[56px] h-[56px] rounded-lg border-2 border-pastel-purple`}
           />
           <div className="flex flex-col">
             <div className="flex gap-1.5 items-center">
@@ -182,11 +182,11 @@ const ConnectedCardBody = ({
 }) => {
   return (
     <>
-      <div className="card__top-row flex justify-between items-center w-full">
-        <div className="card__top-row__left flex items-center gap-1">
+      <div className="card__top-row flex justify-between items-start w-full">
+        <div className="card__top-row__left flex items-start gap-1">
           <BrightIdProfilePicture
             subjectId={fromSubjectId}
-            className={`w-[52px] h-[52px] rounded-lg border-2 border-orange`}
+            className={`w-[56px] h-[56px] rounded-lg border-2 border-orange`}
           />
           <div className="flex flex-col">
             <div className="flex gap-1.5 items-center">

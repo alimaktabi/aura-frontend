@@ -73,7 +73,6 @@ export const EvaluationInfo = ({
       </div>
       <div className="bg-pl1 rounded px-2 py-1.5 text-xs">
         <div className="flex items-center gap-1 mb-1">
-          <p className="mr-2">Your evaluation:</p>
           <img src="/assets/images/Shared/thumbs-up.svg" alt="" />
           <strong className="">Very High (4)</strong>
         </div>
