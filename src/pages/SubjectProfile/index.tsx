@@ -81,6 +81,15 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       )}
       {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
+
+      <div className="flex gap-1 -mb-1">
+        <p className="font-bold text-lg">Evidence</p>
+        <img
+          className="cursor-pointer"
+          src="/assets/images/SubjectProfile/evidence-info-icon.svg"
+          alt=""
+        />
+      </div>
       <ToggleInput
         option1="Overview"
         option2="Evidence List"
