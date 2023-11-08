@@ -20,19 +20,18 @@ import { YourEvaluation } from './YourEvaluation';
 
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
-  const noteExists = useMemo(() => true, []); // new note or old note
 
   const authData = useSelector(selectAuthData);
 
-  const { inboundRatings } = useSubjectInboundEvaluationsContext(subjectId);
-  const hasNoteOrEvaluated = useMemo(() => {
-    if (noteExists) return true;
+  const { inboundRatings, inboundConnections, loading } =
+    useSubjectInboundEvaluationsContext(subjectId);
+  const isEvaluated = useMemo(() => {
     if (!authData?.brightId) return false;
     const rating = inboundRatings?.find(
       (r) => r.fromBrightId === authData?.brightId,
     )?.rating;
     return rating && Math.abs(Number(rating)) > 0;
-  }, [authData?.brightId, inboundRatings, noteExists]);
+  }, [authData?.brightId, inboundRatings]);
 
   const [isOverviewSelected, setIsOverviewSelected] = useState(true);
 
@@ -60,6 +59,14 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     };
   }, []);
 
+  const evaluators: string[] = useMemo(() => {
+    if (loading) return [];
+    const set = new Set<string>();
+    inboundRatings?.forEach((r) => set.add(r.fromBrightId));
+    inboundConnections?.forEach((c) => set.add(c.id));
+    return Array.from(set.values());
+  }, [loading, inboundRatings, inboundConnections]);
+
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       {!isOverviewSelected && (
@@ -74,7 +81,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       )}
 
       <ProfileInfo subjectId={subjectId} />
-      {hasNoteOrEvaluated ? (
+      {isEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
       ) : (
         <NewEvaluationCard />
@@ -103,12 +110,12 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           <SubjectSearch />
           <InfiniteScrollLocal
             className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-            items={inboundRatings}
-            renderItem={(rating) => (
+            items={evaluators}
+            renderItem={(evaluator) => (
               <ProfileEvaluation
-                key={rating.id}
-                fromSubjectId={rating.fromBrightId}
-                toSubjectId={rating.toBrightId}
+                key={evaluator}
+                fromSubjectId={evaluator}
+                toSubjectId={subjectId}
                 className="!min-w-[305px] !py-5"
               />
             )}
