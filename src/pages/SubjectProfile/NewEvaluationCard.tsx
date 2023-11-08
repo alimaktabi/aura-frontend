@@ -9,13 +9,6 @@ const NewEvaluationCard = () => {
           title="Evaluate Now!"
           image="/assets/images/Shared/user-search-icon.svg"
         />
-        <span className="text-sm text-gray00">Or</span>
-        <EvaluateButton
-          textColor="text-gray20"
-          bgColor="bg-pastel-purple bg-opacity-25"
-          title="Leave a note"
-          image="/assets/images/Shared/new-note-icon.svg"
-        />
       </div>
     </div>
   );

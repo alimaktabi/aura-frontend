@@ -25,19 +25,26 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     };
   }, [subjectId]);
 
+  const inboundPositiveRatingsCount = useMemo(
+    () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
+    [inboundRatings],
+  );
+  const inboundNegativeRatingsCount = useMemo(
+    () => inboundRatings?.filter((r) => Number(r.rating) < 0).length,
+    [inboundRatings],
+  );
+
   const inboundRatingsStatsString = useMemo(() => {
-    if (!inboundRatings) return null;
-    const inboundPositiveRatingsCount = inboundRatings.filter(
-      (r) => Number(r.rating) > 0,
-    ).length;
-    const inboundNegativeRatingsCount = inboundRatings.filter(
-      (r) => Number(r.rating) < 0,
-    ).length;
-    return `${inboundPositiveRatingsCount} Pos / ${inboundNegativeRatingsCount} Neg`;
-  }, [inboundRatings]);
+    return `${inboundPositiveRatingsCount ?? '...'} Pos / ${
+      inboundNegativeRatingsCount ?? '...'
+    } Neg`;
+  }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
+
   return {
     loading,
     inboundRatings,
+    inboundPositiveRatingsCount,
+    inboundNegativeRatingsCount,
     inboundRatingsStatsString,
   };
 };

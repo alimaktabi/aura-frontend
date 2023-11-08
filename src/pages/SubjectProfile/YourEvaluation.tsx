@@ -1,6 +1,6 @@
+import { YourEvaluationInfo } from 'components/Shared/EvaluationInfo/YourEvaluationInfo';
 import { useSelector } from 'react-redux';
 
-import { EvaluationInfo } from '../../components/Shared/EvaluationInfo';
 import { useSubjectRating } from '../../hooks/useSubjectRating';
 import { selectAuthData } from '../../store/profile/selectors';
 import NotEvaluatedCard from './NotEvaluatedCard';
@@ -34,8 +34,7 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
       ) : (
         <>
           <div className="font-medium flex">Your evaluation</div>
-          <EvaluationInfo
-            isYourEvaluation={true}
+          <YourEvaluationInfo
             fromSubjectId={authData.brightId}
             toSubjectId={subjectId}
           />

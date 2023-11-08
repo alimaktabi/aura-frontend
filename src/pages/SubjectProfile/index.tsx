@@ -1,6 +1,6 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
-import SubjectEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
+import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
@@ -105,7 +105,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
             className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
             items={inboundRatings}
             renderItem={(rating) => (
-              <SubjectEvaluation
+              <ProfileEvaluation
                 key={rating.id}
                 fromSubjectId={rating.fromBrightId}
                 toSubjectId={rating.toBrightId}

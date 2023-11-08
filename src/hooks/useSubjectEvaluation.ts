@@ -66,7 +66,10 @@ export const useSubjectEvaluation = ({
     [rating],
   );
 
-  const ratingNumber = useMemo(() => Number(rating?.rating), [rating]);
+  const ratingNumber = useMemo(
+    () => rating && Number(rating?.rating),
+    [rating],
+  );
 
   return {
     ratingNumber,
