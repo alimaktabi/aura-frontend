@@ -84,7 +84,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {isEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
       ) : (
-        <NewEvaluationCard />
+        <NewEvaluationCard subjectId={subjectId} />
       )}
       {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
