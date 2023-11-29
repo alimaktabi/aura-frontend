@@ -67,5 +67,6 @@ export const useSubjectInfo = (subjectId: string | null | undefined) => {
     auraScore,
     joinedDateString,
     brightIdProfile,
+    loading: brightIdProfile === null,
   };
 };

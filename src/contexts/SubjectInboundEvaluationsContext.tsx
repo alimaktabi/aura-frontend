@@ -56,12 +56,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   const inboundOpinions: AuraInboundConnectionAndRatingData[] = useMemo(() => {
     const inboundConnections = subjectConnections.inboundConnections;
     if (!inboundConnections || inboundRatings === null) return [];
-    const inboundOpinions: AuraInboundConnectionAndRatingData[] =
-      inboundConnections.map((c) => ({
-        fromSubjectId: c.id,
-        rating: inboundRatings.find((r) => r.fromBrightId === c.id),
-        inboundConnection: c,
-      }));
+    const inboundOpinions: AuraInboundConnectionAndRatingData[] = [];
     inboundRatings.forEach((r) => {
       const isNotConnection =
         inboundConnections.findIndex((c) => c.id === r.fromBrightId) === -1;
@@ -72,7 +67,13 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
         });
       }
     });
-    return inboundOpinions;
+    return inboundOpinions.concat(
+      inboundConnections.map((c) => ({
+        fromSubjectId: c.id,
+        rating: inboundRatings.find((r) => r.fromBrightId === c.id),
+        inboundConnection: c,
+      })),
+    );
   }, [inboundRatings, subjectConnections.inboundConnections]);
 
   const filterAndSortHookData = useFilterAndSort(
@@ -80,7 +81,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     filters,
     sorts,
     undefined, //TODO: fix search keys
-    'subjectsList',
+    'evaluationsList',
   );
 
   return (
