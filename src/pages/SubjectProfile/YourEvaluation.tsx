@@ -1,27 +1,17 @@
 import { YourEvaluationInfo } from 'components/Shared/EvaluationInfo/YourEvaluationInfo';
-import { useSelector } from 'react-redux';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 
-import { useSubjectRating } from '../../hooks/useSubjectRating';
-import { selectAuthData } from '../../store/profile/selectors';
 import NotEvaluatedCard from './NotEvaluatedCard';
 
 export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
-  const authData = useSelector(selectAuthData);
-
-  const { rating, loading } = useSubjectRating({
-    fromSubjectId: authData?.brightId,
-    toSubjectId: subjectId,
-  });
-
-  if (!authData) {
-    return <div>Not logged in</div>;
-  }
+  const { myRatingToSubject: rating, loading } =
+    useMyEvaluationsContext(subjectId);
 
   return (
     <div className="card flex flex-col gap-2.5">
       {loading ? (
         <>...</>
-      ) : rating === null || Number(rating.rating) === 0 ? (
+      ) : !rating || Number(rating.rating) === 0 ? (
         <>
           <div
             className="font-medium"
@@ -34,10 +24,7 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
       ) : (
         <>
           <div className="font-medium flex">Your evaluation</div>
-          <YourEvaluationInfo
-            fromSubjectId={authData.brightId}
-            toSubjectId={subjectId}
-          />
+          <YourEvaluationInfo toSubjectId={subjectId} />
         </>
       )}
     </div>

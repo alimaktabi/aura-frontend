@@ -1,20 +1,17 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
-import { useSubjectEvaluation } from 'hooks/useSubjectEvaluation';
-import { useSelector } from 'react-redux';
-import { selectAuthData } from 'store/profile/selectors';
 import { connectionLevelIcons } from 'utils/connection';
 
 export function EvaluatorInfo({ evaluatorId }: { evaluatorId: string }) {
   const { name: evaluatorName } = useSubjectBasicInfo(evaluatorId);
-  const authData = useSelector(selectAuthData);
-  const { loading, ratingNumber, inboundConnectionInfo } = useSubjectEvaluation(
-    {
-      fromSubjectId: authData?.brightId,
-      toSubjectId: evaluatorId,
-    },
-  );
+  const {
+    myRatingNumberToSubject: ratingNumber,
+    loading,
+    myConnectionToSubject: inboundConnectionInfo,
+  } = useMyEvaluationsContext(evaluatorId);
+
   return (
     <div className="card__top-row__left flex items-start gap-1">
       <BrightIdProfilePicture

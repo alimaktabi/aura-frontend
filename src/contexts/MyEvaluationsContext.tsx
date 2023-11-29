@@ -47,10 +47,15 @@ export const useMyEvaluationsContext = (subjectId?: string) => {
     () => getConfidenceValueOfAuraRatingObject(myRatingToSubject),
     [myRatingToSubject],
   );
+  const myRatingNumberToSubject = useMemo(
+    () => (myRatingToSubject ? Number(myRatingToSubject?.rating) : null),
+    [myRatingToSubject],
+  );
   return {
     ...context,
     myRatingToSubject,
     myConnectionToSubject,
     myConfidenceValueInThisSubjectRating,
+    myRatingNumberToSubject,
   };
 };

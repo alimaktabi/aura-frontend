@@ -1,6 +1,7 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
@@ -21,17 +22,12 @@ import { YourEvaluation } from './YourEvaluation';
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
 
-  const authData = useSelector(selectAuthData);
+  const { myRatingToSubject: rating, loading } =
+    useMyEvaluationsContext(subjectId);
 
-  const { inboundRatings, loading } =
-    useSubjectInboundEvaluationsContext(subjectId);
   const isEvaluated = useMemo(() => {
-    if (!authData?.brightId) return false;
-    const rating = inboundRatings?.find(
-      (r) => r.fromBrightId === authData?.brightId,
-    )?.rating;
-    return rating && Math.abs(Number(rating)) > 0;
-  }, [authData?.brightId, inboundRatings]);
+    return !!rating && Math.abs(Number(rating.rating)) > 0;
+  }, [rating]);
 
   const [isOverviewSelected, setIsOverviewSelected] = useState(true);
 

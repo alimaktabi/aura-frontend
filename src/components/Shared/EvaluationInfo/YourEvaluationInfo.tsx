@@ -1,24 +1,25 @@
 import Modal from 'components/Shared/Modal';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
-import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
+import { useSelector } from 'store/hooks';
+import { selectAuthData } from 'store/profile/selectors';
 
 export const YourEvaluationInfo = ({
-  fromSubjectId,
   toSubjectId,
 }: {
-  fromSubjectId: string;
   toSubjectId: string;
 }) => {
   const isYourEvaluation = true;
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
   const { name } = useSubjectBasicInfo(toSubjectId);
-
-  const { rating, loading, confidenceValue } = useSubjectEvaluationFromContext({
-    fromSubjectId,
-    toSubjectId,
-  });
+  const authData = useSelector(selectAuthData);
+  const {
+    myRatingToSubject: rating,
+    loading,
+    myConfidenceValueInThisSubjectRating: confidenceValue,
+  } = useMyEvaluationsContext(toSubjectId);
 
   //TODO: get notes from api
   const styleValues = useMemo(() => {
@@ -67,17 +68,17 @@ export const YourEvaluationInfo = ({
         <div>
           <span
             className="font-medium"
-            data-testid={`${
-              isYourEvaluation ? 'your-' : ''
-            }evaluation-${fromSubjectId}-${toSubjectId}-magnitude`}
+            data-testid={`${isYourEvaluation ? 'your-' : ''}evaluation-${
+              authData?.brightId
+            }-${toSubjectId}-magnitude`}
           >
             {styleValues.text}
           </span>
           <span
             className="font-medium"
-            data-testid={`${
-              isYourEvaluation ? 'your-' : ''
-            }evaluation-${fromSubjectId}-${toSubjectId}-confidence`}
+            data-testid={`${isYourEvaluation ? 'your-' : ''}evaluation-${
+              authData?.brightId
+            }-${toSubjectId}-confidence`}
           >
             {rating && Number(rating.rating) !== 0 && confidenceValue
               ? ` - ${confidenceValue}`
@@ -90,7 +91,7 @@ export const YourEvaluationInfo = ({
           {isYourEvaluation && (
             <div
               className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
-              data-testid={`your-evaluation-${fromSubjectId}-${toSubjectId}-edit`}
+              data-testid={`your-evaluation-${authData?.brightId}-${toSubjectId}-edit`}
               onClick={() => setIsEvaluateNowModalOpen(true)}
             >
               <img
