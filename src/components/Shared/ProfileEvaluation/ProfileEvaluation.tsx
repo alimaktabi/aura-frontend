@@ -7,6 +7,7 @@
 // import { connectionLevelIconsBlack } from 'utils/connection';
 // import { compactFormat } from '../../../utils/number';
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import {
   useSubjectEvaluation,
@@ -14,6 +15,7 @@ import {
 } from 'hooks/useSubjectEvaluation';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useEffect, useState } from 'react';
+import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
 
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
@@ -50,20 +52,40 @@ const ProfileEvaluation = ({
   );
 };
 
-const ConnectionInfo = () => {
+const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
+  const {
+    myRatingToSubject: rating,
+    loading,
+    myConnectionToSubject: inboundConnectionInfo,
+  } = useMyEvaluationsContext(subjectId);
   return (
     <div className="flex flex-col gap-0.5">
-      <div className="flex gap-0.5 justify-center items-center">
-        <img
-          src="/assets/images/Shared/already-known-icon.svg"
-          className="h-[18px] w-[18px]"
-          alt=""
-        />
-        <p className="text-green text-sm font-bold">+3</p>
-      </div>
-      <p className="impact-percentage text-green text-[11px] font-bold text-center w-full">
-        12%
-      </p>
+      {loading ? (
+        '...'
+      ) : (
+        <>
+          <div className="flex gap-0.5 justify-center items-center">
+            {inboundConnectionInfo && (
+              <img
+                src={`/assets/images/Shared/${
+                  connectionLevelIcons[inboundConnectionInfo.level]
+                }.svg`}
+                className="h-[18px] w-[18px]"
+                alt=""
+              />
+            )}
+            {!!rating && Number(rating?.rating) !== 0 && (
+              <p className="text-green text-sm font-bold">
+                {Number(rating.rating) < 0 ? '-' : '+'}
+                {Math.abs(Number(rating.rating))}
+              </p>
+            )}
+          </div>
+          <p className="impact-percentage text-green text-[11px] font-bold text-center w-full">
+            12%
+          </p>
+        </>
+      )}
     </div>
   );
 };
@@ -160,21 +182,25 @@ const EvaluationInformation = ({
   fromSubjectId: string;
   toSubjectId: string;
 }) => {
-  const { rating, loading, inboundConnectionInfo } =
-    useSubjectEvaluationFromContext({
-      fromSubjectId,
-      toSubjectId,
-    });
+  const { rating, loading } = useSubjectEvaluationFromContext({
+    fromSubjectId,
+    toSubjectId,
+  });
+  //TODO: change bg color on negative rating
   return (
     <div className="evaluation-information flex flex-col py-1.5 items-center justify-center gap-1 bg-pl1 rounded-md">
-      <div className="flex items-center gap-1.5">
-        {Number(rating?.rating) > 0 && (
-          <img src="/assets/images/Shared/thumbs-up.svg" alt="" />
-        )}
-        <p className="text-black text-xs font-bold mt-0.5">{`${getConfidenceValueOfAuraRatingNumber(
-          Number(rating?.rating),
-        )} ${rating?.rating}`}</p>
-      </div>
+      {loading ? (
+        '...'
+      ) : (
+        <div className="flex items-center gap-1.5">
+          {Number(rating?.rating) > 0 && (
+            <img src="/assets/images/Shared/thumbs-up.svg" alt="" />
+          )}
+          <p className="text-black text-xs font-bold mt-0.5">{`${getConfidenceValueOfAuraRatingNumber(
+            Number(rating?.rating),
+          )} ${rating?.rating}`}</p>
+        </div>
+      )}
       <div className="flex justify-between gap-9">
         <p className="text-green text-sm">Impact</p>
         <p className="text-green text-sm font-bold">12%</p>
@@ -197,7 +223,7 @@ const EvaluatedCardBody = ({
           subjectId={fromSubjectId}
           className={`w-[50px] h-[52px] rounded-lg border-2 border-pastel-purple`}
         />
-        <ConnectionInfo />
+        <ConnectionInfo subjectId={fromSubjectId} />
       </div>
       <div className="card__middle-column flex flex-col gap-0">
         <UserName subjectId={fromSubjectId} />
@@ -255,7 +281,7 @@ const ConnectedCardBody = ({
           subjectId={fromSubjectId}
           className={`w-[50px] h-[52px] rounded-lg border-2 border-pastel-purple`}
         />
-        <ConnectionInfo />
+        <ConnectionInfo subjectId={fromSubjectId} />
       </div>
       <div className="card__middle-column flex flex-col gap-0">
         <UserName subjectId={fromSubjectId} />
