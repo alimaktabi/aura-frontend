@@ -5,6 +5,7 @@ import './App.scss';
 import * as Sentry from '@sentry/react';
 import NodeApiGateContextProvider from 'BrightID/components/NodeApiGate';
 import { BrowserHistoryContextProvider } from 'contexts/BrowserHistoryContext';
+import { MyEvaluationsContextProvider } from 'contexts/MyEvaluationsContext';
 import { SubjectsListContextProvider } from 'contexts/SubjectsListContext';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -58,13 +59,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <SubjectsListContextProvider>
-          <NodeApiGateContextProvider>
-            <BrowserRouter>
-              <BrowserHistoryContextProvider>
-                <App />
-              </BrowserHistoryContextProvider>
-            </BrowserRouter>
-          </NodeApiGateContextProvider>
+          <MyEvaluationsContextProvider>
+            <NodeApiGateContextProvider>
+              <BrowserRouter>
+                <BrowserHistoryContextProvider>
+                  <App />
+                </BrowserHistoryContextProvider>
+              </BrowserRouter>
+            </NodeApiGateContextProvider>
+          </MyEvaluationsContextProvider>
         </SubjectsListContextProvider>
       </PersistGate>
     </Provider>

@@ -1,6 +1,6 @@
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
-import { useSubjectRating } from 'hooks/useSubjectRating';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -28,10 +28,11 @@ export const SubjectCard = ({
     return inboundConnections.find((conn) => conn.id === authData.brightId);
   }, [authData?.brightId, inboundConnections]);
 
-  const { rating, loading, confidenceValue } = useSubjectRating({
-    fromSubjectId: authData?.brightId,
-    toSubjectId: subjectId,
-  });
+  const {
+    myRatingToSubject: rating,
+    loading,
+    myConfidenceValueInThisSubjectRating: confidenceValue,
+  } = useMyEvaluationsContext(subjectId);
 
   const styleValues = useMemo(() => {
     if (rating?.rating) {
