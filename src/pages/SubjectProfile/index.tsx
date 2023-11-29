@@ -23,7 +23,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
 
   const authData = useSelector(selectAuthData);
 
-  const { inboundRatings } = useSubjectInboundEvaluationsContext(subjectId);
+  const { inboundRatings, loading } =
+    useSubjectInboundEvaluationsContext(subjectId);
   const isEvaluated = useMemo(() => {
     if (!authData?.brightId) return false;
     const rating = inboundRatings?.find(
@@ -79,7 +80,9 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       )}
 
       <ProfileInfo subjectId={subjectId} />
-      {isEvaluated ? (
+      {loading ? (
+        <div className="card flex flex-col gap-2.5">...</div>
+      ) : isEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
       ) : (
         <NewEvaluationCard subjectId={subjectId} />

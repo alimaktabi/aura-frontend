@@ -8,6 +8,8 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     null,
   );
   const [loading, setLoading] = useState(true);
+
+  const [refreshCounter, setRefreshCounter] = useState(0);
   useEffect(() => {
     let mounted = true;
     setLoading(true);
@@ -23,7 +25,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     return () => {
       mounted = false;
     };
-  }, [subjectId]);
+  }, [subjectId, refreshCounter]);
 
   const inboundPositiveRatingsCount = useMemo(
     () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
@@ -41,6 +43,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
   }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
 
   return {
+    refresh: () => setRefreshCounter((c) => c + 1),
     loading,
     inboundRatings,
     inboundPositiveRatingsCount,
