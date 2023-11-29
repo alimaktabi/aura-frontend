@@ -109,7 +109,6 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                 key={rating.id}
                 fromSubjectId={rating.fromBrightId}
                 toSubjectId={rating.toBrightId}
-                className="!min-w-[305px] !py-5"
               />
             )}
           />
