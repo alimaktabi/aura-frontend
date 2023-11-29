@@ -2,9 +2,7 @@ import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectAuthData } from 'store/profile/selectors';
 import { connectionLevelIconsBlack } from 'utils/connection';
 
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
@@ -18,19 +16,13 @@ export const SubjectCard = ({
   index?: string | number;
 }) => {
   const { level, name, auraScore } = useSubjectInfo(subjectId);
-  const { inboundRatingsStatsString, inboundConnections } =
+  const { inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext(subjectId);
-
-  const authData = useSelector(selectAuthData);
-
-  const inboundConnectionInfo = useMemo(() => {
-    if (!inboundConnections || !authData?.brightId) return undefined;
-    return inboundConnections.find((conn) => conn.id === authData.brightId);
-  }, [authData?.brightId, inboundConnections]);
 
   const {
     myRatingToSubject: rating,
     loading,
+    myConnectionToSubject: inboundConnectionInfo,
     myConfidenceValueInThisSubjectRating: confidenceValue,
   } = useMyEvaluationsContext(subjectId);
 

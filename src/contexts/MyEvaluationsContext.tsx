@@ -35,11 +35,11 @@ export const useMyEvaluationsContext = (subjectId?: string) => {
     );
   }
   const myRatingToSubject = useMemo(() => {
-    if (!subjectId || context.myRatings === null) return undefined;
+    if (!subjectId || !context.myRatings) return undefined;
     return context.myRatings.find((r) => r.toBrightId === subjectId);
   }, [context.myRatings, subjectId]);
   const myConnectionToSubject = useMemo(() => {
-    if (!subjectId || context.myConnections === null) return undefined;
+    if (!subjectId || !context.myConnections) return undefined;
     return context.myConnections.find((c) => c.id === subjectId);
   }, [context.myConnections, subjectId]);
 
