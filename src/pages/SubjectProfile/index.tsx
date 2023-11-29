@@ -5,6 +5,7 @@ import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
+import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -14,7 +15,6 @@ import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { selectAuthData } from '../../store/profile/selectors';
 import EvaluateOverlayCard from '../SubjectsEvaluation/EvaluateOverlayCard';
-import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
 import NewEvaluationCard from './NewEvaluationCard';
 import { YourEvaluation } from './YourEvaluation';
 
@@ -23,8 +23,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
 
   const authData = useSelector(selectAuthData);
 
-  const { inboundRatings, inboundConnections, loading } =
-    useSubjectInboundEvaluationsContext(subjectId);
+  const { inboundRatings } = useSubjectInboundEvaluationsContext(subjectId);
   const isEvaluated = useMemo(() => {
     if (!authData?.brightId) return false;
     const rating = inboundRatings?.find(
@@ -59,13 +58,12 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     };
   }, []);
 
+  const { itemsFiltered: evaluations } =
+    useSubjectInboundEvaluationsContext(subjectId);
   const evaluators: string[] = useMemo(() => {
-    if (loading) return [];
-    const set = new Set<string>();
-    inboundRatings?.forEach((r) => set.add(r.fromBrightId));
-    inboundConnections?.forEach((c) => set.add(c.id));
-    return Array.from(set.values());
-  }, [loading, inboundRatings, inboundConnections]);
+    if (!evaluations) return [];
+    return evaluations.map((e) => e.fromSubjectId);
+  }, [evaluations]);
 
   return (
     <div className="page page__dashboard flex flex-col gap-4">
@@ -107,7 +105,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <EvaluationsDetails subjectId={subjectId} />
       ) : (
         <>
-          <SubjectSearch />
+          <EvidenceListSearch subjectId={subjectId} />
           <InfiniteScrollLocal
             className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
             items={evaluators}
