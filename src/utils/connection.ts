@@ -15,6 +15,6 @@ export const connectionLevelIconsBlack: {
   reported: 'sad-icon',
   suspicious: 'sad-icon',
   'just met': 'poker-black-icon',
-  'already known': 'happy-icon',
+  'already known': 'happy-black-icon',
   recovery: 'already-known-icon-black',
 };

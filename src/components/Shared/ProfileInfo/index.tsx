@@ -16,9 +16,7 @@ export const ProfileInfo = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { level, name, joinedDateString, brightIdProfile } =
-    useSubjectInfo(subjectId);
-  // const { userHasRecovery } = useSubjectInfo(subjectId);
+  const { name, userHasRecovery } = useSubjectInfo(subjectId);
 
   return (
     <div className="card">
@@ -36,139 +34,29 @@ export const ProfileInfo = ({
               <img src="/assets/images/Shared/already-known-icon.svg" alt="" />
               <strong>Level 1</strong>
             </div>
-            {/*<div className="leading-5">*/}
-            {/*  {isPerformance ? (*/}
-            {/*    <>*/}
-            {/*      <span>Player Level: </span>*/}
-            {/*      <span className="font-medium">1</span>*/}
-            {/*    </>*/}
-            {/*  ) : level ? (*/}
-            {/*    <>*/}
-            {/*      <span className="font-medium">{level} </span>*/}
-            {/*      <span>Subject</span>*/}
-            {/*    </>*/}
-            {/*  ) : (*/}
-            {/*    <span className="font-medium">Loading...</span>*/}
-            {/*  )}*/}
-            {/*</div>*/}
           </div>
         </div>
         <div className="flex flex-col gap-1.5 items-end text-sm text-black min-w-[90px]">
-          <div className="bg-orange px-2 py-1.5 rounded cursor-pointer">
-            <p className="text-white font-bold text-xs">Has Recovery</p>
-          </div>
+          {userHasRecovery !== null && (
+            <div
+              className={`${
+                userHasRecovery
+                  ? 'bg-orange text-white font-bold'
+                  : 'bg-gray-300 text-black'
+              } px-2 py-1.5 rounded cursor-pointer`}
+            >
+              <p className="text-xs">
+                {userHasRecovery ? 'Has Recovery' : 'No Recovery'}
+              </p>
+            </div>
+          )}
           <p className="text-sm">
             Last Activity: <strong>323d ago</strong>
           </p>
-          {/*<p>Joined at:</p>*/}
-          {/*{brightIdProfile ? (*/}
-          {/*  <>*/}
-          {/*    <p className="font-medium">*/}
-          {/*      {new Date(brightIdProfile.createdAt).toLocaleDateString()}*/}
-          {/*    </p>*/}
-          {/*    <p className="font-medium">({joinedDateString} ago)</p>*/}
-          {/*  </>*/}
-          {/*) : (*/}
-          {/*  <>*/}
-          {/*    <p className="mb-5">loading...</p>*/}
-          {/*  </>*/}
-          {/*)}*/}
         </div>
-        {/*{isPerformance ? (*/}
-        {/*  <PerformanceInfo color={color} />*/}
-        {/*) : (*/}
-        {/*  <ConnectionsButton subjectId={subjectId} name={name} />*/}
-        {/*)}*/}
       </div>
-      {/*<div className="card--body text-sm">*/}
-      {/*  {brightIdProfile ? (*/}
-      {/*    <>*/}
-      {/*      <span className="font-normal">Joined at </span>*/}
-      {/*      <span className="font-medium">*/}
-      {/*        {new Date(brightIdProfile.createdAt).toLocaleDateString()} (*/}
-      {/*        {joinedDateString} ago)*/}
-      {/*      </span>*/}
-      {/*    </>*/}
-      {/*  ) : (*/}
-      {/*    'loading...'*/}
-      {/*  )}*/}
-      {/*</div>*/}
-      {/*<div className="card--body text-sm">*/}
-      {/*  <span className="font-normal">*/}
-      {/*    {userHasRecovery === null*/}
-      {/*      ? 'loading...'*/}
-      {/*      : userHasRecovery*/}
-      {/*      ? 'user has recovery'*/}
-      {/*      : 'recovery not set up'}*/}
-      {/*  </span>*/}
-      {/*</div>*/}
     </div>
   );
 };
-//
-// const ConnectionsButton = ({
-//   subjectId,
-//   name,
-// }: {
-//   subjectId: string | undefined;
-//   name: string;
-// }) => {
-//   const { inboundConnections } = useInboundConnections(subjectId);
-//
-//   const [isConnectionsListModalOpen, setIsConnectionsListModalOpen] =
-//     useState(false);
-//
-//   return (
-//     <>
-//       <div
-//         onClick={() => setIsConnectionsListModalOpen(true)}
-//         className={`card--header__right flex flex-col justify-center bg-pastel-purple
-//         } rounded h-full py-2 px-3.5`}
-//       >
-//         <div className="flex w-full justify-between items-center">
-//           <div className="font-bold text-black leading-5">
-//             {inboundConnections?.length ?? '...'}
-//           </div>
-//           <img src="/assets/images/Shared/arrow-right-icon-black.svg" alt="" />
-//         </div>
-//         <div className="font-bold text-sm text-black leading-5">
-//           Connections
-//         </div>
-//       </div>
-//       <Modal
-//         title={`${name}'s Connections List`}
-//         isOpen={isConnectionsListModalOpen}
-//         noButtonPadding={true}
-//         closeModalHandler={() => setIsConnectionsListModalOpen(false)}
-//         className="select-button-with-modal__modal"
-//       >
-//         <ConnectionListModal subjectId={subjectId} />
-//       </Modal>
-//     </>
-//   );
-// };
-
-// const PerformanceInfo = ({ color }: { color: string }) => {
-//   return (
-//     <div
-//       className={`card--header__right flex flex-col justify-center ${
-//         'bg-' + color
-//       } rounded h-full py-1.5 px-2 items-center`}
-//     >
-//       <div className="flex gap-1.5 items-center">
-//         <img
-//           className="w-3.5 h-3.5"
-//           src="/assets/images/Shared/star-icon.svg"
-//           alt=""
-//         />
-//         <div className="font-medium text-white leading-5">439,232</div>
-//       </div>
-//       <div className="font-medium text-sm text-white leading-5">
-//         <span>Rank: </span>
-//         <span className="font-bold">13</span>
-//       </div>
-//     </div>
-//   );
-// };
 
 export default ProfileInfo;

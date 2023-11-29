@@ -1,11 +1,9 @@
-import { useBrowserHistoryContext } from 'contexts/BrowserHistoryContext';
+import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useEvaluateSubject } from 'hooks/useEvaluateSubject';
 import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { selectAuthData } from 'store/profile/selectors';
-import { RoutePath } from 'types/router';
 
 import ConfidenceDropdown from '../../components/Shared/ConfidenceDropdown';
 
@@ -20,6 +18,7 @@ const EvaluateModalBody = ({
 }) => {
   const [isYes, setIsYes] = useState(true);
   const [confidence, setConfidence] = useState(1);
+  const { refresh } = useSubjectInboundEvaluationsContext(subjectId);
   useEffect(() => {
     if (!prevRating) return;
     setIsYes(prevRating > 0);
@@ -27,18 +26,17 @@ const EvaluateModalBody = ({
   }, [prevRating]);
   const { name } = useSubjectBasicInfo(subjectId);
   const authData = useSelector(selectAuthData);
-  const navigate = useNavigate();
-  const { isFirstVisitedRoute } = useBrowserHistoryContext();
   const { submitEvaluation, loading } = useEvaluateSubject();
 
   const onSubmittedLocal = useCallback(() => {
-    if (isFirstVisitedRoute) {
-      navigate(RoutePath.SUBJECTS_EVALUATION);
-    } else {
-      navigate(-1);
-    }
+    // if (isFirstVisitedRoute) {
+    //   navigate(RoutePath.SUBJECTS_EVALUATION);
+    // } else {
+    //   navigate(-1);
+    // }
+    refresh();
     onSubmitted();
-  }, [isFirstVisitedRoute, navigate, onSubmitted]);
+  }, [onSubmitted, refresh]);
 
   const submit = useCallback(async () => {
     if (loading || !authData?.brightId) return;

@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectAuthData } from 'store/profile/selectors';
+import { connectionLevelIconsBlack } from 'utils/connection';
 
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
 import { compactFormat } from '../../utils/number';
@@ -17,14 +18,21 @@ export const SubjectCard = ({
   index?: string | number;
 }) => {
   const { level, name, auraScore } = useSubjectInfo(subjectId);
-  const { inboundRatingsStatsString } =
+  const { inboundRatingsStatsString, inboundConnections } =
     useSubjectInboundEvaluationsContext(subjectId);
+
   const authData = useSelector(selectAuthData);
+
+  const inboundConnectionInfo = useMemo(() => {
+    if (!inboundConnections || !authData?.brightId) return undefined;
+    return inboundConnections.find((conn) => conn.id === authData.brightId);
+  }, [authData?.brightId, inboundConnections]);
 
   const { rating, loading, confidenceValue } = useSubjectRating({
     fromSubjectId: authData?.brightId,
     toSubjectId: subjectId,
   });
+
   const styleValues = useMemo(() => {
     if (rating?.rating) {
       if (Number(rating.rating) > 0) return '!bg-green-card !opacity-75';
@@ -76,8 +84,19 @@ export const SubjectCard = ({
                 Negative{' '}
                 <span className="text-black"> - {confidenceValue}</span>
               </span>
+            ) : inboundConnectionInfo ? (
+              <div className="flex">
+                <img
+                  className="pr-1"
+                  src={`/assets/images/Shared/${
+                    connectionLevelIconsBlack[inboundConnectionInfo.level]
+                  }.svg`}
+                  alt=""
+                />
+                {inboundConnectionInfo.level}
+              </div>
             ) : (
-              <span className="text-gray20">Not Evaluated</span>
+              '-'
             )}
           </p>
         </div>

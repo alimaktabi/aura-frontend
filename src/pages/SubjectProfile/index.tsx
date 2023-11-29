@@ -1,10 +1,11 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
-import SubjectEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
+import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
+import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -14,25 +15,23 @@ import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { selectAuthData } from '../../store/profile/selectors';
 import EvaluateOverlayCard from '../SubjectsEvaluation/EvaluateOverlayCard';
-import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
 import NewEvaluationCard from './NewEvaluationCard';
 import { YourEvaluation } from './YourEvaluation';
 
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
-  const noteExists = useMemo(() => true, []); // new note or old note
 
   const authData = useSelector(selectAuthData);
 
-  const { inboundRatings } = useSubjectInboundEvaluationsContext(subjectId);
-  const hasNoteOrEvaluated = useMemo(() => {
-    if (noteExists) return true;
+  const { inboundRatings, loading } =
+    useSubjectInboundEvaluationsContext(subjectId);
+  const isEvaluated = useMemo(() => {
     if (!authData?.brightId) return false;
     const rating = inboundRatings?.find(
       (r) => r.fromBrightId === authData?.brightId,
     )?.rating;
     return rating && Math.abs(Number(rating)) > 0;
-  }, [authData?.brightId, inboundRatings, noteExists]);
+  }, [authData?.brightId, inboundRatings]);
 
   const [isOverviewSelected, setIsOverviewSelected] = useState(true);
 
@@ -60,6 +59,13 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     };
   }, []);
 
+  const { itemsFiltered: evaluations } =
+    useSubjectInboundEvaluationsContext(subjectId);
+  const evaluators: string[] = useMemo(() => {
+    if (!evaluations) return [];
+    return evaluations.map((e) => e.fromSubjectId);
+  }, [evaluations]);
+
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       {!isOverviewSelected && (
@@ -74,10 +80,12 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       )}
 
       <ProfileInfo subjectId={subjectId} />
-      {hasNoteOrEvaluated ? (
+      {loading ? (
+        <div className="card flex flex-col gap-2.5">...</div>
+      ) : isEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
       ) : (
-        <NewEvaluationCard />
+        <NewEvaluationCard subjectId={subjectId} />
       )}
       {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
@@ -100,15 +108,15 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <EvaluationsDetails subjectId={subjectId} />
       ) : (
         <>
-          <SubjectSearch />
+          <EvidenceListSearch subjectId={subjectId} />
           <InfiniteScrollLocal
             className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-            items={inboundRatings}
-            renderItem={(rating) => (
-              <SubjectEvaluation
-                key={rating.id}
-                fromSubjectId={rating.fromBrightId}
-                toSubjectId={rating.toBrightId}
+            items={evaluators}
+            renderItem={(evaluator) => (
+              <ProfileEvaluation
+                key={evaluator}
+                fromSubjectId={evaluator}
+                toSubjectId={subjectId}
               />
             )}
           />

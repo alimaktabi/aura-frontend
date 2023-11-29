@@ -8,6 +8,8 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     null,
   );
   const [loading, setLoading] = useState(true);
+
+  const [refreshCounter, setRefreshCounter] = useState(0);
   useEffect(() => {
     let mounted = true;
     setLoading(true);
@@ -23,21 +25,29 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     return () => {
       mounted = false;
     };
-  }, [subjectId]);
+  }, [subjectId, refreshCounter]);
+
+  const inboundPositiveRatingsCount = useMemo(
+    () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
+    [inboundRatings],
+  );
+  const inboundNegativeRatingsCount = useMemo(
+    () => inboundRatings?.filter((r) => Number(r.rating) < 0).length,
+    [inboundRatings],
+  );
 
   const inboundRatingsStatsString = useMemo(() => {
-    if (!inboundRatings) return null;
-    const inboundPositiveRatingsCount = inboundRatings.filter(
-      (r) => Number(r.rating) > 0,
-    ).length;
-    const inboundNegativeRatingsCount = inboundRatings.filter(
-      (r) => Number(r.rating) < 0,
-    ).length;
-    return `${inboundPositiveRatingsCount} Pos / ${inboundNegativeRatingsCount} Neg`;
-  }, [inboundRatings]);
+    return `${inboundPositiveRatingsCount ?? '...'} Pos / ${
+      inboundNegativeRatingsCount ?? '...'
+    } Neg`;
+  }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
+
   return {
+    refresh: () => setRefreshCounter((c) => c + 1),
     loading,
     inboundRatings,
+    inboundPositiveRatingsCount,
+    inboundNegativeRatingsCount,
     inboundRatingsStatsString,
   };
 };
