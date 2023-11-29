@@ -66,7 +66,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     <div className="page page__dashboard flex flex-col gap-4">
       {!isOverviewSelected && (
         <EvaluateOverlayCard
-          className={`absolute top-24 z-10 min-h-[89px] transition-all min-w-[403px] max-w-[403px] ${
+          className={`absolute top-24 z-10 min-h-[89px] transition-all w-[calc(100vw-40px)] max-w-[420px] ${
             showEvaluateOverlayCard
               ? 'translate-y-0 opacity-100'
               : '-translate-y-60 opacity-0'
@@ -113,7 +113,6 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                 key={evaluator}
                 fromSubjectId={evaluator}
                 toSubjectId={subjectId}
-                className="!min-w-[305px] !py-5"
               />
             )}
           />
