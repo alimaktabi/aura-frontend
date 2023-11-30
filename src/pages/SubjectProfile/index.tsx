@@ -22,7 +22,7 @@ import { YourEvaluation } from './YourEvaluation';
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
 
-  const { myRatingToSubject: rating, loading } =
+  const { myRatingToSubject: rating, loading: loadingMyEvaluation } =
     useMyEvaluationsContext(subjectId);
 
   const isEvaluated = useMemo(() => {
@@ -55,9 +55,9 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     };
   }, []);
 
-  const { itemsFiltered: evaluations } =
+  const { itemsFiltered: evaluations, loading: loadingInboundEvaluations } =
     useSubjectInboundEvaluationsContext(subjectId);
-  const evaluators: string[] = useMemo(() => {
+  const evaluators = useMemo(() => {
     if (!evaluations) return [];
     return evaluations.map((e) => e.fromSubjectId);
   }, [evaluations]);
@@ -76,7 +76,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       )}
 
       <ProfileInfo subjectId={subjectId} />
-      {loading ? (
+      {loadingMyEvaluation ? (
         <div className="card flex flex-col gap-2.5">...</div>
       ) : isEvaluated ? (
         <YourEvaluation subjectId={subjectId} />
@@ -105,17 +105,25 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       ) : (
         <>
           <EvidenceListSearch subjectId={subjectId} />
-          <InfiniteScrollLocal
-            className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-            items={evaluators}
-            renderItem={(evaluator) => (
-              <ProfileEvaluation
-                key={evaluator}
-                fromSubjectId={evaluator}
-                toSubjectId={subjectId}
-              />
-            )}
-          />
+          {loadingInboundEvaluations ? (
+            <div
+              className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
+            >
+              Loading...
+            </div>
+          ) : (
+            <InfiniteScrollLocal
+              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+              items={evaluators}
+              renderItem={(evaluator) => (
+                <ProfileEvaluation
+                  key={evaluator}
+                  fromSubjectId={evaluator}
+                  toSubjectId={subjectId}
+                />
+              )}
+            />
+          )}
         </>
       )}
       {/* could have header based on the role */}

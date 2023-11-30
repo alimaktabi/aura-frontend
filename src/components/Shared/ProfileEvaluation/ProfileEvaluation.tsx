@@ -14,7 +14,7 @@ import {
   useSubjectEvaluationFromContext,
 } from 'hooks/useSubjectEvaluation';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
 
@@ -75,15 +75,25 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
               />
             )}
             {!!rating && Number(rating?.rating) !== 0 && (
-              <p className="text-green text-sm font-bold">
+              <p
+                className={`${
+                  Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
+                } text-sm font-bold`}
+              >
                 {Number(rating.rating) < 0 ? '-' : '+'}
                 {Math.abs(Number(rating.rating))}
               </p>
             )}
           </div>
-          <p className="impact-percentage text-green text-[11px] font-bold text-center w-full">
-            12%
-          </p>
+          {!!rating && Number(rating?.rating) !== 0 && (
+            <p
+              className={`impact-percentage ${
+                Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
+              } text-[11px] font-bold text-center w-full`}
+            >
+              12%
+            </p>
+          )}
         </>
       )}
     </div>
@@ -96,10 +106,9 @@ const UserName = ({ subjectId }: { subjectId: string }) => {
     <div className="flex gap-1 items-center">
       <p className="name font-medium text-sm">{name}</p>
       <span className="flex bg-pastel-purple h-[14px] w-5 items-center justify-center rounded-full cursor-pointer">
-        <img
-          src="/assets/images/SubjectProfile/icon.svg"
+        <BrightIdProfilePicture
+          subjectId={subjectId}
           className="h-[10px] w-[10px]"
-          alt=""
         />
       </span>
     </div>
@@ -156,20 +165,12 @@ const EvidenceInformation = ({
   );
 };
 
-const DEFAULT_PROFILE_PICTURE = '/assets/images/avatar-thumb.jpg';
-
-const EvidenceUserProfile = () => {
-  const [imgSrc, setImgSrc] = useState(DEFAULT_PROFILE_PICTURE);
-  useEffect(() => {
-    setImgSrc(DEFAULT_PROFILE_PICTURE);
-  }, []);
-
+const EvidenceUserProfile = ({ subjectId }: { subjectId: string }) => {
   return (
     <div className="img ml-auto">
-      <img
-        src={imgSrc}
+      <BrightIdProfilePicture
+        subjectId={subjectId}
         className="rounded-full border border-gray60 w-8 h-8"
-        alt=""
       />
     </div>
   );
@@ -188,7 +189,11 @@ const EvaluationInformation = ({
   });
   //TODO: change bg color on negative rating
   return (
-    <div className="evaluation-information flex flex-col py-1.5 items-center justify-center gap-1 bg-pl1 rounded-md">
+    <div
+      className={`evaluation-information flex flex-col py-1.5 items-center justify-center gap-1 ${
+        Number(rating?.rating) > 0 ? 'bg-pl1' : 'bg-nl1'
+      } rounded-md`}
+    >
       {loading ? (
         '...'
       ) : (
@@ -202,8 +207,20 @@ const EvaluationInformation = ({
         </div>
       )}
       <div className="flex justify-between gap-9">
-        <p className="text-green text-sm">Impact</p>
-        <p className="text-green text-sm font-bold">12%</p>
+        <p
+          className={`${
+            Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
+          } text-sm`}
+        >
+          Impact
+        </p>
+        <p
+          className={`${
+            Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
+          } text-sm font-bold`}
+        >
+          12%
+        </p>
       </div>
     </div>
   );
@@ -233,7 +250,7 @@ const EvaluatedCardBody = ({
       <span className="divider border-r border-dashed border-gray00 pl-1.5 mr-1.5 h-full"></span>
       <div className="card__right-column flex flex-col gap-1 flex-1">
         <EvidenceInformation evidenceType="evaluated" subjectId={toSubjectId} />
-        <EvidenceUserProfile />
+        <EvidenceUserProfile subjectId={toSubjectId} />
         <EvaluationInformation
           fromSubjectId={fromSubjectId}
           toSubjectId={toSubjectId}
@@ -267,6 +284,47 @@ const EvaluatedCardBody = ({
 //   );
 // };
 
+const ConnectionInformation = ({
+  fromSubjectId,
+  toSubjectId,
+}: {
+  fromSubjectId: string;
+  toSubjectId: string;
+}) => {
+  const { inboundConnectionInfo, loading } = useSubjectEvaluationFromContext({
+    fromSubjectId,
+    toSubjectId,
+  });
+  const connectionTime = useMemo(() => {
+    if (!inboundConnectionInfo?.timestamp) return '-';
+    // const n = new Date().getTime() - inboundConnectionInfo.timestamp
+    // const years = Math.floor(n / 3600)
+    return '1 year ago';
+  }, [inboundConnectionInfo?.timestamp]);
+  return (
+    <div className="flex flex-col py-1.5 items-center justify-center gap-1 bg-soft-bright rounded-md">
+      {loading ? (
+        '...'
+      ) : (
+        <>
+          <div className="flex items-center gap-1.5">{connectionTime}</div>
+          <div className="flex items-center gap-1.5">
+            {inboundConnectionInfo && (
+              <img
+                src={`/assets/images/Shared/${
+                  connectionLevelIcons[inboundConnectionInfo.level]
+                }.svg`}
+                className="h-[18px] w-[18px]"
+                alt=""
+              />
+            )}
+            <p className="text-sm font-bold">{inboundConnectionInfo?.level}</p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 const ConnectedCardBody = ({
   fromSubjectId,
   toSubjectId,
@@ -294,8 +352,11 @@ const ConnectedCardBody = ({
           evidenceType="connected to"
           subjectId={toSubjectId}
         />
-        <EvidenceUserProfile />
-        {/*<EvaluationInformation />*/}
+        <EvidenceUserProfile subjectId={toSubjectId} />
+        <ConnectionInformation
+          fromSubjectId={fromSubjectId}
+          toSubjectId={toSubjectId}
+        />
       </div>
     </>
   );

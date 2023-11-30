@@ -56,25 +56,28 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   const inboundOpinions: AuraInboundConnectionAndRatingData[] = useMemo(() => {
     const inboundConnections = subjectConnections.inboundConnections;
     if (!inboundConnections || inboundRatings === null) return [];
-    const inboundOpinions: AuraInboundConnectionAndRatingData[] = [];
-    inboundRatings.forEach((r) => {
-      const isNotConnection =
-        inboundConnections.findIndex((c) => c.id === r.fromBrightId) === -1;
-      if (isNotConnection) {
+    const inboundOpinions: AuraInboundConnectionAndRatingData[] =
+      inboundRatings.map((r) => ({
+        fromSubjectId: r.fromBrightId,
+        rating: r,
+        inboundConnection: inboundConnections.find(
+          (c) => c.id === r.fromBrightId,
+        ),
+      }));
+    inboundConnections.forEach((c) => {
+      const notRated =
+        inboundRatings.findIndex((r) => r.fromBrightId === c.id) === -1;
+      if (notRated) {
         inboundOpinions.push({
-          fromSubjectId: r.fromBrightId,
-          rating: r,
+          fromSubjectId: c.id,
+          inboundConnection: c,
         });
       }
     });
-    return inboundOpinions.concat(
-      inboundConnections.map((c) => ({
-        fromSubjectId: c.id,
-        rating: inboundRatings.find((r) => r.fromBrightId === c.id),
-        inboundConnection: c,
-      })),
-    );
+    return inboundOpinions;
   }, [inboundRatings, subjectConnections.inboundConnections]);
+
+  console.log('op', inboundOpinions?.[0]);
 
   const filterAndSortHookData = useFilterAndSort(
     inboundOpinions,
