@@ -43,7 +43,7 @@ export const ProfileInfo = ({
                 userHasRecovery
                   ? 'bg-orange text-white font-bold'
                   : 'bg-gray-300 text-black'
-              } px-2 py-1.5 rounded cursor-pointer`}
+              } px-2 py-1.5 rounded`}
             >
               <p className="text-xs">
                 {userHasRecovery ? 'Has Recovery' : 'No Recovery'}
