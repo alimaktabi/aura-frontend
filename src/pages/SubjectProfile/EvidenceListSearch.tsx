@@ -31,7 +31,7 @@ export const EvidenceListSearch = ({ subjectId }: { subjectId: string }) => {
         <input
           className="w-full bg-gray30 text-black2 font-medium placeholder-black2 text-sm h-11 focus:outline-none"
           type="text"
-          placeholder="Subject name or ID ... (Not Implemented)"
+          placeholder="name or ID ..."
           value={searchString}
           onChange={(e) => setSearchString(e.target.value)}
         />

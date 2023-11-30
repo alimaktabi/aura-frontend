@@ -1,30 +1,55 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
-import { useSelector } from 'react-redux';
+import { SubjectCard } from 'pages/SubjectsEvaluation/SubjectCard';
+import { SubjectSearch } from 'pages/SubjectsEvaluation/SubjectSearch';
+import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'store/hooks';
+import { getBrightIdBackupThunk } from 'store/profile/actions';
+import { hash } from 'utils/crypto';
 
-import { selectBrightIdBackup } from '../../store/profile/selectors';
-import { SubjectCard } from './SubjectCard';
-import { SubjectSearch } from './SubjectSearch';
+import {
+  selectAuthData,
+  selectBrightIdBackup,
+} from '../../store/profile/selectors';
 
 const SubjectsEvaluation = () => {
   const brightIdBackup = useSelector(selectBrightIdBackup);
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
+
+  const authData = useSelector(selectAuthData);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const refreshBrightIdBackup = useCallback(async () => {
+    if (!authData) return;
+    setLoading(true);
+    const authKey = hash(authData.brightId + authData.password);
+    await dispatch(getBrightIdBackupThunk({ authKey }));
+    setLoading(false);
+  }, [authData, dispatch]);
   return (
     <div className="page page__dashboard h-screen flex flex-col">
       <SubjectSearch />
-      <p className="text-lg text-white mb-5 mt-7">
+      <div className="text-lg text-white mb-5 mt-7 flex">
         Subjects{' '}
-        <strong>({brightIdBackup?.connections.length ?? '...'})</strong>
+        <strong className="ml-1">
+          ({brightIdBackup?.connections.length ?? '...'})
+        </strong>
         {filteredSubjects !== null &&
           filteredSubjects.length !== brightIdBackup?.connections.length && (
-            <span className="pl-2">
+            <span className="ml-2">
               ({filteredSubjects.length} filter result
               {filteredSubjects.length !== 1 ? 's' : ''})
             </span>
           )}
-      </p>
-      {filteredSubjects ? (
+        <img
+          src="/assets/images/Shared/refresh.svg"
+          alt="refresh"
+          className="w-7 h-7 ml-1 mt-0.5 cursor-pointer"
+          onClick={refreshBrightIdBackup}
+        />
+      </div>
+      {filteredSubjects && !loading ? (
         <div className="overflow-auto flex-grow">
           <InfiniteScrollLocal
             className={'flex flex-col gap-3'}

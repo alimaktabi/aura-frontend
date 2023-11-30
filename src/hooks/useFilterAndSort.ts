@@ -111,7 +111,6 @@ export default function useFilterAndSort<T>(
   const itemsFiltered: T[] | null = useMemo(() => {
     if (items === null) return null;
     let result = [...items];
-    console.log(result[0]);
     if (searchString && searchKeys?.length) {
       const searchStringFinal = searchString.trim().toLowerCase();
       result = result.filter((item) =>
@@ -125,8 +124,6 @@ export default function useFilterAndSort<T>(
     if (selectedSort) {
       result.sort(selectedSort?.func);
     }
-    console.log(selectedSort);
-    console.log(result[0]);
     return selectedSort?.isReversed ? result.reverse() : result;
   }, [items, searchString, searchKeys, selectedFilter, selectedSort]);
 

@@ -87,6 +87,7 @@ export type AuraRating = {
 
 export type AuraInboundConnectionAndRatingData = {
   fromSubjectId: string;
+  name?: string;
   rating?: AuraRating;
   inboundConnection?: BrightIdConnection;
 };

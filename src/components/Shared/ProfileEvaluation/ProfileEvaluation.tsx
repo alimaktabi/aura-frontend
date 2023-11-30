@@ -14,6 +14,7 @@ import {
   useSubjectEvaluationFromContext,
 } from 'hooks/useSubjectEvaluation';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import moment from 'moment';
 import { useMemo } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
@@ -297,9 +298,7 @@ const ConnectionInformation = ({
   });
   const connectionTime = useMemo(() => {
     if (!inboundConnectionInfo?.timestamp) return '-';
-    // const n = new Date().getTime() - inboundConnectionInfo.timestamp
-    // const years = Math.floor(n / 3600)
-    return '1 year ago';
+    return moment(inboundConnectionInfo?.timestamp).fromNow();
   }, [inboundConnectionInfo?.timestamp]);
   return (
     <div className="flex flex-col py-1.5 items-center justify-center gap-1 bg-soft-bright rounded-md">

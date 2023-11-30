@@ -12,6 +12,8 @@ import {
 import { useSubjectConnections } from 'hooks/useSubjectConnections';
 import { useSubjectInboundEvaluations } from 'hooks/useSubjectInboundEvaluations';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData } from 'types';
 
 // Define the context
@@ -43,6 +45,8 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     AuraFilterId.EvaluationMutualConnections,
     AuraFilterId.EvaluationPositiveEvaluations,
     AuraFilterId.EvaluationNegativeEvaluations,
+    AuraFilterId.EvaluationJustEvaluations,
+    AuraFilterId.EvaluationJustConnections,
   ]);
 
   const sorts = useEvaluationSorts([
@@ -53,13 +57,19 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
 
   const subjectConnections = useSubjectConnections(subjectId);
 
+  const brightIdBackup = useSelector(selectBrightIdBackup);
+
   const inboundOpinions: AuraInboundConnectionAndRatingData[] = useMemo(() => {
     const inboundConnections = subjectConnections.inboundConnections;
-    if (!inboundConnections || inboundRatings === null) return [];
+    if (!inboundConnections || inboundRatings === null || !brightIdBackup)
+      return [];
     const inboundOpinions: AuraInboundConnectionAndRatingData[] =
       inboundRatings.map((r) => ({
         fromSubjectId: r.fromBrightId,
         rating: r,
+        name: brightIdBackup.connections.find(
+          (conn) => conn.id === r.fromBrightId,
+        )?.name,
         inboundConnection: inboundConnections.find(
           (c) => c.id === r.fromBrightId,
         ),
@@ -70,20 +80,20 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
       if (notRated) {
         inboundOpinions.push({
           fromSubjectId: c.id,
+          name: brightIdBackup.connections.find((conn) => conn.id === c.id)
+            ?.name,
           inboundConnection: c,
         });
       }
     });
     return inboundOpinions;
-  }, [inboundRatings, subjectConnections.inboundConnections]);
-
-  console.log('op', inboundOpinions?.[0]);
+  }, [brightIdBackup, inboundRatings, subjectConnections.inboundConnections]);
 
   const filterAndSortHookData = useFilterAndSort(
     inboundOpinions,
     filters,
     sorts,
-    undefined, //TODO: fix search keys
+    useMemo(() => ['fromSubjectId', 'name'], []),
     'evaluationsList',
   );
 

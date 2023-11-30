@@ -21,7 +21,7 @@ export const SubjectSearch = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [isSortsModalOpen, setIsSortsModalOpen] = useState(false);
   return (
-    <div className="card flex flex-col gap-4">
+    <div className="card flex flex-col gap-4 max-h-[175px]">
       <div className="card__input flex gap-2 items-center rounded bg-gray30 px-3.5">
         <img
           className="w-4 h-4"

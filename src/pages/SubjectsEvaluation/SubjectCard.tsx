@@ -61,7 +61,7 @@ export const SubjectCard = ({
         </div>
         <div className="evaluation-left__bottom">
           <p className="text-sm text-gray20">Your evaluation</p>
-          <p
+          <div
             className="font-medium"
             data-testid={`user-item-${index}-evaluation`}
           >
@@ -91,7 +91,7 @@ export const SubjectCard = ({
             ) : (
               '-'
             )}
-          </p>
+          </div>
         </div>
       </div>
       <div className="evaluation-right flex flex-col gap-2">
