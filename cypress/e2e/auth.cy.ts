@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
-import * as Cypress from 'cypress';
+import localforage from 'localforage';
 import { ProfileState } from 'store/profile';
 import { RoutePath } from 'types/router';
 import { decryptData, encryptData } from 'utils/crypto';
@@ -11,7 +11,6 @@ import {
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
   FAKE_BRIGHT_ID_PASSWORD,
-  LOCAL_STORAGE_DATA,
   recoveryUserInfo,
 } from '../utils/data';
 
@@ -161,6 +160,7 @@ describe('Auth', () => {
   }
 
   function doLoginSuccess() {
+    localforage.clear();
     cy.intercept(
       {
         url: `/v1/connect/explorer-code`,
@@ -172,9 +172,9 @@ describe('Auth', () => {
     ).as('explorerCode');
     doLogin();
     cy.wait('@fakeProfilePicture') // wait until page tries to load data
-      .then(() => {
+      .then(async () => {
         const profileSliceData = JSON.parse(
-          JSON.parse(window.localStorage.getItem('persist:root') || '{}')
+          JSON.parse((await localforage.getItem('persist:root')) || '{}')
             .profile || '{}',
         ) as ProfileState;
         expect(profileSliceData.authData?.brightId).to.eq(FAKE_BRIGHT_ID);
@@ -205,9 +205,9 @@ describe('Auth', () => {
   });
 
   const isLoggedOut = () => {
-    cy.get(getTestSelector('import-universal-link')).then(() => {
+    cy.get(getTestSelector('import-universal-link')).then(async () => {
       const profileSliceData = JSON.parse(
-        JSON.parse(window.localStorage.getItem('persist:root') || '{}')
+        JSON.parse((await localforage.getItem('persist:root')) || '{}')
           .profile || '{}',
       ) as ProfileState;
       console.log({ profileSliceData });
@@ -233,17 +233,9 @@ describe('Auth', () => {
   // });
   //
   it('logout', () => {
-    cy.visit('/', {
-      onBeforeLoad(win: Cypress.AUTWindow) {
-        window.localStorage.setItem(
-          'persist:root',
-          JSON.stringify(LOCAL_STORAGE_DATA),
-        );
-      },
-    });
-    cy.get(getTestSelector('nav-button')).click();
+    cy.setupProfile();
+    cy.visit(RoutePath.DASHBOARD);
     cy.get(getTestSelector('logout-button')).click().then(isLoggedOut);
-    cy.on('window:before:load', (_win) => {});
     // stays logged out
     cy.visit('/').then(isLoggedOut);
   });

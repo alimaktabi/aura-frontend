@@ -16,6 +16,7 @@
 // Import commands.js using ES2015 syntax:
 import './commands';
 
+import localforage from 'localforage';
 import { Connection } from 'types';
 
 import {
@@ -64,11 +65,20 @@ function connectionIntercepts(connection: Connection) {
   );
   cy.intercept(
     {
-      url: `/node/v6/users/${connection.id}/connections/inbound`,
+      url: `/auranode/brightid/v6/users/${connection.id}/connections/inbound`,
       method: 'GET',
     },
     {
       body: connectionIncomingConnectionsResponse,
+    },
+  );
+  cy.intercept(
+    {
+      url: `/auranode/brightid/v6/users/${connection.id}/connections/outbound`,
+      method: 'GET',
+    },
+    {
+      body: connectionOutboundConnectionsResponse,
     },
   );
 }
@@ -150,7 +160,7 @@ Cypress.Commands.add('profileIntercepts', () => {
   // nonsense response just for test to work
   cy.intercept(
     {
-      url: `/node/v6/users/${FAKE_BRIGHT_ID}/connections/inbound`,
+      url: `/auranode/brightid/v6/users/${FAKE_BRIGHT_ID}/connections/inbound`,
       method: 'GET',
     },
     {
@@ -159,7 +169,7 @@ Cypress.Commands.add('profileIntercepts', () => {
   );
   cy.intercept(
     {
-      url: `/node/v6/users/${FAKE_BRIGHT_ID}/connections/outbound`,
+      url: `/auranode/brightid/v6/users/${FAKE_BRIGHT_ID}/connections/outbound`,
       method: 'GET',
     },
     {
@@ -172,16 +182,12 @@ Cypress.Commands.add('profileIntercepts', () => {
 });
 
 Cypress.Commands.add('setupProfile', () => {
+  localforage.setItem('persist:root', JSON.stringify(LOCAL_STORAGE_DATA));
   cy.profileIntercepts();
-  cy.on('window:before:load', (_win) => {
-    window.localStorage.setItem(
-      'persist:root',
-      JSON.stringify(LOCAL_STORAGE_DATA),
-    );
-  });
 });
 
 beforeEach(() => {
+  localforage.config({ storeName: 'keyvaluepairs', name: 'localforage' });
   cy.blockApiRequests();
   // if (Cypress.env('spy_on_console')) {
   //   cy.on('window:before:load', (win) => {
