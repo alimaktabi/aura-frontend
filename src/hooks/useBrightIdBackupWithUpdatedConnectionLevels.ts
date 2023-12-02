@@ -11,14 +11,14 @@ export default function useBrightIdBackupWithUpdatedConnectionLevels(): BrightId
   return useMemo(() => {
     if (brightIdBackup === null || myConnections === null) return null;
     const connections: Connection[] = [];
-    brightIdBackup.connections.forEach((c) => {
-      const level = myConnections.find((mc) => mc.id === c.id)?.level;
-      if (level) {
-        connections.push({
-          ...c,
-          level,
-        });
-      }
+    myConnections.forEach((c) => {
+      const connectionInBrightIdBackup = brightIdBackup.connections.find(
+        (mc) => mc.id === c.id,
+      );
+      connections.push({
+        ...connectionInBrightIdBackup,
+        ...c,
+      });
     });
     return {
       ...brightIdBackup,

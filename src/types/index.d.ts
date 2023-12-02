@@ -28,18 +28,19 @@ export type BrightIdConnectionsResponse = {
   };
 };
 
-export type Connection = BrightIdConnection & {
-  name: string;
-  connectionDate: number;
-  photo: {
-    filename: string;
-  };
-  status: 'verified';
-  notificationToken: string;
-  socialMedia: any[];
-  verifications: any[];
-  incomingLevel: ConnectionLevel;
-};
+export type Connection = BrightIdConnection &
+  Partial<{
+    name: string;
+    connectionDate: number;
+    photo: {
+      filename: string;
+    };
+    status: 'verified';
+    notificationToken: string;
+    socialMedia: any[];
+    verifications: any[];
+    incomingLevel: ConnectionLevel;
+  }>;
 
 export type BrightIdBackup = {
   userData: {
