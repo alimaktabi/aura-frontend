@@ -1,11 +1,11 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
 import { connectionLevelIcons } from 'utils/connection';
 
 export function EvaluatorInfo({ evaluatorId }: { evaluatorId: string }) {
-  const { name: evaluatorName } = useSubjectBasicInfo(evaluatorId);
+  const evaluatorName = useSubjectName(evaluatorId);
   const {
     myRatingNumberToSubject: ratingNumber,
     loading,

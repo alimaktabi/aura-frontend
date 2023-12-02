@@ -1,3 +1,4 @@
+import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
 import useFilterAndSort from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
@@ -6,8 +7,6 @@ import {
 } from 'hooks/useFilters';
 import { AuraSortId, AuraSortOptions, useSubjectSorts } from 'hooks/useSorts';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from 'store/profile/selectors';
 import { BrightIdConnection, Connection } from 'types';
 
 // Define the context
@@ -27,7 +26,7 @@ interface ProviderProps {
 export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
   children,
 }) => {
-  const brightIdBackup = useSelector(selectBrightIdBackup);
+  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
 
   const filters = useSubjectFilters(
     useMemo(

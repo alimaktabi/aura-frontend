@@ -25,9 +25,7 @@ export const getGlobalNodeApi = () => globalNodeApi;
 
 const NodeApiGate = (props: React.PropsWithChildren<unknown>) => {
   const id = useSelector((state: RootState) => state.user.id);
-  const secretKey = useSelector<Uint8Array>(
-    (state: RootState) => state.keypair.secretKey,
-  );
+  const secretKey = useSelector((state: RootState) => state.keypair.secretKey);
   const url = useSelector(selectBaseUrl);
   const [nodeError, setNodeError] = useState(false);
   const [api, setApi] = useState<NodeApi | null>(null);
@@ -66,7 +64,7 @@ const NodeApiGate = (props: React.PropsWithChildren<unknown>) => {
 
     if (url) {
       let apiInstance: NodeApi;
-      if (id && id.length > 0 && secretKey && secretKey.length > 0) {
+      if (id && secretKey) {
         console.log(`Creating API with credentials using ${url}`);
         apiInstance = new NodeApi({ url, id, secretKey, monitor: apiMonitor });
       } else {

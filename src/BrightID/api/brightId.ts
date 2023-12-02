@@ -1,8 +1,14 @@
 import { ApiOkResponse, ApiResponse, ApisauceInstance, create } from 'apisauce';
 import BrightidError from 'BrightID/api/brightidError';
 import { operation_states } from 'BrightID/utils/constants';
-import { hash } from 'BrightID/utils/encoding';
+import {
+  b64ToUint8Array,
+  hash,
+  strToUint8Array,
+  uInt8ArrayToB64,
+} from 'BrightID/utils/encoding';
 import stringify from 'fast-json-stable-stringify';
+import nacl from 'tweetnacl';
 
 const v = 6;
 
@@ -65,6 +71,50 @@ export class NodeApi {
     } else {
       throw new Error(response.problem);
     }
+  }
+
+  async addConnection(
+    id1: string,
+    id2: string,
+    level: string,
+    timestamp: number,
+    reportReason?: ReportReason,
+    requestProof?: string,
+    fakeUser?: FakeUser,
+  ) {
+    console.log({
+      id: this.id,
+      secretKey: this.secretKey,
+    });
+    if (this.id === undefined || this.secretKey === undefined) {
+      throw new Error('Missing API credentials');
+    }
+    const sk = fakeUser
+      ? b64ToUint8Array(fakeUser.secretKey)
+      : new Uint8Array(Object.values(this.secretKey));
+
+    const name = 'Connect';
+
+    const op: ConnectOp = {
+      name,
+      id1,
+      id2,
+      level,
+      timestamp,
+      v,
+    };
+
+    if (reportReason) {
+      op.reportReason = reportReason;
+    }
+    if (requestProof) {
+      op.requestProof = requestProof;
+    }
+
+    const message = stringify(op);
+    const signed = nacl.sign.detached(strToUint8Array(message), sk);
+    op.sig1 = uInt8ArrayToB64(signed);
+    return this.submitOp(op, message);
   }
 
   async submitOp(signedOp: NodeOps, message: string): Promise<SubmittedOp> {

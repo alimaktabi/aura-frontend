@@ -6,10 +6,12 @@ import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
+import { ConnectionLevel } from 'pages/SubjectProfile/ConnectionLevel';
 import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { __DEV__ } from 'utils/env';
 
 import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
@@ -76,6 +78,9 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       )}
 
       <ProfileInfo subjectId={subjectId} />
+
+      {__DEV__ && <ConnectionLevel subjectId={subjectId} />}
+
       {loadingMyEvaluation ? (
         <div className="card flex flex-col gap-2.5">...</div>
       ) : isEvaluated ? (

@@ -43,7 +43,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
   }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
 
   return {
-    refresh: () => setRefreshCounter((c) => c + 1),
+    refreshInboundRatings: () => setRefreshCounter((c) => c + 1),
     loading,
     inboundRatings,
     inboundPositiveRatingsCount,

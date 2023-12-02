@@ -1,6 +1,7 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
+import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
 import { SubjectCard } from 'pages/SubjectsEvaluation/SubjectCard';
 import { SubjectSearch } from 'pages/SubjectsEvaluation/SubjectSearch';
 import { useCallback, useState } from 'react';
@@ -8,13 +9,10 @@ import { useDispatch, useSelector } from 'store/hooks';
 import { getBrightIdBackupThunk } from 'store/profile/actions';
 import { hash } from 'utils/crypto';
 
-import {
-  selectAuthData,
-  selectBrightIdBackup,
-} from '../../store/profile/selectors';
+import { selectAuthData } from '../../store/profile/selectors';
 
 const SubjectsEvaluation = () => {
-  const brightIdBackup = useSelector(selectBrightIdBackup);
+  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
 
   const authData = useSelector(selectAuthData);

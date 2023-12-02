@@ -1,5 +1,5 @@
 import Modal from 'components/Shared/Modal';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useState } from 'react';
 
@@ -36,7 +36,7 @@ const EvaluateButton = ({
   subjectId: string;
 }) => {
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
-  const { name } = useSubjectBasicInfo(subjectId);
+  const name = useSubjectName(subjectId);
 
   return (
     <>

@@ -79,7 +79,7 @@ export const pollOperations =
     const operations = selectPendingOperations(getState());
     const { id } = getState().user;
     const { secretKey } = getState().keypair;
-    // let shouldUpdateTasks = false;
+    // const shouldUpdateTasks = false;
     try {
       for (const op of operations) {
         let queryApi = api;
@@ -138,9 +138,10 @@ export const pollOperations =
       } else {
         console.warn(err);
       }
-    } finally {
-      // if (shouldUpdateTasks) {
-      //   dispatch(checkTasks());
-      // }
     }
+    // finally {
+    //   if (shouldUpdateTasks) {
+    //     dispatch(checkTasks());
+    //   }
+    // }
   };

@@ -1,6 +1,6 @@
 import Modal from 'components/Shared/Modal';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
 import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'store/hooks';
@@ -13,7 +13,7 @@ export const YourEvaluationInfo = ({
 }) => {
   const isYourEvaluation = true;
   const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
-  const { name } = useSubjectBasicInfo(toSubjectId);
+  const name = useSubjectName(toSubjectId);
   const authData = useSelector(selectAuthData);
   const {
     myRatingToSubject: rating,

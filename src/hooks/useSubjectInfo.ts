@@ -1,4 +1,4 @@
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
 import { useEffect, useMemo, useState } from 'react';
 
 import { BrightIdProfile, getBrightIdProfile } from '../api/auranode.service';
@@ -61,7 +61,7 @@ export const useSubjectInfo = (subjectId: string | null | undefined) => {
   }, [brightIdProfile]);
 
   return {
-    ...useSubjectBasicInfo(subjectId),
+    name: useSubjectName(subjectId),
     level,
     userHasRecovery,
     auraScore,

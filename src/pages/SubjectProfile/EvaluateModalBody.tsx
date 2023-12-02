@@ -1,6 +1,6 @@
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useEvaluateSubject } from 'hooks/useEvaluateSubject';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from 'store/profile/selectors';
@@ -18,13 +18,14 @@ const EvaluateModalBody = ({
 }) => {
   const [isYes, setIsYes] = useState(true);
   const [confidence, setConfidence] = useState(1);
-  const { refresh } = useSubjectInboundEvaluationsContext(subjectId);
+  const { refreshInboundRatings } =
+    useSubjectInboundEvaluationsContext(subjectId);
   useEffect(() => {
     if (!prevRating) return;
     setIsYes(prevRating > 0);
     setConfidence(Math.abs(prevRating));
   }, [prevRating]);
-  const { name } = useSubjectBasicInfo(subjectId);
+  const name = useSubjectName(subjectId);
   const authData = useSelector(selectAuthData);
   const { submitEvaluation, loading } = useEvaluateSubject();
 
@@ -34,9 +35,9 @@ const EvaluateModalBody = ({
     // } else {
     //   navigate(-1);
     // }
-    refresh();
+    refreshInboundRatings();
     onSubmitted();
-  }, [onSubmitted, refresh]);
+  }, [onSubmitted, refreshInboundRatings]);
 
   const submit = useCallback(async () => {
     if (loading || !authData?.brightId) return;

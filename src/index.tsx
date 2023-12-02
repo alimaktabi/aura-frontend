@@ -58,8 +58,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <SubjectsListContextProvider>
-          <MyEvaluationsContextProvider>
+        <MyEvaluationsContextProvider>
+          <SubjectsListContextProvider>
             <NodeApiGateContextProvider>
               <BrowserRouter>
                 <BrowserHistoryContextProvider>
@@ -67,8 +67,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 </BrowserHistoryContextProvider>
               </BrowserRouter>
             </NodeApiGateContextProvider>
-          </MyEvaluationsContextProvider>
-        </SubjectsListContextProvider>
+          </SubjectsListContextProvider>
+        </MyEvaluationsContextProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>,

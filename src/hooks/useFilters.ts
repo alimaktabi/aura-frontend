@@ -1,8 +1,7 @@
+import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import { useOutboundRatings } from 'hooks/useSubjectRatings';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData, BrightIdConnection } from 'types';
 
 export enum AuraFilterId {
@@ -55,7 +54,7 @@ export function useCategorizeAuraFilterOptions<T>(
 }
 
 export function useSubjectFilters(filterIds: AuraFilterId[]) {
-  const brightIdBackup = useSelector(selectBrightIdBackup);
+  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
   const { outboundRatings } = useOutboundRatings(brightIdBackup?.userData.id);
   return useMemo(() => {
     const filters: AuraFilterOptions<BrightIdConnection> = [
@@ -158,7 +157,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
 }
 
 export function useEvaluationFilters(filterIds: AuraFilterId[]) {
-  const brightIdBackup = useSelector(selectBrightIdBackup);
+  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
       {

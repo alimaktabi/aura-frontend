@@ -1,19 +1,11 @@
-// import { useSubjectEvaluation } from 'hooks/useSubjectEvaluation';
-// import { useSubjectInfo } from 'hooks/useSubjectInfo';
-// import { useInboundRatings } from 'hooks/useSubjectRatings';
-
-// import { useSelector } from 'react-redux';
-// import { selectAuthData } from 'store/profile/selectors';
-// import { connectionLevelIconsBlack } from 'utils/connection';
-// import { compactFormat } from '../../../utils/number';
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectBasicInfo } from 'hooks/useSubjectBasicInfo';
 import {
   useSubjectEvaluation,
   useSubjectEvaluationFromContext,
 } from 'hooks/useSubjectEvaluation';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
@@ -102,7 +94,7 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
 };
 
 const UserName = ({ subjectId }: { subjectId: string }) => {
-  const { name } = useSubjectBasicInfo(subjectId);
+  const name = useSubjectName(subjectId);
   return (
     <div className="flex gap-1 items-center">
       <p className="name font-medium text-sm">{name}</p>
@@ -151,7 +143,7 @@ const EvidenceInformation = ({
   subjectId: string;
   evidenceType?: 'evaluated' | 'connected to';
 }) => {
-  const { name } = useSubjectBasicInfo(subjectId);
+  const name = useSubjectName(subjectId);
   return (
     <div className="evidence-information flex justify-between">
       <p
