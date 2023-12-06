@@ -1,5 +1,6 @@
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import { useState } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 
 import { compactFormat } from '../../../utils/number';
@@ -19,6 +20,8 @@ const EvaluationsDetails = ({
     useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectInfo(subjectId);
 
+  const [selectedLevel, setSelectedLevel] = useState(1);
+
   return (
     <div className="card">
       {hasHeader && (
@@ -34,17 +37,37 @@ const EvaluationsDetails = ({
         <div className="flex justify-between w-full">
           <p className="font-medium">Connections:</p>
           <div className="flex gap-1">
-            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
-              <p className="text-sm font-medium text-black">All</p>
+            <span
+              onClick={() => setSelectedLevel(1)}
+              className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
+                selectedLevel === 1 && '!bg-pastel-purple !text-white !border-0'
+              }`}
+            >
+              <p className="text-sm font-medium">All</p>
             </span>
-            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
-              <p className="text-sm font-medium text-black">Lvl 1</p>
+            <span
+              onClick={() => setSelectedLevel(2)}
+              className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
+                selectedLevel === 2 && '!bg-pastel-purple !text-white !border-0'
+              }`}
+            >
+              <p className="text-sm font-medium">Lvl 1</p>
             </span>
-            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
-              <p className="text-sm font-medium text-black">Lvl 2</p>
+            <span
+              onClick={() => setSelectedLevel(3)}
+              className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
+                selectedLevel === 3 && '!bg-pastel-purple !text-white !border-0'
+              }`}
+            >
+              <p className="text-sm font-medium">Lvl 2</p>
             </span>
-            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
-              <p className="text-sm font-medium text-black">Lvl 3</p>
+            <span
+              onClick={() => setSelectedLevel(4)}
+              className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
+                selectedLevel === 4 && '!bg-pastel-purple !text-white !border-0'
+              }`}
+            >
+              <p className="text-sm font-medium">Lvl 3</p>
             </span>
           </div>
         </div>
