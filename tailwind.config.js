@@ -16,6 +16,7 @@ export default {
         purple: '#8341DE',
         purple2: '#D3B2FF',
         orange: '#F4712F',
+        'light-orange': '#F09F77',
         green: '#398A4C',
         'pastel-purple': '#C9A2FF',
         'pastel-purple-25': '#C9A2FF40',

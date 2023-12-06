@@ -48,7 +48,7 @@ const SubjectsEvaluation = () => {
         />
       </div>
       {filteredSubjects && !loading ? (
-        <div className="overflow-auto flex-grow">
+        <div className="overflow-auto flex-grow no-scrollbar">
           <InfiniteScrollLocal
             className={'flex flex-col gap-3'}
             items={filteredSubjects}
