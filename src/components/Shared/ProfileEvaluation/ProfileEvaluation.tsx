@@ -97,28 +97,61 @@ const UserName = ({ subjectId }: { subjectId: string }) => {
   const name = useSubjectName(subjectId);
   return (
     <div className="flex gap-1 items-center">
-      <p className="name font-medium text-sm">{name}</p>
+      <p className="name flex-1 font-medium text-sm line-clamp-1 text-ellipsis">
+        {name}
+      </p>
       <span className="flex bg-pastel-purple h-[14px] w-5 items-center justify-center rounded-full cursor-pointer">
-        <BrightIdProfilePicture
-          subjectId={subjectId}
-          className="h-[10px] w-[10px]"
+        <img
+          src="/assets/images/SubjectProfile/icon.svg"
+          alt=""
+          className="h-[10px] w-[10px] min-w-[10px]"
         />
       </span>
     </div>
   );
 };
 
-const UserInformation = ({ subjectId }: { subjectId: string }) => {
+const UserInformation = ({
+  subjectId,
+  isConnected,
+}: {
+  subjectId: string;
+  isConnected?: boolean;
+}) => {
   const { level, auraScore, loading } = useSubjectInfo(subjectId);
   return (
-    <div className="bg-gray00 rounded p-1 pr-2 flex gap-1 items-center mb-1.5">
-      <img src="/assets/images/player.svg" alt="" className="w-6 h-6" />
+    <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5">
+      {isConnected ? (
+        <img
+          src="/assets/images/Shared/brightid-icon.svg"
+          alt=""
+          className="w-3.5 h-3.5 mx-1"
+        />
+      ) : (
+        <img src="/assets/images/player.svg" alt="" className="w-6 h-6" />
+      )}
       {loading ? (
-        <p className="level text-sm font-bold mr-0.5 text-purple2">...</p>
+        <p
+          className={`level text-sm font-bold mr-0.5 ${
+            isConnected ? 'text-light-orange' : 'text-purple2'
+          }`}
+        >
+          ...
+        </p>
       ) : (
         <>
-          <p className="level text-sm font-bold mr-0.5 text-purple2">{level}</p>
-          <p className="text-sm font-bold text-purple2">
+          <p
+            className={`level text-sm font-bold mr-0.5 ${
+              isConnected ? 'text-light-orange' : 'text-purple2'
+            }`}
+          >
+            {level}
+          </p>
+          <p
+            className={`text-sm font-bold ${
+              isConnected ? 'text-light-orange' : 'text-purple2'
+            }`}
+          >
             {/*13.4<span className="font-medium">m</span>*/}
             {auraScore ? compactFormat(auraScore) : '-'}
           </p>
@@ -235,7 +268,7 @@ const EvaluatedCardBody = ({
         />
         <ConnectionInfo subjectId={fromSubjectId} />
       </div>
-      <div className="card__middle-column flex flex-col gap-0">
+      <div className="card__middle-column flex flex-col gap-0 w-[33%] min-w-[126px] max-w-[130px]">
         <UserName subjectId={fromSubjectId} />
         <UserInformation subjectId={fromSubjectId} />
         <Graph />
@@ -332,9 +365,9 @@ const ConnectedCardBody = ({
         />
         <ConnectionInfo subjectId={fromSubjectId} />
       </div>
-      <div className="card__middle-column flex flex-col gap-0">
+      <div className="card__middle-column flex flex-col gap-0 w-[33%] min-w-[126px] max-w-[130px]">
         <UserName subjectId={fromSubjectId} />
-        <UserInformation subjectId={fromSubjectId} />
+        <UserInformation subjectId={fromSubjectId} isConnected />
         <Graph />
       </div>
       <span className="divider border-r border-dashed border-gray00 pl-1.5 mr-1.5 h-full"></span>
