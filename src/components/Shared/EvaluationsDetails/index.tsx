@@ -114,10 +114,42 @@ const EvaluationsDetails = ({
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
         <img
-          className="body__chart w-full"
+          className="body__chart w-full mb-3"
           src="/assets/images/chart-detailed.svg"
           alt=""
         />
+
+        <div className="chart-info flex flex-wrap gap-y-2.5 mb-5">
+          <div className="chart-info__item flex items-center gap-1 w-1/2">
+            <div className="chart-info__item__color w-[22px] h-[11px] rounded bg-[#E2E2E2]"></div>
+            <div className="chart-info__item__text text-xs font-bold">
+              Low Confidence
+            </div>
+          </div>
+          <div className="chart-info__item flex items-center gap-1 w-1/2">
+            <div className="chart-info__item__color w-[22px] h-[11px] rounded bg-[#B5B5B5]"></div>
+            <div className="chart-info__item__text text-xs font-bold">
+              Medium Confidence
+            </div>
+          </div>
+          <div className="chart-info__item flex items-center gap-1 w-1/2">
+            <div className="chart-info__item__color w-[22px] h-[11px] rounded bg-[#7A7A7A]"></div>
+            <div className="chart-info__item__text text-xs font-bold">
+              High Confidence
+            </div>
+          </div>
+          <div className="chart-info__item flex items-center gap-1 w-1/2">
+            <div className="chart-info__item__color w-[22px] h-[11px] rounded bg-[#404040]"></div>
+            <div className="chart-info__item__text text-xs font-bold">
+              Very High Confidence
+            </div>
+          </div>
+        </div>
+
+        <p className="font-medium italic text-sm text-black">
+          *This chart displays the top 10 impacts players have on the subject
+          score
+        </p>
       </div>
       {hasBtn && <button className="btn mt-4">View All Evaluations</button>}
     </div>
