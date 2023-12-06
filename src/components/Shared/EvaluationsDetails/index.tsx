@@ -26,13 +26,30 @@ const EvaluationsDetails = ({
       )}
 
       <div className="flex flex-col gap-1.5">
-        <ShowData
-          title="Connections"
-          value={inboundConnections?.length ?? '...'}
-          details={null}
-        />
+        {/*<ShowData*/}
+        {/*  title="Connections"*/}
+        {/*  value={inboundConnections?.length ?? '...'}*/}
+        {/*  details={null}*/}
+        {/*/>*/}
+        <div className="flex justify-between w-full">
+          <p className="font-medium">Connections:</p>
+          <div className="flex gap-1">
+            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
+              <p className="text-sm font-medium text-black">All</p>
+            </span>
+            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
+              <p className="text-sm font-medium text-black">Lvl 1</p>
+            </span>
+            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
+              <p className="text-sm font-medium text-black">Lvl 2</p>
+            </span>
+            <span className="rounded cursor-pointer min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1">
+              <p className="text-sm font-medium text-black">Lvl 3</p>
+            </span>
+          </div>
+        </div>
         <div className="filters flex items-center justify-end gap-1">
-          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img
               src={`/assets/images/Shared/${connectionLevelIcons.recovery}.svg`}
               alt=""
@@ -42,7 +59,7 @@ const EvaluationsDetails = ({
                 .length ?? '...'}
             </p>
           </span>
-          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img
               src={`/assets/images/Shared/${connectionLevelIcons['already known']}.svg`}
               alt=""
@@ -53,7 +70,7 @@ const EvaluationsDetails = ({
               ).length ?? '...'}
             </p>
           </span>
-          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img
               src={`/assets/images/Shared/${connectionLevelIcons['just met']}.svg`}
               alt=""
@@ -63,7 +80,7 @@ const EvaluationsDetails = ({
                 .length ?? '...'}
             </p>
           </span>
-          <span className="rounded border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
             <img
               src={`/assets/images/Shared/${connectionLevelIcons.suspicious}.svg`}
               alt=""
