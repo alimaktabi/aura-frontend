@@ -16,6 +16,7 @@ export type AuraSortOption<T> = {
   id: AuraSortId;
   title: string;
   defaultAscending: boolean;
+  justDefaultDirection?: boolean;
   ascendingLabel?: string;
   descendingLabel?: string;
   category: FilterOrSortCategory;
@@ -97,10 +98,10 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
     const sorts: AuraSortOptions<AuraInboundConnectionAndRatingData> = [
       {
         id: AuraSortId.RecentEvaluation,
-        title: 'Recent Evaluation',
+        title: 'Date',
         defaultAscending: false,
-        ascendingLabel: 'Oldest',
-        descendingLabel: 'Newest',
+        justDefaultDirection: true,
+        descendingLabel: 'Most Recent',
         category: FilterOrSortCategory.Default,
         func: (a, b) =>
           new Date(b.rating?.updatedAt ?? 0).getTime() -

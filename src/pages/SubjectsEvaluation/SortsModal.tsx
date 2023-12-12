@@ -50,13 +50,15 @@ export function SortsModal<T>({
                   setSelectedSort={setSelectedSort}
                   isAscending={item.defaultAscending}
                 />
-                <ModalSortItem
-                  testidPrefix={testidPrefix}
-                  item={item}
-                  isSelectedSort={isSelectedSort}
-                  setSelectedSort={setSelectedSort}
-                  isAscending={!item.defaultAscending}
-                />
+                {!item.justDefaultDirection && (
+                  <ModalSortItem
+                    testidPrefix={testidPrefix}
+                    item={item}
+                    isSelectedSort={isSelectedSort}
+                    setSelectedSort={setSelectedSort}
+                    isAscending={!item.defaultAscending}
+                  />
+                )}
               </div>
             </div>
           ))}
