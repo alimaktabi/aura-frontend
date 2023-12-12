@@ -1,3 +1,4 @@
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
 import useFilterAndSort from 'hooks/useFilterAndSort';
 import {
@@ -57,8 +58,31 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
     ),
   );
 
+  const { loading, myRatings } = useMyEvaluationsContext();
+
+  const connectionsSortedDefault = useMemo(() => {
+    if (!brightIdBackup?.connections || loading || myRatings === null)
+      return null;
+    const connections = [...brightIdBackup.connections].sort(
+      (a, b) =>
+        new Date(b.timestamp ?? 0).getTime() -
+        new Date(a.timestamp ?? 0).getTime(),
+    );
+    return connections
+      .reduce(
+        (acc, c) => {
+          const ratingIndex = myRatings.findIndex((r) => r.toBrightId === c.id);
+          if (ratingIndex === -1) acc[0].push(c);
+          else if (ratingIndex === 1) acc[1].push(c);
+          return acc;
+        },
+        [[], []] as [Connection[], Connection[]],
+      )
+      .flat();
+  }, [brightIdBackup, loading, myRatings]);
+
   const filterAndSortHookData = useFilterAndSort(
-    brightIdBackup?.connections ?? null,
+    connectionsSortedDefault,
     filters,
     sorts,
     useMemo(() => ['id', 'name'], []),

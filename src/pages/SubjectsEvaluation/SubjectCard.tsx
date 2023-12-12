@@ -60,7 +60,9 @@ export const SubjectCard = ({
           </div>
         </div>
         <div className="evaluation-left__bottom">
-          <p className="text-sm text-gray20">Your evaluation</p>
+          <p className="text-sm text-gray20">
+            {Number(rating?.rating) ? 'Your evaluation' : 'Your connection'}
+          </p>
           <div
             className="font-medium"
             data-testid={`user-item-${index}-evaluation`}
