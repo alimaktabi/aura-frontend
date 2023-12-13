@@ -73,7 +73,7 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
         (acc, c) => {
           const ratingIndex = myRatings.findIndex((r) => r.toBrightId === c.id);
           if (ratingIndex === -1) acc[0].push(c);
-          else if (ratingIndex === 1) acc[1].push(c);
+          else acc[1].push(c);
           return acc;
         },
         [[], []] as [Connection[], Connection[]],
