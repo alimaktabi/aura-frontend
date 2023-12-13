@@ -47,6 +47,10 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     AuraFilterId.EvaluationNegativeEvaluations,
     AuraFilterId.EvaluationJustEvaluations,
     AuraFilterId.EvaluationJustConnections,
+    AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+    AuraFilterId.EvaluationConnectionTypeJustMet,
+    AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
+    AuraFilterId.EvaluationConnectionTypeRecovery,
   ]);
 
   const sorts = useEvaluationSorts([

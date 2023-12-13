@@ -106,7 +106,10 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         setIsChecked={setIsOverviewSelected}
       />
       {isOverviewSelected ? (
-        <EvaluationsDetails subjectId={subjectId} />
+        <EvaluationsDetails
+          subjectId={subjectId}
+          showEvidenceList={() => setIsOverviewSelected(false)}
+        />
       ) : (
         <>
           <EvidenceListSearch subjectId={subjectId} />

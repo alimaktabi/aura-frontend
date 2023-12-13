@@ -21,6 +21,10 @@ export enum AuraFilterId {
   ConnectionYourEvaluationNotEvaluatedYet,
   ConnectionConnectionTypeJustMet,
   ConnectionConnectionTypeAlreadyKnownPlus,
+  EvaluationConnectionTypeSuspiciousOrReported,
+  EvaluationConnectionTypeJustMet,
+  EvaluationConnectionTypeAlreadyKnown,
+  EvaluationConnectionTypeRecovery,
 }
 
 export type AuraFilterOption<T> = {
@@ -195,6 +199,32 @@ export function useEvaluationFilters(filterIds: AuraFilterId[]) {
         title: 'Negative Evaluations',
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) < 0,
+      },
+      {
+        id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+        category: FilterOrSortCategory.ConnectionType,
+        title: 'Suspicious | Reported',
+        func: (item) =>
+          item.inboundConnection?.level === 'suspicious' ||
+          item.inboundConnection?.level === 'reported',
+      },
+      {
+        id: AuraFilterId.EvaluationConnectionTypeJustMet,
+        category: FilterOrSortCategory.ConnectionType,
+        title: 'Just Met',
+        func: (item) => item.inboundConnection?.level === 'just met',
+      },
+      {
+        id: AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
+        category: FilterOrSortCategory.ConnectionType,
+        title: 'Already Known',
+        func: (item) => item.inboundConnection?.level === 'already known',
+      },
+      {
+        id: AuraFilterId.EvaluationConnectionTypeRecovery,
+        category: FilterOrSortCategory.ConnectionType,
+        title: 'Recovery',
+        func: (item) => item.inboundConnection?.level === 'recovery',
       },
     ];
     return filterIds

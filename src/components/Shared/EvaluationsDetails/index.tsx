@@ -1,4 +1,5 @@
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
+import { AuraFilterId } from 'hooks/useFilters';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useState } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
@@ -8,10 +9,12 @@ import { compactFormat } from '../../../utils/number';
 const EvaluationsDetails = ({
   subjectId,
   title = '',
+  showEvidenceList,
   hasHeader = false,
   hasBtn = false,
 }: {
   subjectId: string;
+  showEvidenceList?: () => void;
   hasHeader?: boolean;
   hasBtn?: boolean;
   title?: string;
@@ -22,6 +25,12 @@ const EvaluationsDetails = ({
 
   const [selectedLevel, setSelectedLevel] = useState(1);
 
+  const { toggleFilterById } = useSubjectInboundEvaluationsContext(subjectId);
+
+  const setEvidenceListFilter = (filterId: AuraFilterId) => {
+    toggleFilterById(filterId, true);
+    showEvidenceList?.();
+  };
   return (
     <div className="card">
       {hasHeader && (
@@ -72,7 +81,14 @@ const EvaluationsDetails = ({
           </div>
         </div>
         <div className="filters flex items-center justify-end gap-1">
-          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span
+            className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
+            onClick={() =>
+              setEvidenceListFilter(
+                AuraFilterId.EvaluationConnectionTypeRecovery,
+              )
+            }
+          >
             <img
               src={`/assets/images/Shared/${connectionLevelIcons.recovery}.svg`}
               alt=""
@@ -82,7 +98,14 @@ const EvaluationsDetails = ({
                 .length ?? '...'}
             </p>
           </span>
-          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span
+            className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
+            onClick={() =>
+              setEvidenceListFilter(
+                AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
+              )
+            }
+          >
             <img
               src={`/assets/images/Shared/${connectionLevelIcons['already known']}.svg`}
               alt=""
@@ -93,7 +116,14 @@ const EvaluationsDetails = ({
               ).length ?? '...'}
             </p>
           </span>
-          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span
+            className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
+            onClick={() =>
+              setEvidenceListFilter(
+                AuraFilterId.EvaluationConnectionTypeJustMet,
+              )
+            }
+          >
             <img
               src={`/assets/images/Shared/${connectionLevelIcons['just met']}.svg`}
               alt=""
@@ -103,7 +133,14 @@ const EvaluationsDetails = ({
                 .length ?? '...'}
             </p>
           </span>
-          <span className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1">
+          <span
+            className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
+            onClick={() =>
+              setEvidenceListFilter(
+                AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+              )
+            }
+          >
             <img
               src={`/assets/images/Shared/${connectionLevelIcons.suspicious}.svg`}
               alt=""
