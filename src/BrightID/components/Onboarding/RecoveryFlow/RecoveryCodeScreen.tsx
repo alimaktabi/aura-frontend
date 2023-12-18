@@ -28,6 +28,7 @@ import { LOCATION_ORIGIN } from 'constants/index';
 import { AURA_NODE_URL } from 'constants/urls';
 import qrcode from 'qrcode';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { QRCode } from 'react-qrcode-logo';
 import {
   createSearchParams,
   useLocation,
@@ -294,43 +295,105 @@ const RecoveryCodeScreen = () => {
     alert(alertText + '\n' + clipboardMsg);
   };
 
+  const qrCodeSize = Math.min(window.innerWidth * 0.9 - 40, 270);
+
   return (
-    <>
-      {importedUserData ? (
-        <div className="card">Logging in to Arua...</div>
-      ) : (
-        <div>
-          <p className="card mb-2">
-            Please scan this QR code using your other device
-          </p>
-          {qrSvg ? (
-            <div>
-              <img
-                src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
-                alt="qrcode"
-              />
-              {universalLink && (
-                <div className="card mt-2 break-words">
-                  <p>Or open this link on your mobile phone:</p>
-                  <a
-                    className="mt-2 text-blue-900 underline"
-                    href={universalLink}
-                    data-testid="import-universal-link"
-                  >
-                    {universalLink}
-                  </a>
-                  <button className="btn mt-4" onClick={copyQr}>
-                    Copy
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div>loading...</div>
-          )}
+    <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
+      <section className="content pl-5 pr-12 mb-9">
+        <p className="text-white font-black text-5xl">Login</p>
+      </section>
+
+      <section className="pl-8 pr-10 flex flex-col items-center gap-6 mb-3">
+        <p className="text-white font-medium text-lg">
+          Make sure you have BrightID application installed on your phone, then
+          scan this QR code.
+        </p>
+        {universalLink && (
+          <div>
+            <QRCode
+              value={universalLink}
+              size={qrCodeSize}
+              quietZone={12}
+              removeQrCodeBehindLogo={true}
+              logoPadding={0}
+              eyeRadius={6}
+              logoImage={'/assets/images/Shared/brightid-qrcode-logo.svg'}
+              logoWidth={qrCodeSize * 0.25}
+              logoHeight={qrCodeSize * 0.25}
+              id="qr-code"
+            />
+            {/*<img*/}
+            {/*  src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}*/}
+            {/*  alt="qrcode"*/}
+            {/*/>*/}
+          </div>
+        )}
+        <div className="flex gap-2 items-center">
+          <hr className="w-12 h-[1px]" />
+          <p className="text-white">Or</p>
+          <hr className="w-12 h-[1px]" />
         </div>
-      )}
-    </>
+        <p className="text-lg font-medium text-white">
+          Open the Link below on your phone
+        </p>
+      </section>
+
+      <section className="actions mb-auto pb-24 text-center">
+        <span className="bg-gray00 w-full py-2 pr-2.5 pl-3 rounded-lg flex justify-between items-center gap-2">
+          <p className="font-medium text-white underline text-left line-clamp-1 text-ellipsis">
+            {universalLink}
+          </p>
+          <img src="/assets/images/login/copy.svg" alt="" />
+        </span>
+      </section>
+      <footer className="flex justify-between text-gray90 text-sm">
+        <span className="flex gap-1">
+          <p className="font-light">Version</p>
+          <p className="">2.1</p>
+        </span>
+        <span className="flex gap-1">
+          <p className="text-gray50">Powered by:</p>
+          <p className="font-light">BrightID</p>
+        </span>
+      </footer>
+    </div>
+
+    // <>
+    //   {importedUserData ? (
+    //     <div className="card">Logging in to Arua...</div>
+    //   ) : (
+    //     <div>
+    //       <p className="card mb-2">
+    //         Please scan this QR code using your other device
+    //       </p>
+    //       {qrSvg ? (
+    //         <div>
+    //           <img
+    //             src={`data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`}
+    //             alt="qrcode"
+    //           />
+    //           {universalLink && (
+    //             <div className="card mt-2 break-words">
+    //               <p>Or open this link on your mobile phone:</p>
+    //               <a
+    //                 className="mt-2 text-blue-900 underline"
+    //                 href={universalLink}
+    //                 data-testid="import-universal-link"
+    //               >
+    //                 {universalLink}
+    //               </a>
+    //               <button className="btn mt-4" onClick={copyQr}>
+    //                 Copy
+    //               </button>
+    //             </div>
+    //           )}
+    //         </div>
+    //       ) : (
+    //         <div>loading...</div>
+    //       )}
+    //     </div>
+    //   )}
+    // </>
   );
 };
 

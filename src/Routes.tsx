@@ -28,10 +28,7 @@ const routes = [
     path: RoutePath.LOGIN, // /
     pathRegex: new RegExp(/^\/$/),
     element: <RecoveryCodeScreen />,
-    header: {
-      title: 'Login',
-      icon: null,
-    },
+    noHeader: true,
     requireAuth: false,
   },
   {
