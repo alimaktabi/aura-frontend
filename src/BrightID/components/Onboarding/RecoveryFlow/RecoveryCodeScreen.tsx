@@ -299,15 +299,15 @@ const RecoveryCodeScreen = () => {
 
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
-      <section className="content pl-5 pr-12 mb-9">
-        <p className="text-white font-black text-5xl">Login</p>
-      </section>
-
-      <section className="pl-8 pr-10 flex flex-col items-center gap-6 mb-3">
+      <section className="content pl-5 pr-12 mb-6">
+        <p className="text-white font-black text-5xl mb-6">Login</p>
         <p className="text-white font-medium text-lg">
           Make sure you have BrightID application installed on your phone, then
           scan this QR code.
         </p>
+      </section>
+
+      <section className="pl-8 pr-10 flex flex-col items-center gap-6 mb-3">
         {universalLink && (
           <div>
             <QRCode
