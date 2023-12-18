@@ -3,6 +3,7 @@ import { RoutePath } from 'types/router';
 
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
+import Onboarding from './pages/Onboarding';
 import PerformanceOverview from './pages/PerformanceOverview';
 import Splash from './pages/Splash';
 import SubjectProfile from './pages/SubjectProfile';
@@ -15,6 +16,13 @@ const routes = [
     element: <Splash />,
     noHeader: true,
     requireAuth: false,
+  },
+  {
+    path: RoutePath.ONBOARDING, // /onboardingRD, // /onboard
+    pathRegex: new RegExp(/^\/onboard/),
+    element: <Onboarding />,
+    noHeader: true,
+    requireAuth: true,
   },
   {
     path: RoutePath.LOGIN, // /

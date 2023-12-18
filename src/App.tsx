@@ -30,7 +30,8 @@ function App() {
 
   const hasDarkBackground =
     location.pathname === RoutePath.LOGIN ||
-    location.pathname === RoutePath.SPLASH;
+    location.pathname === RoutePath.SPLASH ||
+    location.pathname === RoutePath.ONBOARDING;
 
   return (
     <div
