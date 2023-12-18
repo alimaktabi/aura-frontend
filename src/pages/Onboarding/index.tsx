@@ -18,7 +18,7 @@ const Onboarding = () => {
 
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
-      <section className="content pl-5 pr-12">
+      <section className="content">
         {stepNumber === 1 && <FirstStep />}
         {stepNumber === 2 && <SecondStep />}
       </section>
