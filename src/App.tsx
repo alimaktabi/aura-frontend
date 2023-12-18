@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
 
@@ -26,24 +26,34 @@ const RequireAuth: FC<{ children: React.ReactElement }> = ({ children }) => {
 };
 
 function App() {
+  const location = useLocation();
+
+  const hasDarkBackground =
+    location.pathname === RoutePath.LOGIN ||
+    location.pathname === RoutePath.SPLASH;
+
   return (
-    <div className="app">
-      <Index />
-      <Routes>
-        {routes.map((route) => (
-          <Route
-            path={route.path}
-            key={route.path}
-            element={
-              route.requireAuth ? (
-                <RequireAuth>{route.element}</RequireAuth>
-              ) : (
-                route.element
-              )
-            }
-          />
-        ))}
-      </Routes>
+    <div
+      className={`app_container ${hasDarkBackground && 'app_container__dark'}`}
+    >
+      <div className="app">
+        <Index />
+        <Routes>
+          {routes.map((route) => (
+            <Route
+              path={route.path}
+              key={route.path}
+              element={
+                route.requireAuth ? (
+                  <RequireAuth>{route.element}</RequireAuth>
+                ) : (
+                  route.element
+                )
+              }
+            />
+          ))}
+        </Routes>
+      </div>
     </div>
   );
 }

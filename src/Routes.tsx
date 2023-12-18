@@ -4,10 +4,18 @@ import { RoutePath } from 'types/router';
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import PerformanceOverview from './pages/PerformanceOverview';
+import Splash from './pages/Splash';
 import SubjectProfile from './pages/SubjectProfile';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
 
 const routes = [
+  {
+    path: RoutePath.SPLASH, // /splash
+    pathRegex: new RegExp(/^\/splash/),
+    element: <Splash />,
+    noHeader: true,
+    requireAuth: false,
+  },
   {
     path: RoutePath.LOGIN, // /
     pathRegex: new RegExp(/^\/$/),

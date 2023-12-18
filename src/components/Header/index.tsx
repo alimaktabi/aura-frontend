@@ -11,12 +11,16 @@ const Index = () => {
     [location.pathname],
   );
   let headerComponent = currentRouteObject?.header;
+  const noHeader = currentRouteObject?.noHeader;
+
   const navigate = useNavigate();
   const onIconClick = useCallback(() => {
     if (currentRouteObject?.path === RoutePath.SUBJECTS_EVALUATION)
       navigate(RoutePath.DASHBOARD);
     else navigate(-1);
   }, [currentRouteObject, navigate]);
+
+  if (noHeader) return null;
 
   if (!headerComponent) {
     headerComponent = {

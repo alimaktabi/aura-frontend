@@ -3,11 +3,19 @@
 @tailwind utilities;
 
 
-html {
+.app_container {
   background-image: url('../public/assets/images/app-background.svg'), url('../public/assets/images/app-background-blub.svg');
   background-position: center, center;
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
+
+  &__dark {
+    @apply bg-black3;
+    background-image: url("../public/assets/images/app-background-illustrator.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
 }
 
 .app {
@@ -17,6 +25,10 @@ html {
 .page {
   @apply w-full px-5 pb-4 overflow-y-scroll;
   @apply no-scrollbar;
+
+  &__splash {
+    @apply min-h-screen;
+  }
 }
 
 .no-scrollbar {
@@ -73,6 +85,6 @@ html {
   }
 
   &--big {
-    @apply p-3 font-bold text-lg;
+    @apply p-3 font-bold text-lg rounded-xl;
   }
 }
