@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { MoveX } from '../../animations';
 import FirstStep from './components/firstStep';
 import SecondStep from './components/secondStep';
 
@@ -16,29 +18,62 @@ const Onboarding = () => {
       });
   }, [setSearchParams, stepNumber]);
 
+  const [side, setSide] = useState(50);
+
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
       <section className="content">
-        {stepNumber === 1 && <FirstStep />}
-        {stepNumber === 2 && <SecondStep />}
+        <AnimatePresence>
+          {stepNumber === 1 ? (
+            <MoveX x={side} key={1}>
+              <FirstStep />
+            </MoveX>
+          ) : stepNumber === 2 ? (
+            <MoveX x={side} key={2}>
+              <SecondStep />
+            </MoveX>
+          ) : (
+            <MoveX x={side} key={3}>
+              <SecondStep />
+            </MoveX>
+          )}
+        </AnimatePresence>
       </section>
 
       <section className="actions px-5 flex justify-between items-center w-full mb-24 mt-auto text-center">
         <div className="step-anotators flex gap-2">
           <span
-            onClick={() => setSearchParams({ step: '1' })}
+            onClick={() => {
+              if (stepNumber > 1) setSide(-50);
+              else setSide(50);
+              setTimeout(() => {
+                setSearchParams({ step: '1' });
+              }, 100);
+            }}
             className={`transition-all w-2.5 h-2.5 rounded-full cursor-pointer bg-white ${
               stepNumber === 1 && '!w-10 !bg-pastel-purple'
             }`}
           ></span>
           <span
-            onClick={() => setSearchParams({ step: '2' })}
+            onClick={() => {
+              if (stepNumber > 2) setSide(-50);
+              else setSide(50);
+              setTimeout(() => {
+                setSearchParams({ step: '2' });
+              }, 100);
+            }}
             className={`transition-all w-2.5 h-2.5 rounded-full cursor-pointer bg-white ${
               stepNumber === 2 && '!w-10 !bg-pastel-purple'
             }`}
           ></span>
           <span
-            onClick={() => setSearchParams({ step: '3' })}
+            onClick={() => {
+              if (stepNumber > 3) setSide(-50);
+              else setSide(50);
+              setTimeout(() => {
+                setSearchParams({ step: '3' });
+              }, 100);
+            }}
             className={`transition-all w-2.5 h-2.5 rounded-full cursor-pointer bg-white ${
               stepNumber === 3 && '!w-10 !bg-pastel-purple'
             }`}
@@ -46,8 +81,12 @@ const Onboarding = () => {
         </div>
         <button
           onClick={() => {
-            if (stepNumber < 3)
-              setSearchParams({ step: (stepNumber + 1).toString() });
+            if (stepNumber < 3) {
+              setSide(50);
+              setTimeout(() => {
+                setSearchParams({ step: (stepNumber + 1).toString() });
+              }, 100);
+            }
           }}
           className="btn btn--icon btn--big !rounded-full"
         >
