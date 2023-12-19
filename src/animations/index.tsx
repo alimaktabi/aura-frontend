@@ -75,15 +75,15 @@ export const MoveX: FC<{
     controls.start({
       opacity: 1,
       x: 0,
-      transition: { duration: duration || 0.5, delay: delay || 0.3 },
+      transition: { duration: duration || 0.3, delay: delay || 0 },
     });
   }, [controls, delay, duration]);
 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, x }}
-      exit={{ opacity: 0, x: -1 * x, transition: { duration: 0.1 } }}
+      initial={{ opacity: 1, x }}
+      exit={{ opacity: 1, x: -1 * x, transition: { duration: 0.1 } }}
       animate={controls}
     >
       {children}

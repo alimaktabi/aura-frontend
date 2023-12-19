@@ -1,3 +1,5 @@
+import { MoveUpIn } from '../../../animations';
+
 const FirstStep = () => {
   return (
     <>
@@ -13,21 +15,27 @@ const FirstStep = () => {
       </p>
 
       <div className="content-images relative flex w-full justify-center">
-        <img
-          src="/assets/images/onboarding/subject-card-1.svg"
-          alt=""
-          className="top-0 absolute w-[50vw] max-w-[170px] left-1/2 -translate-x-1/2"
-        />
-        <img
-          src="/assets/images/onboarding/subject-card-2.svg"
-          alt=""
-          className="top-6 absolute w-[75vw] max-w-[250px] left-1/2 -translate-x-1/2"
-        />
-        <img
-          src="/assets/images/onboarding/subject-card-3.svg"
-          alt=""
-          className="top-14 absolute w-[90vw] max-w-[385px] left-1/2 -translate-x-1/2"
-        />
+        <MoveUpIn duration={0.3} delay={0.3} y={5}>
+          <img
+            src="/assets/images/onboarding/subject-card-1.svg"
+            alt=""
+            className="top-0 absolute w-[50vw] max-w-[170px] left-1/2 -translate-x-1/2"
+          />
+        </MoveUpIn>
+        <MoveUpIn duration={0.35} delay={0.3} y={-10}>
+          <img
+            src="/assets/images/onboarding/subject-card-2.svg"
+            alt=""
+            className="top-6 absolute w-[75vw] max-w-[250px] left-1/2 -translate-x-1/2"
+          />
+        </MoveUpIn>
+        <MoveUpIn duration={0.4} delay={0.3} y={-30}>
+          <img
+            src="/assets/images/onboarding/subject-card-3.svg"
+            alt=""
+            className="top-14 absolute w-[90vw] max-w-[385px] left-1/2 -translate-x-1/2"
+          />
+        </MoveUpIn>
       </div>
     </>
   );

@@ -18,12 +18,12 @@ const Onboarding = () => {
       });
   }, [setSearchParams, stepNumber]);
 
-  const [side, setSide] = useState(50);
+  const [side, setSide] = useState(300);
 
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
       <section className="content">
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {stepNumber === 1 ? (
             <MoveX x={side} key={1}>
               <FirstStep />
@@ -44,8 +44,8 @@ const Onboarding = () => {
         <div className="step-anotators flex gap-2">
           <span
             onClick={() => {
-              if (stepNumber > 1) setSide(-50);
-              else setSide(50);
+              if (stepNumber > 1) setSide(-300);
+              else setSide(300);
               setTimeout(() => {
                 setSearchParams({ step: '1' });
               }, 100);
@@ -56,8 +56,8 @@ const Onboarding = () => {
           ></span>
           <span
             onClick={() => {
-              if (stepNumber > 2) setSide(-50);
-              else setSide(50);
+              if (stepNumber > 2) setSide(-300);
+              else setSide(300);
               setTimeout(() => {
                 setSearchParams({ step: '2' });
               }, 100);
@@ -68,8 +68,8 @@ const Onboarding = () => {
           ></span>
           <span
             onClick={() => {
-              if (stepNumber > 3) setSide(-50);
-              else setSide(50);
+              if (stepNumber > 3) setSide(-300);
+              else setSide(300);
               setTimeout(() => {
                 setSearchParams({ step: '3' });
               }, 100);
@@ -82,7 +82,7 @@ const Onboarding = () => {
         <button
           onClick={() => {
             if (stepNumber < 3) {
-              setSide(50);
+              setSide(300);
               setTimeout(() => {
                 setSearchParams({ step: (stepNumber + 1).toString() });
               }, 100);
