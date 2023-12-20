@@ -21,7 +21,7 @@ export const MoveUpIn: FC<{
         ease: 'easeInOut',
       },
     });
-  }, [controls, delay, duration]);
+  }, [controls, delay, duration, y_end]);
 
   return (
     <motion.div
