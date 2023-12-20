@@ -1,6 +1,6 @@
 import { FadeIn, Scale } from '../../animations';
 
-const Spalsh = () => {
+const Spalsh = ({ dismissSplash }: { dismissSplash: () => void }) => {
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
       <section className="content pl-5 pr-12">
@@ -31,7 +31,10 @@ const Spalsh = () => {
 
       <section className="actions mb-24 mt-auto text-center">
         <Scale duration={0.3} delay={0.25}>
-          <button className="btn btn--big !text-white max-w-[270px] w-full">
+          <button
+            className="btn btn--big !text-white max-w-[270px] w-full"
+            onClick={dismissSplash}
+          >
             Get Started
           </button>
         </Scale>

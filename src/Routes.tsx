@@ -1,22 +1,14 @@
-import RecoveryCodeScreen from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryCodeScreen';
+import Login from 'pages/Login';
 import { RoutePath } from 'types/router';
 
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import Onboarding from './pages/Onboarding';
 import PerformanceOverview from './pages/PerformanceOverview';
-import Splash from './pages/Splash';
 import SubjectProfile from './pages/SubjectProfile';
 import SubjectsEvaluation from './pages/SubjectsEvaluation';
 
 const routes = [
-  {
-    path: RoutePath.SPLASH, // /splash
-    pathRegex: new RegExp(/^\/splash/),
-    element: <Splash />,
-    noHeader: true,
-    requireAuth: false,
-  },
   {
     path: RoutePath.ONBOARDING, // /onboardingRD, // /onboard
     pathRegex: new RegExp(/^\/onboard/),
@@ -27,7 +19,7 @@ const routes = [
   {
     path: RoutePath.LOGIN, // /
     pathRegex: new RegExp(/^\/$/),
-    element: <RecoveryCodeScreen />,
+    element: <Login />,
     noHeader: true,
     requireAuth: false,
   },
