@@ -1,4 +1,4 @@
-import { MoveUpIn, Scale } from '../../../animations';
+import { FadeIn, MoveUpIn, Scale } from '../../../animations';
 
 const ThirdStep = () => {
   return (
@@ -16,7 +16,7 @@ const ThirdStep = () => {
         answer
       </p>
 
-      <section className="relative flex items-center justify-center w-fit mx-auto">
+      <section className="relative flex items-center justify-center w-fit mx-auto mb-3">
         <MoveUpIn
           delay={0.2}
           duration={0.3}
@@ -43,6 +43,27 @@ const ThirdStep = () => {
           <img src="/assets/images/onboarding/dislike.svg" alt="step3" />
         </MoveUpIn>
       </section>
+
+      <FadeIn
+        duration={0.3}
+        delay={0.4}
+        className="flex gap-1.5 w-full justify-center pr-12"
+      >
+        <p className="text-white font-medium text-lg mt-5">I have</p>
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-pastel-purple font-black text-[15px] opacity-50 -mb-0.5">
+            Low
+          </p>
+          <p className="text-pastel-purple font-black text-lg">Medium</p>
+          <p className="text-pastel-purple font-black text-sm opacity-50 mb-0.5">
+            High
+          </p>
+          <p className="text-pastel-purple font-black text-xs opacity-30">
+            Very High
+          </p>
+        </div>
+        <p className="text-white font-medium text-lg mt-5">confidence</p>
+      </FadeIn>
     </>
   );
 };
