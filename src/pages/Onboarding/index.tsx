@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { MoveX } from '../../animations';
+import { MoveX, Scale } from '../../animations';
 import FirstStep from './components/firstStep';
 import FourthStep from './components/fourthStep';
 import SecondStep from './components/secondStep';
@@ -46,7 +46,7 @@ const Onboarding = () => {
         </AnimatePresence>
       </section>
 
-      <section className="actions px-5 flex justify-between items-center w-full mb-24 mt-auto text-center">
+      <section className="actions px-5 flex justify-between items-center w-full min-h-[56px] mb-24 mt-auto text-center">
         <div className="step-anotators flex gap-2">
           <span
             onClick={() => {
@@ -106,24 +106,32 @@ const Onboarding = () => {
               }, 100);
             }
           }}
-          className={`bg-pastel-purple p-3 rounded-3xl transition-all ${
-            stepNumber === 4 && '!rounded-xl'
+          className={`bg-pastel-purple p-3 w-10 h-10 rounded-3xl transition-all ${
+            stepNumber === 4 && '!rounded-xl !w-[165px] !h-14'
           }`}
         >
-          <img
-            src="/assets/images/Shared/next-page.svg"
-            className={`translate-x-[1px] w-4 h-4 opacity-1 transition-all ${
-              stepNumber === 4 && '!opacity-0'
-            }`}
-            alt=""
-          />
-          <p
-            className={`opacity-0 w-0 h-0 font-semibold text-xl text-white transition-all ${
-              stepNumber === 4 && '!opacity-1 !w-auto !h-auto'
-            }`}
-          >
-            Let&apos;s Start
-          </p>
+          <AnimatePresence mode="wait" initial={false}>
+            {stepNumber < 4 && (
+              <Scale duration={0.3} delay={0} key={1}>
+                <img
+                  src="/assets/images/Shared/next-page.svg"
+                  className={`translate-x-[1px] w-4 h-4 opacity-1 transition-all ${
+                    stepNumber === 4 && '!opacity-0'
+                  }`}
+                  alt=""
+                />
+              </Scale>
+            )}
+            {stepNumber === 4 && (
+              <Scale duration={0.3} delay={0} key={2}>
+                <p
+                  className={`font-semibold text-xl text-white transition-all !opacity-1 !w-auto !h-auto'`}
+                >
+                  Let&apos;s Start
+                </p>
+              </Scale>
+            )}
+          </AnimatePresence>
         </button>
       </section>
       <footer className="flex justify-between text-gray90 text-sm">
