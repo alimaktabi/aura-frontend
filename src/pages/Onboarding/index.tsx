@@ -4,7 +4,9 @@ import { useSearchParams } from 'react-router-dom';
 
 import { MoveX } from '../../animations';
 import FirstStep from './components/firstStep';
+import FourthStep from './components/fourthStep';
 import SecondStep from './components/secondStep';
+import ThirdStep from './components/thirdStep';
 
 const Onboarding = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,9 +34,13 @@ const Onboarding = () => {
             <MoveX x={side} key={2}>
               <SecondStep />
             </MoveX>
-          ) : (
+          ) : stepNumber === 3 ? (
             <MoveX x={side} key={3}>
-              <SecondStep />
+              <ThirdStep />
+            </MoveX>
+          ) : (
+            <MoveX x={side} key={4}>
+              <FourthStep />
             </MoveX>
           )}
         </AnimatePresence>
@@ -78,23 +84,46 @@ const Onboarding = () => {
               stepNumber === 3 && '!w-10 !bg-pastel-purple'
             }`}
           ></span>
+          <span
+            onClick={() => {
+              if (stepNumber > 4) setSide(-300);
+              else setSide(300);
+              setTimeout(() => {
+                setSearchParams({ step: '4' });
+              }, 100);
+            }}
+            className={`transition-all w-2.5 h-2.5 rounded-full cursor-pointer bg-white ${
+              stepNumber === 4 && '!w-10 !bg-pastel-purple'
+            }`}
+          ></span>
         </div>
         <button
           onClick={() => {
-            if (stepNumber < 3) {
+            if (stepNumber < 4) {
               setSide(300);
               setTimeout(() => {
                 setSearchParams({ step: (stepNumber + 1).toString() });
               }, 100);
             }
           }}
-          className="btn btn--icon btn--big !rounded-full"
+          className={`bg-pastel-purple p-3 rounded-3xl transition-all ${
+            stepNumber === 4 && '!rounded-xl'
+          }`}
         >
           <img
             src="/assets/images/Shared/next-page.svg"
-            className="translate-x-[1px]"
+            className={`translate-x-[1px] w-4 h-4 opacity-1 transition-all ${
+              stepNumber === 4 && '!opacity-0'
+            }`}
             alt=""
           />
+          <p
+            className={`opacity-0 w-0 h-0 font-semibold text-xl text-white transition-all ${
+              stepNumber === 4 && '!opacity-1 !w-auto !h-auto'
+            }`}
+          >
+            Let&apos;s Start
+          </p>
         </button>
       </section>
       <footer className="flex justify-between text-gray90 text-sm">
