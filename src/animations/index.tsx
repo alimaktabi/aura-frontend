@@ -7,13 +7,14 @@ export const MoveUpIn: FC<{
   delay?: number;
   duration?: number;
   y?: number;
-}> = ({ delay, duration, children, className, y }) => {
+  y_end?: string;
+}> = ({ delay, duration, children, className, y, y_end }) => {
   const controls = useAnimation();
 
   useEffect(() => {
     controls.start({
       opacity: 1,
-      y: 0,
+      y: y_end || 0,
       transition: {
         duration: duration || 0.5,
         delay: delay || 0,
@@ -26,7 +27,7 @@ export const MoveUpIn: FC<{
     <motion.div
       className={className}
       initial={{ opacity: 0, y: y || 100 }}
-      exit={{ opacity: 0, y: y || 100, transition: { duration: 0.1 } }}
+      exit={{ opacity: 0, y: y_end || 100, transition: { duration: 0.1 } }}
       animate={controls}
     >
       {children}
@@ -150,7 +151,8 @@ export const Scale: FC<{
   className?: string;
   delay?: number;
   duration?: number;
-}> = ({ delay, duration, children, className }) => {
+  scale?: number;
+}> = ({ delay, duration, children, className, scale }) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -164,8 +166,8 @@ export const Scale: FC<{
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, scale: 0 }}
-      exit={{ opacity: 0, scale: 0, transition: { duration: 0.1 } }}
+      initial={{ opacity: 0, scale: scale || 0 }}
+      exit={{ opacity: 0, scale: scale || 0, transition: { duration: 0.1 } }}
       animate={controls}
     >
       {children}
