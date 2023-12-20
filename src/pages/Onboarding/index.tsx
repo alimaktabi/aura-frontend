@@ -106,7 +106,7 @@ const Onboarding = () => {
               }, 100);
             }
           }}
-          className={`bg-pastel-purple p-3 w-10 h-10 rounded-3xl transition-all ${
+          className={`bg-pastel-purple p-3 w-10 h-10 rounded-3xl transition-all duration-400 ${
             stepNumber === 4 && '!rounded-xl !w-[165px] !h-14'
           }`}
         >
@@ -115,9 +115,7 @@ const Onboarding = () => {
               <Scale duration={0.3} delay={0} key={1}>
                 <img
                   src="/assets/images/Shared/next-page.svg"
-                  className={`translate-x-[1px] w-4 h-4 opacity-1 transition-all ${
-                    stepNumber === 4 && '!opacity-0'
-                  }`}
+                  className={`translate-x-[1px] w-4 h-4 opacity-1 transition-all`}
                   alt=""
                 />
               </Scale>
@@ -125,7 +123,7 @@ const Onboarding = () => {
             {stepNumber === 4 && (
               <Scale duration={0.3} delay={0} key={2}>
                 <p
-                  className={`font-semibold text-xl text-white transition-all !opacity-1 !w-auto !h-auto'`}
+                  className={`font-semibold text-xl text-white transition-all opacity-1'`}
                 >
                   Let&apos;s Start
                 </p>
