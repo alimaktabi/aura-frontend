@@ -1,7 +1,9 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
 import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
+import Onboarding from 'pages/Onboarding';
 import { SubjectCard } from 'pages/SubjectsEvaluation/SubjectCard';
 import { SubjectSearch } from 'pages/SubjectsEvaluation/SubjectSearch';
 import { useCallback, useState } from 'react';
@@ -9,7 +11,10 @@ import { useDispatch, useSelector } from 'store/hooks';
 import { getBrightIdBackupThunk } from 'store/profile/actions';
 import { hash } from 'utils/crypto';
 
-import { selectAuthData } from '../../store/profile/selectors';
+import {
+  selectAuthData,
+  selectPlayerOnboardingScreenShown,
+} from '../../store/profile/selectors';
 
 const SubjectsEvaluation = () => {
   const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
@@ -18,6 +23,13 @@ const SubjectsEvaluation = () => {
   const authData = useSelector(selectAuthData);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const { myRatings, loading: loadingMyEvaluations } =
+    useMyEvaluationsContext();
+  const playerOnboardingScreenShown = useSelector(
+    selectPlayerOnboardingScreenShown,
+  );
+
   const refreshBrightIdBackup = useCallback(async () => {
     if (!authData) return;
     setLoading(true);
@@ -25,7 +37,12 @@ const SubjectsEvaluation = () => {
     await dispatch(getBrightIdBackupThunk({ authKey }));
     setLoading(false);
   }, [authData, dispatch]);
-  return (
+
+  return !(myRatings?.length || playerOnboardingScreenShown) ? (
+    <Onboarding />
+  ) : loadingMyEvaluations ? (
+    <div>Loading...</div>
+  ) : (
     <div className="page page__dashboard h-screen flex flex-col">
       <SubjectSearch />
       <div className="text-lg text-white mb-5 mt-7 flex">

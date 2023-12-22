@@ -27,18 +27,18 @@ export const setSplashScreenShown = (value: boolean) => ({
   type: SET_SPLASH_SCREEN_SHOWN,
   payload: value,
 });
+export const SET_PLAYER_ONBOARDING_SCREEN_SHOWN =
+  'SET_PLAYER_ONBOARDING_SCREEN_SHOWN';
+
+export const setPlayerOnboardingScreenShown = (value: boolean) => ({
+  type: SET_PLAYER_ONBOARDING_SCREEN_SHOWN,
+  payload: value,
+});
 
 export const profileSlice = createSlice({
   name: 'profile',
   initialState: initialProfileState,
-  reducers: {
-    setSplashScreenShown(state, action) {
-      return {
-        ...state,
-        splashScreenShown: action.payload,
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
@@ -65,6 +65,12 @@ export const profileSlice = createSlice({
         (action) => action.type === SET_SPLASH_SCREEN_SHOWN,
         (state, action) => {
           state.splashScreenShown = action.payload;
+        },
+      )
+      .addMatcher(
+        (action) => action.type === SET_PLAYER_ONBOARDING_SCREEN_SHOWN,
+        (state, action) => {
+          state.playerOnboardingScreenShown = action.payload;
         },
       );
   },

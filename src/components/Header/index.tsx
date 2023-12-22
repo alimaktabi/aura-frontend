@@ -3,15 +3,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
 
-const Index = () => {
-  // Todo: Implement route stack
+const Header = () => {
   const location = useLocation();
   const currentRouteObject = useMemo(
     () => routes.find((route) => route.pathRegex.test(location.pathname)),
     [location.pathname],
   );
+
   let headerComponent = currentRouteObject?.header;
-  const noHeader = currentRouteObject?.noHeader;
 
   const navigate = useNavigate();
   const onIconClick = useCallback(() => {
@@ -19,8 +18,6 @@ const Index = () => {
       navigate(RoutePath.DASHBOARD);
     else navigate(-1);
   }, [currentRouteObject, navigate]);
-
-  if (noHeader) return null;
 
   if (!headerComponent) {
     headerComponent = {
@@ -51,4 +48,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Header;

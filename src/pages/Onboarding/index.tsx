@@ -1,6 +1,8 @@
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'store/hooks';
+import { setPlayerOnboardingScreenShown } from 'store/profile';
 
 import { MoveX, Scale } from '../../animations';
 import FirstStep from './components/firstStep';
@@ -21,6 +23,8 @@ const Onboarding = () => {
   }, [setSearchParams, stepNumber]);
 
   const [side, setSide] = useState(300);
+
+  const dispatch = useDispatch();
 
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
@@ -123,6 +127,7 @@ const Onboarding = () => {
             {stepNumber === 4 && (
               <Scale duration={0.3} delay={0} key={2}>
                 <p
+                  onClick={() => dispatch(setPlayerOnboardingScreenShown(true))}
                   className={`font-semibold text-xl text-white transition-all opacity-1'`}
                 >
                   Let&apos;s Start
