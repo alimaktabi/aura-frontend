@@ -19,6 +19,7 @@ const routes = [
     requireAuth: false,
   },
   {
+    // Only used for demo
     path: RoutePath.ONBOARDING, // /onboardingRD, // /onboard
     pathRegex: new RegExp(/^\/onboard/),
     element: <Onboarding />,

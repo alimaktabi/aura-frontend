@@ -26,19 +26,12 @@ import { getExplorerCode } from 'BrightID/utils/explorer';
 import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
 import { LOCATION_ORIGIN } from 'constants/index';
 import { AURA_NODE_URL } from 'constants/urls';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import useRedirectAfterLogin from 'hooks/useRedirectAfterLogin';
+import { useEffect, useMemo, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'store/hooks';
 import { loginByExplorerCodeThunk } from 'store/profile/actions';
-import { selectIsLoggedIn } from 'store/profile/selectors';
-import { RoutePath } from 'types/router';
 import { copyToClipboard } from 'utils/copyToClipboard';
 import { __DEV__ } from 'utils/env';
 
@@ -57,7 +50,6 @@ const RecoveryCodeScreen = () => {
         : RecoveryCodeScreenAction.ADD_SUPER_USER_APP,
     [actionParam],
   );
-  const navigate = useNavigate();
   const [qrUrl, setQrUrl] = useState<{ href: string } | null>(null);
   const recoveryData = useSelector((state) => state.recoveryData);
   const { id } = useSelector(userSelector);
@@ -194,32 +186,15 @@ const RecoveryCodeScreen = () => {
       }
       dispatch(resetRecoveryData());
       dispatch(setRecoverStep(recover_steps.ERROR));
-      navigate(-1);
     }
-  }, [
-    action,
-    dispatch,
-    navigate,
-    recoveryData.errorMessage,
-    recoveryData.errorType,
-  ]);
+  }, [action, dispatch, recoveryData.errorMessage, recoveryData.errorType]);
 
   const user = useSelector((state) => state.user);
-  const [query] = useSearchParams();
   const [importedUserData, setImportedUserData] = useState(false);
-  const userIsLogged = useSelector(selectIsLoggedIn); // Your hook to get login status
-  const routerLocation = useLocation();
-  const redirectAfterLogin = useCallback(() => {
-    if (routerLocation.pathname === RoutePath.LOGIN) {
-      const next = query.get('next');
-      navigate(next ?? RoutePath.SUBJECTS_EVALUATION, { replace: true });
-    }
-  }, [routerLocation.pathname, navigate, query]);
+  const redirectAfterLogin = useRedirectAfterLogin();
   useEffect(() => {
     if (action === RecoveryCodeScreenAction.ADD_SUPER_USER_APP) {
-      if (userIsLogged) {
-        redirectAfterLogin();
-      } else if (recoveryData.id && user.password) {
+      if (recoveryData.id && user.password) {
         setImportedUserData(true);
         clearImportChannel();
         dispatch(setRecoveryKeys());
@@ -232,25 +207,9 @@ const RecoveryCodeScreen = () => {
         ).then(redirectAfterLogin);
       }
     } else if (action === RecoveryCodeScreenAction.SYNC && isScanned) {
-      navigate({
-        pathname: '/devices',
-        search: `?${createSearchParams({
-          syncing: 'true',
-          asScanner: 'false',
-        })})`,
-      });
+      console.log('TODO: sync');
     }
-  }, [
-    action,
-    dispatch,
-    isScanned,
-    navigate,
-    query,
-    recoveryData.id,
-    redirectAfterLogin,
-    user,
-    userIsLogged,
-  ]);
+  }, [action, dispatch, isScanned, recoveryData.id, redirectAfterLogin, user]);
   const universalLink = useMemo(
     () =>
       qrUrl
