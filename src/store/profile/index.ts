@@ -9,20 +9,36 @@ import {
 } from './actions';
 
 export type ProfileState = {
-  //TODO: rename this to authData
   authData: AuthDataWithPassword | null;
   brightIdBackupEncrypted: string | null;
+  splashScreenShown: boolean;
+  playerOnboardingScreenShown: boolean;
 };
 
 const initialProfileState: ProfileState = {
   authData: null,
   brightIdBackupEncrypted: null,
+  splashScreenShown: false,
+  playerOnboardingScreenShown: false,
 };
+export const SET_SPLASH_SCREEN_SHOWN = 'SET_SPLASH_SCREEN_SHOWN';
+
+export const setSplashScreenShown = (value: boolean) => ({
+  type: SET_SPLASH_SCREEN_SHOWN,
+  payload: value,
+});
 
 export const profileSlice = createSlice({
   name: 'profile',
   initialState: initialProfileState,
-  reducers: {},
+  reducers: {
+    setSplashScreenShown(state, action) {
+      return {
+        ...state,
+        splashScreenShown: action.payload,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginByExplorerCodeThunk.fulfilled, (state, action) => {
@@ -43,6 +59,12 @@ export const profileSlice = createSlice({
         () => {
           console.log('logout called');
           return initialProfileState;
+        },
+      )
+      .addMatcher(
+        (action) => action.type === SET_SPLASH_SCREEN_SHOWN,
+        (state, action) => {
+          state.splashScreenShown = action.payload;
         },
       );
   },

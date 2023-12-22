@@ -54,3 +54,9 @@ export const refreshKeyPairThunk = createAsyncThunk<
     password,
   };
 });
+
+export const SET_ = 'SET_';
+
+export const resetStore = () => ({
+  type: SET_,
+});

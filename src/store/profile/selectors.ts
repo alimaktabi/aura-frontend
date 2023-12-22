@@ -17,6 +17,10 @@ export const selectIsLoggedIn = createSelector(
   (state: RootState) => state.profile,
   (profile) => !!profile.authData,
 );
+export const selectSplashScreenShown = createSelector(
+  (state: RootState) => state.profile,
+  (profile) => profile.splashScreenShown,
+);
 export const selectBrightIdBackup = createSelector(
   (state: RootState) => state.profile,
   (profile) => {

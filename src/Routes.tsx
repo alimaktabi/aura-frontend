@@ -14,7 +14,7 @@ const routes = [
     // Only used for demo
     path: RoutePath.SPLASH, // /splash
     pathRegex: new RegExp(/^\/splash/),
-    element: <Splash dismissSplash={() => {}} />,
+    element: <Splash />,
     noHeader: true,
     requireAuth: false,
   },

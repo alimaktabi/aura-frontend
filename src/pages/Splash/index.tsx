@@ -1,6 +1,10 @@
+import { useDispatch } from 'store/hooks';
+import { setSplashScreenShown } from 'store/profile';
+
 import { FadeIn, Scale } from '../../animations';
 
-const Spalsh = ({ dismissSplash }: { dismissSplash: () => void }) => {
+const Spalsh = () => {
+  const dispatch = useDispatch();
   return (
     <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
       <section className="content pl-5 pr-12">
@@ -33,7 +37,7 @@ const Spalsh = ({ dismissSplash }: { dismissSplash: () => void }) => {
         <Scale duration={0.3} delay={0.25}>
           <button
             className="btn btn--big !text-white max-w-[270px] w-full"
-            onClick={dismissSplash}
+            onClick={() => dispatch(setSplashScreenShown(true))}
           >
             Get Started
           </button>
