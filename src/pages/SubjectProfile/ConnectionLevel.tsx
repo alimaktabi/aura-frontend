@@ -51,12 +51,17 @@ export function ConnectionLevel({ subjectId }: { subjectId: string }) {
     getData();
   }, [authData, connectionOp?.state, dispatch]);
 
-  return loading ? (
-    <div className="card flex flex-col gap-2.5">Loading...</div>
-  ) : (
+  return (
     <div className="card flex flex-col gap-2.5">
-      {connection?.level ?? '...'}
-      <button onClick={setRandomConnectionLevel}>Change</button>
+      [Only shown in DEV mode]{' '}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="flex flex-col gap-2.5">
+          {connection?.level ?? '...'}
+          <button onClick={setRandomConnectionLevel}>Change</button>
+        </div>
+      )}
     </div>
   );
 }
