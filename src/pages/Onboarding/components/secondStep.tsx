@@ -43,7 +43,7 @@ const SecondStep = () => {
                   setShowEvaluatedInfo(false);
                 }
               }}
-              className={`w-[67%] h-[100px] min-w-[250px] cursor-pointer -translate-x-[20%] mx-auto transition-all  ${
+              className={`w-[67%] h-[100px] min-w-[250px] cursor-pointer -translate-x-[20%] mx-auto transition-all duration-300 ${
                 selectedCard === 1
                   ? 'opacity-100 h-[134px] !w-full !translate-x-0'
                   : selectedCard === 2
@@ -96,11 +96,11 @@ const SecondStep = () => {
                 setShowConnectedToInfo(false);
               }
             }}
-            className={`w-[67%] h-[100px] min-w-[250px] cursor-pointer mx-auto translate-x-[20%] transition-all ${
+            className={`w-[67%] h-[100px] min-w-[250px] cursor-pointer mx-auto translate-x-[20%] transition-all duration-300 ${
               selectedCard === 2
                 ? 'opacity-100 h-[134px] !w-full !translate-x-0'
                 : selectedCard === 1
-                ? '!h-0 opacity-0'
+                ? '!h-0 opacity-0 !duration-0'
                 : 'opacity-50'
             }`}
             src="/assets/images/onboarding/connected-to-card.svg"
