@@ -214,3 +214,83 @@ export const BookOpen: FC<{
     </motion.div>
   );
 };
+
+export const AnimatedText: FC<{
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  startSize?: number;
+  endSize?: number;
+  startWeight?: number;
+  endWeight?: number;
+  startOpacity?: number;
+  endOpacity?: number;
+}> = ({
+  delay,
+  duration,
+  children,
+  className,
+  startSize,
+  endSize,
+  startWeight,
+  endWeight,
+  startOpacity,
+  endOpacity,
+}) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({
+      fontWeight: endWeight || 400,
+      fontSize: endSize + 'px' || 'inherit',
+      opacity: endOpacity || 1,
+      transition: { duration: duration || 0.3, delay: delay || 0 },
+    });
+  }, [controls, delay, duration, endSize, endWeight]);
+
+  return (
+    <motion.p
+      className={className}
+      initial={{
+        opacity: startOpacity || 0,
+        fontWeight: startWeight || 400,
+        fontSize: startSize + 'px' || 'inherit',
+      }}
+      animate={controls}
+    >
+      {children}
+    </motion.p>
+  );
+};
+
+export const Transition: FC<{
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  startX?: number;
+  endX?: number;
+  startY?: number;
+  endY?: number;
+}> = ({ delay, duration, children, className, startX, endX, startY, endY }) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({
+      x: endX || 0,
+      y: endY || 0,
+      transition: { duration: duration || 0.3, delay: delay || 0 },
+    });
+  }, [controls, delay, duration, endX, endY]);
+
+  return (
+    <motion.div
+      className={className}
+      initial={{ x: startX || 0, y: startY || 0 }}
+      animate={controls}
+    >
+      {children}
+    </motion.div>
+  );
+};

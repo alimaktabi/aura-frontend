@@ -1,4 +1,10 @@
-import { FadeIn, MoveUpIn, Scale } from '../../../animations';
+import {
+  AnimatedText,
+  FadeIn,
+  MoveUpIn,
+  Scale,
+  Transition,
+} from '../../../animations';
 
 const ThirdStep = () => {
   return (
@@ -50,18 +56,40 @@ const ThirdStep = () => {
         className="flex gap-1.5 w-full justify-center pr-12"
       >
         <p className="text-white font-medium text-lg mt-5">I have</p>
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-pastel-purple font-black text-[15px] opacity-50 -mb-0.5">
-            Low
-          </p>
-          <p className="text-pastel-purple font-black text-lg">Medium</p>
-          <p className="text-pastel-purple font-black text-sm opacity-50 mb-0.5">
-            High
-          </p>
-          <p className="text-pastel-purple font-black text-xs opacity-30">
-            Very High
-          </p>
-        </div>
+        <Transition startY={16} endY={0} duration={0.3} delay={0.7}>
+          <div className="flex w-[70px] flex-col items-center justify-center">
+            <AnimatedText
+              startSize={18}
+              endSize={15}
+              endWeight={700}
+              startWeight={900}
+              delay={0.7}
+              startOpacity={1}
+              endOpacity={0.5}
+              className="text-pastel-purple -mb-0.5"
+            >
+              Low
+            </AnimatedText>
+            <AnimatedText
+              startSize={15}
+              endSize={18}
+              endWeight={900}
+              startWeight={700}
+              delay={0.7}
+              startOpacity={0.5}
+              endOpacity={1}
+              className="text-pastel-purple"
+            >
+              Medium
+            </AnimatedText>
+            <p className="text-pastel-purple font-black text-sm opacity-50 mb-0.5">
+              High
+            </p>
+            <p className="text-pastel-purple font-black text-xs opacity-30">
+              Very High
+            </p>
+          </div>
+        </Transition>
         <p className="text-white font-medium text-lg mt-5">confidence</p>
       </FadeIn>
     </>
