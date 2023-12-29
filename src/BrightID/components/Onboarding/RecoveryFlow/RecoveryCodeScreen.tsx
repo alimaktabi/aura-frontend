@@ -35,6 +35,8 @@ import { loginByExplorerCodeThunk } from 'store/profile/actions';
 import { copyToClipboard } from 'utils/copyToClipboard';
 import { __DEV__ } from 'utils/env';
 
+import { FadeIn } from '../../../../animations';
+
 /**
  * Recovery Code screen of BrightID/
  *
@@ -261,16 +263,20 @@ const RecoveryCodeScreen = () => {
       ) : (
         <>
           <section className="content pl-5 pr-12 mb-6">
-            <p className="text-white font-black text-5xl mb-6">Login</p>
-            <p className="text-white font-medium text-lg">
-              Make sure you have BrightID application installed on your phone,
-              then scan this QR code.
-            </p>
+            <FadeIn delay={0.1}>
+              <p className="text-white font-black text-5xl mb-6">Login</p>
+            </FadeIn>
+            <FadeIn delay={0.15}>
+              <p className="text-white font-medium text-lg">
+                Make sure you have BrightID application installed on your phone,
+                then scan this QR code.
+              </p>
+            </FadeIn>
           </section>
 
           <section className="pl-8 pr-10 flex flex-col items-center gap-6 mb-3">
             {universalLink && (
-              <div>
+              <FadeIn delay={0.2}>
                 <QRCode
                   value={universalLink}
                   size={qrCodeSize}
@@ -283,46 +289,53 @@ const RecoveryCodeScreen = () => {
                   logoHeight={qrCodeSize * 0.25}
                   id="qr-code"
                 />
-              </div>
+              </FadeIn>
             )}
-            <div className="flex gap-2 items-center">
+
+            <FadeIn delay={0.25} className="flex gap-2 items-center">
               <hr className="w-12 h-[1px]" />
               <p className="text-white">Or</p>
               <hr className="w-12 h-[1px]" />
-            </div>
-            <p className="text-lg font-medium text-white">
-              Open the Link below on your phone
-            </p>
+            </FadeIn>
+            <FadeIn delay={0.25}>
+              <p className="text-lg font-medium text-white">
+                Open the Link below on your phone
+              </p>
+            </FadeIn>
           </section>
 
-          <section className="actions mb-auto pb-24 text-center">
-            <span className="bg-gray00 w-full py-2 pr-2.5 pl-3 rounded-lg flex justify-between items-center gap-2">
-              <a
-                href={universalLink}
-                target="_blank"
-                data-testid="import-universal-link"
-                className="font-medium text-white underline text-left line-clamp-1 text-ellipsis"
-                rel="noreferrer"
-              >
-                {universalLink}
-              </a>
-              <img
-                src="/assets/images/login/copy.svg"
-                alt=""
-                onClick={copyQr}
-              />
-            </span>
-          </section>
-          <footer className="flex justify-between text-gray90 text-sm">
-            <span className="flex gap-1">
-              <p className="font-light">Version</p>
-              <p className="">2.1</p>
-            </span>
-            <span className="flex gap-1">
-              <p className="text-gray50">Powered by:</p>
-              <p className="font-light">BrightID</p>
-            </span>
-          </footer>
+          <FadeIn delay={0.3} className="actions mb-auto pb-24 text-center">
+            <section className="actions mb-auto pb-24 text-center">
+              <span className="bg-gray00 w-full py-2 pr-2.5 pl-3 rounded-lg flex justify-between items-center gap-2">
+                <a
+                  href={universalLink}
+                  target="_blank"
+                  data-testid="import-universal-link"
+                  className="font-medium text-white underline text-left line-clamp-1 text-ellipsis"
+                  rel="noreferrer"
+                >
+                  {universalLink}
+                </a>
+                <img
+                  src="/assets/images/login/copy.svg"
+                  alt=""
+                  onClick={copyQr}
+                />
+              </span>
+            </section>
+          </FadeIn>
+          <FadeIn delay={0.35}>
+            <footer className="flex justify-between text-gray90 text-sm">
+              <span className="flex gap-1">
+                <p className="font-light">Version</p>
+                <p className="">2.1</p>
+              </span>
+              <span className="flex gap-1">
+                <p className="text-gray50">Powered by:</p>
+                <p className="font-light">BrightID</p>
+              </span>
+            </footer>
+          </FadeIn>
         </>
       )}
     </div>
