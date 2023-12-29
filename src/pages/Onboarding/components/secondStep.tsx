@@ -47,7 +47,7 @@ const SecondStep = () => {
                 selectedCard === 1
                   ? 'opacity-100 h-[134px] !w-full !translate-x-0'
                   : selectedCard === 2
-                  ? '!h-0'
+                  ? '!h-0 opacity-0'
                   : 'opacity-50'
               }`}
               src="/assets/images/onboarding/evaluated-card.svg"
@@ -100,7 +100,7 @@ const SecondStep = () => {
               selectedCard === 2
                 ? 'opacity-100 h-[134px] !w-full !translate-x-0'
                 : selectedCard === 1
-                ? '!h-0'
+                ? '!h-0 opacity-0'
                 : 'opacity-50'
             }`}
             src="/assets/images/onboarding/connected-to-card.svg"
