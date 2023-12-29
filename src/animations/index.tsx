@@ -174,3 +174,43 @@ export const Scale: FC<{
     </motion.div>
   );
 };
+
+export const BookOpen: FC<{
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  size?: number;
+  orientation?: 'horizontal' | 'vertical';
+}> = ({ delay, duration, children, orientation, size, className }) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start(
+      orientation === 'vertical'
+        ? {
+            height: size || 'auto',
+            transition: { duration: duration || 0.3, delay: delay || 0 },
+          }
+        : {
+            width: size || 'auto',
+            transition: { duration: duration || 0.3, delay: delay || 0 },
+          },
+    );
+  }, [controls, delay, duration, orientation, size]);
+
+  return (
+    <motion.div
+      className={className}
+      initial={orientation === 'vertical' ? { height: 0 } : { width: 0 }}
+      exit={
+        orientation === 'vertical'
+          ? { height: 0, transition: { duration: 0.1 } }
+          : { width: 0, transition: { duration: 0.1 } }
+      }
+      animate={controls}
+    >
+      {children}
+    </motion.div>
+  );
+};
