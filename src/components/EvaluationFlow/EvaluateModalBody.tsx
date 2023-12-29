@@ -1,32 +1,38 @@
+import ConfidenceDropdown from 'components/Shared/ConfidenceDropdown';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useEvaluateSubject } from 'hooks/useEvaluateSubject';
 import { useSubjectName } from 'hooks/useSubjectName';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from 'store/profile/selectors';
 
-import ConfidenceDropdown from '../../components/Shared/ConfidenceDropdown';
-
 const EvaluateModalBody = ({
-  prevRating,
   subjectId,
   onSubmitted,
 }: {
-  prevRating?: number | null;
   subjectId: string;
   onSubmitted: () => void;
 }) => {
   const [isYes, setIsYes] = useState(true);
   const [confidence, setConfidence] = useState(1);
-  const { refreshInboundRatings } =
+  const { refreshInboundRatings, inboundRatings } =
     useSubjectInboundEvaluationsContext(subjectId);
+  const { refreshOutboundRatings } = useMyEvaluationsContext(subjectId);
+  const authData = useSelector(selectAuthData);
+  const prevRating = useMemo(() => {
+    if (!authData) return undefined;
+    const rating = inboundRatings?.find(
+      (r) => r.fromBrightId === authData.brightId,
+    );
+    return rating ? Number(rating.rating) : undefined;
+  }, [authData, inboundRatings]);
   useEffect(() => {
     if (!prevRating) return;
     setIsYes(prevRating > 0);
     setConfidence(Math.abs(prevRating));
   }, [prevRating]);
   const name = useSubjectName(subjectId);
-  const authData = useSelector(selectAuthData);
   const { submitEvaluation, loading } = useEvaluateSubject();
 
   const onSubmittedLocal = useCallback(() => {
@@ -36,8 +42,9 @@ const EvaluateModalBody = ({
     //   navigate(-1);
     // }
     refreshInboundRatings();
+    refreshOutboundRatings();
     onSubmitted();
-  }, [onSubmitted, refreshInboundRatings]);
+  }, [onSubmitted, refreshInboundRatings, refreshOutboundRatings]);
 
   const submit = useCallback(async () => {
     if (loading || !authData?.brightId) return;

@@ -38,7 +38,7 @@ const SubjectsEvaluation = () => {
     setLoading(false);
   }, [authData, dispatch]);
 
-  return !(myRatings?.length || playerOnboardingScreenShown) ? (
+  return myRatings?.length === 0 && !playerOnboardingScreenShown ? (
     <Onboarding />
   ) : loadingMyEvaluations ? (
     <div>Loading...</div>
