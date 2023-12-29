@@ -1,6 +1,4 @@
-import Modal from 'components/Shared/Modal';
-import { useSubjectName } from 'hooks/useSubjectName';
-import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
+import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import { useState } from 'react';
 
 const NewEvaluationCard = ({ subjectId }: { subjectId: string }) => {
@@ -35,13 +33,12 @@ const EvaluateButton = ({
   image: string;
   subjectId: string;
 }) => {
-  const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
-  const name = useSubjectName(subjectId);
+  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
   return (
     <>
       <div
-        onClick={() => setIsEvaluateNowModalOpen(true)}
+        onClick={() => setShowEvaluationFlow(true)}
         className={`flex flex-col gap-2.5 rounded-[6px] py-2.5 w-full items-center ${bgColor} cursor-pointer`}
       >
         <div>
@@ -49,16 +46,12 @@ const EvaluateButton = ({
         </div>
         <div className={`font-medium ${textColor}`}>{title}</div>
       </div>
-      <Modal
-        isOpen={isEvaluateNowModalOpen}
-        closeModalHandler={() => setIsEvaluateNowModalOpen(false)}
-        title={`Endorsing ${name}`}
-      >
-        <EvaluateModalBody
-          subjectId={subjectId}
-          onSubmitted={() => setIsEvaluateNowModalOpen(false)}
-        />
-      </Modal>
+
+      <EvaluationFlow
+        showEvaluationFlow={showEvaluationFlow}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+        subjectId={subjectId}
+      />
     </>
   );
 };

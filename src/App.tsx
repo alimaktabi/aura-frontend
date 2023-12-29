@@ -43,7 +43,7 @@ function App() {
   const { myRatings } = useMyEvaluationsContext();
   const isPlayerOnboarding =
     location.pathname === RoutePath.SUBJECTS_EVALUATION &&
-    !myRatings?.length &&
+    myRatings?.length === 0 &&
     !playerOnboardingScreenShown;
   const hasDarkBackground =
     location.pathname === RoutePath.LOGIN ||

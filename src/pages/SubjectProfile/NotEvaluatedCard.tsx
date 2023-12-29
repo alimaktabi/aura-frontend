@@ -1,19 +1,15 @@
-import { useSubjectName } from 'hooks/useSubjectName';
+import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import { useState } from 'react';
 
-import Modal from '../../components/Shared/Modal';
-import EvaluateModalBody from './EvaluateModalBody';
-
 const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
-  const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
-  const name = useSubjectName(subjectId);
+  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
   return (
     <>
       <div className="flex items-center gap-2.5 justify-between">
         <div
           data-testid={`evaluate-not-evaluated-subject-${subjectId}`}
-          onClick={() => setIsEvaluateNowModalOpen(true)}
+          onClick={() => setShowEvaluationFlow(true)}
           className="flex-1 flex flex-row py-4 justify-center items-center bg-pastel-purple gap-2.5 rounded-lg cursor-pointer"
         >
           <img
@@ -25,16 +21,11 @@ const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
         </div>
       </div>
 
-      <Modal
-        isOpen={isEvaluateNowModalOpen}
-        closeModalHandler={() => setIsEvaluateNowModalOpen(false)}
-        title={`Endorsing ${name}`}
-      >
-        <EvaluateModalBody
-          subjectId={subjectId}
-          onSubmitted={() => setIsEvaluateNowModalOpen(false)}
-        />
-      </Modal>
+      <EvaluationFlow
+        showEvaluationFlow={showEvaluationFlow}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+        subjectId={subjectId}
+      />
     </>
   );
 };

@@ -5,12 +5,14 @@ import { selectAuthData } from 'store/profile/selectors';
 
 export const useMyEvaluations = () => {
   const authData = useSelector(selectAuthData);
-  const { outboundRatings: myRatings } = useOutboundRatings(authData?.brightId);
+  const { outboundRatings: myRatings, refreshOutboundRatings } =
+    useOutboundRatings(authData?.brightId);
   const { outboundConnections: myConnections } = useOutboundConnections(
     authData?.brightId,
   );
 
   return {
+    refreshOutboundRatings,
     myRatings,
     myConnections,
     loading: myRatings === null,

@@ -1,7 +1,5 @@
-import Modal from 'components/Shared/Modal';
+import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectName } from 'hooks/useSubjectName';
-import EvaluateModalBody from 'pages/SubjectProfile/EvaluateModalBody';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
@@ -12,8 +10,7 @@ export const YourEvaluationInfo = ({
   toSubjectId: string;
 }) => {
   const isYourEvaluation = true;
-  const [isEvaluateNowModalOpen, setIsEvaluateNowModalOpen] = useState(false);
-  const name = useSubjectName(toSubjectId);
+  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
   const authData = useSelector(selectAuthData);
   const {
     myRatingToSubject: rating,
@@ -92,7 +89,7 @@ export const YourEvaluationInfo = ({
             <div
               className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
               data-testid={`your-evaluation-${authData?.brightId}-${toSubjectId}-edit`}
-              onClick={() => setIsEvaluateNowModalOpen(true)}
+              onClick={() => setShowEvaluationFlow(true)}
             >
               <img
                 src="/assets/images/Shared/edit-icon.svg"
@@ -104,17 +101,11 @@ export const YourEvaluationInfo = ({
         </div>
       </div>
 
-      <Modal
-        isOpen={isEvaluateNowModalOpen}
-        closeModalHandler={() => setIsEvaluateNowModalOpen(false)}
-        title={`Endorsing ${name}`}
-      >
-        <EvaluateModalBody
-          prevRating={rating?.rating ? Number(rating.rating) : undefined}
-          subjectId={toSubjectId}
-          onSubmitted={() => setIsEvaluateNowModalOpen(false)}
-        />
-      </Modal>
+      <EvaluationFlow
+        showEvaluationFlow={showEvaluationFlow}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+        subjectId={toSubjectId}
+      />
     </div>
   );
 };

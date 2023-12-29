@@ -56,6 +56,8 @@ export const useOutboundRatings = (subjectId: string | null | undefined) => {
   const [outboundRatings, setOutboundRatings] = useState<AuraRating[] | null>(
     null,
   );
+  const [refreshCounter, setRefreshCounter] = useState(0);
+
   useEffect(() => {
     let mounted = true;
     setOutboundRatings(null);
@@ -69,8 +71,11 @@ export const useOutboundRatings = (subjectId: string | null | undefined) => {
     return () => {
       mounted = false;
     };
-  }, [subjectId]);
-  return { outboundRatings };
+  }, [subjectId, refreshCounter]);
+  return {
+    refreshOutboundRatings: () => setRefreshCounter((c) => c + 1),
+    outboundRatings,
+  };
 };
 
 export const useSubjectRatings = (subjectId: string | null | undefined) => {
