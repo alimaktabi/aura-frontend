@@ -247,7 +247,7 @@ export const AnimatedText: FC<{
       opacity: endOpacity || 1,
       transition: { duration: duration || 0.3, delay: delay || 0 },
     });
-  }, [controls, delay, duration, endSize, endWeight]);
+  }, [controls, delay, duration, endOpacity, endSize, endWeight]);
 
   return (
     <motion.p
