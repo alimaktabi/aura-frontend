@@ -16,10 +16,9 @@ const ThirdStep = () => {
           the Subject
         </p>
       </span>
-      <p className="text-white font-medium text-lg pl-5 pr-20 mb-20">
+      <p className="text-white font-medium text-lg pl-5 pr-7 mb-20">
         Once you feel you have enough information to evaluate, tell us what you
-        what you think about the subject and how confident are you about your
-        answer
+        think about the subject and how confident you are about your answer
       </p>
 
       <section className="relative flex items-center justify-center w-fit mx-auto mb-3">

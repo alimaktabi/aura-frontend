@@ -10,7 +10,7 @@ const FourthStep = () => {
           from a trainer
         </p>
       </span>
-      <p className="text-white font-medium text-lg pl-5 pr-20 mb-6">
+      <p className="text-white font-medium text-lg pl-5 pr-7 mb-6">
         The higher your level, the greater your impact in determining the
         legitimacy of subjects. You can level up by getting Aura trainers to
         evaluate you. They will be notified every time you complete a new

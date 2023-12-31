@@ -9,7 +9,7 @@ const FirstStep = () => {
           Find a<br /> Subject
         </p>
       </span>
-      <p className="text-white font-medium text-lg mb-9 pl-5 pr-20">
+      <p className="text-white font-medium text-lg mb-9 pl-5 pr-7">
         Explore among your brightID connections and choose the one you think you
         can evaluate
       </p>

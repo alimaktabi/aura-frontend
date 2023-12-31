@@ -17,7 +17,7 @@ const SecondStep = () => {
           Information
         </p>
       </span>
-      <p className="text-white font-medium text-lg pl-5 pr-20 mb-9">
+      <p className="text-white font-medium text-lg pl-5 pr-7 mb-9">
         Gather essential information about your connection. This helps in
         ensuring the accuracy and reliability of the evaluation process.
       </p>
