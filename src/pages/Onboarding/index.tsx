@@ -31,19 +31,19 @@ const Onboarding = () => {
       <section className="content">
         <AnimatePresence mode="wait">
           {stepNumber === 1 ? (
-            <MoveX x={side} key={1}>
+            <MoveX opacity={1} x={side} key={1}>
               <FirstStep />
             </MoveX>
           ) : stepNumber === 2 ? (
-            <MoveX x={side} key={2}>
+            <MoveX opacity={1} x={side} key={2}>
               <SecondStep />
             </MoveX>
           ) : stepNumber === 3 ? (
-            <MoveX x={side} key={3}>
+            <MoveX opacity={1} x={side} key={3}>
               <ThirdStep />
             </MoveX>
           ) : (
-            <MoveX x={side} key={4}>
+            <MoveX opacity={1} x={side} key={4}>
               <FourthStep />
             </MoveX>
           )}
