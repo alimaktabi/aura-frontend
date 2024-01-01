@@ -1,5 +1,4 @@
 import ConfidenceDropdown from 'components/Shared/ConfidenceDropdown';
-import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useEvaluateSubject } from 'hooks/useEvaluateSubject';
 import { useSubjectName } from 'hooks/useSubjectName';
@@ -16,35 +15,21 @@ const EvaluateModalBody = ({
 }) => {
   const [isYes, setIsYes] = useState(true);
   const [confidence, setConfidence] = useState(1);
-  const { refreshInboundRatings, inboundRatings } =
-    useSubjectInboundEvaluationsContext(subjectId);
-  const { refreshOutboundRatings } = useMyEvaluationsContext(subjectId);
+  const { myRatingObject } = useSubjectInboundEvaluationsContext(subjectId);
   const authData = useSelector(selectAuthData);
-  const prevRating = useMemo(() => {
-    if (!authData) return undefined;
-    const rating = inboundRatings?.find(
-      (r) => r.fromBrightId === authData.brightId,
-    );
-    return rating ? Number(rating.rating) : undefined;
-  }, [authData, inboundRatings]);
+  const prevRating = useMemo(
+    () => (myRatingObject ? Number(myRatingObject.rating) : undefined),
+    [myRatingObject],
+  );
+
   useEffect(() => {
     if (!prevRating) return;
     setIsYes(prevRating > 0);
     setConfidence(Math.abs(prevRating));
   }, [prevRating]);
+
   const name = useSubjectName(subjectId);
   const { submitEvaluation, loading } = useEvaluateSubject();
-
-  const onSubmittedLocal = useCallback(() => {
-    // if (isFirstVisitedRoute) {
-    //   navigate(RoutePath.SUBJECTS_EVALUATION);
-    // } else {
-    //   navigate(-1);
-    // }
-    refreshInboundRatings();
-    refreshOutboundRatings();
-    onSubmitted();
-  }, [onSubmitted, refreshInboundRatings, refreshOutboundRatings]);
 
   const submit = useCallback(async () => {
     if (loading || !authData?.brightId) return;
@@ -53,7 +38,7 @@ const EvaluateModalBody = ({
       if (newRating !== prevRating) {
         await submitEvaluation(subjectId, newRating);
       }
-      onSubmittedLocal();
+      onSubmitted();
     } catch (e) {
       alert(String(e));
     }
@@ -62,7 +47,7 @@ const EvaluateModalBody = ({
     confidence,
     isYes,
     loading,
-    onSubmittedLocal,
+    onSubmitted,
     prevRating,
     subjectId,
     submitEvaluation,
@@ -79,7 +64,7 @@ const EvaluateModalBody = ({
         <button
           className="-mt-3 mb-3 bg-red-500 text-white p-1.5 rounded-xl transition-colors duration-200 transform hover:bg-red-600 focus:outline-none focus:bg-red-600"
           onClick={() => {
-            submitEvaluation(subjectId, 0).then(onSubmittedLocal);
+            submitEvaluation(subjectId, 0).then(onSubmitted);
           }}
         >
           {loading ? 'Removing...' : 'Remove Your Evaluation'}

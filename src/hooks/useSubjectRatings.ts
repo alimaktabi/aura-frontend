@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getInboundRatings, getOutboundRatings } from '../api/rate.service';
 import { AuraRating } from '../types';
@@ -8,24 +8,27 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
     null,
   );
   const [loading, setLoading] = useState(true);
+  const mounted = useRef(false);
 
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  useEffect(() => {
-    let mounted = true;
+  const refreshInboundRatings = useCallback(async () => {
     setLoading(true);
     setInboundRatings(null);
     if (subjectId) {
-      getInboundRatings(subjectId).then((ratings) => {
-        if (mounted) {
-          setLoading(false);
-          setInboundRatings(ratings);
-        }
-      });
+      const ratings = await getInboundRatings(subjectId);
+      if (mounted.current) {
+        setLoading(false);
+        setInboundRatings(ratings);
+      }
     }
+  }, [subjectId]);
+
+  useEffect(() => {
+    mounted.current = true;
+    refreshInboundRatings();
     return () => {
-      mounted = false;
+      mounted.current = false;
     };
-  }, [subjectId, refreshCounter]);
+  }, [refreshInboundRatings]);
 
   const inboundPositiveRatingsCount = useMemo(
     () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
@@ -43,7 +46,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
   }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
 
   return {
-    refreshInboundRatings: () => setRefreshCounter((c) => c + 1),
+    refreshInboundRatings,
     loading,
     inboundRatings,
     inboundPositiveRatingsCount,
@@ -56,24 +59,28 @@ export const useOutboundRatings = (subjectId: string | null | undefined) => {
   const [outboundRatings, setOutboundRatings] = useState<AuraRating[] | null>(
     null,
   );
-  const [refreshCounter, setRefreshCounter] = useState(0);
+  const mounted = useRef(false);
 
-  useEffect(() => {
-    let mounted = true;
+  const refreshOutboundRatings = useCallback(async () => {
     setOutboundRatings(null);
     if (subjectId) {
-      getOutboundRatings(subjectId).then((ratings) => {
-        if (mounted) {
-          setOutboundRatings(ratings);
-        }
-      });
+      const ratings = await getOutboundRatings(subjectId);
+      if (mounted.current) {
+        setOutboundRatings(ratings);
+      }
     }
+  }, [subjectId]);
+
+  useEffect(() => {
+    mounted.current = true;
+    refreshOutboundRatings();
     return () => {
-      mounted = false;
+      mounted.current = false;
     };
-  }, [subjectId, refreshCounter]);
+  }, [refreshOutboundRatings]);
+
   return {
-    refreshOutboundRatings: () => setRefreshCounter((c) => c + 1),
+    refreshOutboundRatings,
     outboundRatings,
   };
 };

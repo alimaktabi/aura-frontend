@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 
 export const Modal: FC<{
-  title: string;
+  title?: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg';
   isOpen: boolean;
@@ -34,7 +34,7 @@ export const Modal: FC<{
             data-testid="modal-content"
           >
             <div className="modal-header flex justify-between items-center mb-6">
-              <p className="text-black2 font-bold">{title}</p>
+              {title && <p className="text-black2 font-bold">{title}</p>}
 
               <img
                 className="cursor-pointer"

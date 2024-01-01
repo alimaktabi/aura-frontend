@@ -1,6 +1,9 @@
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
+
 import { EvaluationInfo } from '../EvaluationInfo';
 
 const ProfileEvaluationMini = () => {
+  const { myLastRating } = useMyEvaluationsContext();
   return (
     <div className="card !bg-opacity-100">
       <div className="flex justify-between items-center mb-4 leading-3">
@@ -11,7 +14,7 @@ const ProfileEvaluationMini = () => {
         </div>
       </div>
       <div>
-        <EvaluationInfo fromSubjectId="1" toSubjectId="2" />
+        <EvaluationInfo toSubjectId={myLastRating?.toBrightId} />
       </div>
     </div>
   );

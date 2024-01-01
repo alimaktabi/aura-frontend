@@ -43,3 +43,5 @@ export const ENERGY_INBOUND_STAT = 'ei';
 export const ENERGY_OUTBOUND_STAT = 'eo';
 
 export const MUTUAL_CONNECTIONS_TEST_NAMESPACE = 'mutual-connections-';
+
+export const PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING = 3;

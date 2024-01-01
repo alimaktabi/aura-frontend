@@ -51,8 +51,16 @@ export const useMyEvaluationsContext = (subjectId?: string) => {
     () => (myRatingToSubject ? Number(myRatingToSubject?.rating) : null),
     [myRatingToSubject],
   );
+  const myLastRating = useMemo(
+    () =>
+      context.myRatings?.length
+        ? context.myRatings[context.myRatings.length - 1]
+        : undefined,
+    [context.myRatings],
+  );
   return {
     ...context,
+    myLastRating,
     myRatingToSubject,
     myConnectionToSubject,
     myConfidenceValueInThisSubjectRating,

@@ -1,28 +1,27 @@
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
-import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
-import { useInboundRatings } from 'hooks/useSubjectRatings';
+import { useSelector } from 'store/hooks';
+import { selectAuthData } from 'store/profile/selectors';
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
 // import { connectionLevelIconsBlack } from 'utils/connection';
 
 export const EvaluationInfo = ({
-  fromSubjectId,
   toSubjectId,
 }: {
-  fromSubjectId: string;
-  toSubjectId: string;
+  toSubjectId: string | undefined;
 }) => {
-  const { level, auraScore } = useSubjectInfo(fromSubjectId);
+  const authData = useSelector(selectAuthData);
+  const { level, auraScore } = useSubjectInfo(authData?.brightId);
+  const {
+    myRatingToSubject: rating,
+    loading,
+    myConnectionToSubject: inboundConnectionInfo,
+  } = useMyEvaluationsContext(toSubjectId);
 
-  const { rating, loading, inboundConnectionInfo } =
-    useSubjectEvaluationFromContext({
-      fromSubjectId,
-      toSubjectId,
-    });
-
-  const { inboundPositiveRatingsCount, inboundNegativeRatingsCount } =
-    useInboundRatings(fromSubjectId);
+  const inboundPositiveRatingsCount = 1;
+  const inboundNegativeRatingsCount = 1;
 
   if (loading)
     return (

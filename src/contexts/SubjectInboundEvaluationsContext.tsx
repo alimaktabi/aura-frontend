@@ -13,8 +13,8 @@ import { useSubjectConnections } from 'hooks/useSubjectConnections';
 import { useSubjectInboundEvaluations } from 'hooks/useSubjectInboundEvaluations';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { selectBrightIdBackup } from 'store/profile/selectors';
-import { AuraInboundConnectionAndRatingData } from 'types';
+import { selectAuthData, selectBrightIdBackup } from 'store/profile/selectors';
+import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
 
 // Define the context
 const SubjectInboundEvaluationsContext = createContext<
@@ -25,6 +25,7 @@ const SubjectInboundEvaluationsContext = createContext<
       > & {
         sorts: AuraSortOptions<AuraInboundConnectionAndRatingData>;
         filters: AuraFilterOptions<AuraInboundConnectionAndRatingData>;
+        myRatingObject: AuraRating | undefined;
       })
   | null
 >(null);
@@ -100,6 +101,15 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     useMemo(() => ['fromSubjectId', 'name'], []),
     'evaluationsList',
   );
+  const authData = useSelector(selectAuthData);
+
+  const myRatingObject = useMemo(() => {
+    if (!authData) return undefined;
+    const rating = inboundRatings?.find(
+      (r) => r.fromBrightId === authData.brightId,
+    );
+    return rating;
+  }, [authData, inboundRatings]);
 
   return (
     <SubjectInboundEvaluationsContext.Provider
@@ -109,6 +119,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
         sorts,
         filters,
         subjectId,
+        myRatingObject,
       }}
     >
       {children}
@@ -118,9 +129,16 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
 
 export const useSubjectInboundEvaluationsContext = (subjectId: string) => {
   const context = useContext(SubjectInboundEvaluationsContext);
-  if (context === null || context.subjectId !== subjectId) {
+  if (context === null) {
     throw new Error(
       'SubjectInboundEvaluationsContext must be used within a SubjectInboundEvaluationsContextProvider',
+    );
+  }
+  if (context.subjectId !== subjectId) {
+    throw new Error(
+      'SubjectInboundEvaluationsContextProvider for ' +
+        subjectId +
+        'not provided',
     );
   }
   return context;
