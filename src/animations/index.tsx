@@ -7,7 +7,7 @@ export const MoveUpIn: FC<{
   delay?: number;
   duration?: number;
   y?: number;
-  y_end?: string;
+  y_end?: string | number;
 }> = ({ delay, duration, children, className, y, y_end }) => {
   const controls = useAnimation();
 
@@ -68,8 +68,9 @@ export const MoveX: FC<{
   className?: string;
   delay?: number;
   duration?: number;
+  opacity: number;
   x: number;
-}> = ({ delay, duration, children, className, x }) => {
+}> = ({ delay, duration, children, opacity, className, x }) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -83,7 +84,7 @@ export const MoveX: FC<{
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 1, x }}
+      initial={{ opacity, x }}
       exit={{ opacity: 1, x: -1 * x, transition: { duration: 0.1 } }}
       animate={controls}
     >
@@ -226,6 +227,8 @@ export const AnimatedText: FC<{
   endWeight?: number;
   startOpacity?: number;
   endOpacity?: number;
+  startColor?: string;
+  endColor?: string;
 }> = ({
   delay,
   duration,
@@ -237,24 +240,28 @@ export const AnimatedText: FC<{
   endWeight,
   startOpacity,
   endOpacity,
+  startColor,
+  endColor,
 }) => {
   const controls = useAnimation();
 
   useEffect(() => {
     controls.start({
-      fontWeight: endWeight || 400,
+      fontWeight: endWeight,
       fontSize: endSize + 'px' || 'inherit',
       opacity: endOpacity || 1,
+      color: endColor,
       transition: { duration: duration || 0.3, delay: delay || 0 },
     });
-  }, [controls, delay, duration, endOpacity, endSize, endWeight]);
+  }, [controls, delay, duration, endColor, endOpacity, endSize, endWeight]);
 
   return (
     <motion.p
       className={className}
       initial={{
-        opacity: startOpacity || 0,
-        fontWeight: startWeight || 400,
+        opacity: startOpacity || 1,
+        fontWeight: startWeight,
+        color: startColor,
         fontSize: startSize + 'px' || 'inherit',
       }}
       animate={controls}
