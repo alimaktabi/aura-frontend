@@ -12,7 +12,6 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
 
   const refreshInboundRatings = useCallback(async () => {
     setLoading(true);
-    setInboundRatings(null);
     if (subjectId) {
       const ratings = await getInboundRatings(subjectId);
       if (mounted.current) {
@@ -62,7 +61,6 @@ export const useOutboundRatings = (subjectId: string | null | undefined) => {
   const mounted = useRef(false);
 
   const refreshOutboundRatings = useCallback(async () => {
-    setOutboundRatings(null);
     if (subjectId) {
       const ratings = await getOutboundRatings(subjectId);
       if (mounted.current) {

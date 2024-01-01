@@ -23,7 +23,7 @@ const EvaluationFlow = ({
   const { refreshOutboundRatings, myRatings } =
     useMyEvaluationsContext(subjectId);
 
-  const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(null);
+  const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(3);
 
   const onSubmitted = useCallback(async () => {
     const myRatingsCount = myRatings?.filter((r) => Number(r.rating)).length;
@@ -32,10 +32,15 @@ const EvaluationFlow = ({
     if (!myRatingsCount) return;
     const isNewRating = !(myRatingObject && Number(myRatingObject.rating));
     const newRatingCount = myRatingsCount + (isNewRating ? 1 : 0);
+    console.log({
+      newRatingCount,
+      PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+    });
     if (newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING) {
-      setMyNewRatingCount(newRatingCount);
-    } else {
       setShowEvaluationFlow(false);
+    } else {
+      console.log('hi');
+      setMyNewRatingCount(newRatingCount);
     }
   }, [
     myRatingObject,
@@ -44,26 +49,22 @@ const EvaluationFlow = ({
     refreshOutboundRatings,
     setShowEvaluationFlow,
   ]);
-  return showEvaluationFlow ? (
-    <>
-      <Modal
-        isOpen={myNewRatingCount === null}
-        closeModalHandler={() => setShowEvaluationFlow(false)}
-        title={`Endorsing ${name}`}
-      >
-        <EvaluateModalBody subjectId={subjectId} onSubmitted={onSubmitted} />
-      </Modal>
-      <Modal
-        isOpen={myNewRatingCount !== null}
-        closeModalHandler={() => setShowEvaluationFlow(false)}
-      >
+  return (
+    <Modal
+      isOpen={showEvaluationFlow}
+      closeModalHandler={() => {}}
+      title={myNewRatingCount === null ? `Endorsing ${name}` : undefined}
+    >
+      {myNewRatingCount !== null ? (
         <NewPlayerGuideAfterEvaluation
-          closeModalHandler={() => setShowEvaluationFlow(false)}
+          closeModalHandler={() => {}}
           ratingsDoneCount={myNewRatingCount}
         />
-      </Modal>
-    </>
-  ) : null;
+      ) : (
+        <EvaluateModalBody subjectId={subjectId} onSubmitted={onSubmitted} />
+      )}
+    </Modal>
+  );
 };
 
 export default EvaluationFlow;
