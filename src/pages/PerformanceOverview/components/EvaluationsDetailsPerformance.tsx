@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
+import useEcharts from '../../../hooks/useEcharts';
 import { useSubjectInfo } from '../../../hooks/useSubjectInfo';
 import { compactFormat } from '../../../utils/number';
 
@@ -16,6 +19,18 @@ const EvaluationsDetailsPerformance = ({
   const { inboundRatings, inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectInfo(subjectId);
+
+  const { echarts, options } = useEcharts();
+
+  useEffect(() => {
+    if (echarts) {
+      setTimeout(() => {
+        echarts
+          .init(document.getElementById('chart-container') as HTMLDivElement)
+          .setOption(options);
+      }, 1000);
+    }
+  }, [echarts, options]);
 
   return (
     <div className="card">
@@ -44,11 +59,8 @@ const EvaluationsDetailsPerformance = ({
           <div className="font-medium">Evaluation Impact:</div>
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
-        <img
-          className="body__chart w-full mb-3"
-          src="/assets/images/chart-detailed.svg"
-          alt=""
-        />
+
+        <div id="chart-container" className="w-full h-[50vw]"></div>
       </div>
       {hasBtn && <button className="btn mt-4">View All Evaluations</button>}
     </div>
