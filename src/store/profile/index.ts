@@ -56,9 +56,13 @@ export const profileSlice = createSlice({
       })
       .addMatcher(
         (action) => action.type === RESET_STORE,
-        () => {
+        (state) => {
           console.log('logout called');
-          return initialProfileState;
+          return {
+            ...initialProfileState,
+            playerOnboardingScreenShown: state.playerOnboardingScreenShown,
+            splashScreenShown: state.splashScreenShown,
+          };
         },
       )
       .addMatcher(
