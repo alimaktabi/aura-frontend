@@ -62,7 +62,12 @@ const EvaluationsDetailsPerformance = ({
 
         <div id="chart-container" className="w-full h-40"></div>
       </div>
-      {hasBtn && <button className="btn mt-4">View All Evaluations</button>}
+      {hasBtn && (
+        <>
+          <button className="btn--outlined mt-4">View All Evaluations</button>
+          <button className="btn mt-3">Find New Trainer</button>
+        </>
+      )}
     </div>
   );
 };

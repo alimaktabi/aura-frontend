@@ -5,7 +5,7 @@ import ActivitiesCard from '../../components/Shared/ActivitiesCard/index';
 import { selectAuthData } from '../../store/profile/selectors';
 import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
-import LinkCard from './LinkCard';
+// import LinkCard from './LinkCard';
 
 const PerformanceOverview = () => {
   const color = {
@@ -39,7 +39,7 @@ const PerformanceOverview = () => {
           hasHeader={true}
           hasBtn={true}
         />
-        <LinkCard />
+        {/*<LinkCard />*/}
       </div>
     </SubjectInboundEvaluationsContextProvider>
   );
