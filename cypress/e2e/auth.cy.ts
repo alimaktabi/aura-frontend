@@ -82,6 +82,7 @@ describe('Auth', () => {
         window.localStorage.removeItem('persist:root');
       },
     });
+    cy.get(getTestSelector('splash-dismiss-btn')).click();
     cy.get(getTestSelector('import-universal-link'))
       .invoke('attr', 'href')
       .then((universalLink) => {

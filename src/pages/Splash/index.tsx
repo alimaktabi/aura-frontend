@@ -37,6 +37,7 @@ const Spalsh = () => {
         <Scale delay={0.25}>
           <button
             className="btn btn--big !text-white max-w-[270px] w-full"
+            data-testid="splash-dismiss-btn"
             onClick={() => dispatch(setSplashScreenShown(true))}
           >
             Get Started
