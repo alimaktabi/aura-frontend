@@ -17,11 +17,11 @@ const FourthStep = () => {
         evaluation, so keep up the good work to go higher and higher
       </p>
 
-      <section className="relative flex flex-col items-center gap-3 justify-center w-fit mx-auto mb-3">
+      <section className="relative flex flex-col items-center gap-4 justify-center w-fit mx-auto mb-3">
         <MoveUpIn delay={0.1} y={10}>
           <img src="/assets/images/onboarding/top-double-arrow.svg" alt="" />
         </MoveUpIn>
-        <MoveUpIn delay={0.2} y={10}>
+        <MoveUpIn delay={0.3} y={10}>
           <div className="flex gap-4 pl-5 pr-4 py-4 rounded-lg bg-white opacity-90">
             <img src="/assets/images/onboarding/profile-img.svg" alt="" />
             <div className="flex flex-col mr-2">
