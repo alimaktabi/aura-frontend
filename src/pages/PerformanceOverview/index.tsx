@@ -1,9 +1,9 @@
-import EvaluationsDetails from 'components/Shared/EvaluationsDetails/index';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { useSelector } from 'react-redux';
 
 import ActivitiesCard from '../../components/Shared/ActivitiesCard/index';
 import { selectAuthData } from '../../store/profile/selectors';
+import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
 import LinkCard from './LinkCard';
 
@@ -33,7 +33,7 @@ const PerformanceOverview = () => {
           color={color.Player} // this color should be based on role
         />
         <ActivitiesCard />
-        <EvaluationsDetails
+        <EvaluationsDetailsPerformance
           subjectId={authData.brightId}
           title="Evaluation by Trainers"
           hasHeader={true}
