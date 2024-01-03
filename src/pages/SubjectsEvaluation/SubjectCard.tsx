@@ -2,12 +2,11 @@ import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connectionLevelIconsBlack } from 'utils/connection';
 
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
-import { EchartsContext } from '../../contexts/EchartsContext';
 import { compactFormat } from '../../utils/number';
 
 export const SubjectCard = ({
@@ -20,8 +19,6 @@ export const SubjectCard = ({
   const { level, name, auraScore } = useSubjectInfo(subjectId);
   const { inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext(subjectId);
-
-  const { echarts, options } = useContext(EchartsContext);
 
   const {
     myRatingToSubject: rating,

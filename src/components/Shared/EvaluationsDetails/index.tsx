@@ -29,7 +29,7 @@ const EvaluationsDetails = ({
 
   const { toggleFilterById } = useSubjectInboundEvaluationsContext(subjectId);
 
-  const { echarts, options } = useContext(EchartsContext);
+  const { options } = useContext(EchartsContext);
 
   const setEvidenceListFilter = (filterId: AuraFilterId) => {
     toggleFilterById(filterId, true);

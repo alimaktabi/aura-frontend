@@ -1,38 +1,13 @@
-import { BarChart } from 'echarts/charts';
-import {
-  DatasetComponent,
-  GridComponent,
-  TitleComponent,
-  TooltipComponent,
-  TransformComponent,
-} from 'echarts/components';
-import * as echarts from 'echarts/core';
-import { LabelLayout, UniversalTransition } from 'echarts/features';
-import { CanvasRenderer } from 'echarts/renderers';
-import { createContext, ReactNode, useState } from 'react';
-
-echarts.use([
-  BarChart,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DatasetComponent,
-  TransformComponent,
-  LabelLayout,
-  UniversalTransition,
-  CanvasRenderer,
-]);
+import { createContext, useState } from 'react';
 
 export const EchartsContext = createContext<{
-  echarts: typeof echarts;
   options: any;
 }>({
-  echarts,
   options: {},
 });
 
 interface ProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const EchartsContextProvider = ({ children }: ProviderProps) => {
@@ -93,7 +68,7 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
   });
 
   return (
-    <EchartsContext.Provider value={{ echarts, options }}>
+    <EchartsContext.Provider value={{ options }}>
       {children}
     </EchartsContext.Provider>
   );

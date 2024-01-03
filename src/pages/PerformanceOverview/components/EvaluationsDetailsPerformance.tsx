@@ -1,5 +1,5 @@
 import ReactECharts from 'echarts-for-react';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 import ProgressBar from '../../../components/Shared/ProgressBar';
 import { EchartsContext } from '../../../contexts/EchartsContext';
@@ -22,17 +22,7 @@ const EvaluationsDetailsPerformance = ({
     useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectInfo(subjectId);
 
-  const { echarts, options } = useContext(EchartsContext);
-
-  useEffect(() => {
-    if (echarts) {
-      setTimeout(() => {
-        echarts
-          .init(document.getElementById('chart-container') as HTMLDivElement)
-          .setOption(options);
-      }, 1000);
-    }
-  }, [echarts, options]);
+  const { options } = useContext(EchartsContext);
 
   return (
     <div className="card relative">
