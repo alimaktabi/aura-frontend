@@ -60,7 +60,7 @@ const EvaluationsDetailsPerformance = ({
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
 
-        <div id="chart-container" className="w-full h-[50vw]"></div>
+        <div id="chart-container" className="w-full h-40"></div>
       </div>
       {hasBtn && <button className="btn mt-4">View All Evaluations</button>}
     </div>

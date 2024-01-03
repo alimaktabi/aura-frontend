@@ -39,7 +39,7 @@ const useEcharts = () => {
       show: false,
     },
     grid: {
-      top: 10,
+      top: 15,
       bottom: 0,
       left: 0,
       right: 0,
