@@ -29,7 +29,7 @@ const EvaluationsDetails = ({
 
   const { toggleFilterById } = useSubjectInboundEvaluationsContext(subjectId);
 
-  const { options } = useContext(EchartsContext);
+  const { options2 } = useContext(EchartsContext);
 
   const setEvidenceListFilter = (filterId: AuraFilterId) => {
     toggleFilterById(filterId, true);
@@ -178,7 +178,7 @@ const EvaluationsDetails = ({
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
 
-        <ReactECharts option={options} className="body__chart w-full mb-3" />
+        <ReactECharts option={options2} className="body__chart w-full mb-3" />
 
         <div className="chart-info flex flex-wrap gap-y-2.5 mb-5">
           <div className="chart-info__item flex items-center gap-1 w-1/2">

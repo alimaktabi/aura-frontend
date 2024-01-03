@@ -2,11 +2,12 @@ import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connectionLevelIconsBlack } from 'utils/connection';
 
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
+import { EchartsContext } from '../../contexts/EchartsContext';
 import { compactFormat } from '../../utils/number';
 
 export const SubjectCard = ({
@@ -19,6 +20,8 @@ export const SubjectCard = ({
   const { level, name, auraScore } = useSubjectInfo(subjectId);
   const { inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext(subjectId);
+
+  const { options3 } = useContext(EchartsContext);
 
   const {
     myRatingToSubject: rating,
@@ -114,60 +117,7 @@ export const SubjectCard = ({
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
-            option={{
-              height: 48,
-              xAxis: {
-                type: 'category',
-                axisLine: {
-                  show: false,
-                },
-                axisLabel: {
-                  show: false,
-                },
-              },
-              yAxis: {
-                type: 'value',
-                show: false,
-              },
-              grid: {
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-              },
-              series: [
-                {
-                  color: '#ABCAAE',
-                  data: [
-                    280,
-                    {
-                      value: -170,
-                      itemStyle: {
-                        color: '#BC9191',
-                      },
-                    },
-                    150,
-                    130,
-                    120,
-                    110,
-                    {
-                      value: -100,
-                      itemStyle: {
-                        color: '#BC9191',
-                      },
-                    },
-                    89,
-                    80,
-                    75,
-                    70,
-                  ],
-                  label: {
-                    show: false,
-                  },
-                  type: 'bar',
-                },
-              ],
-            }}
+            option={options3}
             // className="w-26.5 h-12"
           />
         </div>
