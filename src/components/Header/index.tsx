@@ -37,7 +37,7 @@ const Header = () => {
         {headerComponent.icon && (
           <span
             onClick={onIconClick}
-            className="header-icon"
+            className="header-icon !cursor-pointer"
             data-testid="nav-button"
           >
             <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
