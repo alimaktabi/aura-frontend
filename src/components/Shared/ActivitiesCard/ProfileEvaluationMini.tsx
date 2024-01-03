@@ -1,11 +1,9 @@
-import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSelector } from 'react-redux';
 
 import { selectAuthData } from '../../../store/profile/selectors';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
 const ProfileEvaluationMini = () => {
-  const { myLastRating } = useMyEvaluationsContext();
   const authData = useSelector(selectAuthData);
 
   return (
