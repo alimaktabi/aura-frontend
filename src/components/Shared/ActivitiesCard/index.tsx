@@ -21,7 +21,8 @@ const ActivitiesCard = () => {
         </div>
       )}
 
-      <button className="btn mt-4">View All Evaluations</button>
+      <button className="btn--outlined mt-4">View All Evaluations</button>
+      <button className="btn mt-3">Evaluate New Subject</button>
     </div>
   );
 };
@@ -39,7 +40,7 @@ const Activities = ({
 }) => {
   return (
     <div>
-      <div className="flex flex-col gap-3 leading-5 mb-2">
+      <div className="flex flex-col gap-1 leading-5 mb-3">
         {isManagerView && (
           <div className="flex gap-1">
             <div>

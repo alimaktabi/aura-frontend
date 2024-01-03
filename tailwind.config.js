@@ -27,6 +27,7 @@ export default {
         'green-card': '#C0E6C9',
         'red-card': '#E6C0C0',
         'soft-bright': '#FFEAD1',
+        'button-primary': '#A982DF',
         black2: '#2C2C2C',
         black3: '#181818',
         pl1: '#C0E6C9',

@@ -74,7 +74,7 @@
 }
 
 .btn {
-  @apply text-black py-2 px-4 rounded-[6px] font-bold bg-pastel-purple;
+  @apply text-black py-2 px-4 rounded-[6px] font-bold bg-button-primary;
 
   &--icon {
     @apply p-2;
@@ -86,6 +86,10 @@
 
   &--big {
     @apply p-3 font-bold text-lg rounded-xl;
+  }
+
+  &--outlined {
+    @apply py-2 px-4 rounded-[6px] font-bold bg-transparent text-button-primary border border-button-primary;
   }
 }
 
