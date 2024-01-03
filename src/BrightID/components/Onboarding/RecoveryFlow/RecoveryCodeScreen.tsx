@@ -310,7 +310,7 @@ const RecoveryCodeScreen = () => {
                 <a
                   href={universalLink}
                   target="_blank"
-                  data-testid="import-universal-link"
+                  data-testid={universalLink && 'import-universal-link'}
                   className="font-medium text-white underline text-left line-clamp-1 text-ellipsis"
                   rel="noreferrer"
                 >
