@@ -9,7 +9,7 @@ import {
 import * as echarts from 'echarts/core';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import { useState } from 'react';
+import { createContext, ReactNode, useState } from 'react';
 
 echarts.use([
   BarChart,
@@ -23,7 +23,19 @@ echarts.use([
   CanvasRenderer,
 ]);
 
-const useEcharts = () => {
+export const EchartsContext = createContext<{
+  echarts: typeof echarts;
+  options: any;
+}>({
+  echarts,
+  options: {},
+});
+
+interface ProviderProps {
+  children: ReactNode;
+}
+
+export const EchartsContextProvider = ({ children }: ProviderProps) => {
   const [options, setOptions] = useState({
     xAxis: {
       type: 'category',
@@ -80,10 +92,9 @@ const useEcharts = () => {
     ],
   });
 
-  return {
-    echarts,
-    options,
-  };
+  return (
+    <EchartsContext.Provider value={{ echarts, options }}>
+      {children}
+    </EchartsContext.Provider>
+  );
 };
-
-export default useEcharts;

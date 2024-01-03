@@ -1,9 +1,11 @@
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
+import ReactECharts from 'echarts-for-react';
 import { AuraFilterId } from 'hooks/useFilters';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 
+import { EchartsContext } from '../../../contexts/EchartsContext';
 import { compactFormat } from '../../../utils/number';
 
 const EvaluationsDetails = ({
@@ -26,6 +28,8 @@ const EvaluationsDetails = ({
   const [selectedLevel, setSelectedLevel] = useState(1);
 
   const { toggleFilterById } = useSubjectInboundEvaluationsContext(subjectId);
+
+  const { echarts, options } = useContext(EchartsContext);
 
   const setEvidenceListFilter = (filterId: AuraFilterId) => {
     toggleFilterById(filterId, true);
@@ -173,11 +177,8 @@ const EvaluationsDetails = ({
           <div className="font-medium">Evaluation Impact:</div>
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
-        <img
-          className="body__chart w-full mb-3"
-          src="/assets/images/chart-detailed.svg"
-          alt=""
-        />
+
+        <ReactECharts option={options} className="body__chart w-full mb-3" />
 
         <div className="chart-info flex flex-wrap gap-y-2.5 mb-5">
           <div className="chart-info__item flex items-center gap-1 w-1/2">

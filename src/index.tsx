@@ -15,6 +15,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { backendApi, isThereProblemWithEncryption } from './api';
 import App from './App';
+import { EchartsContextProvider } from './contexts/EchartsContext';
 import { persistor, store } from './store';
 import { refreshKeyPairThunk } from './store/profile/actions';
 
@@ -57,19 +58,21 @@ backendApi.interceptors.response.use(
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <MyEvaluationsContextProvider>
-          <SubjectsListContextProvider>
-            <NodeApiGateContextProvider>
-              <BrowserRouter>
-                <BrowserHistoryContextProvider>
-                  <App />
-                </BrowserHistoryContextProvider>
-              </BrowserRouter>
-            </NodeApiGateContextProvider>
-          </SubjectsListContextProvider>
-        </MyEvaluationsContextProvider>
-      </PersistGate>
+      <EchartsContextProvider>
+        <PersistGate persistor={persistor}>
+          <MyEvaluationsContextProvider>
+            <SubjectsListContextProvider>
+              <NodeApiGateContextProvider>
+                <BrowserRouter>
+                  <BrowserHistoryContextProvider>
+                    <App />
+                  </BrowserHistoryContextProvider>
+                </BrowserRouter>
+              </NodeApiGateContextProvider>
+            </SubjectsListContextProvider>
+          </MyEvaluationsContextProvider>
+        </PersistGate>
+      </EchartsContextProvider>
     </Provider>
   </React.StrictMode>,
 );

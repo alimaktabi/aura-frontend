@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import ReactECharts from 'echarts-for-react';
+import { useContext, useEffect } from 'react';
 
 import ProgressBar from '../../../components/Shared/ProgressBar';
+import { EchartsContext } from '../../../contexts/EchartsContext';
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
-import useEcharts from '../../../hooks/useEcharts';
 import { useSubjectInfo } from '../../../hooks/useSubjectInfo';
 import { compactFormat } from '../../../utils/number';
 
@@ -21,7 +22,7 @@ const EvaluationsDetailsPerformance = ({
     useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectInfo(subjectId);
 
-  const { echarts, options } = useEcharts();
+  const { echarts, options } = useContext(EchartsContext);
 
   useEffect(() => {
     if (echarts) {
@@ -82,7 +83,8 @@ const EvaluationsDetailsPerformance = ({
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
 
-        <div id="chart-container" className="w-full h-40"></div>
+        <ReactECharts option={options} className="w-full h-40" />
+        <div id="chart-container" className=""></div>
       </div>
       {hasBtn && (
         <>
