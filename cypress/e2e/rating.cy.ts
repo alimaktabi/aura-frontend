@@ -262,7 +262,7 @@ describe('Rating', () => {
     doRate(ratedConnectionNegative);
   });
 
-  it.skip('evaluation onboarding flow first evaluation', () => {
+  it('evaluation onboarding flow first evaluation', () => {
     currentRatings = [];
     setCurrentRatingsIntercepts();
     cy.visit(

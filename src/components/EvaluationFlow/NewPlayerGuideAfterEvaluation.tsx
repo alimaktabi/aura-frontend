@@ -1,4 +1,5 @@
 import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
+import { useBrowserHistoryContext } from 'contexts/BrowserHistoryContext';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from 'types/router';
 
@@ -10,9 +11,9 @@ const NewPlayerGuideAfterEvaluation = ({
   closeModalHandler?: () => void;
 }) => {
   const navigate = useNavigate();
+  const { isFirstVisitedRoute } = useBrowserHistoryContext();
 
   if (ratingsDoneCount === null) return null;
-
   return ratingsDoneCount < PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING ? (
     <div>
       <div className="mt-36 text-center text-xl">
@@ -36,7 +37,13 @@ const NewPlayerGuideAfterEvaluation = ({
         <button
           data-testid="evaluation-onboarding-action-button"
           className="btn btn--big w-full"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            if (isFirstVisitedRoute) {
+              navigate(RoutePath.SUBJECTS_EVALUATION);
+            } else {
+              navigate(-1);
+            }
+          }}
         >
           Find More Subjects
         </button>
