@@ -3,7 +3,14 @@ import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 
 import NotEvaluatedCard from './NotEvaluatedCard';
 
-export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
+export const YourEvaluation = ({
+  subjectId,
+  setShowEvaluationFlow,
+}: {
+  subjectId: string;
+
+  setShowEvaluationFlow: (value: boolean) => void;
+}) => {
   const { myRatingToSubject: rating, loading } =
     useMyEvaluationsContext(subjectId);
 
@@ -19,12 +26,18 @@ export const YourEvaluation = ({ subjectId }: { subjectId: string }) => {
           >
             You haven’t evaluated this subject yet
           </div>
-          <NotEvaluatedCard subjectId={subjectId} />
+          <NotEvaluatedCard
+            subjectId={subjectId}
+            setShowEvaluationFlow={setShowEvaluationFlow}
+          />
         </>
       ) : (
         <>
           <div className="font-medium flex">Your evaluation</div>
-          <YourEvaluationInfo toSubjectId={subjectId} />
+          <YourEvaluationInfo
+            toSubjectId={subjectId}
+            setShowEvaluationFlow={setShowEvaluationFlow}
+          />
         </>
       )}
     </div>

@@ -1,16 +1,16 @@
-import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
 
 export const YourEvaluationInfo = ({
   toSubjectId,
+  setShowEvaluationFlow,
 }: {
   toSubjectId: string;
+  setShowEvaluationFlow: (value: boolean) => void;
 }) => {
   const isYourEvaluation = true;
-  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
   const authData = useSelector(selectAuthData);
   const {
     myRatingToSubject: rating,
@@ -100,12 +100,6 @@ export const YourEvaluationInfo = ({
           )}
         </div>
       </div>
-
-      <EvaluationFlow
-        showEvaluationFlow={showEvaluationFlow}
-        setShowEvaluationFlow={setShowEvaluationFlow}
-        subjectId={toSubjectId}
-      />
     </div>
   );
 };

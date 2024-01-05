@@ -19,17 +19,11 @@ describe('Rating', () => {
 
   let currentRatings: AuraRating[] = Object.assign([], oldRatings);
 
-  function setNewRating(connection: Connection) {
-    const newRating = newRatings.find((r) => r.toBrightId === connection.id);
-    if (newRating) {
-      currentRatings = [
-        ...currentRatings.filter((r) => r.toBrightId !== connection.id),
-        newRating,
-      ];
-    }
+  function setCurrentRatingsIntercepts() {
     const ratingResponse: AuraRatingRetrieveResponse = {
       ratings: currentRatings,
     };
+    console.log({ ratingResponse });
     cy.intercept(
       {
         url: `/v1/ratings/${FAKE_BRIGHT_ID}`,
@@ -39,18 +33,30 @@ describe('Rating', () => {
         body: ratingResponse,
       },
     );
-
-    cy.intercept(
-      {
-        url: `/v1/ratings/inbound/${connection.id}`,
-        method: 'GET',
-      },
-      {
-        body: {
-          ratings: [newRating],
+    currentRatings.forEach((r) => {
+      cy.intercept(
+        {
+          url: `/v1/ratings/inbound/${r.toBrightId}`,
+          method: 'GET',
         },
-      },
-    );
+        {
+          body: {
+            ratings: [r],
+          },
+        },
+      );
+    });
+  }
+
+  function setNewRating(connection: Connection) {
+    const newRating = newRatings.find((r) => r.toBrightId === connection.id);
+    if (newRating) {
+      currentRatings = [
+        ...currentRatings.filter((r) => r.toBrightId !== connection.id),
+        newRating,
+      ];
+    }
+    setCurrentRatingsIntercepts();
   }
 
   function submitNewRatingFailure(connection: Connection) {
@@ -176,7 +182,7 @@ describe('Rating', () => {
   }
 
   function doRate(connection: Connection) {
-    const oldRatingValue = Number(getRating(connection.id, oldRatings));
+    const oldRatingValue = Number(getRating(connection.id, currentRatings));
     const newRatingValue = Number(getRating(connection.id, newRatings));
 
     enterNewRateValue(connection);
@@ -254,6 +260,17 @@ describe('Rating', () => {
       ),
     );
     doRate(ratedConnectionNegative);
+  });
+
+  it.skip('evaluation onboarding flow first evaluation', () => {
+    currentRatings = [];
+    setCurrentRatingsIntercepts();
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', unratedConnection.id),
+    );
+    doRate(unratedConnection);
+    cy.get(getTestSelector('evaluation-onboarding-action-button')).click();
+    cy.url().should('include', RoutePath.SUBJECTS_EVALUATION);
   });
 
   // it('regenerates keypair if the user if the privateKey is invalid', () => {

@@ -1,9 +1,10 @@
-import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
-import { useState } from 'react';
-
-const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
-  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
-
+const NotEvaluatedCard = ({
+  subjectId,
+  setShowEvaluationFlow,
+}: {
+  subjectId: string;
+  setShowEvaluationFlow: (value: boolean) => void;
+}) => {
   return (
     <>
       <div className="flex items-center gap-2.5 justify-between">
@@ -20,12 +21,6 @@ const NotEvaluatedCard = ({ subjectId }: { subjectId: string }) => {
           <p className="font-bold">Evaluate now!</p>
         </div>
       </div>
-
-      <EvaluationFlow
-        showEvaluationFlow={showEvaluationFlow}
-        setShowEvaluationFlow={setShowEvaluationFlow}
-        subjectId={subjectId}
-      />
     </>
   );
 };

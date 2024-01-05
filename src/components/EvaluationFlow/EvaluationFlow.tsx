@@ -29,9 +29,13 @@ const EvaluationFlow = ({
     const myRatingsCount = myRatings?.filter((r) => Number(r.rating)).length;
     refreshInboundRatings();
     refreshOutboundRatings();
-    if (!myRatingsCount) return;
+    if (myRatingsCount === undefined) return;
     const isNewRating = !(myRatingObject && Number(myRatingObject.rating));
     const newRatingCount = myRatingsCount + (isNewRating ? 1 : 0);
+    console.log({
+      newRatingCount,
+      PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+    });
     console.log({
       newRatingCount,
       PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,

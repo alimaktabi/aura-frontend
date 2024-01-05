@@ -1,7 +1,10 @@
-import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
-import { useState } from 'react';
-
-const NewEvaluationCard = ({ subjectId }: { subjectId: string }) => {
+const NewEvaluationCard = ({
+  subjectId,
+  setShowEvaluationFlow,
+}: {
+  subjectId: string;
+  setShowEvaluationFlow: (value: boolean) => void;
+}) => {
   return (
     <div className="card">
       <div className="mb-2" data-testid={`not-evaluated-subject-${subjectId}`}>
@@ -9,6 +12,7 @@ const NewEvaluationCard = ({ subjectId }: { subjectId: string }) => {
       </div>
       <div className="flex items-center w-full gap-2">
         <EvaluateButton
+          setShowEvaluationFlow={setShowEvaluationFlow}
           subjectId={subjectId}
           textColor="text-black"
           bgColor="bg-pastel-purple"
@@ -26,14 +30,14 @@ const EvaluateButton = ({
   textColor,
   image,
   subjectId,
+  setShowEvaluationFlow,
 }: {
   bgColor: string;
   textColor: string;
   image: string;
   subjectId: string;
+  setShowEvaluationFlow: (value: boolean) => void;
 }) => {
-  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
-
   return (
     <>
       <div
@@ -46,12 +50,6 @@ const EvaluateButton = ({
         </div>
         <div className={`font-medium ${textColor}`}>Evaluate Now!</div>
       </div>
-
-      <EvaluationFlow
-        showEvaluationFlow={showEvaluationFlow}
-        setShowEvaluationFlow={setShowEvaluationFlow}
-        subjectId={subjectId}
-      />
     </>
   );
 };

@@ -1,3 +1,4 @@
+import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
@@ -64,6 +65,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     return evaluations.map((e) => e.fromSubjectId);
   }, [evaluations]);
 
+  const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
+
   return (
     <div className="page page__dashboard flex flex-col gap-4">
       {!isOverviewSelected && (
@@ -84,9 +87,15 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {loadingMyEvaluation ? (
         <div className="card flex flex-col gap-2.5">...</div>
       ) : isEvaluated ? (
-        <YourEvaluation subjectId={subjectId} />
+        <YourEvaluation
+          subjectId={subjectId}
+          setShowEvaluationFlow={setShowEvaluationFlow}
+        />
       ) : (
-        <NewEvaluationCard subjectId={subjectId} />
+        <NewEvaluationCard
+          subjectId={subjectId}
+          setShowEvaluationFlow={setShowEvaluationFlow}
+        />
       )}
       {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
@@ -163,6 +172,11 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {/*		))}*/}
       {/*	</div>*/}
       {/*</div>*/}
+      <EvaluationFlow
+        showEvaluationFlow={showEvaluationFlow}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+        subjectId={subjectId}
+      />
     </div>
   );
 };

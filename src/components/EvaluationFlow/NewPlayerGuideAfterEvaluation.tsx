@@ -34,7 +34,7 @@ const NewPlayerGuideAfterEvaluation = ({
       </div>
       <div className="mt-36">
         <button
-          data-testid="submit-evaluation"
+          data-testid="evaluation-onboarding-action-button"
           className="btn btn--big w-full"
           onClick={() => navigate(-1)}
         >
