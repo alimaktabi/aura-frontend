@@ -23,7 +23,7 @@ const EvaluationFlow = ({
   const { refreshOutboundRatings, myRatings } =
     useMyEvaluationsContext(subjectId);
 
-  const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(3);
+  const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(null);
 
   const onSubmitted = useCallback(async () => {
     const myRatingsCount = myRatings?.filter((r) => Number(r.rating)).length;

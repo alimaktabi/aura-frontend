@@ -2,7 +2,7 @@ import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
 import { AuraRating, AuraRatingRetrieveResponse, Connection } from 'types';
 import { RoutePath } from 'types/router';
 
-import { getConnectionIndex, getTestSelector } from '../utils';
+import { getTestSelector } from '../utils';
 import {
   FAKE_BRIGHT_ID,
   ratedConnection,
@@ -172,7 +172,7 @@ describe('Rating', () => {
     cy.get(getTestSelector('submit-evaluation')).click();
     // should not be called
     cy.get('@submitRatingError.all').should('have.length', 0);
-    cy.url().should('include', RoutePath.SUBJECTS_EVALUATION);
+    cy.get(getTestSelector('submit-evaluation')).should('not.exist');
   }
 
   function doRate(connection: Connection) {
@@ -188,9 +188,6 @@ describe('Rating', () => {
       submitNewRatingSuccess(connection);
     }
 
-    cy.get(
-      getTestSelector(`user-item-${getConnectionIndex(connection.id)}`),
-    ).click();
     showsRateValue(connection, newRatings);
   }
 
