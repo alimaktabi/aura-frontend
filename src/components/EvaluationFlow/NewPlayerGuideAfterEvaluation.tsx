@@ -21,7 +21,9 @@ const NewPlayerGuideAfterEvaluation = ({
         <p>
           You&apos;ve just completed{' '}
           {ratingsDoneCount === 1 ? 'your first' : 'an'} evaluation. You need{' '}
-          {PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - ratingsDoneCount}{' '}
+          <span data-testid="ratings-remaining-before-training">
+            {PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - ratingsDoneCount}
+          </span>{' '}
           more before you can start getting feedback by Aura trainers
         </p>
         <div className="grow bg-[#D9D9D9] rounded-xl h-[14px] overflow-hidden mt-[20px]">
@@ -54,8 +56,9 @@ const NewPlayerGuideAfterEvaluation = ({
       <div className="mt-36 text-center text-xl">
         <p className="font-semibold">Great job!</p>
         <p>
-          You completed {ratingsDoneCount} evaluations. Start getting feedback
-          by Aura trainers!
+          You completed{' '}
+          <span data-testid="ratings-done-count">{ratingsDoneCount}</span>{' '}
+          evaluations. Start getting feedback by Aura trainers!
         </p>
         <div className="grow bg-[#D9D9D9] rounded-xl h-[14px] overflow-hidden mt-[20px]">
           <span
@@ -65,7 +68,7 @@ const NewPlayerGuideAfterEvaluation = ({
       </div>
       <div className="mt-36">
         <button
-          data-testid="submit-evaluation"
+          data-testid="find-trainers-button"
           className="btn btn--big w-full"
           onClick={() => {
             closeModalHandler?.();

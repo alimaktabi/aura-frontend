@@ -1,9 +1,14 @@
-import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
+import {
+  getConfidenceValueOfAuraRatingNumber,
+  PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+  SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT,
+} from 'constants/index';
 import { AuraRating, AuraRatingRetrieveResponse, Connection } from 'types';
 import { RoutePath } from 'types/router';
 
 import { getTestSelector } from '../utils';
 import {
+  BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
   ratedConnection,
   ratedConnectionNegative,
@@ -33,23 +38,24 @@ describe('Rating', () => {
         body: ratingResponse,
       },
     );
-    currentRatings.forEach((r) => {
+    BRIGHT_ID_BACKUP.connections.forEach((c) => {
+      const r = currentRatings.find((r) => r.toBrightId === c.id);
       cy.intercept(
         {
-          url: `/v1/ratings/inbound/${r.toBrightId}`,
+          url: `/v1/ratings/inbound/${c.id}`,
           method: 'GET',
         },
         {
           body: {
-            ratings: [r],
+            ratings: r ? [r] : [],
           },
         },
       );
     });
   }
 
-  function setNewRating(connection: Connection) {
-    const newRating = newRatings.find((r) => r.toBrightId === connection.id);
+  function setRatingValue(connection: Connection, ratings: AuraRating[]) {
+    const newRating = ratings.find((r) => r.toBrightId === connection.id);
     if (newRating) {
       currentRatings = [
         ...currentRatings.filter((r) => r.toBrightId !== connection.id),
@@ -57,6 +63,10 @@ describe('Rating', () => {
       ];
     }
     setCurrentRatingsIntercepts();
+  }
+
+  function setNewRating(connection: Connection) {
+    setRatingValue(connection, newRatings);
   }
 
   function submitNewRatingFailure(connection: Connection) {
@@ -127,7 +137,7 @@ describe('Rating', () => {
     const newConfidenceValue = getConfidenceValueOfAuraRatingNumber(
       Math.abs(newRatingValue),
     );
-    const oldRatingValue = Number(getRating(connection.id, oldRatings));
+    const oldRatingValue = Number(getRating(connection.id, currentRatings));
     const oldConfidenceValue = getConfidenceValueOfAuraRatingNumber(
       Math.abs(oldRatingValue),
     );
@@ -269,8 +279,80 @@ describe('Rating', () => {
       RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', unratedConnection.id),
     );
     doRate(unratedConnection);
+    cy.get(getTestSelector('ratings-remaining-before-training')).should(
+      'have.text',
+      String(PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - 1),
+    );
     cy.get(getTestSelector('evaluation-onboarding-action-button')).click();
     cy.url().should('include', RoutePath.SUBJECTS_EVALUATION);
+  });
+
+  it('evaluation onboarding flow does not count editing evaluations', () => {
+    currentRatings = [];
+    setRatingValue(ratedConnection, oldRatings);
+    cy.visit(
+      RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', ratedConnection.id),
+    );
+    doRate(ratedConnection);
+    cy.get(getTestSelector('ratings-remaining-before-training')).should(
+      'have.text',
+      String(PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - 1),
+    );
+  });
+
+  it('evaluation onboarding flow walkthrough', () => {
+    assert(
+      newRatings.length >= PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+    );
+    currentRatings = [];
+    setCurrentRatingsIntercepts();
+
+    function rateNextConnection() {
+      const newRatingIndex = currentRatings.length;
+      const connection = BRIGHT_ID_BACKUP.connections.find(
+        (c) => c.id === newRatings[newRatingIndex].toBrightId,
+      );
+      if (!connection) throw Error('connection not found');
+      cy.get(getTestSelector(`subject-card-${connection.id}`)).click();
+      doRate(connection);
+    }
+
+    cy.visit(RoutePath.SUBJECTS_EVALUATION).then(() => {
+      cy.get(
+        getTestSelector(
+          `subjects-evaluation-onboarding-guide-step-button-${SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT}`,
+        ),
+      ).click();
+      cy.get(
+        getTestSelector(`subjects-evaluation-onboarding-guide-finish-button`),
+      )
+        .click()
+        .then(() => {
+          while (
+            currentRatings.length <
+            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - 1
+          ) {
+            rateNextConnection();
+            cy.get(getTestSelector('ratings-remaining-before-training')).should(
+              'have.text',
+              String(
+                PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
+                  currentRatings.length,
+              ),
+            );
+            cy.get(
+              getTestSelector('evaluation-onboarding-action-button'),
+            ).click();
+          }
+          rateNextConnection();
+          cy.get(getTestSelector('ratings-done-count')).should(
+            'have.text',
+            String(PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING),
+          );
+          cy.get(getTestSelector('find-trainers-button')).click();
+          cy.url().should('include', RoutePath.PERFORMANCE_OVERVIEW);
+        });
+    });
   });
 
   // it('regenerates keypair if the user if the privateKey is invalid', () => {

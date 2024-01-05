@@ -41,9 +41,12 @@ export const SubjectCard = ({
     <Link
       to={'/subject/' + subjectId}
       className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full ${styleValues}`}
-      data-testid={`user-item-${index}`}
+      data-testid={`subject-card-${subjectId}`}
     >
-      <div className="evaluation-left flex flex-col gap-2">
+      <div
+        className="evaluation-left flex flex-col gap-2"
+        data-testid={`user-item-${index}`}
+      >
         <div className="evaluation-left__top flex gap-3">
           <div className="evaluation__profile">
             <BrightIdProfilePicture

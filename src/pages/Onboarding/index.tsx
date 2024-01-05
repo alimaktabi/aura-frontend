@@ -1,3 +1,4 @@
+import { SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT } from 'constants/index';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -27,8 +28,14 @@ const Onboarding = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col">
-      <section className="content">
+    <div
+      className="page page__splash !pt-[90px] !px-[22px] pb-4 flex flex-col"
+      data-testid="subjects-evaluation-onboarding-guide"
+    >
+      <section
+        className="content"
+        data-testid={`subjects-evaluation-onboarding-guide-step-${stepNumber}`}
+      >
         <AnimatePresence mode="wait">
           {stepNumber === 1 ? (
             <MoveX opacity={1} x={side} key={1}>
@@ -89,6 +96,7 @@ const Onboarding = () => {
             }`}
           ></span>
           <span
+            data-testid={`subjects-evaluation-onboarding-guide-step-button-${4}`}
             onClick={() => {
               if (stepNumber > 4) setSide(-300);
               else setSide(300);
@@ -103,7 +111,7 @@ const Onboarding = () => {
         </div>
         <button
           onClick={() => {
-            if (stepNumber < 4) {
+            if (stepNumber < SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT) {
               setSide(300);
               setTimeout(() => {
                 setSearchParams({ step: (stepNumber + 1).toString() });
@@ -111,22 +119,25 @@ const Onboarding = () => {
             }
           }}
           className={`bg-pastel-purple p-3 w-10 h-10 rounded-3xl transition-all duration-400 ${
-            stepNumber === 4 && '!rounded-xl !w-[165px] !h-14'
+            stepNumber === SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT &&
+            '!rounded-xl !w-[165px] !h-14'
           }`}
         >
           <AnimatePresence mode="wait" initial={false}>
-            {stepNumber < 4 && (
+            {stepNumber < SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT && (
               <Scale duration={0.3} delay={0} key={1}>
                 <img
                   src="/assets/images/Shared/next-page.svg"
+                  data-testid="subjects-evaluation-onboarding-guide-next-button"
                   className={`translate-x-[1px] w-4 h-4 opacity-1 transition-all`}
                   alt=""
                 />
               </Scale>
             )}
-            {stepNumber === 4 && (
+            {stepNumber === SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT && (
               <Scale duration={0.3} delay={0} key={2}>
                 <p
+                  data-testid="subjects-evaluation-onboarding-guide-finish-button"
                   onClick={() => dispatch(setPlayerOnboardingScreenShown(true))}
                   className={`font-semibold text-xl text-white transition-all opacity-1'`}
                 >
