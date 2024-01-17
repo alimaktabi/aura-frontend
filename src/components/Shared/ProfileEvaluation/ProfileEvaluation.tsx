@@ -8,6 +8,8 @@ import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useSubjectName } from 'hooks/useSubjectName';
 import moment from 'moment';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { RoutePath } from 'types/router';
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
 
@@ -100,13 +102,16 @@ const UserName = ({ subjectId }: { subjectId: string }) => {
       <p className="name flex-1 font-medium text-sm line-clamp-1 text-ellipsis">
         {name}
       </p>
-      <span className="flex bg-pastel-purple h-[14px] w-5 items-center justify-center rounded-full cursor-pointer">
+      <Link
+        to={RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', subjectId)}
+        className="flex bg-pastel-purple h-[14px] w-5 items-center justify-center rounded-full cursor-pointer"
+      >
         <img
           src="/assets/images/SubjectProfile/icon.svg"
           alt=""
           className="h-[10px] w-[10px] min-w-[10px]"
         />
-      </span>
+      </Link>
     </div>
   );
 };
