@@ -1,7 +1,7 @@
 import './assets/fonts/fonts.css';
 import './App.scss';
+import './i18n';
 
-//...
 import * as Sentry from '@sentry/react';
 import NodeApiGateContextProvider from 'BrightID/components/NodeApiGate';
 import { BrowserHistoryContextProvider } from 'contexts/BrowserHistoryContext';
