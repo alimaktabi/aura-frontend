@@ -1,5 +1,5 @@
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
+import { useSubjectInboundRatingsContext } from 'contexts/SubjectInboundRatingsContext';
 import ReactECharts from 'echarts-for-react';
 import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useContext, useMemo } from 'react';
@@ -19,7 +19,7 @@ export const SubjectCard = ({
 }) => {
   const { level, name, auraScore } = useSubjectInfo(subjectId);
   const { inboundRatingsStatsString } =
-    useSubjectInboundEvaluationsContext(subjectId);
+    useSubjectInboundRatingsContext(subjectId);
 
   const { options3 } = useContext(EchartsContext);
 

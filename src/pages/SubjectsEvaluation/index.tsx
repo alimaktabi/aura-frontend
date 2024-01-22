@@ -1,6 +1,6 @@
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
+import { SubjectInboundRatingsContextProvider } from 'contexts/SubjectInboundRatingsContext';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
 import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
 import Onboarding from 'pages/Onboarding';
@@ -71,9 +71,9 @@ const SubjectsEvaluation = () => {
             items={filteredSubjects}
             //TODO: optimize rendering by caching the rendered components
             renderItem={(conn, index) => (
-              <SubjectInboundEvaluationsContextProvider subjectId={conn.id}>
+              <SubjectInboundRatingsContextProvider subjectId={conn.id}>
                 <SubjectCard index={index} subjectId={conn.id} />
-              </SubjectInboundEvaluationsContextProvider>
+              </SubjectInboundRatingsContextProvider>
             )}
           />
         </div>
