@@ -1,3 +1,5 @@
+import CustomTrans from 'components/CustomTrans';
+
 import { MoveUpIn } from '../../../animations';
 
 const FirstStep = () => {
@@ -6,12 +8,11 @@ const FirstStep = () => {
       <span className="flex items-start gap-4 mb-3 pl-5 pr-12">
         <p className="text-white text-5xl font-black">1</p>
         <p className="text-pastel-purple text-3xl font-black">
-          Find a<br /> Subject
+          <CustomTrans i18nKey="playerOnboarding.step1.title" />
         </p>
       </span>
       <p className="text-white font-medium text-lg mb-9 pl-5 pr-7">
-        Explore among your brightID connections and choose the one you think you
-        can evaluate
+        <CustomTrans i18nKey="playerOnboarding.step1.description" />
       </p>
 
       <div className="content-images relative flex w-full justify-center">

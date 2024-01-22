@@ -7,7 +7,6 @@ import Onboarding from 'pages/Onboarding';
 import { SubjectCard } from 'pages/SubjectsEvaluation/SubjectCard';
 import { SubjectSearch } from 'pages/SubjectsEvaluation/SubjectSearch';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'store/hooks';
 import { getBrightIdBackupThunk } from 'store/profile/actions';
 import { hash } from 'utils/crypto';
@@ -38,8 +37,6 @@ const SubjectsEvaluation = () => {
     await dispatch(getBrightIdBackupThunk({ authKey }));
     setLoading(false);
   }, [authData, dispatch]);
-
-  const { t } = useTranslation();
 
   return myRatings?.length === 0 && !playerOnboardingScreenShown ? (
     <Onboarding />

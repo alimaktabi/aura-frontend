@@ -1,3 +1,4 @@
+import CustomTrans from 'components/CustomTrans';
 import { useState } from 'react';
 
 import { BookOpen, FadeIn, Scale } from '../../../animations';
@@ -12,14 +13,11 @@ const SecondStep = () => {
       <span className="flex items-start gap-4 mb-3 pl-5 pr-12">
         <p className="text-white text-5xl font-black">2</p>
         <p className="text-pastel-purple text-3xl font-black">
-          Gather
-          <br />
-          Information
+          <CustomTrans i18nKey="playerOnboarding.step2.title" />
         </p>
       </span>
       <p className="text-white font-medium text-lg pl-5 pr-7 mb-9">
-        Gather essential information about your connection. This helps in
-        ensuring the accuracy and reliability of the evaluation process.
+        <CustomTrans i18nKey="playerOnboarding.step2.description" />
       </p>
 
       <section className="step-content flex flex-col mx-auto gap-3 min-h-[360px]">

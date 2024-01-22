@@ -1,1 +1,20 @@
-{}
+{
+  "playerOnboarding": {
+    "step1": {
+      "title": "Find a<br />Subject",
+      "description": "Explore among your brightID connections and choose the one you think you can evaluate"
+    },
+    "step2": {
+      "title": "Gather<br />Information",
+      "description": "Gather essential information about your connection. This helps in ensuring the accuracy and reliability of the evaluation process."
+    },
+    "step3": {
+      "title": "Evaluate <br />the Subject",
+      "description": "Once you feel you have enough information to evaluate, tell us what you think about the subject and how confident you are about your answer"
+    },
+    "step4": {
+      "title": "Get feedback<br />from a trainer",
+      "description": "The higher your level, the greater your impact in determining the legitimacy of subjects. You can level up by getting Aura trainers to evaluate you. They will be notified every time you complete a new evaluation, so keep up the good work to go higher and higher"
+    }
+  }
+}

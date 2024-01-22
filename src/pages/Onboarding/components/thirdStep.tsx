@@ -1,3 +1,5 @@
+import CustomTrans from 'components/CustomTrans';
+
 import {
   AnimatedText,
   FadeIn,
@@ -12,13 +14,11 @@ const ThirdStep = () => {
       <span className="flex items-start gap-4 mb-3 pl-5 pr-12">
         <p className="text-white text-5xl font-black">3</p>
         <p className="text-pastel-purple text-3xl font-black">
-          Evaluate <br />
-          the Subject
+          <CustomTrans i18nKey="playerOnboarding.step3.title" />
         </p>
       </span>
       <p className="text-white font-medium text-lg pl-5 pr-7 mb-20">
-        Once you feel you have enough information to evaluate, tell us what you
-        think about the subject and how confident you are about your answer
+        <CustomTrans i18nKey="playerOnboarding.step3.title" />
       </p>
 
       <section className="relative flex items-center justify-center w-fit mx-auto mb-3">

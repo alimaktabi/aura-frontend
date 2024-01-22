@@ -1,3 +1,5 @@
+import CustomTrans from 'components/CustomTrans';
+
 import { AnimatedText, FadeIn, MoveUpIn, MoveX } from '../../../animations';
 
 const FourthStep = () => {
@@ -6,15 +8,11 @@ const FourthStep = () => {
       <span className="flex items-start gap-4 mb-3 pl-5 pr-12">
         <p className="text-white text-5xl font-black">4</p>
         <p className="text-pastel-purple text-3xl font-black">
-          Get feedback <br />
-          from a trainer
+          <CustomTrans i18nKey="playerOnboarding.step4.title" />
         </p>
       </span>
       <p className="text-white font-medium text-lg pl-5 pr-7 mb-6">
-        The higher your level, the greater your impact in determining the
-        legitimacy of subjects. You can level up by getting Aura trainers to
-        evaluate you. They will be notified every time you complete a new
-        evaluation, so keep up the good work to go higher and higher
+        <CustomTrans i18nKey="playerOnboarding.step4.title" />
       </p>
 
       <section className="relative flex flex-col items-center gap-4 justify-center w-fit mx-auto mb-3">
