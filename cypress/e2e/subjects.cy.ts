@@ -1,4 +1,4 @@
-import { Connection } from 'types';
+import { BrightIdBackupConnection } from 'types';
 import { RoutePath } from 'types/router';
 
 import { getTestSelector } from '../utils';
@@ -17,7 +17,7 @@ describe('Connections Page', () => {
     cy.visit(RoutePath.SUBJECTS_EVALUATION);
   });
 
-  function assertOrder(orderedConnections: Connection[]) {
+  function assertOrder(orderedConnections: BrightIdBackupConnection[]) {
     orderedConnections.forEach((c, index) => {
       cy.get(getTestSelector(`user-item-${index}`)).should('exist');
       cy.get(getTestSelector(`user-item-${index}-name`)).contains(c.name);

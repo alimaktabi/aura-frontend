@@ -1,3 +1,5 @@
+import { Verifications } from 'api/auranode.service';
+
 export type AuthData = {
   brightId: string;
   publicKey: string;
@@ -22,13 +24,17 @@ export type BrightIdConnection = {
   timestamp: number;
 };
 
-export type BrightIdConnectionsResponse = {
+export type AuraNodeBrightIdConnection = BrightIdConnection & {
+  verifications: Verifications;
+};
+
+export type AuraNodeConnectionsResponse = {
   data: {
-    connections: BrightIdConnection[];
+    connections: AuraNodeBrightIdConnection[];
   };
 };
 
-export type Connection = BrightIdConnection &
+export type BrightIdBackupConnection = BrightIdConnection &
   Partial<{
     name: string;
     connectionDate: number;
@@ -38,9 +44,12 @@ export type Connection = BrightIdConnection &
     status: 'verified';
     notificationToken: string;
     socialMedia: any[];
-    verifications: any[];
+    verifications: Verifications;
     incomingLevel: ConnectionLevel;
   }>;
+
+export type AuraNodeBrightIdConnectionWithBackupData =
+  AuraNodeBrightIdConnection & BrightIdBackupConnection;
 
 export type BrightIdBackup = {
   userData: {
@@ -50,8 +59,14 @@ export type BrightIdBackup = {
       filename: string;
     };
   };
-  connections: Connection[];
+  connections: BrightIdBackupConnection[];
   groups: any[];
+};
+export type BrightIdBackupWithAuraConnectionData = Omit<
+  BrightIdBackup,
+  'connections'
+> & {
+  connections: AuraNodeBrightIdConnectionWithBackupData[];
 };
 
 export type InboundEnergyAllocationItem = {

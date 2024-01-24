@@ -13,7 +13,7 @@ export const EvaluationInfo = ({
   toSubjectId: string | undefined;
 }) => {
   const authData = useSelector(selectAuthData);
-  const { level, auraScore } = useSubjectInfo(authData?.brightId);
+  const { auraLevel, auraScore } = useSubjectInfo(authData?.brightId);
   const {
     myRatingToSubject: rating,
     loading,
@@ -35,7 +35,7 @@ export const EvaluationInfo = ({
       <div className="text-white text-xs bg-gray00 rounded px-2 py-1.5">
         <p className="mb-1">
           {/*{Math.random() > 0.5 ? 'Player' : 'Subject'} */}
-          Subject level <strong>{level}</strong>
+          Subject level <strong>{auraLevel}</strong>
           <strong className="ml-4">
             {auraScore ? compactFormat(auraScore) : '-'}
           </strong>

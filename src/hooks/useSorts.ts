@@ -1,6 +1,11 @@
+import { getAuraVerificationScore } from 'hooks/useBrightIdVerificationData';
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import { useMemo } from 'react';
-import { AuraInboundConnectionAndRatingData, BrightIdConnection } from 'types';
+import {
+  AuraInboundConnectionAndRatingData,
+  AuraNodeBrightIdConnectionWithBackupData,
+  BrightIdConnection,
+} from 'types';
 
 export enum AuraSortId {
   RecentEvaluation = 1,
@@ -51,7 +56,7 @@ export function useCategorizeAuraSortOptions<T>(sorts: AuraSortOptions<T>) {
 
 export function useSubjectSorts(sortIds: AuraSortId[]) {
   return useMemo(() => {
-    const sorts: AuraSortOptions<BrightIdConnection> = [
+    const sorts: AuraSortOptions<AuraNodeBrightIdConnectionWithBackupData> = [
       {
         id: AuraSortId.ConnectionLastUpdated,
         title: 'Last Connection Update',
@@ -72,10 +77,12 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
       },
       {
         id: AuraSortId.ConnectionScore,
-        title: 'Score (Not Implemented)',
+        title: 'Score',
         defaultAscending: true,
         category: FilterOrSortCategory.Default,
-        func: (_a, _b) => 1,
+        func: (a, b) =>
+          (getAuraVerificationScore(a.verifications) ?? 0) -
+          (getAuraVerificationScore(b.verifications) ?? 0),
       },
       {
         id: AuraSortId.MostMutualConnections,

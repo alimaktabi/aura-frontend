@@ -1,5 +1,5 @@
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
+import useBrightIdBackupWithUpdatedConnectionData from 'hooks/useBrightIdBackupWithAuraConnectionData';
 import useFilterAndSort from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
@@ -8,13 +8,15 @@ import {
 } from 'hooks/useFilters';
 import { AuraSortId, AuraSortOptions, useSubjectSorts } from 'hooks/useSorts';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
-import { BrightIdConnection, Connection } from 'types';
+import { AuraNodeBrightIdConnectionWithBackupData } from 'types';
 
 // Define the context
 const SubjectsListContext = createContext<
-  | (ReturnType<typeof useFilterAndSort<Connection>> & {
-      sorts: AuraSortOptions<BrightIdConnection>;
-      filters: AuraFilterOptions<BrightIdConnection>;
+  | (ReturnType<
+      typeof useFilterAndSort<AuraNodeBrightIdConnectionWithBackupData>
+    > & {
+      sorts: AuraSortOptions<AuraNodeBrightIdConnectionWithBackupData>;
+      filters: AuraFilterOptions<AuraNodeBrightIdConnectionWithBackupData>;
     })
   | null
 >(null);
@@ -27,7 +29,7 @@ interface ProviderProps {
 export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
   children,
 }) => {
-  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
+  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionData();
 
   const filters = useSubjectFilters(
     useMemo(
@@ -76,7 +78,10 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
           else acc[1].push(c);
           return acc;
         },
-        [[], []] as [Connection[], Connection[]],
+        [[], []] as [
+          AuraNodeBrightIdConnectionWithBackupData[],
+          AuraNodeBrightIdConnectionWithBackupData[],
+        ],
       )
       .flat();
   }, [brightIdBackup, loading, myRatings]);

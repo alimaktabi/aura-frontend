@@ -4,11 +4,11 @@ import {
   getInboundConnections,
   getOutboundConnections,
 } from '../api/connections.service';
-import { BrightIdConnection } from '../types';
+import { AuraNodeBrightIdConnection } from '../types';
 
 export const useInboundConnections = (subjectId: string | null | undefined) => {
   const [inboundConnections, setInboundConnections] = useState<
-    BrightIdConnection[] | null
+    AuraNodeBrightIdConnection[] | null
   >(null);
   useEffect(() => {
     let mounted = true;
@@ -35,7 +35,7 @@ export const useOutboundConnections = (
   subjectId: string | null | undefined,
 ) => {
   const [outboundConnections, setOutboundConnections] = useState<
-    BrightIdConnection[] | null
+    AuraNodeBrightIdConnection[] | null
   >(null);
   useEffect(() => {
     let mounted = true;

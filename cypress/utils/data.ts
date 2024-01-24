@@ -1,5 +1,5 @@
 import { BrightIdProfile, Verifications } from 'api/auranode.service';
-import { BrightIdBackup, Connection } from 'types';
+import { BrightIdBackup, BrightIdBackupConnection } from 'types';
 import {
   encryptData,
   encryptUserData,
@@ -32,7 +32,7 @@ const toSigningKey = (s: string) => {
   return s.replace(/[-_]/g, (c: string) => alts[c]) + '=';
 };
 
-export const unratedConnection: Connection = {
+export const unratedConnection: BrightIdBackupConnection = {
   id: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08',
   name: 'Unrated Connection',
   connectionDate: RANDOM_TIMESTAMP + 500,
@@ -49,7 +49,7 @@ export const unratedConnection: Connection = {
   incomingLevel: 'already known',
 };
 
-export const justMet: Connection = {
+export const justMet: BrightIdBackupConnection = {
   id: 'k8rKbTInhbHxgQg7bJrhBfsMhhLz_VpXMQqhDwphX08',
   name: 'Just Met',
   connectionDate: RANDOM_TIMESTAMP + 5000,
@@ -66,7 +66,7 @@ export const justMet: Connection = {
   incomingLevel: 'just met',
 };
 
-export const justMet2: Connection = {
+export const justMet2: BrightIdBackupConnection = {
   id: 'TInQg7bJrhBfsMQqhhbHxMhhLz_VpXgk8rKbDwphX08',
   name: 'Just Met 2',
   connectionDate: RANDOM_TIMESTAMP + 1000,
@@ -83,7 +83,7 @@ export const justMet2: Connection = {
   incomingLevel: 'just met',
 };
 
-export const justMet3: Connection = {
+export const justMet3: BrightIdBackupConnection = {
   id: 'qhhbHxMhhLz_VpXgk8TInQg7bJrhBfsMQrKbDwphX08',
   name: 'Just Met 3',
   connectionDate: RANDOM_TIMESTAMP + 200,
@@ -100,7 +100,7 @@ export const justMet3: Connection = {
   incomingLevel: 'just met',
 };
 
-export const ratedConnection: Connection = {
+export const ratedConnection: BrightIdBackupConnection = {
   id: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q',
   name: 'Rated Connection',
   connectionDate: RANDOM_TIMESTAMP + 20,
@@ -117,7 +117,7 @@ export const ratedConnection: Connection = {
   incomingLevel: 'already known',
 };
 
-export const ratedConnection2: Connection = {
+export const ratedConnection2: BrightIdBackupConnection = {
   id: 'zx-DOpXZuDsiyh2MUBQGnSKhIADI9erfF2bR0tUgf7q',
   name: 'Rated Connection 2',
   connectionDate: RANDOM_TIMESTAMP + 30000,
@@ -134,7 +134,7 @@ export const ratedConnection2: Connection = {
   incomingLevel: 'already known',
 };
 
-export const ratedConnection3: Connection = {
+export const ratedConnection3: BrightIdBackupConnection = {
   id: 'px-9erfF2bR0DOpXZuDsiyh2MUBQGnSKhIADItUgf7q',
   name: 'Rated Connection 3',
   connectionDate: RANDOM_TIMESTAMP + 2000,
@@ -151,7 +151,7 @@ export const ratedConnection3: Connection = {
   incomingLevel: 'recovery',
 };
 
-export const ratedConnectionWithoutEnergy: Connection = {
+export const ratedConnectionWithoutEnergy: BrightIdBackupConnection = {
   id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
   name: 'Rated Without Energy',
   connectionDate: RANDOM_TIMESTAMP + 2500,
@@ -168,7 +168,7 @@ export const ratedConnectionWithoutEnergy: Connection = {
   incomingLevel: 'already known',
 };
 
-export const ratedConnectionNegative: Connection = {
+export const ratedConnectionNegative: BrightIdBackupConnection = {
   id: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q',
   name: 'Rated Connection Negative',
   connectionDate: RANDOM_TIMESTAMP - 300,

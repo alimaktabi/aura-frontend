@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 export enum FilterOrSortCategory {
   Default = 'Default',
   YourEvaluation = 'Your Evaluation',
-  Level = 'Level (Not Implemented)',
+  Level = 'Level',
   ConnectionType = 'Connection Type',
 }
 

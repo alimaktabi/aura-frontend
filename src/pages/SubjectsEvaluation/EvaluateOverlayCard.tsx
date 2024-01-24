@@ -12,7 +12,7 @@ const EvaluateOverlayCard = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { level, name } = useSubjectInfo(subjectId);
+  const { auraLevel, name } = useSubjectInfo(subjectId);
 
   return (
     <div className={`card !bg-white ${className}`}>
@@ -32,9 +32,9 @@ const EvaluateOverlayCard = ({
                   <span>Player Level: </span>
                   <span className="font-medium">1</span>
                 </>
-              ) : level ? (
+              ) : auraLevel ? (
                 <>
-                  <span className="font-medium">{level} </span>
+                  <span className="font-medium">{auraLevel} </span>
                   <span>Subject</span>
                 </>
               ) : (

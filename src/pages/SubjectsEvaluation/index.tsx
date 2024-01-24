@@ -2,7 +2,7 @@ import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundRatingsContextProvider } from 'contexts/SubjectInboundRatingsContext';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
-import useBrightIdBackupWithUpdatedConnectionLevels from 'hooks/useBrightIdBackupWithUpdatedConnectionLevels';
+import useBrightIdBackupWithAuraConnectionData from 'hooks/useBrightIdBackupWithAuraConnectionData';
 import Onboarding from 'pages/Onboarding';
 import { SubjectCard } from 'pages/SubjectsEvaluation/SubjectCard';
 import { SubjectSearch } from 'pages/SubjectsEvaluation/SubjectSearch';
@@ -17,7 +17,7 @@ import {
 } from '../../store/profile/selectors';
 
 const SubjectsEvaluation = () => {
-  const brightIdBackup = useBrightIdBackupWithUpdatedConnectionLevels();
+  const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
 
   const authData = useSelector(selectAuthData);

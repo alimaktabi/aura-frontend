@@ -138,7 +138,7 @@ const UserInformation = ({
   subjectId: string;
   isConnected?: boolean;
 }) => {
-  const { level, auraScore, loading } = useSubjectInfo(subjectId);
+  const { auraLevel, auraScore, loading } = useSubjectInfo(subjectId);
   return (
     <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5">
       {isConnected ? (
@@ -165,7 +165,7 @@ const UserInformation = ({
               isConnected ? 'text-light-orange' : 'text-purple2'
             }`}
           >
-            {level}
+            {auraLevel}
           </p>
           <p
             className={`text-sm font-bold ${

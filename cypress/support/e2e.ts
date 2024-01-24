@@ -17,7 +17,7 @@
 import './commands';
 
 import localforage from 'localforage';
-import { Connection } from 'types';
+import { BrightIdBackupConnection } from 'types';
 
 import {
   BRIGHT_ID_BACKUP,
@@ -38,7 +38,7 @@ import {
   userRatingsResponse,
 } from '../utils/rating';
 
-function connectionIntercepts(connection: Connection) {
+function connectionIntercepts(connection: BrightIdBackupConnection) {
   cy.intercept(
     {
       url: `/v1/ratings/${connection.id}`,

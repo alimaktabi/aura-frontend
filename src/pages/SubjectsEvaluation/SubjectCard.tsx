@@ -1,7 +1,8 @@
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundRatingsContext } from 'contexts/SubjectInboundRatingsContext';
 import ReactECharts from 'echarts-for-react';
-import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import useBrightIdVerificationData from 'hooks/useBrightIdVerificationData';
+import { useSubjectName } from 'hooks/useSubjectName';
 import { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connectionLevelIconsBlack } from 'utils/connection';
@@ -17,7 +18,7 @@ export const SubjectCard = ({
   subjectId: string;
   index?: string | number;
 }) => {
-  const { level, name, auraScore } = useSubjectInfo(subjectId);
+  const name = useSubjectName(subjectId);
   const { inboundRatingsStatsString } =
     useSubjectInboundRatingsContext(subjectId);
 
@@ -29,6 +30,10 @@ export const SubjectCard = ({
     myConnectionToSubject: inboundConnectionInfo,
     myConfidenceValueInThisSubjectRating: confidenceValue,
   } = useMyEvaluationsContext(subjectId);
+
+  const { auraLevel, auraScore } = useBrightIdVerificationData(
+    inboundConnectionInfo?.verifications,
+  );
 
   const styleValues = useMemo(() => {
     if (rating?.rating) {
@@ -62,7 +67,7 @@ export const SubjectCard = ({
               {name}
             </p>
             <p className="text-gray20">
-              Level: <span className="font-medium text-black">{level}</span>
+              Level: <span className="font-medium text-black">{auraLevel}</span>
             </p>
           </div>
         </div>

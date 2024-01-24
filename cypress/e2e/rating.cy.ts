@@ -3,7 +3,11 @@ import {
   PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
   SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT,
 } from 'constants/index';
-import { AuraRating, AuraRatingRetrieveResponse, Connection } from 'types';
+import {
+  AuraRating,
+  AuraRatingRetrieveResponse,
+  BrightIdBackupConnection,
+} from 'types';
 import { RoutePath } from 'types/router';
 
 import { getTestSelector } from '../utils';
@@ -54,7 +58,10 @@ describe('Rating', () => {
     });
   }
 
-  function setRatingValue(connection: Connection, ratings: AuraRating[]) {
+  function setRatingValue(
+    connection: BrightIdBackupConnection,
+    ratings: AuraRating[],
+  ) {
     const newRating = ratings.find((r) => r.toBrightId === connection.id);
     if (newRating) {
       currentRatings = [
@@ -65,11 +72,11 @@ describe('Rating', () => {
     setCurrentRatingsIntercepts();
   }
 
-  function setNewRating(connection: Connection) {
+  function setNewRating(connection: BrightIdBackupConnection) {
     setRatingValue(connection, newRatings);
   }
 
-  function submitNewRatingFailure(connection: Connection) {
+  function submitNewRatingFailure(connection: BrightIdBackupConnection) {
     cy.intercept(
       {
         url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
@@ -83,7 +90,7 @@ describe('Rating', () => {
     cy.wait('@submitRatingError');
   }
 
-  function submitNewRatingSuccess(connection: Connection) {
+  function submitNewRatingSuccess(connection: BrightIdBackupConnection) {
     cy.intercept(
       {
         url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
@@ -103,7 +110,10 @@ describe('Rating', () => {
       });
   }
 
-  function showsRateValue(connection: Connection, ratings: AuraRating[]) {
+  function showsRateValue(
+    connection: BrightIdBackupConnection,
+    ratings: AuraRating[],
+  ) {
     const ratingValue = Number(getRating(connection.id, ratings) || 0);
     if (ratingValue) {
       cy.get(
@@ -132,7 +142,7 @@ describe('Rating', () => {
     }
   }
 
-  function enterNewRateValue(connection: Connection) {
+  function enterNewRateValue(connection: BrightIdBackupConnection) {
     const newRatingValue = Number(getRating(connection.id, newRatings));
     const newConfidenceValue = getConfidenceValueOfAuraRatingNumber(
       Math.abs(newRatingValue),
@@ -173,7 +183,7 @@ describe('Rating', () => {
     }
   }
 
-  function submitNewRatingNoChange(connection: Connection) {
+  function submitNewRatingNoChange(connection: BrightIdBackupConnection) {
     cy.intercept(
       {
         url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
@@ -191,7 +201,7 @@ describe('Rating', () => {
     cy.get(getTestSelector('submit-evaluation')).should('not.exist');
   }
 
-  function doRate(connection: Connection) {
+  function doRate(connection: BrightIdBackupConnection) {
     const oldRatingValue = Number(getRating(connection.id, currentRatings));
     const newRatingValue = Number(getRating(connection.id, newRatings));
 

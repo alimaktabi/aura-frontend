@@ -1,3 +1,4 @@
+import useBrightIdVerificationData from 'hooks/useBrightIdVerificationData';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -40,29 +41,13 @@ export const useSubjectInfo = (subjectId: string | null | undefined) => {
       mounted = false;
     };
   }, [subjectId]);
-
-  const userHasRecovery = useMemo(() => {
-    if (!brightIdProfile) return null;
-    return !!brightIdProfile.verifications.find(
-      (verification) => verification.name === 'SocialRecoverySetup',
-    );
-  }, [brightIdProfile]);
-
-  const [auraScore, level] = useMemo(() => {
-    if (!brightIdProfile) return [null, null];
-    const verifications = brightIdProfile.verifications;
-    const auraVerification = verifications.find(
-      (verification) => verification.name === 'Aura',
-    );
-    return [
-      auraVerification?.score ?? null,
-      auraVerification?.level ?? 'Not yet',
-    ];
-  }, [brightIdProfile]);
+  const { auraLevel, userHasRecovery, auraScore } = useBrightIdVerificationData(
+    brightIdProfile?.verifications,
+  );
 
   return {
     name: useSubjectName(subjectId),
-    level,
+    auraLevel,
     userHasRecovery,
     auraScore,
     joinedDateString,

@@ -1,9 +1,9 @@
 import { connectionLevelMap } from 'constants/index';
 import {
+  AuraNodeConnectionsResponse,
   AuraRating,
+  BrightIdBackupConnection,
   BrightIdConnection,
-  BrightIdConnectionsResponse,
-  Connection,
   ConnectionLevel,
 } from 'types';
 
@@ -22,7 +22,7 @@ import {
 export const connectionToVisit = unratedConnection;
 
 const toConnectionFormat = (
-  connection: Connection,
+  connection: BrightIdBackupConnection,
   level: ConnectionLevel,
 ): BrightIdConnection => ({
   id: connection.id,
@@ -49,14 +49,14 @@ export const connectionOutboundConnections: BrightIdConnection[] = [
   toConnectionFormat(justMet3, 'reported'),
 ];
 
-export const connectionIncomingConnectionsResponse: BrightIdConnectionsResponse =
+export const connectionIncomingConnectionsResponse: AuraNodeConnectionsResponse =
   {
     data: {
       connections: connectionIncomingConnections,
     },
   };
 
-export const connectionOutboundConnectionsResponse: BrightIdConnectionsResponse =
+export const connectionOutboundConnectionsResponse: AuraNodeConnectionsResponse =
   {
     data: {
       connections: connectionOutboundConnections,
