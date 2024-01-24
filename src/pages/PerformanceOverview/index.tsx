@@ -1,10 +1,20 @@
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import ActivitiesCard from '../../components/Shared/ActivitiesCard/index';
+import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
+import ActivitiesCard from '../../components/Shared/ActivitiesCard';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
-import { selectAuthData } from '../../store/profile/selectors';
+import { useMyEvaluationsContext } from '../../contexts/MyEvaluationsContext';
+import { SubjectInboundRatingsContextProvider } from '../../contexts/SubjectInboundRatingsContext';
+import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
+import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
+import { useDispatch } from '../../store/hooks';
+import { getBrightIdBackupThunk } from '../../store/profile/actions';
+import { selectAuthData, selectPlayerOnboardingScreenShown } from '../../store/profile/selectors';
+import { hash } from '../../utils/crypto';
+import { SubjectCard } from '../SubjectsEvaluation/SubjectCard';
+import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
 import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
 // import LinkCard from './LinkCard';
@@ -15,9 +25,28 @@ const PerformanceOverview = () => {
     Trainer: 'pastel-orange',
     Manager: 'pastel-blue',
   };
-  const [isEvaluated, setIsEvaluated] = useState(true);
+  const [isEvaluate, setIsEvaluate] = useState(true);
   const isLocked = false;
   const authData = useSelector(selectAuthData);
+  const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
+  const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const { myRatings, loading: loadingMyEvaluations } =
+    useMyEvaluationsContext();
+  const playerOnboardingScreenShown = useSelector(
+    selectPlayerOnboardingScreenShown,
+  );
+
+  const refreshBrightIdBackup = useCallback(async () => {
+    if (!authData) return;
+    setLoading(true);
+    const authKey = hash(authData.brightId + authData.password);
+    await dispatch(getBrightIdBackupThunk({ authKey }));
+    setLoading(false);
+  }, [authData, dispatch]);
   if (!authData) {
     return <div>Not logged in</div>;
   }
@@ -39,16 +68,62 @@ const PerformanceOverview = () => {
           isLocked={isLocked}
           percentage={`w-[73%]`}
         />
-        <ToggleInput option1={"Evaluate"} option2={"Level Up"} isChecked={isEvaluated} setIsChecked={setIsEvaluated} option2Disabled={isLocked} />
-        <ActivitiesCard />
-        <EvaluationsDetailsPerformance
-          subjectId={authData.brightId}
-          title="Evaluation by Trainers"
-          hasHeader={true}
-          hasBtn={true}
-        />
-        {/*<LinkCard />*/}
+        <ToggleInput option1={"Evaluate"} option2={"Level Up"} isChecked={isEvaluate} setIsChecked={setIsEvaluate}
+                     option2Disabled={isLocked} />
+        {!isEvaluate &&
+          <div className="flex flex-col gap-4">
+            <ActivitiesCard />
+            <EvaluationsDetailsPerformance
+              subjectId={authData.brightId}
+              title="Evaluation by Trainers"
+              hasHeader={true}
+              hasBtn={true}
+            />
+          </div>
+        }
+        {isEvaluate &&
+          <div>
+            <SubjectSearch />
+            <div className="text-lg text-white mb-3 mt-3 flex">
+              Subjects{' '}
+              <strong className="ml-1">
+                ({brightIdBackup?.connections.length ?? '...'})
+              </strong>
+              {filteredSubjects !== null &&
+                filteredSubjects.length !== brightIdBackup?.connections.length && (
+                  <span className="ml-2">
+              ({filteredSubjects.length} filter result
+                    {filteredSubjects.length !== 1 ? 's' : ''})
+            </span>
+                )}
+              <img
+                src="/assets/images/Shared/refresh.svg"
+                alt="refresh"
+                className="w-7 h-7 ml-1 mt-0.5 cursor-pointer"
+                onClick={refreshBrightIdBackup}
+              />
+            </div>
+            {filteredSubjects && !loading ? (
+              <div className="overflow-auto flex-grow no-scrollbar">
+                <InfiniteScrollLocal
+                  className={'flex flex-col gap-3'}
+                  items={filteredSubjects}
+                  //TODO: optimize rendering by caching the rendered components
+                  renderItem={(conn, index) => (
+                    <SubjectInboundRatingsContextProvider subjectId={conn.id}>
+                      <SubjectCard index={index} subjectId={conn.id} />
+                    </SubjectInboundRatingsContextProvider>
+                  )}
+                />
+              </div>
+            ) : (
+              <div>loading...</div>
+            )}
+          </div>
+
+        }
       </div>
+        {/*<LinkCard />*/}
     </SubjectInboundEvaluationsContextProvider>
   );
 };

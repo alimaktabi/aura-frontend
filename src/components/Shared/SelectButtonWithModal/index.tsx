@@ -23,9 +23,6 @@ export const SelectButtonWithModal = ({
 }) => {
   return (
     <div className="flex flex-col w-full gap-2">
-      <div className="text-xyz-75 text-gray20 text-sm max-md:text-sm max-md:font-semibold">
-        {title}:
-      </div>
       <div
         data-testid={`${testidPrefix}-button`}
         onClick={openModalHandler}
