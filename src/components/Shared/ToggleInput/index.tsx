@@ -3,11 +3,13 @@ export const ToggleInput = ({
   option2,
   isChecked,
   setIsChecked,
+  option2Disabled = false,
 }: {
   option1: string;
   option2: string;
   isChecked: boolean;
   setIsChecked: (isChecked: boolean) => void;
+  option2Disabled?: boolean;
 }) => {
   return (
     <div className="px-1.5 py-1.5 w-full min-h-[48px] rounded-lg bg-white-90-card">
@@ -29,10 +31,12 @@ export const ToggleInput = ({
         <p
           className={`bg-transparent absolute cursor-pointer flex justify-center items-center w-1/2 h-full right-0 top-1/2 -translate-y-1/2 font-medium transition-all duration-300 ease-in-out ${
             isChecked ? 'text-black' : 'text-black'
-          }`}
+          } ${option2Disabled ? 'text-gray50 pointer-events-none' : 'text-black'}`}
           onClick={() => setIsChecked(false)}
           data-testid="table-view-switch-option-two"
         >
+          {option2Disabled &&
+            <img src="/assets/images/Shared/locked-icon.svg" className="mr-1" alt="" />}
           {option2}
         </p>
       </div>

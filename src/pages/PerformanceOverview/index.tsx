@@ -1,7 +1,9 @@
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import ActivitiesCard from '../../components/Shared/ActivitiesCard/index';
+import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { selectAuthData } from '../../store/profile/selectors';
 import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
@@ -13,10 +15,13 @@ const PerformanceOverview = () => {
     Trainer: 'pastel-orange',
     Manager: 'pastel-blue',
   };
+  const [isEvaluated, setIsEvaluated] = useState(true);
+  const isLocked = false;
   const authData = useSelector(selectAuthData);
   if (!authData) {
     return <div>Not logged in</div>;
   }
+
   return (
     <SubjectInboundEvaluationsContextProvider subjectId={authData.brightId}>
       <div className="page flex flex-col gap-4">
@@ -31,9 +36,10 @@ const PerformanceOverview = () => {
           isPerformance={true}
           // role="Player" // this name should be dynamic and be shown on the top of the page - value is set on Routes.tsx
           color={color.Player} // this color should be based on role
-          isLocked={false}
+          isLocked={isLocked}
           percentage={`w-[73%]`}
         />
+        <ToggleInput option1={"Evaluate"} option2={"Level Up"} isChecked={isEvaluated} setIsChecked={setIsEvaluated} option2Disabled={isLocked} />
         <ActivitiesCard />
         <EvaluationsDetailsPerformance
           subjectId={authData.brightId}
