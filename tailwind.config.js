@@ -35,6 +35,7 @@ export default {
         nl1: '#E6C0C0',
         nl2: '#D39090',
         nl3: '#924848',
+        'primary-l1': '#E3D0FE',
         'white-90-card': '#FFFFFFE6',
       },
     },

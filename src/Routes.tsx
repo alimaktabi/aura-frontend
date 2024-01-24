@@ -78,7 +78,7 @@ const routes = [
     pathRegex: new RegExp(/^\/performance-overview/),
     element: <PerformanceOverview />,
     header: {
-      title: 'Player performance overview',
+      title: 'Home',
       icon: '/assets/images/Header/home.svg',
     },
     requireAuth: true,
