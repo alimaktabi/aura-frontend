@@ -3,15 +3,14 @@ import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
-import ActivitiesCard from '../../components/Shared/ActivitiesCard';
+import FindTrainersCard from '../../components/Shared/FindTrainersCard';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
-import { useMyEvaluationsContext } from '../../contexts/MyEvaluationsContext';
 import { SubjectInboundRatingsContextProvider } from '../../contexts/SubjectInboundRatingsContext';
 import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
 import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
 import { useDispatch } from '../../store/hooks';
 import { getBrightIdBackupThunk } from '../../store/profile/actions';
-import { selectAuthData, selectPlayerOnboardingScreenShown } from '../../store/profile/selectors';
+import { selectAuthData } from '../../store/profile/selectors';
 import { hash } from '../../utils/crypto';
 import { SubjectCard } from '../SubjectsEvaluation/SubjectCard';
 import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
@@ -26,6 +25,7 @@ const PerformanceOverview = () => {
     Manager: 'pastel-blue',
   };
   const [isEvaluate, setIsEvaluate] = useState(true);
+  const hasTrainers = false;
   const isLocked = false;
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
@@ -33,12 +33,7 @@ const PerformanceOverview = () => {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
-  const { myRatings, loading: loadingMyEvaluations } =
-    useMyEvaluationsContext();
-  const playerOnboardingScreenShown = useSelector(
-    selectPlayerOnboardingScreenShown,
-  );
+  
 
   const refreshBrightIdBackup = useCallback(async () => {
     if (!authData) return;
@@ -72,13 +67,18 @@ const PerformanceOverview = () => {
                      option2Disabled={isLocked} />
         {!isEvaluate &&
           <div className="flex flex-col gap-4">
-            <ActivitiesCard />
-            <EvaluationsDetailsPerformance
-              subjectId={authData.brightId}
-              title="Evaluation by Trainers"
-              hasHeader={true}
-              hasBtn={true}
-            />
+            {/*<ActivitiesCard />*/}
+            {!hasTrainers &&
+              <FindTrainersCard />
+            }
+            {hasTrainers &&
+              <EvaluationsDetailsPerformance
+                subjectId={authData.brightId}
+                title="Evaluation by Trainers"
+                hasHeader={true}
+                hasBtn={true}
+              />
+            }
           </div>
         }
         {isEvaluate &&
