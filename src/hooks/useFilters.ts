@@ -1,6 +1,6 @@
 import useBrightIdBackupWithAuraConnectionData from 'hooks/useBrightIdBackupWithAuraConnectionData';
-import { getAuraVerificationLevel } from 'hooks/useBrightIdVerificationData';
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { getAuraVerificationLevel } from 'hooks/useParseBrightIdVerificationData';
 import { useOutboundRatings } from 'hooks/useSubjectRatings';
 import { useMemo } from 'react';
 import {

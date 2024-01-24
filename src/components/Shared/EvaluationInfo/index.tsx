@@ -1,6 +1,6 @@
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
 import { connectionLevelIcons } from 'utils/connection';
@@ -13,7 +13,7 @@ export const EvaluationInfo = ({
   toSubjectId: string | undefined;
 }) => {
   const authData = useSelector(selectAuthData);
-  const { auraLevel, auraScore } = useSubjectInfo(authData?.brightId);
+  const { auraLevel, auraScore } = useSubjectVerifications(authData?.brightId);
   const {
     myRatingToSubject: rating,
     loading,

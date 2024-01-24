@@ -28,7 +28,7 @@ export const getAuraVerificationLevel = (
   return auraVerification?.level ?? 'Not yet';
 };
 
-export default function useBrightIdVerificationData(
+export default function useParseBrightIdVerificationData(
   verifications: Verifications | undefined,
 ) {
   const userHasRecovery = useMemo(

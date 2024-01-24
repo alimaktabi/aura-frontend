@@ -1,7 +1,7 @@
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import { AuraFilterId } from 'hooks/useFilters';
-import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { useContext, useState } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 
@@ -23,7 +23,7 @@ const EvaluationsDetails = ({
 }) => {
   const { inboundRatings, inboundRatingsStatsString, inboundConnections } =
     useSubjectInboundEvaluationsContext(subjectId);
-  const { auraScore } = useSubjectInfo(subjectId);
+  const { auraScore } = useSubjectVerifications(subjectId);
 
   const [selectedLevel, setSelectedLevel] = useState(1);
 

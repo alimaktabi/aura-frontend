@@ -1,5 +1,7 @@
+import { useSubjectName } from 'hooks/useSubjectName';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+
 import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
-import { useSubjectInfo } from '../../hooks/useSubjectInfo';
 
 const EvaluateOverlayCard = ({
   className,
@@ -12,8 +14,8 @@ const EvaluateOverlayCard = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { auraLevel, name } = useSubjectInfo(subjectId);
-
+  const { auraLevel } = useSubjectVerifications(subjectId);
+  const name = useSubjectName(subjectId);
   return (
     <div className={`card !bg-white ${className}`}>
       <div className="card--header flex justify-between w-full items-center">

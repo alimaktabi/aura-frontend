@@ -1,10 +1,10 @@
 import ReactECharts from 'echarts-for-react';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { useContext } from 'react';
 
 import ProgressBar from '../../../components/Shared/ProgressBar';
 import { EchartsContext } from '../../../contexts/EchartsContext';
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
-import { useSubjectInfo } from '../../../hooks/useSubjectInfo';
 import { compactFormat } from '../../../utils/number';
 
 const EvaluationsDetailsPerformance = ({
@@ -20,7 +20,7 @@ const EvaluationsDetailsPerformance = ({
 }) => {
   const { inboundRatings, inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext(subjectId);
-  const { auraScore } = useSubjectInfo(subjectId);
+  const { auraScore } = useSubjectVerifications(subjectId);
 
   const { options } = useContext(EchartsContext);
 

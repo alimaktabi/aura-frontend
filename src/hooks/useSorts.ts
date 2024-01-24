@@ -1,5 +1,5 @@
-import { getAuraVerificationScore } from 'hooks/useBrightIdVerificationData';
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { getAuraVerificationScore } from 'hooks/useParseBrightIdVerificationData';
 import { useMemo } from 'react';
 import {
   AuraInboundConnectionAndRatingData,

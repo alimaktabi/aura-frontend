@@ -17,7 +17,7 @@ import { selectAuthData, selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
 
 // Define the context
-const SubjectInboundEvaluationsContext = createContext<
+export const SubjectInboundEvaluationsContext = createContext<
   | (ReturnType<typeof useSubjectInboundEvaluations> & {
       subjectId: string;
     } & ReturnType<

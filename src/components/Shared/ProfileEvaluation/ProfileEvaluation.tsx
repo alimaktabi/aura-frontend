@@ -4,8 +4,8 @@ import {
   useSubjectEvaluation,
   useSubjectEvaluationFromContext,
 } from 'hooks/useSubjectEvaluation';
-import { useSubjectInfo } from 'hooks/useSubjectInfo';
 import { useSubjectName } from 'hooks/useSubjectName';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -138,7 +138,7 @@ const UserInformation = ({
   subjectId: string;
   isConnected?: boolean;
 }) => {
-  const { auraLevel, auraScore, loading } = useSubjectInfo(subjectId);
+  const { auraLevel, auraScore, loading } = useSubjectVerifications(subjectId);
   return (
     <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5">
       {isConnected ? (

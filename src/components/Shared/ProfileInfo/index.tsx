@@ -1,4 +1,5 @@
-import { useSubjectInfo } from 'hooks/useSubjectInfo';
+import { useSubjectName } from 'hooks/useSubjectName';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
@@ -16,8 +17,8 @@ export const ProfileInfo = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { name, userHasRecovery } = useSubjectInfo(subjectId);
-
+  const { userHasRecovery } = useSubjectVerifications(subjectId);
+  const name = useSubjectName(subjectId);
   return (
     <div className="card">
       <div className="card--header flex justify-between w-full items-center">

@@ -1,7 +1,7 @@
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundRatingsContext } from 'contexts/SubjectInboundRatingsContext';
 import ReactECharts from 'echarts-for-react';
-import useBrightIdVerificationData from 'hooks/useBrightIdVerificationData';
+import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerificationData';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -31,7 +31,7 @@ export const SubjectCard = ({
     myConfidenceValueInThisSubjectRating: confidenceValue,
   } = useMyEvaluationsContext(subjectId);
 
-  const { auraLevel, auraScore } = useBrightIdVerificationData(
+  const { auraLevel, auraScore } = useParseBrightIdVerificationData(
     inboundConnectionInfo?.verifications,
   );
 

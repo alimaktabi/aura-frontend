@@ -3,7 +3,7 @@ import { useMyEvaluations } from 'hooks/useMyEvaluations';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
 
 // Define the context
-const MyEvaluationsContext = createContext<ReturnType<
+export const MyEvaluationsContext = createContext<ReturnType<
   typeof useMyEvaluations
 > | null>(null);
 
