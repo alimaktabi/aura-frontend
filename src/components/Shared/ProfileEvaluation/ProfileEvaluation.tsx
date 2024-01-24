@@ -53,8 +53,27 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
     loading,
     myConnectionToSubject: inboundConnectionInfo,
   } = useMyEvaluationsContext(subjectId);
+  const bgColor = useMemo(() => {
+    if (rating && Number(rating?.rating) !== 0) {
+      return Number(rating?.rating) > 0 ? 'bg-pl1' : 'bg-nl1';
+    }
+    if (
+      inboundConnectionInfo?.level === 'recovery' ||
+      inboundConnectionInfo?.level === 'already known' ||
+      inboundConnectionInfo?.level === 'just met'
+    ) {
+      return 'bg-pl1';
+    }
+    if (
+      inboundConnectionInfo?.level === 'suspicious' ||
+      inboundConnectionInfo?.level === 'reported'
+    ) {
+      return 'bg-nl1';
+    }
+    return '';
+  }, [inboundConnectionInfo?.level, rating]);
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className={`flex flex-col gap-0.5 ${bgColor} py-1.5 rounded-md`}>
       {loading ? (
         '...'
       ) : (
@@ -70,11 +89,7 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
               />
             )}
             {!!rating && Number(rating?.rating) !== 0 && (
-              <p
-                className={`${
-                  Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
-                } text-sm font-bold`}
-              >
+              <p className={`text-sm font-bold`}>
                 {Number(rating.rating) < 0 ? '-' : '+'}
                 {Math.abs(Number(rating.rating))}
               </p>
