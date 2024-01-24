@@ -18,7 +18,7 @@ const ThirdStep = () => {
         </p>
       </span>
       <p className="text-white font-medium text-lg pl-5 pr-7 mb-20">
-        <CustomTrans i18nKey="playerOnboarding.step3.title" />
+        <CustomTrans i18nKey="playerOnboarding.step3.description" />
       </p>
 
       <section className="relative flex items-center justify-center w-fit mx-auto mb-3">

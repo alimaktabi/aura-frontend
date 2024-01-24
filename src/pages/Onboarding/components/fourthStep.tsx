@@ -12,7 +12,7 @@ const FourthStep = () => {
         </p>
       </span>
       <p className="text-white font-medium text-lg pl-5 pr-7 mb-6">
-        <CustomTrans i18nKey="playerOnboarding.step4.title" />
+        <CustomTrans i18nKey="playerOnboarding.step4.description" />
       </p>
 
       <section className="relative flex flex-col items-center gap-4 justify-center w-fit mx-auto mb-3">
