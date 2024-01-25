@@ -4,8 +4,8 @@ import { RoutePath } from 'types/router';
 
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
+import Home from './pages/Home';
 import Onboarding from './pages/Onboarding';
-import PerformanceOverview from './pages/PerformanceOverview';
 import SubjectProfile from './pages/SubjectProfile';
 
 const routes = [
@@ -65,7 +65,7 @@ const routes = [
   {
     path: RoutePath.HOME, // /performance-overview
     pathRegex: new RegExp(/^\/home/),
-    element: <PerformanceOverview />,
+    element: <Home />,
     header: {
       title: 'Home',
       icon: '/assets/images/Dashboard/setting-icon.svg',

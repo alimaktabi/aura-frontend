@@ -18,7 +18,7 @@ import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerfor
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
 // import LinkCard from './LinkCard';
 
-const PerformanceOverview = () => {
+const Home = () => {
   const color = {
     Player: 'pastel-green',
     Trainer: 'pastel-orange',
@@ -130,4 +130,4 @@ const PerformanceOverview = () => {
   );
 };
 
-export default PerformanceOverview;
+export default Home;
