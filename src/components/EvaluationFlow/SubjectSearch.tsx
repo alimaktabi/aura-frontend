@@ -1,9 +1,8 @@
+import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
+import { SortsModal } from 'components/EvaluationFlow/SortsModal';
+import { SelectButtonWithModal } from 'components/Shared/SelectButtonWithModal';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
-import { SortsModal } from 'pages/SubjectsEvaluation/SortsModal';
 import { useState } from 'react';
-
-import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';
-import { FiltersModal } from './FiltersModal';
 
 export const SubjectSearch = () => {
   const {

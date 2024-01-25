@@ -1,7 +1,6 @@
+import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
-
-import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
 
 const EvaluateOverlayCard = ({
   className,

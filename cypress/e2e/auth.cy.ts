@@ -202,7 +202,7 @@ describe('Auth', () => {
   it('stays logged in', () => {
     doLoginSuccess();
     cy.visit('/');
-    cy.url().should('include', RoutePath.SUBJECTS_EVALUATION);
+    cy.url().should('include', RoutePath.HOME);
   });
 
   const isLoggedOut = () => {

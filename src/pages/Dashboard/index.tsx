@@ -113,7 +113,7 @@ const Dashboard = () => {
           </Link>
         )}
 
-        <Link to={RoutePath.PERFORMANCE_OVERVIEW} className="card">
+        <Link to={RoutePath.HOME} className="card">
           <img
             className="icon"
             src="/assets/images/Dashboard/performance-overview.svg"

@@ -1,6 +1,6 @@
+import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
+import { SortsModal } from 'components/EvaluationFlow/SortsModal';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
-import { FiltersModal } from 'pages/SubjectsEvaluation/FiltersModal';
-import { SortsModal } from 'pages/SubjectsEvaluation/SortsModal';
 import { useState } from 'react';
 
 import { SelectButtonWithModal } from '../../components/Shared/SelectButtonWithModal';

@@ -41,7 +41,7 @@ const NewPlayerGuideAfterEvaluation = ({
           className="btn btn--big w-full"
           onClick={() => {
             if (isFirstVisitedRoute) {
-              navigate(RoutePath.SUBJECTS_EVALUATION);
+              navigate(RoutePath.HOME);
             } else {
               navigate(-1);
             }
@@ -72,7 +72,7 @@ const NewPlayerGuideAfterEvaluation = ({
           className="btn btn--big w-full"
           onClick={() => {
             closeModalHandler?.();
-            navigate(RoutePath.PERFORMANCE_OVERVIEW);
+            navigate(RoutePath.HOME);
           }}
         >
           Find Trainers

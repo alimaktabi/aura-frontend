@@ -7,7 +7,6 @@ import DomainOverview from './pages/DomainOverview';
 import Onboarding from './pages/Onboarding';
 import PerformanceOverview from './pages/PerformanceOverview';
 import SubjectProfile from './pages/SubjectProfile';
-import SubjectsEvaluation from './pages/SubjectsEvaluation';
 
 const routes = [
   {
@@ -54,16 +53,6 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: RoutePath.SUBJECTS_EVALUATION, // /subjects-evaluation
-    pathRegex: new RegExp(/^\/subjects-evaluation/),
-    element: <SubjectsEvaluation />,
-    header: {
-      title: 'Subjects evaluation',
-      icon: '/assets/images/Dashboard/setting-icon.svg',
-    },
-    requireAuth: true,
-  },
-  {
     path: RoutePath.SUBJECT_PROFILE, // /subject/:subjectId
     pathRegex: new RegExp(/^\/subject\/[a-zA-Z0-9_-]+/),
     element: <SubjectProfile />,
@@ -74,12 +63,12 @@ const routes = [
     requireAuth: false,
   },
   {
-    path: RoutePath.PERFORMANCE_OVERVIEW, // /performance-overview
-    pathRegex: new RegExp(/^\/performance-overview/),
+    path: RoutePath.HOME, // /performance-overview
+    pathRegex: new RegExp(/^\/home/),
     element: <PerformanceOverview />,
     header: {
       title: 'Home',
-      icon: '/assets/images/Header/home.svg',
+      icon: '/assets/images/Dashboard/setting-icon.svg',
     },
     requireAuth: true,
   },

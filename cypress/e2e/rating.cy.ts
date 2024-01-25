@@ -294,7 +294,7 @@ describe('Rating', () => {
       String(PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - 1),
     );
     cy.get(getTestSelector('evaluation-onboarding-action-button')).click();
-    cy.url().should('include', RoutePath.SUBJECTS_EVALUATION);
+    cy.url().should('include', RoutePath.HOME);
   });
 
   it('evaluation onboarding flow does not count editing evaluations', () => {
@@ -327,7 +327,7 @@ describe('Rating', () => {
       doRate(connection);
     }
 
-    cy.visit(RoutePath.SUBJECTS_EVALUATION).then(() => {
+    cy.visit(RoutePath.HOME).then(() => {
       cy.get(
         getTestSelector(
           `subjects-evaluation-onboarding-guide-step-button-${SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT}`,
@@ -360,7 +360,7 @@ describe('Rating', () => {
             String(PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING),
           );
           cy.get(getTestSelector('find-trainers-button')).click();
-          cy.url().should('include', RoutePath.PERFORMANCE_OVERVIEW);
+          cy.url().should('include', RoutePath.HOME);
         });
     });
   });

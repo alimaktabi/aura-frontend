@@ -9,7 +9,7 @@ export default function useRedirectAfterLogin() {
   const redirectAfterLogin = useCallback(() => {
     if (routerLocation.pathname === RoutePath.LOGIN) {
       const next = query.get('next');
-      navigate(next ?? RoutePath.SUBJECTS_EVALUATION, { replace: true });
+      navigate(next ?? RoutePath.HOME, { replace: true });
     }
   }, [routerLocation.pathname, navigate, query]);
   return redirectAfterLogin;

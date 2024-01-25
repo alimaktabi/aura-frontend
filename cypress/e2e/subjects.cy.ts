@@ -14,7 +14,7 @@ import {
 describe('Connections Page', () => {
   beforeEach(() => {
     cy.setupProfile();
-    cy.visit(RoutePath.SUBJECTS_EVALUATION);
+    cy.visit(RoutePath.HOME);
   });
 
   function assertOrder(orderedConnections: BrightIdBackupConnection[]) {

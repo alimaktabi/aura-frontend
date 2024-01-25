@@ -1,3 +1,4 @@
+import EvaluateOverlayCard from 'components/EvaluationFlow/EvaluateOverlayCard';
 import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
@@ -18,7 +19,6 @@ import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { selectAuthData } from '../../store/profile/selectors';
-import EvaluateOverlayCard from '../SubjectsEvaluation/EvaluateOverlayCard';
 import NewEvaluationCard from './NewEvaluationCard';
 import { YourEvaluation } from './YourEvaluation';
 

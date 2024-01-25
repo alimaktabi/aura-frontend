@@ -1,3 +1,5 @@
+import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
+import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectInboundRatingsContext } from 'contexts/SubjectInboundRatingsContext';
 import ReactECharts from 'echarts-for-react';
@@ -6,10 +8,7 @@ import { useSubjectName } from 'hooks/useSubjectName';
 import { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connectionLevelIconsBlack } from 'utils/connection';
-
-import BrightIdProfilePicture from '../../components/BrightIdProfilePicture';
-import { EchartsContext } from '../../contexts/EchartsContext';
-import { compactFormat } from '../../utils/number';
+import { compactFormat } from 'utils/number';
 
 export const SubjectCard = ({
   subjectId,

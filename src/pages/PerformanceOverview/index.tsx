@@ -1,3 +1,5 @@
+import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
+import { SubjectSearch } from 'components/EvaluationFlow/SubjectSearch';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,8 +14,6 @@ import { useDispatch } from '../../store/hooks';
 import { getBrightIdBackupThunk } from '../../store/profile/actions';
 import { selectAuthData } from '../../store/profile/selectors';
 import { hash } from '../../utils/crypto';
-import { SubjectCard } from '../SubjectsEvaluation/SubjectCard';
-import { SubjectSearch } from '../SubjectsEvaluation/SubjectSearch';
 import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
 // import LinkCard from './LinkCard';
@@ -33,7 +33,6 @@ const PerformanceOverview = () => {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  
 
   const refreshBrightIdBackup = useCallback(async () => {
     if (!authData) return;
@@ -63,25 +62,28 @@ const PerformanceOverview = () => {
           isLocked={isLocked}
           percentage={`w-[73%]`}
         />
-        <ToggleInput option1={"Evaluate"} option2={"Level Up"} isChecked={isEvaluate} setIsChecked={setIsEvaluate}
-                     option2Disabled={isLocked} />
-        {!isEvaluate &&
+        <ToggleInput
+          option1={'Evaluate'}
+          option2={'Level Up'}
+          isChecked={isEvaluate}
+          setIsChecked={setIsEvaluate}
+          option2Disabled={isLocked}
+        />
+        {!isEvaluate && (
           <div className="flex flex-col gap-4">
             {/*<ActivitiesCard />*/}
-            {!hasTrainers &&
-              <FindTrainersCard />
-            }
-            {hasTrainers &&
+            {!hasTrainers && <FindTrainersCard />}
+            {hasTrainers && (
               <EvaluationsDetailsPerformance
                 subjectId={authData.brightId}
                 title="Evaluation by Trainers"
                 hasHeader={true}
                 hasBtn={true}
               />
-            }
+            )}
           </div>
-        }
-        {isEvaluate &&
+        )}
+        {isEvaluate && (
           <div>
             <SubjectSearch />
             <div className="text-lg text-white mb-3 mt-3 flex">
@@ -90,11 +92,12 @@ const PerformanceOverview = () => {
                 ({brightIdBackup?.connections.length ?? '...'})
               </strong>
               {filteredSubjects !== null &&
-                filteredSubjects.length !== brightIdBackup?.connections.length && (
+                filteredSubjects.length !==
+                  brightIdBackup?.connections.length && (
                   <span className="ml-2">
-              ({filteredSubjects.length} filter result
+                    ({filteredSubjects.length} filter result
                     {filteredSubjects.length !== 1 ? 's' : ''})
-            </span>
+                  </span>
                 )}
               <img
                 src="/assets/images/Shared/refresh.svg"
@@ -120,10 +123,9 @@ const PerformanceOverview = () => {
               <div>loading...</div>
             )}
           </div>
-
-        }
+        )}
       </div>
-        {/*<LinkCard />*/}
+      {/*<LinkCard />*/}
     </SubjectInboundEvaluationsContextProvider>
   );
 };
