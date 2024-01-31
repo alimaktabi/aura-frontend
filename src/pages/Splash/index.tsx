@@ -26,9 +26,7 @@ const Spalsh = () => {
               src="/assets/images/Shared/brighthid.svg"
               alt=""
             />{' '}
-            Accounts and make an step into safer, more trustworthy online
-            community where your identity is secured and recognized. Accounts
-            and make an
+            accounts and take a step toward a safer and more trustworthy online community where your identity is secured and recognized.
           </p>
         </FadeIn>
       </section>
