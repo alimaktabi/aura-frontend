@@ -274,7 +274,9 @@ const RecoveryCodeScreen = () => {
             </FadeIn>
           </section>
 
-          <section className="pl-8 pr-10 flex flex-col items-center gap-6 mb-3">
+          <a className="pl-8 pr-10 flex flex-col items-center gap-6 mb-3" href={universalLink}
+             target="_blank" rel="noreferrer"
+             data-testid={universalLink && 'import-universal-link'}>
             {universalLink && (
               <FadeIn delay={0.2}>
                 <QRCode
@@ -302,7 +304,7 @@ const RecoveryCodeScreen = () => {
                 Open the Link below on your phone
               </p>
             </FadeIn>
-          </section>
+          </a>
 
           <FadeIn delay={0.3} className="actions mb-auto pb-24 text-center">
             <section className="actions mb-auto pb-24 text-center">
