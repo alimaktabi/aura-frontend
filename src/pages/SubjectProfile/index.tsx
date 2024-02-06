@@ -69,14 +69,11 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
 
   return (
     <div className="page page__dashboard flex flex-col gap-4">
-      {!isOverviewSelected && (
+      {!isOverviewSelected && showEvaluateOverlayCard && (
         <EvaluateOverlayCard
-          className={`absolute top-24 z-10 min-h-[89px] transition-all w-[calc(100vw-40px)] max-w-[420px] ${
-            showEvaluateOverlayCard
-              ? 'translate-y-0 opacity-100'
-              : '-translate-y-60 opacity-0'
-          }`}
+          className={`absolute top-24 z-10 min-h-[89px] w-[calc(100vw-40px)] max-w-[420px]`}
           subjectId={subjectId}
+          setShowEvaluationFlow={setShowEvaluationFlow}
         />
       )}
 

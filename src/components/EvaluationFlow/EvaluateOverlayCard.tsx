@@ -7,11 +7,13 @@ const EvaluateOverlayCard = ({
   isPerformance = false,
   subjectId,
   color = 'pastel-green',
+  setShowEvaluationFlow,
 }: {
   className?: string;
   isPerformance?: boolean;
   subjectId: string | undefined;
   color?: string;
+  setShowEvaluationFlow: (value: boolean) => void;
 }) => {
   const { auraLevel } = useSubjectVerifications(subjectId);
   const name = useSubjectName(subjectId);
@@ -44,7 +46,10 @@ const EvaluateOverlayCard = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center cursor-pointer items-center bg-pastel-purple text-black min-w-[90px] py-2 rounded-md">
+        <div
+          onClick={() => setShowEvaluationFlow(true)}
+          className="flex flex-col justify-center cursor-pointer items-center bg-pastel-purple text-black min-w-[90px] py-2 rounded-md"
+        >
           <img
             src="/assets/images/SubjectProfile/subject-evaluation.svg"
             alt=""

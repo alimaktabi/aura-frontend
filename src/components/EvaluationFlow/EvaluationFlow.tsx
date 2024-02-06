@@ -56,7 +56,7 @@ const EvaluationFlow = ({
   return (
     <Modal
       isOpen={showEvaluationFlow}
-      closeModalHandler={() => {}}
+      closeModalHandler={() => setShowEvaluationFlow(false)}
       title={myNewRatingCount === null ? `Endorsing ${name}` : undefined}
     >
       {myNewRatingCount !== null ? (
