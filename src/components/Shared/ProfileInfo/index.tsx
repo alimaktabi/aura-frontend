@@ -1,8 +1,10 @@
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { AuraFilterId } from 'hooks/useFilters';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { useContext } from 'react';
+import { connectionLevelIcons } from 'utils/connection';
 
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
@@ -20,11 +22,12 @@ export const ProfileInfo = ({
   subjectId: string | undefined;
   color?: string;
 }) => {
-  const { userHasRecovery } = useSubjectVerifications(subjectId);
+  const { userHasRecovery, auraLevel } = useSubjectVerifications(subjectId);
   const name = useSubjectName(subjectId);
   const inboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
   );
+  const { myConnectionToSubject } = useMyEvaluationsContext(subjectId);
 
   return (
     <div className="card">
@@ -39,8 +42,15 @@ export const ProfileInfo = ({
           <div className="card--header__left__info flex flex-col justify-center">
             <h3 className="text-lg font-medium leading-5">{name}</h3>
             <div className="flex gap-1">
-              <img src="/assets/images/Shared/already-known-icon.svg" alt="" />
-              <strong>Level 1</strong>
+              {myConnectionToSubject && (
+                <img
+                  src={`/assets/images/Shared/${
+                    connectionLevelIcons[myConnectionToSubject.level]
+                  }.svg`}
+                  alt=""
+                />
+              )}
+              <strong>{auraLevel}</strong>
             </div>
           </div>
         </div>
