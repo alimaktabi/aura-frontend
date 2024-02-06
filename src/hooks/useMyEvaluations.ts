@@ -1,20 +1,15 @@
-import { useOutboundConnections } from 'hooks/useSubjectConnections';
-import { useOutboundRatings } from 'hooks/useSubjectRatings';
+import { useOutboundEvaluations } from 'hooks/useOutboundEvaluations';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from 'store/profile/selectors';
 
 export const useMyEvaluations = () => {
   const authData = useSelector(selectAuthData);
-  const { outboundRatings: myRatings, refreshOutboundRatings } =
-    useOutboundRatings(authData?.brightId);
-  const { outboundConnections: myConnections } = useOutboundConnections(
-    authData?.brightId,
-  );
+  const outboundEvaluations = useOutboundEvaluations(authData?.brightId);
 
   return {
-    refreshOutboundRatings,
-    myRatings,
-    myConnections,
-    loading: myRatings === null,
+    loading: outboundEvaluations.loading,
+    refreshOutboundRatings: outboundEvaluations.refreshOutboundRatings,
+    myRatings: outboundEvaluations.outboundRatings,
+    myConnections: outboundEvaluations.outboundConnections,
   };
 };

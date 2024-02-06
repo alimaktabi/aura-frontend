@@ -32,14 +32,6 @@ const EvaluationFlow = ({
     if (myRatingsCount === undefined) return;
     const isNewRating = !(myRatingObject && Number(myRatingObject.rating));
     const newRatingCount = myRatingsCount + (isNewRating ? 1 : 0);
-    console.log({
-      newRatingCount,
-      PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
-    });
-    console.log({
-      newRatingCount,
-      PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
-    });
     if (newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING) {
       setShowEvaluationFlow(false);
     } else {

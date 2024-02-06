@@ -1,3 +1,4 @@
+import CredibilityDetailsModal from 'components/CredibilityDetailsModal';
 import EvaluateOverlayCard from 'components/EvaluationFlow/EvaluateOverlayCard';
 import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
@@ -35,7 +36,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const [isOverviewSelected, setIsOverviewSelected] = useState(true);
 
   const [showEvaluateOverlayCard, setShowEvaluateOverlayCard] = useState(false);
-
+  const [credibilityDetailsSubjectId, setCredibilityDetailsSubjectId] =
+    useState<string | null>(null);
   const handleScroll = () => {
     const scrollPosition =
       document.getElementsByClassName('page')[0]?.scrollTop; // => scroll position
@@ -131,6 +133,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               items={evaluators}
               renderItem={(evaluator) => (
                 <ProfileEvaluation
+                  onClick={() => setCredibilityDetailsSubjectId(evaluator)}
                   key={evaluator}
                   fromSubjectId={evaluator}
                   toSubjectId={subjectId}
@@ -174,6 +177,12 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         setShowEvaluationFlow={setShowEvaluationFlow}
         subjectId={subjectId}
       />
+      {credibilityDetailsSubjectId && (
+        <CredibilityDetailsModal
+          onClose={() => setCredibilityDetailsSubjectId(null)}
+          subjectId={credibilityDetailsSubjectId}
+        />
+      )}
     </div>
   );
 };

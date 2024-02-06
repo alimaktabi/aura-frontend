@@ -18,9 +18,11 @@ import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 const ProfileEvaluation = ({
   fromSubjectId,
   toSubjectId,
+  onClick,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  onClick: () => void;
 }) => {
   const { loading, ratingNumber } = useSubjectEvaluation({
     fromSubjectId,
@@ -28,6 +30,7 @@ const ProfileEvaluation = ({
   });
   return (
     <div
+      onClick={onClick}
       className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
     >
       {loading ? (
@@ -120,6 +123,7 @@ const UserName = ({ subjectId }: { subjectId: string }) => {
       <Link
         to={RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', subjectId)}
         className="flex bg-pastel-purple h-[14px] w-5 items-center justify-center rounded-full cursor-pointer"
+        onClick={(e) => e.stopPropagation()}
       >
         <img
           src="/assets/images/SubjectProfile/icon.svg"
