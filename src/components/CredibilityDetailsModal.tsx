@@ -15,7 +15,8 @@ import { compactFormat } from 'utils/number';
 const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
   const authData = useSelector(selectAuthData);
   const { auraLevel, auraScore } = useSubjectVerifications(subjectId);
-  const { inboundRatingsStatsString } = useSubjectInboundEvaluations(subjectId);
+  const { inboundRatings, inboundRatingsStatsString } =
+    useSubjectInboundEvaluations(subjectId);
   const {
     loading,
     myRatingToSubject,
@@ -47,7 +48,10 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
         <div>
           Score: {auraScore ? compactFormat(auraScore) : '-'} (28k / 4k)
         </div>
-        <div>Evaluations: {inboundRatingsStatsString}</div>
+        <div>
+          Evaluations: {inboundRatings !== null ? inboundRatings.length : '...'}{' '}
+          ({inboundRatingsStatsString})
+        </div>
         <div>Your Connection: {myConnectionToSubject?.level}</div>
         <div>
           Their Connection to you:{' '}
