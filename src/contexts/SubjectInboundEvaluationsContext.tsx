@@ -42,17 +42,21 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   const useSubjectInboundEvaluationsHookData =
     useSubjectInboundEvaluations(subjectId);
   const { inboundRatings } = useSubjectInboundEvaluationsHookData;
-  const filters = useEvaluationFilters([
-    AuraFilterId.EvaluationMutualConnections,
-    AuraFilterId.EvaluationPositiveEvaluations,
-    AuraFilterId.EvaluationNegativeEvaluations,
-    AuraFilterId.EvaluationJustEvaluations,
-    AuraFilterId.EvaluationJustConnections,
-    AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
-    AuraFilterId.EvaluationConnectionTypeJustMet,
-    AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
-    AuraFilterId.EvaluationConnectionTypeRecovery,
-  ]);
+  const filters = useEvaluationFilters(
+    [
+      AuraFilterId.EvaluationMutualConnections,
+      AuraFilterId.EvaluationPositiveEvaluations,
+      AuraFilterId.EvaluationNegativeEvaluations,
+      AuraFilterId.EvaluationJustEvaluations,
+      AuraFilterId.EvaluationJustConnections,
+      AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+      AuraFilterId.EvaluationConnectionTypeJustMet,
+      AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
+      AuraFilterId.EvaluationConnectionTypeRecovery,
+      AuraFilterId.EvaluationTheirRecovery,
+    ],
+    subjectId,
+  );
 
   const sorts = useEvaluationSorts([
     AuraSortId.RecentEvaluation,

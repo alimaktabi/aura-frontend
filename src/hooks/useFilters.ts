@@ -1,6 +1,7 @@
 import useBrightIdBackupWithAuraConnectionData from 'hooks/useBrightIdBackupWithAuraConnectionData';
 import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
 import { getAuraVerificationLevel } from 'hooks/useParseBrightIdVerificationData';
+import { useOutboundConnections } from 'hooks/useSubjectConnections';
 import { useOutboundRatings } from 'hooks/useSubjectRatings';
 import { useMemo } from 'react';
 import {
@@ -30,6 +31,7 @@ export enum AuraFilterId {
   EvaluationConnectionTypeJustMet,
   EvaluationConnectionTypeAlreadyKnown,
   EvaluationConnectionTypeRecovery,
+  EvaluationTheirRecovery,
 }
 
 export type AuraFilterOption<T> = {
@@ -170,8 +172,12 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
   }, [brightIdBackup?.connections, filterIds, outboundRatings]);
 }
 
-export function useEvaluationFilters(filterIds: AuraFilterId[]) {
+export function useEvaluationFilters(
+  filterIds: AuraFilterId[],
+  subjectId?: string,
+) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
+  const { outboundConnections } = useOutboundConnections(subjectId);
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
       {
@@ -211,6 +217,14 @@ export function useEvaluationFilters(filterIds: AuraFilterId[]) {
           item.rating !== undefined && Number(item.rating.rating) < 0,
       },
       {
+        id: AuraFilterId.EvaluationTheirRecovery,
+        category: FilterOrSortCategory.Default,
+        title: 'Their Recovery',
+        func: (item) =>
+          outboundConnections?.find((c) => c.id === item.fromSubjectId)
+            ?.level === 'recovery',
+      },
+      {
         id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
         category: FilterOrSortCategory.ConnectionType,
         title: 'Suspicious | Reported',
@@ -242,5 +256,5 @@ export function useEvaluationFilters(filterIds: AuraFilterId[]) {
       .filter(
         (item) => item !== undefined,
       ) as AuraFilterOptions<AuraInboundConnectionAndRatingData>;
-  }, [brightIdBackup?.connections, filterIds]);
+  }, [brightIdBackup?.connections, filterIds, outboundConnections]);
 }

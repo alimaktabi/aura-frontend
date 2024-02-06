@@ -1,5 +1,8 @@
+import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
+import { AuraFilterId } from 'hooks/useFilters';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import { useContext } from 'react';
 
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
@@ -19,6 +22,10 @@ export const ProfileInfo = ({
 }) => {
   const { userHasRecovery } = useSubjectVerifications(subjectId);
   const name = useSubjectName(subjectId);
+  const inboundEvaluationsContext = useContext(
+    SubjectInboundEvaluationsContext,
+  );
+
   return (
     <div className="card">
       <div className="card--header flex justify-between w-full items-center">
@@ -40,10 +47,18 @@ export const ProfileInfo = ({
         <div className="flex flex-col gap-1.5 items-end text-sm text-black min-w-[90px]">
           {userHasRecovery !== null && (
             <div
+              onClick={() =>
+                inboundEvaluationsContext?.toggleFilterById(
+                  AuraFilterId.EvaluationTheirRecovery,
+                  true,
+                )
+              }
               className={`${
                 userHasRecovery
                   ? 'bg-orange text-white font-bold'
                   : 'bg-gray-300 text-black'
+              } ${
+                inboundEvaluationsContext ? 'cursor-pointer' : ''
               } px-2 py-1.5 rounded`}
             >
               <p className="text-xs">
