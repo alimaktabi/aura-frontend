@@ -12,6 +12,8 @@ import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
 import { compactFormat } from 'utils/number';
 
+import { HorizontalProgressBar } from './Shared/HorizontalProgressBar';
+
 const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
   const authData = useSelector(selectAuthData);
   const { auraLevel, auraScore } = useSubjectVerifications(subjectId);
@@ -30,11 +32,14 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
     <div>
       <div>
         <div className="font-bold text-l">As a <span className="text-purple">Player</span>:</div>
-        <div>Level: <span className="font-medium">1</span></div>
-        <div>Score: <span className="font-medium">24.1k (28k / -3.9k)</span></div>
-        <div>Evaluations: <span className="font-medium">5 (4 Pos / 1 Neg)</span></div>
-        <div>Your Evaluation: <span className="font-medium text-pl3">Positive - High (3)</span></div>
-        <div>Your Evaluation <span className="font-medium text-pl3">Impact: 32%</span></div>
+        <div>Level: <span className="font-bold">1</span></div>
+        <div className="flex w-full gap-2 items-center">
+          <div>Score: <span className="font-medium">24.1k</span></div>
+          <HorizontalProgressBar percentage={"w-[15%]"} />
+        </div>
+        <div>Evaluations: <span className="font-bold">5 (4 Pos / 1 Neg)</span></div>
+        <div>Your Evaluation: <span className="font-bold text-pl3">Positive - High (3)</span></div>
+        <div>Your Evaluation <span className="font-bold text-pl3">Impact: 32%</span></div>
         <ReactECharts
           style={{ height: '110px' }}
           option={options2}
@@ -43,26 +48,26 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
       </div>
       <div>
         <div className="font-bold text-l">As a <span className="text-orange">Subject</span>:</div>
-        <div>Level: <span className="font-medium">{auraLevel}</span></div>
+        <div>Level: <span className="font-bold">{auraLevel}</span></div>
         <div>
           Score: <span className="font-medium">{auraScore ? compactFormat(auraScore) : '-'} (28k / 4k)</span>
         </div>
         <div>
           Evaluations: {' '}
-          <span className="font-medium">{inboundRatings !== null ? inboundRatings.length : '...'}
+          <span className="font-bold">{inboundRatings !== null ? inboundRatings.length : '...'}
             ({inboundRatingsStatsString})</span>
         </div>
-        <div>Your Connection: <span className="font-medium">{myConnectionToSubject?.level}</span></div>
+        <div>Your Connection: <span className="font-bold">{myConnectionToSubject?.level}</span></div>
         <div>
           Their Connection to you:{' '}
-          <span className="font-medium">{outboundConnections !== null
+          <span className="font-bold">{outboundConnections !== null
             ? outboundConnections.find((c) => c.id === authData?.brightId)
             ?.level || '-'
             : '...'}</span>
         </div>
         <div>
           Your Evaluation:{' '}
-          <span className="font-medium">{loading ? (
+          <span className="font-bold">{loading ? (
             <span className="text-gray20">...</span>
           ) : Number(myRatingToSubject?.rating) > 0 ? (
             <span className="text-pl3">
@@ -79,7 +84,7 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
           )}</span>
         </div>
         <div>Your Evaluation Impact:
-          <span className="font-medium text-nl3">32%</span>
+          <span className="font-bold text-nl3">32%</span>
         </div>
         <ReactECharts
           style={{ height: '110px' }}
