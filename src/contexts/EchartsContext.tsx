@@ -14,143 +14,57 @@ interface ProviderProps {
   children: React.ReactNode;
 }
 
-const option2Data = [
+const testData = [
   {
     value: 9.9,
-    itemStyle: {
-      color: '#404040',
-    },
   },
   {
     value: -9.2,
-    itemStyle: {
-      color: '#C9A2FF',
-    },
   },
   {
     value: 7.3,
-    itemStyle: {
-      color: '#404040',
-    },
   },
   {
-    value: 5.1,
-    itemStyle: {
-      color: '#404040',
-    },
-  },
-  {
-    value: 4.1,
-    itemStyle: {
-      color: '#7A7A7A',
-    },
+    value: 2.3,
   },
   {
     value: 3.7,
-    itemStyle: {
-      color: '#E2E2E2',
-    },
+  },
+  {
+    value: 1.8,
+  },
+  {
+    value: -2.6,
+  },
+  {
+    value: -1.3,
+  },
+  {
+    value: 0.5,
   },
   {
     value: -3.7,
-    itemStyle: {
-      color: '#B5B5B5',
-    },
   },
   {
-    value: 3.7,
-    itemStyle: {
-      color: '#E2E2E2',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#7A7A7A',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#E2E2E2',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#B5B5B5',
-    },
+    value: 4,
   },
 ]
 
-const option3Data = [
-  {
-    value: 9.9,
-    itemStyle: {
-      color: '#404040',
-    },
-  },
-  {
-    value: -9.2,
-    itemStyle: {
-      color: '#C9A2FF',
-    },
-  },
-  {
-    value: 7.3,
-    itemStyle: {
-      color: '#404040',
-    },
-  },
-  {
-    value: 5.1,
-    itemStyle: {
-      color: '#404040',
-    },
-  },
-  {
-    value: 4.1,
-    itemStyle: {
-      color: '#7A7A7A',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#E2E2E2',
-    },
-  },
-  {
-    value: -3.7,
-    itemStyle: {
-      color: '#B5B5B5',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#E2E2E2',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#7A7A7A',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#E2E2E2',
-    },
-  },
-  {
-    value: 3.7,
-    itemStyle: {
-      color: '#B5B5B5',
-    },
-  },
-]
+const valueColorMap = {
+  '-4': '#924848',
+  '-3': '#DA6A6A',
+  '-2': '#EE9D9D',
+  '-1': '#F5BFBF',
+  '1': '#D5ECDA',
+  '2': '#B4E6C0',
+  '3': '#72BF83',
+  '4': '#5B9969',
+};
+
+const findNearestColor = (value: any, colorMap: any) => {
+  const nearestValue = Object.keys(colorMap).reduce((prev, curr) => Math.abs(Number(curr) - value) < Math.abs(Number(prev) - value) ? curr : prev);
+  return colorMap[nearestValue];
+};
 
 export const EchartsContextProvider = ({ children }: ProviderProps) => {
   const options = useMemo(
@@ -239,10 +153,10 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
       series: [
         {
           color: '#ABCAAE',
-          data: option2Data.map(item => ({
+          data: testData.map(item => ({
             value: item.value,
             itemStyle: {
-              ...(item.itemStyle || {}),
+              color: findNearestColor(item.value, valueColorMap),
               borderRadius: item.value >= 0 ? [4, 4, 0, 0] : [0, 0, 4, 4],
             },
           })),
@@ -273,10 +187,10 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
       series: [
         {
           color: '#ABCAAE',
-          data:  option3Data.map(item => ({
+          data: testData.map(item => ({
             value: item.value,
             itemStyle: {
-              ...(item.itemStyle || {}),
+              color: findNearestColor(item.value, valueColorMap),
               borderRadius: item.value >= 0 ? [4, 4, 0, 0] : [0, 0, 4, 4],
             },
           })),
