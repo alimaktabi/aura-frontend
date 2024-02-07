@@ -95,6 +95,10 @@
   &--text-black {
     @apply text-black font-semibold
   }
+
+  &--bg-orange {
+    @apply bg-orange
+  }
 }
 
 #qr-code {
