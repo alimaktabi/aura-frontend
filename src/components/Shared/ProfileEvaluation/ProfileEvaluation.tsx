@@ -206,7 +206,7 @@ const EvidenceInformation = ({
       <p
         className={`${
           evidenceType === 'evaluated' ? 'text-purple' : 'text-orange'
-        } text-xs font-medium truncate`}
+        } text-xs font-medium truncate overflow-hidden`}
       >
         {evidenceType}
       </p>
@@ -288,7 +288,7 @@ const EvaluatedCardBody = ({
       <div className="card__left-column w-[50px] flex flex-col gap-1.5">
         <BrightIdProfilePicture
           subjectId={fromSubjectId}
-          className={`w-[50px] h-[52px] rounded-lg border-2 border-pastel-purple`}
+          className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
         />
         <ConnectionInfo subjectId={fromSubjectId} />
       </div>
@@ -385,7 +385,7 @@ const ConnectedCardBody = ({
       <div className="card__left-column w-[50px] flex flex-col gap-1.5">
         <BrightIdProfilePicture
           subjectId={fromSubjectId}
-          className={`w-[50px] h-[52px] rounded-lg border-2 border-pastel-purple`}
+          className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
         />
         <ConnectionInfo subjectId={fromSubjectId} />
       </div>
