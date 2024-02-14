@@ -53,7 +53,8 @@ const EvaluationsDetails = ({
             <span
               onClick={() => setSelectedLevel(1)}
               className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                selectedLevel === 1 && '!bg-pastel-purple !text-white !border-0'
+                selectedLevel === 1 &&
+                '!bg-button-primary !text-white !border-0'
               }`}
             >
               <p className="text-sm font-medium">All</p>
@@ -61,7 +62,8 @@ const EvaluationsDetails = ({
             <span
               onClick={() => setSelectedLevel(2)}
               className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                selectedLevel === 2 && '!bg-pastel-purple !text-white !border-0'
+                selectedLevel === 2 &&
+                '!bg-button-primary !text-white !border-0'
               }`}
             >
               <p className="text-sm font-medium">Lvl 1</p>
@@ -69,7 +71,8 @@ const EvaluationsDetails = ({
             <span
               onClick={() => setSelectedLevel(3)}
               className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                selectedLevel === 3 && '!bg-pastel-purple !text-white !border-0'
+                selectedLevel === 3 &&
+                '!bg-button-primary !text-white !border-0'
               }`}
             >
               <p className="text-sm font-medium">Lvl 2</p>
@@ -77,7 +80,8 @@ const EvaluationsDetails = ({
             <span
               onClick={() => setSelectedLevel(4)}
               className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                selectedLevel === 4 && '!bg-pastel-purple !text-white !border-0'
+                selectedLevel === 4 &&
+                '!bg-button-primary !text-white !border-0'
               }`}
             >
               <p className="text-sm font-medium">Lvl 3</p>
