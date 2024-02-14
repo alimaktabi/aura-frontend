@@ -25,16 +25,22 @@ const testData = [
     value: 7.3,
   },
   {
-    value: 2.3,
+    value: 4,
   },
   {
     value: 3.7,
   },
   {
-    value: 1.8,
+    value: -3.7,
   },
   {
     value: -2.6,
+  },
+  {
+    value: 2.3,
+  },
+  {
+    value: 1.8,
   },
   {
     value: -1.3,
@@ -42,13 +48,7 @@ const testData = [
   {
     value: 0.5,
   },
-  {
-    value: -3.7,
-  },
-  {
-    value: 4,
-  },
-]
+];
 
 const valueColorMap = {
   '-4': '#924848',
@@ -62,7 +62,11 @@ const valueColorMap = {
 };
 
 const findNearestColor = (value: any, colorMap: any) => {
-  const nearestValue = Object.keys(colorMap).reduce((prev, curr) => Math.abs(Number(curr) - value) < Math.abs(Number(prev) - value) ? curr : prev);
+  const nearestValue = Object.keys(colorMap).reduce((prev, curr) =>
+    Math.abs(Number(curr) - value) < Math.abs(Number(prev) - value)
+      ? curr
+      : prev,
+  );
   return colorMap[nearestValue];
 };
 
@@ -75,6 +79,10 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
           show: true,
         },
         axisLabel: {
+          show: false,
+        },
+        axisTick: {
+          // Setting splitLine to null removes the lines indicating x-axis values
           show: false,
         },
       },
@@ -123,6 +131,7 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
             },
           },
           type: 'bar',
+          barGap: '0', // Set barGap to 0 to remove the gap between bars
         },
       ],
     }),
@@ -139,6 +148,10 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
         axisLabel: {
           show: false,
         },
+        axisTick: {
+          // Setting splitLine to null removes the lines indicating x-axis values
+          show: false,
+        },
       },
       yAxis: {
         type: 'value',
@@ -153,7 +166,7 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
       series: [
         {
           color: '#ABCAAE',
-          data: testData.map(item => ({
+          data: testData.map((item) => ({
             value: item.value,
             itemStyle: {
               color: findNearestColor(item.value, valueColorMap),
@@ -169,6 +182,7 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
             },
           },
           type: 'bar',
+          barGap: '0', // Set barGap to 0 to remove the gap between bars
         },
       ],
     }),
@@ -184,10 +198,16 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
         left: 0,
         right: 0,
       },
+      xAxis: {
+        axisTick: {
+          // Setting splitLine to null removes the lines indicating x-axis values
+          show: false,
+        },
+      },
       series: [
         {
           color: '#ABCAAE',
-          data: testData.map(item => ({
+          data: testData.map((item) => ({
             value: item.value,
             itemStyle: {
               color: findNearestColor(item.value, valueColorMap),
