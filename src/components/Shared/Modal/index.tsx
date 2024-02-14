@@ -1,3 +1,4 @@
+import useCallbackOnRouteChange from 'hooks/useCallbackOnRouteChange';
 import * as React from 'react';
 import { FC } from 'react';
 
@@ -18,6 +19,7 @@ export const Modal: FC<{
   className,
   noButtonPadding,
 }) => {
+  useCallbackOnRouteChange(closeModalHandler);
   return (
     <>
       {isOpen && (
