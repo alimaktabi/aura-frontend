@@ -48,7 +48,7 @@ const EvaluateOverlayCard = ({
         </div>
         <div
           onClick={() => setShowEvaluationFlow(true)}
-          className="flex flex-col justify-center cursor-pointer items-center bg-pastel-purple text-black min-w-[90px] py-2 rounded-md"
+          className="flex flex-col justify-center cursor-pointer items-center btn min-w-[90px] py-2 rounded-md"
         >
           <img
             src="/assets/images/SubjectProfile/subject-evaluation.svg"

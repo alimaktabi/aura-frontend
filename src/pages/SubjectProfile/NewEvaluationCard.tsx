@@ -14,9 +14,9 @@ const NewEvaluationCard = ({
         <EvaluateButton
           setShowEvaluationFlow={setShowEvaluationFlow}
           subjectId={subjectId}
-          textColor="text-black"
-          bgColor="bg-pastel-purple"
-          image="/assets/images/Shared/user-search-icon.svg"
+          textColor=""
+          bgColor="btn"
+          image="/assets/images/SubjectProfile/subject-evaluation-big.svg"
         />
       </div>
     </div>
@@ -43,12 +43,12 @@ const EvaluateButton = ({
       <div
         onClick={() => setShowEvaluationFlow(true)}
         data-testid={`evaluate-not-evaluated-subject-${subjectId}`}
-        className={`flex flex-col gap-2.5 rounded-[6px] py-2.5 w-full items-center ${bgColor} cursor-pointer`}
+        className={`flex gap-2.5 justify-center w-full items-center ${bgColor} !py-3 cursor-pointer`}
       >
         <div>
-          <img className="mt-2" src={image} alt="" />
+          <img src={image} alt="" />
         </div>
-        <div className={`font-medium ${textColor}`}>Evaluate Now!</div>
+        <div className={`font-black text-xl ${textColor}`}>Evaluate Now!</div>
       </div>
     </>
   );
