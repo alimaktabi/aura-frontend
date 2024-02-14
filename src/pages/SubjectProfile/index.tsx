@@ -100,7 +100,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {role !== 'Player' && <ActivitiesCard />}
 
       <div className="flex gap-1 -mb-1">
-        <p className="font-bold text-lg">Evidence</p>
+        <p className="font-bold text-lg text-white">Evidence</p>
         <img
           className="cursor-pointer"
           src="/assets/images/SubjectProfile/evidence-info-icon.svg"

@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <header className="header px-6 py-9 flex justify-between">
       <span className="header-left">
-        <span className="header-title text-2xl text-white">
+        <span className="header-title font-medium text-2xl text-white">
           {headerComponent.title}
         </span>
       </span>

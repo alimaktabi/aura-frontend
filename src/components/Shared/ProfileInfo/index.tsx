@@ -80,8 +80,8 @@ export const ProfileInfo = ({
               </p>
             </div>
           )}
-          <p className="text-sm">
-            Last Activity: <strong>323d ago</strong>
+          <p className="text-sm font-light">
+            Last Activity: <span className="font-medium">323d ago</span>
           </p>
         </div>
       </div>
