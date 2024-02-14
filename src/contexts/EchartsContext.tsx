@@ -198,12 +198,6 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
         left: 0,
         right: 0,
       },
-      xAxis: {
-        axisTick: {
-          // Setting splitLine to null removes the lines indicating x-axis values
-          show: false,
-        },
-      },
       series: [
         {
           color: '#ABCAAE',
@@ -211,7 +205,7 @@ export const EchartsContextProvider = ({ children }: ProviderProps) => {
             value: item.value,
             itemStyle: {
               color: findNearestColor(item.value, valueColorMap),
-              borderRadius: item.value >= 0 ? [4, 4, 0, 0] : [0, 0, 4, 4],
+              borderRadius: item.value >= 0 ? [2, 2, 0, 0] : [0, 0, 2, 2],
             },
           })),
           label: {
