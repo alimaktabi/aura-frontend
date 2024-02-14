@@ -1,9 +1,6 @@
 import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import {
-  useSubjectEvaluation,
-  useSubjectEvaluationFromContext,
-} from 'hooks/useSubjectEvaluation';
+import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import moment from 'moment';
@@ -24,7 +21,7 @@ const ProfileEvaluation = ({
   toSubjectId: string;
   onClick: () => void;
 }) => {
-  const { loading, ratingNumber } = useSubjectEvaluation({
+  const { loading, ratingNumber } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
   });
