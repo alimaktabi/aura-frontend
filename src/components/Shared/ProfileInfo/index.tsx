@@ -40,7 +40,7 @@ export const ProfileInfo = ({
             subjectId={subjectId}
           />
           <div className="card--header__left__info flex flex-col justify-center">
-            <h3 className="text-lg font-medium leading-5">{name}</h3>
+            <h3 className="text-lg font-medium leading-5 truncate">{name}</h3>
             <div className="flex gap-1">
               {myConnectionToSubject && (
                 <img
@@ -80,7 +80,7 @@ export const ProfileInfo = ({
               </p>
             </div>
           )}
-          <p className="text-sm font-light">
+          <p className="text-sm font-light truncate">
             Last Activity: <span className="font-medium">323d ago</span>
           </p>
         </div>
