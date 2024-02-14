@@ -58,7 +58,7 @@ const routes = [
     element: <SubjectProfile />,
     header: {
       title: 'Subject profile',
-      icon: '/assets/images/Header/back.svg',
+      icon: '/assets/images/Header/menu.svg',
     },
     requireAuth: false,
   },
@@ -68,7 +68,7 @@ const routes = [
     element: <Home />,
     header: {
       title: 'Home',
-      icon: '/assets/images/Dashboard/setting-icon.svg',
+      icon: '/assets/images/Dashboard/menu.svg',
     },
     requireAuth: true,
   },
