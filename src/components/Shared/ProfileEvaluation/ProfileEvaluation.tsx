@@ -203,11 +203,13 @@ const EvidenceInformation = ({
       <p
         className={`${
           evidenceType === 'evaluated' ? 'text-purple' : 'text-orange'
-        } text-xs font-medium truncate overflow-hidden`}
+        } text-xs font-medium truncate`}
       >
         {evidenceType}
       </p>
-      <p className="text-xs font-medium truncate">{name}</p>
+      <p className="text-xs font-medium text-ellipsis overflow-hidden line-clamp-1">
+        {name}
+      </p>
     </div>
   );
 };
