@@ -44,6 +44,7 @@ export default {
         nl4: '#924848',
         'primary-l1': '#E3D0FE',
         'white-90-card': '#FFFFFFE6',
+        delete: '#D39090',
       },
     },
   },
