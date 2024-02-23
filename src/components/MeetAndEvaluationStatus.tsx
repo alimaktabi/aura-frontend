@@ -25,22 +25,22 @@ export const MeetAndEvaluationStatus = ({
       style.icon = '/assets/images/Shared/thumbs-up-black.svg';
     }
     if (status < 0 && status >= -2) {
-      style.bg = 'bg-neg1';
+      style.bg = 'bg-nl1';
       style.text = 'text-black';
       style.icon = '/assets/images/Shared/thumbs-down-black.svg';
     }
     if (status < -2 && status >= -3) {
-      style.bg = 'bg-neg2';
+      style.bg = 'bg-nl2';
       style.text = 'text-black';
       style.icon = '/assets/images/Shared/thumbs-down-black.svg';
     }
     if (status < -3 && status >= -4) {
-      style.bg = 'bg-neg3';
+      style.bg = 'bg-nl3';
       style.text = 'text-white';
       style.icon = '/assets/images/Shared/thumbs-down-white.svg';
     }
     if (status < -4) {
-      style.bg = 'bg-nl3';
+      style.bg = 'bg-nl4';
       style.text = 'text-white';
       style.icon = '/assets/images/Shared/thumbs-down-white.svg';
     }

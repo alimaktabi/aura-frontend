@@ -1,3 +1,7 @@
+import {
+  getBgClassNameOfAuraRatingObject,
+  getTextClassNameOfAuraRatingObject,
+} from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useMemo } from 'react';
 import { useSelector } from 'store/hooks';
@@ -30,13 +34,19 @@ export const YourEvaluationInfo = ({
     if (rating?.rating) {
       if (Number(rating.rating) > 0)
         return {
-          bgAndTextColor: 'bg-pl1',
+          bgAndTextColor:
+            getBgClassNameOfAuraRatingObject(rating) +
+            ' ' +
+            getTextClassNameOfAuraRatingObject(rating),
           iconBgColor: 'bg-pl2',
           text: 'Positive',
         };
       if (Number(rating.rating) < 0)
         return {
-          bgAndTextColor: 'bg-nl1',
+          bgAndTextColor:
+            getBgClassNameOfAuraRatingObject(rating) +
+            ' ' +
+            getTextClassNameOfAuraRatingObject(rating),
           iconBgColor: 'bg-nl2',
           text: 'Negative',
         };

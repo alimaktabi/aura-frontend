@@ -16,6 +16,34 @@ export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
   recovery: 4,
 };
 
+export function getTextClassNameOfAuraRatingNumber(
+  rating: number | null | undefined,
+) {
+  if (!rating) return '';
+  return Math.abs(rating) > 2 ? 'text-white' : 'text-black';
+}
+
+export function getTextClassNameOfAuraRatingObject(
+  auraRating: AuraRating | null | undefined,
+) {
+  if (!auraRating) return auraRating;
+  return getTextClassNameOfAuraRatingNumber(Number(auraRating.rating));
+}
+
+export function getBgClassNameOfAuraRatingNumber(
+  rating: number | null | undefined,
+) {
+  if (!rating) return '';
+  return (rating > 0 ? 'bg-pl' : 'bg-nl') + Math.ceil(Math.abs(rating));
+}
+
+export function getBgClassNameOfAuraRatingObject(
+  auraRating: AuraRating | null | undefined,
+) {
+  if (!auraRating) return auraRating;
+  return getBgClassNameOfAuraRatingNumber(Number(auraRating.rating));
+}
+
 export function getConfidenceValueOfAuraRatingNumber(
   rating: number | null | undefined,
 ) {
