@@ -1,9 +1,11 @@
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { AuraFilterId } from 'hooks/useFilters';
+import { useOutboundEvaluations } from 'hooks/useOutboundEvaluations';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
-import { useContext } from 'react';
+import moment from 'moment';
+import { useContext, useMemo } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
@@ -28,6 +30,24 @@ export const ProfileInfo = ({
     SubjectInboundEvaluationsContext,
   );
   const { myConnectionToSubject } = useMyEvaluationsContext(subjectId);
+
+  const { outboundConnections, outboundRatings } =
+    useOutboundEvaluations(subjectId);
+
+  const lastActivity = useMemo(() => {
+    if (outboundConnections !== null && outboundRatings !== null) {
+      let timestamp = 0;
+      outboundConnections.forEach(
+        (c) => (timestamp = Math.max(timestamp, c.timestamp)),
+      );
+      outboundRatings.forEach(
+        (r) =>
+          (timestamp = Math.max(timestamp, new Date(r.updatedAt).getTime())),
+      );
+      return timestamp ? moment(timestamp).fromNow() : '-';
+    }
+    return '...';
+  }, [outboundConnections, outboundRatings]);
 
   return (
     <div className="card">
@@ -81,7 +101,7 @@ export const ProfileInfo = ({
             </div>
           )}
           <p className="text-sm font-light truncate">
-            Last Activity: <span className="font-medium">323d ago</span>
+            Last Activity: <span className="font-medium">{lastActivity}</span>
           </p>
         </div>
       </div>

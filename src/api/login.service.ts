@@ -16,22 +16,6 @@ export function pullEncryptedUserData(key: string) {
   return recoveryApi.get<string>(`/backups/${key}/data`);
 }
 
-export async function pullProfilePhoto(
-  key: string,
-  brightId: string,
-  password: string,
-) {
-  try {
-    const encryptedUserPicture = await recoveryApi.get(
-      `/backups/${key}/${brightId}`,
-    );
-    return decryptData(encryptedUserPicture.data, password);
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-}
-
 export const loginByExplorerCode = async (
   explorerCode: string,
   password: string,
