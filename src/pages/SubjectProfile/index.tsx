@@ -20,8 +20,6 @@ import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { selectAuthData } from '../../store/profile/selectors';
-import NewEvaluationCard from './NewEvaluationCard';
-import { YourEvaluation } from './YourEvaluation';
 
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
@@ -79,23 +77,26 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         />
       )}
 
-      <ProfileInfo subjectId={subjectId} />
+      <ProfileInfo
+        subjectId={subjectId}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+      />
 
       {__DEV__ && <ConnectionLevel subjectId={subjectId} />}
 
-      {loadingMyEvaluation ? (
-        <div className="card flex flex-col gap-2.5">...</div>
-      ) : isEvaluated ? (
-        <YourEvaluation
-          subjectId={subjectId}
-          setShowEvaluationFlow={setShowEvaluationFlow}
-        />
-      ) : (
-        <NewEvaluationCard
-          subjectId={subjectId}
-          setShowEvaluationFlow={setShowEvaluationFlow}
-        />
-      )}
+      {/*{loadingMyEvaluation ? (*/}
+      {/*  <div className="card flex flex-col gap-2.5">...</div>*/}
+      {/*) : isEvaluated ? (*/}
+      {/*  <YourEvaluation*/}
+      {/*    subjectId={subjectId}*/}
+      {/*    setShowEvaluationFlow={setShowEvaluationFlow}*/}
+      {/*  />*/}
+      {/*) : (*/}
+      {/*  <NewEvaluationCard*/}
+      {/*    subjectId={subjectId}*/}
+      {/*    setShowEvaluationFlow={setShowEvaluationFlow}*/}
+      {/*  />*/}
+      {/*)}*/}
       {/* if role is not player then show activities card */}
       {role !== 'Player' && <ActivitiesCard />}
 

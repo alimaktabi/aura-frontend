@@ -8,7 +8,9 @@ import moment from 'moment';
 import { useContext, useMemo } from 'react';
 import { connectionLevelIcons } from 'utils/connection';
 
+import NewEvaluationCard from '../../../pages/SubjectProfile/NewEvaluationCard';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
+import { YourEvaluationInfo } from '../EvaluationInfo/YourEvaluationInfo';
 
 // import { useState } from 'react';
 // import { useInboundConnections } from '../../../hooks/useSubjectConnections';
@@ -19,10 +21,12 @@ export const ProfileInfo = ({
   isPerformance = false,
   subjectId,
   color = 'pastel-green',
+  setShowEvaluationFlow,
 }: {
   isPerformance?: boolean;
-  subjectId: string | undefined;
+  subjectId: string;
   color?: string;
+  setShowEvaluationFlow: (value: boolean) => void;
 }) => {
   const { userHasRecovery, auraLevel } = useSubjectVerifications(subjectId);
   const name = useSubjectName(subjectId);
@@ -50,7 +54,7 @@ export const ProfileInfo = ({
   }, [outboundConnections, outboundRatings]);
 
   return (
-    <div className="card">
+    <div className="card flex flex-col gap-3">
       <div className="card--header flex justify-between w-full items-center">
         <div className="card--header__left flex gap-4">
           <BrightIdProfilePicture
@@ -105,6 +109,14 @@ export const ProfileInfo = ({
           </p>
         </div>
       </div>
+      <NewEvaluationCard
+        subjectId={subjectId}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+      />
+      <YourEvaluationInfo
+        toSubjectId={subjectId}
+        setShowEvaluationFlow={setShowEvaluationFlow}
+      />
     </div>
   );
 };

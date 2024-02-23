@@ -56,49 +56,52 @@ export const YourEvaluationInfo = ({
     );
 
   return (
-    <div>
+    <div className="flex gap-2">
       <div
-        className={`text-sm flex flex-1 justify-between rounded-md items-center h-[38px] p-1.5 ${
+        className={`text-sm flex flex-1 justify-between rounded-md items-center h-[36px] px-3 py-2 ${
           styleValues.bgAndTextColor
         } ${isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}
       >
-        <div>
-          <span
-            className="font-medium"
-            data-testid={`${isYourEvaluation ? 'your-' : ''}evaluation-${
-              authData?.brightId
-            }-${toSubjectId}-magnitude`}
-          >
-            {styleValues.text}
-          </span>
-          <span
-            className="font-medium"
-            data-testid={`${isYourEvaluation ? 'your-' : ''}evaluation-${
-              authData?.brightId
-            }-${toSubjectId}-confidence`}
-          >
-            {rating && Number(rating.rating) !== 0 && confidenceValue
-              ? ` - ${confidenceValue}`
-              : ''}
-            {rating?.rating ? ` (${rating.rating})` : ''}
-          </span>
+        <div className="flex gap-0.5 items-center">
+          <img
+            src="/assets/images/Shared/thumbs-up-white.svg"
+            alt=""
+            width="17.5px"
+            height="16.63px"
+          />
+          <div>
+            <span
+              className="font-medium"
+              data-testid={`${isYourEvaluation ? 'your-' : ''}evaluation-${
+                authData?.brightId
+              }-${toSubjectId}-magnitude`}
+            >
+              {styleValues.text}
+            </span>
+            <span
+              className="font-medium"
+              data-testid={`${isYourEvaluation ? 'your-' : ''}evaluation-${
+                authData?.brightId
+              }-${toSubjectId}-confidence`}
+            >
+              {rating && Number(rating.rating) !== 0 && confidenceValue
+                ? ` - ${confidenceValue}`
+                : ''}
+              {rating?.rating ? ` (${rating.rating})` : ''}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-medium">{'12%'}</span>
-          {isYourEvaluation && (
-            <div
-              className={`p-1.5 rounded cursor-pointer ${styleValues.iconBgColor}`}
-              data-testid={`your-evaluation-${authData?.brightId}-${toSubjectId}-edit`}
-              onClick={() => setShowEvaluationFlow(true)}
-            >
-              <img
-                src="/assets/images/Shared/edit-icon.svg"
-                alt=""
-                className="w-4 h-4"
-              />
-            </div>
-          )}
         </div>
+      </div>
+      <div className="rounded-md p-2 bg-button-primary">
+        <img
+          src="/assets/images/Shared/edit-icon.svg"
+          alt=""
+          width="20px"
+          height="20px"
+        />
       </div>
     </div>
   );
