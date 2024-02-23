@@ -15,7 +15,13 @@ import { compactFormat } from 'utils/number';
 import { HorizontalProgressBar } from './Shared/HorizontalProgressBar';
 import { ToggleInputWithIcon } from './Shared/ToggleInput';
 
-const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
+const CredibilityDetails = ({
+  subjectId,
+  onClose,
+}: {
+  subjectId: string;
+  onClose: () => void;
+}) => {
   const authData = useSelector(selectAuthData);
   const { auraLevel, auraScore } = useSubjectVerifications(subjectId);
   const { inboundRatings, inboundRatingsStatsString } =
@@ -29,6 +35,8 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
   const { outboundConnections } = useOutboundConnections(subjectId);
   const { options2 } = useContext(EchartsContext);
   const [isSubject, setIsSubject] = useState(true);
+  const link = '/subject/' + subjectId;
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -72,10 +80,21 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
             option={options2}
             className="body__chart w-3/4 mb-5 mt-2"
           />
+          <Link
+            to={link}
+            className="flex btn btn--bg-orange w-full justify-center"
+            onClick={(e) => {
+              e.preventDefault();
+              onClose();
+              navigate(link);
+            }}
+          >
+            View Subject Profile
+          </Link>
         </div>
       )}
       {!isSubject && (
-        <div>
+        <div className="w-full">
           <div className="font-bold text-l">
             As a <span className="text-orange">Subject</span>:
           </div>
@@ -140,6 +159,17 @@ const CredibilityDetails = ({ subjectId }: { subjectId: string }) => {
             option={options2}
             className="body__chart w-3/4 mb-5 mt-2"
           />
+          <Link
+            to={link}
+            className="flex btn w-full justify-center"
+            onClick={(e) => {
+              e.preventDefault();
+              onClose();
+              navigate(link);
+            }}
+          >
+            View Player Profile
+          </Link>
         </div>
       )}
     </div>
@@ -158,31 +188,7 @@ const CredibilityDetailsModal = ({
   return (
     <Modal isOpen={true} closeModalHandler={onClose} title={name}>
       <div>
-        <CredibilityDetails subjectId={subjectId} />
-        <div className="mt-4 flex gap-2">
-          <Link
-            to={link}
-            className="btn w-full text-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onClose();
-              navigate(link);
-            }}
-          >
-            Player Profile
-          </Link>
-          <Link
-            to={link}
-            className="btn btn--bg-orange w-full text-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onClose();
-              navigate(link);
-            }}
-          >
-            Subject Profile
-          </Link>
-        </div>
+        <CredibilityDetails subjectId={subjectId} onClose={onClose} />
       </div>
     </Modal>
   );
