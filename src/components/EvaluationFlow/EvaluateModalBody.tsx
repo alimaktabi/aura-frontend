@@ -134,27 +134,57 @@ const EvaluateModalBody = ({
         confidence={confidence}
         setConfidence={setConfidence}
       />
-      <div className="mt-36 flex gap-3">
-        <button
-          data-testid="submit-evaluation"
-          className={
-            onDelete ? `btn btn--big btn--outlined-big` : `btn btn--big w-full`
-          }
-          // onClick={submit}
-          onClick={() => setOnDelete(!onDelete)}
-        >
-          {onDelete && isEdit ? 'Cancel' : 'Update Evaluation'}
-          {/*{loading && !isEdit ? '...' : 'Submit Evaluation'}*/}
-        </button>
-        <button
-          className={`btn btn--big !bg-delete flex gap-2.5 ${
-            onDelete ? 'w-full justify-center items-center' : ''
-          }`}
-          onClick={() => setOnDelete(!onDelete)}
-        >
-          <img src="/assets/images/Shared/erase-icon.svg" alt="" />
-          {onDelete && <span>Remove</span>}
-        </button>
+      <div className="mt-36">
+        {!isEdit && (
+          <button
+            data-testid="submit-evaluation"
+            className="btn btn--big w-full"
+            onClick={submit}
+          >
+            {loading && !isEdit ? '...' : 'Submit Evaluation'}
+          </button>
+        )}
+        {isEdit && (
+          <div className="flex gap-3">
+            <button
+              data-testid="submit-evaluation"
+              className={`flex justify-center transition-all duration-300
+            ${
+              onDelete
+                ? `btn btn--big btn--outlined-big`
+                : `btn btn--big w-full`
+            }
+            `}
+              // onClick={submit}
+              onClick={() => setOnDelete(!onDelete)}
+            >
+              <p
+                className={`${
+                  onDelete ? 'opacity-100' : '!w-0 !h-0 opacity-0'
+                }`}
+              >
+                Cancel
+              </p>
+              <p
+                className={`${
+                  onDelete ? '!w-0 !h-0 opacity-0' : 'opacity-100'
+                }`}
+              >
+                Update Evaluation
+              </p>
+              {/*{loading && !isEdit ? '...' : 'Submit Evaluation'}*/}
+            </button>
+            <button
+              className={`btn btn--big !bg-delete flex gap-2.5 ${
+                onDelete ? 'w-full justify-center items-center' : ''
+              }`}
+              onClick={() => setOnDelete(!onDelete)}
+            >
+              <img src="/assets/images/Shared/erase-icon.svg" alt="" />
+              {onDelete && <span>Remove</span>}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
