@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         gray00: '#393939',
-        gray10: '#CFCFCF',
+        gray10: '#343434',
         gray20: '#585858',
         gray30: '#D9D9D9',
         gray40: '#ECECEC',
@@ -21,6 +21,8 @@ export default {
         'light-orange': '#F09F77',
         green: '#398A4C',
         green10: '#5B9969',
+        green20: '#B4E6C0',
+        green30: '#D5ECDA',
         'pastel-purple': '#C9A2FF',
         'pastel-purple-25': '#C9A2FF40',
         'pastel-green': '#81CC91',
@@ -38,6 +40,9 @@ export default {
         nl2: '#D39090',
         nl3: '#924848',
         pl3: '#257036',
+        neg1: '#F5BFBF',
+        neg2: '#EE9D9D',
+        neg3: '#DA6A6A',
         'primary-l1': '#E3D0FE',
         'white-90-card': '#FFFFFFE6',
       },
