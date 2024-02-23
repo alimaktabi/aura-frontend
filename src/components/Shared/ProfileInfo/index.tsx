@@ -35,6 +35,7 @@ export const ProfileInfo = ({
     useOutboundEvaluations(subjectId);
 
   const lastActivity = useMemo(() => {
+    console.log({ outboundConnections, outboundRatings });
     if (outboundConnections !== null && outboundRatings !== null) {
       let timestamp = 0;
       outboundConnections.forEach(

@@ -1,4 +1,9 @@
-import { getConfidenceValueOfAuraRatingNumber } from 'constants/index';
+import EvaluationThumb from 'components/Shared/EvaluationThumb';
+import {
+  getBgClassNameOfAuraRatingObject,
+  getConfidenceValueOfAuraRatingNumber,
+  getTextClassNameOfAuraRatingObject,
+} from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import { useSubjectName } from 'hooks/useSubjectName';
@@ -55,20 +60,22 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
   } = useMyEvaluationsContext(subjectId);
   const bgColor = useMemo(() => {
     if (rating && Number(rating?.rating) !== 0) {
-      return Number(rating?.rating) > 0 ? 'bg-pl1' : 'bg-nl1';
+      return getBgClassNameOfAuraRatingObject(rating);
+    }
+    if (inboundConnectionInfo?.level === 'just met') {
+      return 'bg-pl1';
     }
     if (
       inboundConnectionInfo?.level === 'recovery' ||
-      inboundConnectionInfo?.level === 'already known' ||
-      inboundConnectionInfo?.level === 'just met'
+      inboundConnectionInfo?.level === 'already known'
     ) {
-      return 'bg-pl1';
+      return 'bg-pl4';
     }
     if (
       inboundConnectionInfo?.level === 'suspicious' ||
       inboundConnectionInfo?.level === 'reported'
     ) {
-      return 'bg-nl1';
+      return 'bg-nl4';
     }
     return '';
   }, [inboundConnectionInfo?.level, rating]);
@@ -89,7 +96,11 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
               />
             )}
             {!!rating && Number(rating?.rating) !== 0 && (
-              <p className={`text-sm font-bold`}>
+              <p
+                className={`text-sm font-bold ${getTextClassNameOfAuraRatingObject(
+                  rating,
+                )}`}
+              >
                 {Number(rating.rating) < 0 ? '-' : '+'}
                 {Math.abs(Number(rating.rating))}
               </p>
@@ -97,9 +108,9 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
           </div>
           {!!rating && Number(rating?.rating) !== 0 && (
             <p
-              className={`impact-percentage ${
-                Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
-              } text-[11px] font-bold text-center w-full`}
+              className={`impact-percentage ${getTextClassNameOfAuraRatingObject(
+                rating,
+              )} text-[11px] font-bold text-center w-full`}
             >
               12%
             </p>
@@ -239,37 +250,31 @@ const EvaluationInformation = ({
   //TODO: change bg color on negative rating
   return (
     <div
-      className={`evaluation-information flex flex-col py-1.5 items-center justify-center gap-1 ${
-        Number(rating?.rating) > 0 ? 'bg-pl1' : 'bg-nl1'
-      } rounded-md`}
+      className={`evaluation-information flex flex-col py-1.5 items-center justify-center gap-1 ${getBgClassNameOfAuraRatingObject(
+        rating,
+      )} rounded-md`}
     >
       {loading ? (
         '...'
       ) : (
         <div className="flex items-center gap-1.5">
-          {Number(rating?.rating) > 0 && (
-            <img src="/assets/images/Shared/thumbs-up.svg" alt="" />
-          )}
-          <p className="text-black text-xs font-bold mt-0.5">{`${getConfidenceValueOfAuraRatingNumber(
-            Number(rating?.rating),
-          )} ${rating?.rating}`}</p>
+          <EvaluationThumb rating={rating} />
+          <p
+            className={`${getTextClassNameOfAuraRatingObject(
+              rating,
+            )} text-xs font-bold mt-0.5`}
+          >{`${getConfidenceValueOfAuraRatingNumber(Number(rating?.rating))} ${
+            rating?.rating
+          }`}</p>
         </div>
       )}
-      <div className="flex justify-between gap-9">
-        <p
-          className={`${
-            Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
-          } text-sm`}
-        >
-          Impact
-        </p>
-        <p
-          className={`${
-            Number(rating?.rating) > 0 ? 'text-green' : 'text-red-700'
-          } text-sm font-bold`}
-        >
-          12%
-        </p>
+      <div
+        className={`flex justify-between gap-9 text-sm ${getTextClassNameOfAuraRatingObject(
+          rating,
+        )}`}
+      >
+        <p>Impact</p>
+        <p className="font-bold">12%</p>
       </div>
     </div>
   );
