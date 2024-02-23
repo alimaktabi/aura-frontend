@@ -1,8 +1,8 @@
+import { pullProfilePhoto } from 'api/profilePhoto.service';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { hash } from 'utils/crypto';
 
-import { pullProfilePhoto } from '../api/login.service';
 import {
   selectAuthData,
   selectBrightIdBackup,

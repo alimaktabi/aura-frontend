@@ -1,4 +1,4 @@
-import { pullProfilePhoto } from 'api/login.service';
+import { pullProfilePhoto } from 'api/profilePhoto.service';
 import ChannelAPI from 'BrightID/api/channelService';
 import { IMPORT_PREFIX, RECOVERY_CHANNEL_TTL } from 'BrightID/utils/constants';
 import { encryptData } from 'BrightID/utils/cryptoHelper';

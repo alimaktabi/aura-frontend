@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { clearAllProfilePhotoCache } from 'api/profilePhoto.service';
 import { AuthDataWithPassword } from 'types';
 
 import {
@@ -16,7 +17,7 @@ export const getBrightIdBackupThunk = createAsyncThunk<
 >('profile/getBrightIdBackup', async ({ authKey }) => {
   try {
     const backupData = (await pullEncryptedUserData(authKey)).data;
-    console.log({ backupData });
+    await clearAllProfilePhotoCache();
     return backupData;
   } catch (error) {
     console.log(error);
