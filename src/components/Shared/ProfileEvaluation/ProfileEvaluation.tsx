@@ -346,7 +346,7 @@ const ConnectionInformation = ({
   });
   const connectionTime = useMemo(() => {
     if (!inboundConnectionInfo?.timestamp) return '-';
-    return moment(inboundConnectionInfo?.timestamp).fromNow();
+    return moment(inboundConnectionInfo.timestamp).fromNow();
   }, [inboundConnectionInfo?.timestamp]);
   return (
     <div className="flex flex-col py-1.5 items-center justify-center gap-1 bg-soft-bright rounded-md">
