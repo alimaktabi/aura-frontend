@@ -7,8 +7,10 @@ import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerification
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { connectionLevelIconsBlack } from 'utils/connection';
 import { compactFormat } from 'utils/number';
+
+import { MeetAndEvaluationStatus } from '../MeetAndEvaluationStatus';
+import { HorizontalProgressBar } from '../Shared/HorizontalProgressBar';
 
 export const SubjectCard = ({
   subjectId,
@@ -54,7 +56,7 @@ export const SubjectCard = ({
         <div className="evaluation-left__top flex gap-3">
           <div className="evaluation__profile">
             <BrightIdProfilePicture
-              className="rounded-full w-12 h-12 border border-white bg-center bg-cover"
+              className="rounded-full w-12 h-12 border-2 border-white bg-center bg-cover"
               subjectId={subjectId}
             />
           </div>
@@ -71,56 +73,61 @@ export const SubjectCard = ({
           </div>
         </div>
         <div className="evaluation-left__bottom">
-          <p className="text-sm text-gray20">
-            {Number(rating?.rating) ? 'Your evaluation' : 'Your connection'}
-          </p>
-          <div
-            className="font-medium"
-            data-testid={`user-item-${index}-evaluation`}
-          >
-            {loading ? (
-              <span className="text-gray20">...</span>
-            ) : Number(rating?.rating) > 0 ? (
-              <span className="text-green-800">
-                Positive{' '}
-                <span className="text-black"> - {confidenceValue}</span>
-              </span>
-            ) : Number(rating?.rating) < 0 ? (
-              <span className="text-red-800">
-                Negative{' '}
-                <span className="text-black"> - {confidenceValue}</span>
-              </span>
-            ) : inboundConnectionInfo ? (
-              <div className="flex">
-                <img
-                  className="pr-1"
-                  src={`/assets/images/Shared/${
-                    connectionLevelIconsBlack[inboundConnectionInfo.level]
-                  }.svg`}
-                  alt=""
-                />
-                {inboundConnectionInfo.level}
-              </div>
-            ) : (
-              '-'
-            )}
-          </div>
+          <MeetAndEvaluationStatus
+            evaluationValue={-2.5}
+            hasEvaluation={false}
+          />
+          {/*<p className="text-sm text-gray20">*/}
+          {/*  {Number(rating?.rating) ? 'Your evaluation' : 'Your connection'}*/}
+          {/*</p>*/}
+          {/*<div*/}
+          {/*  className="font-medium"*/}
+          {/*  data-testid={`user-item-${index}-evaluation`}*/}
+          {/*>*/}
+          {/*  {loading ? (*/}
+          {/*    <span className="text-gray20">...</span>*/}
+          {/*  ) : Number(rating?.rating) > 0 ? (*/}
+          {/*    <span className="text-green-800">*/}
+          {/*      Positive{' '}*/}
+          {/*      <span className="text-black"> - {confidenceValue}</span>*/}
+          {/*    </span>*/}
+          {/*  ) : Number(rating?.rating) < 0 ? (*/}
+          {/*    <span className="text-red-800">*/}
+          {/*      Negative{' '}*/}
+          {/*      <span className="text-black"> - {confidenceValue}</span>*/}
+          {/*    </span>*/}
+          {/*  ) : inboundConnectionInfo ? (*/}
+          {/*    <div className="flex">*/}
+          {/*      <img*/}
+          {/*        className="pr-1"*/}
+          {/*        src={`/assets/images/Shared/${*/}
+          {/*          connectionLevelIconsBlack[inboundConnectionInfo.level]*/}
+          {/*        }.svg`}*/}
+          {/*        alt=""*/}
+          {/*      />*/}
+          {/*      {inboundConnectionInfo.level}*/}
+          {/*    </div>*/}
+          {/*  ) : (*/}
+          {/*    '-'*/}
+          {/*  )}*/}
+          {/*</div>*/}
         </div>
       </div>
-      <div className="evaluation-right flex flex-col gap-2">
+      <div className="evaluation-right flex flex-col gap-2 items-end">
         <div className="evaluation-right__top">
-          <p className="text-gray20">
+          <p className="font-light text-gray20">
             Score:{' '}
             <span className="font-medium text-black">
               {auraScore ? compactFormat(auraScore) : '-'}
             </span>
           </p>
-          <p className="text-gray20">
-            <span className="font-medium text-black">
-              {inboundRatingsStatsString}
-            </span>
-          </p>
+          {/*<p className="text-gray20">*/}
+          {/*  <span className="font-medium text-black">*/}
+          {/*    {inboundRatingsStatsString}*/}
+          {/*  </span>*/}
+          {/*</p>*/}
         </div>
+        <HorizontalProgressBar isWidthFull={true} percentage={'w-[20%]'} />
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
