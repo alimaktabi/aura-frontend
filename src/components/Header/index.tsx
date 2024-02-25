@@ -1,7 +1,9 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
+
+import { PlayerHistorySequence } from './PlayerHistorySequence';
 
 const Header = () => {
   const location = useLocation();
@@ -26,25 +28,42 @@ const Header = () => {
     };
   }
 
+  const [hasSequence, setHasSequence] = useState(true);
+  const [isSequenceOpen, setIsSequenceOpen] = useState(false);
+
   return (
-    <header className="header px-6 pt-9 pb-4 flex justify-between">
-      <span className="header-left">
-        <span className="header-title font-medium text-2xl text-white">
-          {headerComponent.title}
-        </span>
-      </span>
-      <span className="header-right flex items-center">
-        {headerComponent.icon && (
-          <span
-            onClick={onIconClick}
-            className="header-icon !cursor-pointer"
-            data-testid="nav-button"
-          >
-            <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
+    <div className="flex flex-col gap-2.5 px-6 pt-9">
+      {hasSequence && isSequenceOpen && <PlayerHistorySequence />}
+      <header className="header pb-4 flex justify-between">
+        <div className="header-left flex gap-1.5">
+          {hasSequence && (
+            <img
+              src={
+                isSequenceOpen
+                  ? '/assets/images/Header/close-sequence.svg'
+                  : '/assets/images/Header/sequence.svg'
+              }
+              alt=""
+              onClick={() => setIsSequenceOpen(!isSequenceOpen)}
+            />
+          )}
+          <span className="header-title font-medium text-2xl text-white">
+            {headerComponent.title}
           </span>
-        )}
-      </span>
-    </header>
+        </div>
+        <span className="header-right flex items-center">
+          {headerComponent.icon && (
+            <span
+              onClick={onIconClick}
+              className="header-icon !cursor-pointer"
+              data-testid="nav-button"
+            >
+              <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
+            </span>
+          )}
+        </span>
+      </header>
+    </div>
   );
 };
 
