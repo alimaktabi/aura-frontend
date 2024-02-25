@@ -30,6 +30,23 @@ export function getTextClassNameOfAuraRatingObject(
   return getTextClassNameOfAuraRatingNumber(Number(auraRating.rating));
 }
 
+export function getThumbsIconPathOfAuraRatingNumber(
+  rating: number | null | undefined,
+) {
+  if (!rating) return '';
+  if (rating > 2) return '/assets/images/Shared/thumbs-up-white.svg';
+  else if (rating > 0) return '/assets/images/Shared/thumbs-up-black.svg';
+  else if (rating > -2) return '/assets/images/Shared/thumbs-down-black.svg';
+  else return '/assets/images/Shared/thumbs-down-white.svg';
+}
+
+export function getThumbsIconPathOfAuraObject(
+  auraRating: AuraRating | null | undefined,
+) {
+  if (!auraRating) return auraRating;
+  return getThumbsIconPathOfAuraRatingNumber(Number(auraRating.rating));
+}
+
 export function getBgClassNameOfAuraRatingNumber(
   rating: number | null | undefined,
 ) {

@@ -74,8 +74,8 @@ export const SubjectCard = ({
         </div>
         <div className="evaluation-left__bottom">
           <MeetAndEvaluationStatus
-            evaluationValue={-2.5}
-            hasEvaluation={false}
+            evaluationValue={-3.5}
+            hasEvaluation={true}
           />
           {/*<p className="text-sm text-gray20">*/}
           {/*  {Number(rating?.rating) ? 'Your evaluation' : 'Your connection'}*/}
