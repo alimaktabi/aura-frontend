@@ -148,7 +148,7 @@ const EvaluateModalBody = ({
           <div className="flex gap-3">
             <button
               data-testid="submit-evaluation"
-              className={`flex justify-center transition-all duration-300
+              className={`flex justify-center transition-all duration-300 ease-linear
             ${
               onDelete
                 ? `btn btn--big btn--outlined-big`
@@ -175,7 +175,7 @@ const EvaluateModalBody = ({
               {/*{loading && !isEdit ? '...' : 'Submit Evaluation'}*/}
             </button>
             <button
-              className={`btn btn--big !bg-delete flex gap-2.5 ${
+              className={`btn btn--big !bg-delete flex gap-2.5 transition-all duration-300 ease-linear ${
                 onDelete ? 'w-full justify-center items-center' : ''
               }`}
               onClick={() => setOnDelete(!onDelete)}
