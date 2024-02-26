@@ -103,6 +103,7 @@ export const YourEvaluationInfo = ({
       </div>
       <div
         onClick={() => setShowEvaluationFlow(true)}
+        data-testid={`your-evaluation-${authData?.brightId}-${toSubjectId}-edit`}
         className="rounded-md p-2 bg-button-primary cursor-pointer"
       >
         <img

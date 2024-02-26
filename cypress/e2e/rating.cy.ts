@@ -136,9 +136,9 @@ describe('Rating', () => {
         ).contains(confidenceValue);
       }
     } else {
-      cy.get(getTestSelector(`not-evaluated-subject-${connection.id}`)).should(
-        'exist',
-      );
+      cy.get(
+        getTestSelector(`evaluate-not-evaluated-subject-${connection.id}`),
+      ).should('exist');
     }
   }
 
