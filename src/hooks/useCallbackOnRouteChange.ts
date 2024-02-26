@@ -10,9 +10,8 @@ export default function useCallbackOnRouteChange(
     if (prevLocation !== location.pathname) {
       if (prevLocation) {
         callback?.();
-      } else {
-        setPrevLocation(location.pathname);
       }
+      setPrevLocation(location.pathname);
     }
   }, [callback, location.pathname, prevLocation]);
 }

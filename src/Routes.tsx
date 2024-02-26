@@ -68,7 +68,7 @@ const routes = [
     element: <Home />,
     header: {
       title: 'Home',
-      icon: '/assets/images/Dashboard/menu.svg',
+      icon: '/assets/images/Header/menu.svg',
     },
     requireAuth: true,
   },
