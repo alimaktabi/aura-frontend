@@ -11,7 +11,7 @@ import SubjectProfile from './pages/SubjectProfile';
 const routes = [
   {
     // Only used for demo
-    path: RoutePath.SPLASH, // /splash
+    path: RoutePath.SPLASH,
     pathRegex: new RegExp(/^\/splash/),
     element: <Splash />,
     noHeader: true,
@@ -19,21 +19,21 @@ const routes = [
   },
   {
     // Only used for demo
-    path: RoutePath.ONBOARDING, // /onboardingRD, // /onboard
+    path: RoutePath.ONBOARDING,
     pathRegex: new RegExp(/^\/onboard/),
     element: <Onboarding />,
     noHeader: true,
     requireAuth: true,
   },
   {
-    path: RoutePath.LOGIN, // /
+    path: RoutePath.LOGIN,
     pathRegex: new RegExp(/^\/$/),
     element: <Login />,
     noHeader: true,
     requireAuth: false,
   },
   {
-    path: RoutePath.DASHBOARD, // /dashboard
+    path: RoutePath.DASHBOARD,
     pathRegex: new RegExp(/^\/dashboard/),
     element: <Dashboard />,
     header: {
@@ -43,7 +43,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: RoutePath.DOMAIN_OVERVIEW, // /domain-overview
+    path: RoutePath.DOMAIN_OVERVIEW,
     pathRegex: new RegExp(/^\/domain-overview/),
     element: <DomainOverview />,
     header: {
@@ -53,7 +53,7 @@ const routes = [
     requireAuth: true,
   },
   {
-    path: RoutePath.SUBJECT_PROFILE, // /subject/:subjectId
+    path: RoutePath.SUBJECT_PROFILE,
     pathRegex: new RegExp(/^\/subject\/[a-zA-Z0-9_-]+/),
     element: <SubjectProfile />,
     header: {
@@ -63,7 +63,7 @@ const routes = [
     requireAuth: false,
   },
   {
-    path: RoutePath.HOME, // /performance-overview
+    path: RoutePath.HOME,
     pathRegex: new RegExp(/^\/home/),
     element: <Home />,
     header: {

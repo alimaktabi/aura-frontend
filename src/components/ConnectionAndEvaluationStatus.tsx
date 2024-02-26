@@ -38,7 +38,7 @@ export const ConnectionAndEvaluationStatus = ({
           </p>
         )}
       </div>
-      {ratingNumber && (
+      {ratingNumber ? (
         <div
           className={`flex gap-1 items-center rounded-md ${getBgClassNameOfAuraRatingNumber(
             ratingNumber,
@@ -49,6 +49,8 @@ export const ConnectionAndEvaluationStatus = ({
             {confidenceValue} ({ratingNumber})
           </p>
         </div>
+      ) : (
+        <></>
       )}
     </div>
   );
