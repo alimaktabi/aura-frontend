@@ -4,7 +4,6 @@ import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
-import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
@@ -23,13 +22,6 @@ import { selectAuthData } from '../../store/profile/selectors';
 
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const role = 'Player';
-
-  const { myRatingToSubject: rating, loading: loadingMyEvaluation } =
-    useMyEvaluationsContext(subjectId);
-
-  const isEvaluated = useMemo(() => {
-    return !!rating && Math.abs(Number(rating.rating)) > 0;
-  }, [rating]);
 
   const [isOverviewSelected, setIsOverviewSelected] = useState(true);
 

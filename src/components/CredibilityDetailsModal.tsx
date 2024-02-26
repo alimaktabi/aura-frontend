@@ -183,8 +183,6 @@ const CredibilityDetailsModal = ({
   onClose: () => void;
 }) => {
   const name = useSubjectName(subjectId);
-  const link = '/subject/' + subjectId;
-  const navigate = useNavigate();
   return (
     <Modal isOpen={true} closeModalHandler={onClose} title={name}>
       <div>

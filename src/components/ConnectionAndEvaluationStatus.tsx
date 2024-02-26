@@ -15,7 +15,6 @@ export const ConnectionAndEvaluationStatus = ({
   const {
     myRatingToSubject: rating,
     myRatingNumberToSubject: ratingNumber,
-    loading,
     myConnectionToSubject: inboundConnectionInfo,
     myConfidenceValueInThisSubjectRating: confidenceValue,
   } = useMyEvaluationsContext(subjectId);

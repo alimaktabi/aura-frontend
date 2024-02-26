@@ -28,7 +28,7 @@ const Header = () => {
     };
   }
 
-  const [hasSequence, setHasSequence] = useState(true);
+  const [hasSequence] = useState(true);
   const [isSequenceOpen, setIsSequenceOpen] = useState(false);
 
   return (
