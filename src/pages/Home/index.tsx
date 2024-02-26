@@ -1,6 +1,8 @@
 import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
 import { SubjectSearch } from 'components/EvaluationFlow/SubjectSearch';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
+import Onboarding from 'pages/Onboarding';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -12,7 +14,10 @@ import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
 import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
 import { useDispatch } from '../../store/hooks';
 import { getBrightIdBackupThunk } from '../../store/profile/actions';
-import { selectAuthData } from '../../store/profile/selectors';
+import {
+  selectAuthData,
+  selectPlayerOnboardingScreenShown,
+} from '../../store/profile/selectors';
 import { hash } from '../../utils/crypto';
 import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
@@ -41,11 +46,22 @@ const Home = () => {
     await dispatch(getBrightIdBackupThunk({ authKey }));
     setLoading(false);
   }, [authData, dispatch]);
+
+  const { myRatings, loading: loadingMyEvaluations } =
+    useMyEvaluationsContext();
+  const playerOnboardingScreenShown = useSelector(
+    selectPlayerOnboardingScreenShown,
+  );
+
   if (!authData) {
     return <div>Not logged in</div>;
   }
 
-  return (
+  return myRatings?.length === 0 && !playerOnboardingScreenShown ? (
+    <Onboarding />
+  ) : loadingMyEvaluations ? (
+    <div>Loading...</div>
+  ) : (
     <SubjectInboundEvaluationsContextProvider subjectId={authData.brightId}>
       <div className="page flex flex-col gap-4">
         {/*<ProfileInfo*/}
@@ -69,21 +85,7 @@ const Home = () => {
           setIsChecked={setIsEvaluate}
           option2Disabled={isLocked}
         />
-        {!isEvaluate && (
-          <div className="flex flex-col gap-4">
-            {/*<ActivitiesCard />*/}
-            {!hasTrainers && <FindTrainersCard />}
-            {hasTrainers && (
-              <EvaluationsDetailsPerformance
-                subjectId={authData.brightId}
-                title="Evaluation by Trainers"
-                hasHeader={true}
-                hasBtn={true}
-              />
-            )}
-          </div>
-        )}
-        {isEvaluate && (
+        {isEvaluate ? (
           <div>
             <SubjectSearch />
             <div className="text-lg text-white mb-3 mt-3 flex">
@@ -121,6 +123,19 @@ const Home = () => {
               </div>
             ) : (
               <div>loading...</div>
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {/*<ActivitiesCard />*/}
+            {!hasTrainers && <FindTrainersCard />}
+            {hasTrainers && (
+              <EvaluationsDetailsPerformance
+                subjectId={authData.brightId}
+                title="Evaluation by Trainers"
+                hasHeader={true}
+                hasBtn={true}
+              />
             )}
           </div>
         )}
