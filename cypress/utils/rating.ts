@@ -57,6 +57,14 @@ export const oldRatings: AuraRating[] = [
     createdAt: '2021-07-11T20:59:03.036Z',
     updatedAt: '2021-07-11T10:59:03.036Z',
   },
+  {
+    id: 6070,
+    toBrightId: justMet2.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '-1',
+    createdAt: '2021-07-11T20:59:03.036Z',
+    updatedAt: '2021-07-11T10:59:03.036Z',
+  },
 ];
 
 export const incomingRatings: AuraRating[] = [
@@ -156,22 +164,24 @@ export const userInboundConnectionsResponse: AuraNodeConnectionsResponse = {
 };
 
 export const connectionsInConnectionsPageDefaultFilter = [
-  ...[justMet, justMet2, unratedConnection, justMet3].sort(
-    (a, b) =>
-      new Date(b.timestamp ?? 0).getTime() -
-      new Date(a.timestamp ?? 0).getTime(),
-  ),
-  ...[
-    ratedConnection,
-    ratedConnection2,
-    ratedConnection3,
-    ratedConnectionNegative,
-    ratedConnectionWithoutEnergy,
-  ].sort(
-    (a, b) =>
-      new Date(b.timestamp ?? 0).getTime() -
-      new Date(a.timestamp ?? 0).getTime(),
-  ),
+  ...userConnections
+    .filter(
+      (u) => !Number(oldRatings.find((r) => r.toBrightId === u.id)?.rating),
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.timestamp ?? 0).getTime() -
+        new Date(a.timestamp ?? 0).getTime(),
+    ),
+  ...userConnections
+    .filter((u) =>
+      Number(oldRatings.find((r) => r.toBrightId === u.id)?.rating),
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.timestamp ?? 0).getTime() -
+        new Date(a.timestamp ?? 0).getTime(),
+    ),
 ];
 
 export const connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending =
