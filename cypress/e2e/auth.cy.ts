@@ -211,7 +211,6 @@ describe('Auth', () => {
         JSON.parse((await localforage.getItem('persist:root')) || '{}')
           .profile || '{}',
       ) as ProfileState;
-      console.log({ profileSliceData });
       expect(profileSliceData.authData).to.be.null;
       expect(profileSliceData.brightIdBackupEncrypted).to.be.null;
     });

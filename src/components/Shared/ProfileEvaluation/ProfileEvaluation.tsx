@@ -33,7 +33,7 @@ const ProfileEvaluation = ({
   return (
     <div
       onClick={onClick}
-      className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
+      className={`profile-evaluation-card card !flex-row gap-.5 pl-2 pt-[11px] pr-[14px] pb-3`}
     >
       {loading ? (
         'Loading...'
@@ -210,17 +210,17 @@ const EvidenceInformation = ({
 }) => {
   const name = useSubjectName(subjectId);
   return (
-    <div className="evidence-information flex justify-between">
-      <p
+    <div className="evidence-information flex justify-between flex-1 gap-2">
+      <div
         className={`${
           evidenceType === 'evaluated' ? 'text-purple' : 'text-orange'
-        } text-xs font-medium truncate`}
+        } text-xs font-medium`}
       >
         {evidenceType}
-      </p>
-      <p className="text-xs font-medium text-ellipsis overflow-hidden line-clamp-1">
+      </div>
+      <div className="text-xs font-medium truncate flex-1 text-right">
         {name}
-      </p>
+      </div>
     </div>
   );
 };
@@ -289,20 +289,22 @@ const EvaluatedCardBody = ({
 }) => {
   return (
     <>
-      <div className="card__left-column w-[50px] flex flex-col gap-1.5">
-        <BrightIdProfilePicture
-          subjectId={fromSubjectId}
-          className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
-        />
-        <ConnectionInfo subjectId={fromSubjectId} />
+      <div className="card__left-column w-[60%] flex gap-1.5">
+        <div className="w-[50px] flex flex-col gap-1.5">
+          <BrightIdProfilePicture
+            subjectId={fromSubjectId}
+            className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
+          />
+          <ConnectionInfo subjectId={fromSubjectId} />
+        </div>
+        <div className="flex flex-col gap-0 w-full">
+          <UserName subjectId={fromSubjectId} />
+          <UserInformation subjectId={fromSubjectId} />
+          <Graph />
+        </div>
+        <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
       </div>
-      <div className="card__middle-column flex flex-col gap-0 w-[33%] min-w-[126px] max-w-[130px]">
-        <UserName subjectId={fromSubjectId} />
-        <UserInformation subjectId={fromSubjectId} />
-        <Graph />
-      </div>
-      <span className="divider border-r border-dashed border-gray00 pl-1.5 mr-1.5 h-full"></span>
-      <div className="card__right-column flex flex-col gap-1 flex-1">
+      <div className="card__right-column flex flex-col gap-1 w-[40%]">
         <EvidenceInformation evidenceType="evaluated" subjectId={toSubjectId} />
         <EvidenceUserProfile subjectId={toSubjectId} />
         <EvaluationInformation
@@ -386,20 +388,22 @@ const ConnectedCardBody = ({
 }) => {
   return (
     <>
-      <div className="card__left-column w-[50px] flex flex-col gap-1.5">
-        <BrightIdProfilePicture
-          subjectId={fromSubjectId}
-          className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
-        />
-        <ConnectionInfo subjectId={fromSubjectId} />
+      <div className="card__left-column w-[60%] flex gap-1.5">
+        <div className="w-[50px] flex flex-col gap-1.5">
+          <BrightIdProfilePicture
+            subjectId={fromSubjectId}
+            className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
+          />
+          <ConnectionInfo subjectId={fromSubjectId} />
+        </div>
+        <div className="flex flex-col gap-0 w-full">
+          <UserName subjectId={fromSubjectId} />
+          <UserInformation subjectId={fromSubjectId} isConnected />
+          <Graph />
+        </div>
+        <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
       </div>
-      <div className="card__middle-column flex flex-col gap-0 w-[33%] min-w-[126px] max-w-[130px]">
-        <UserName subjectId={fromSubjectId} />
-        <UserInformation subjectId={fromSubjectId} isConnected />
-        <Graph />
-      </div>
-      <span className="divider border-r border-dashed border-gray00 pl-1.5 mr-1.5 h-full"></span>
-      <div className="card__right-column flex flex-col gap-1 flex-1">
+      <div className="card__right-column flex flex-col gap-1 w-[40%]">
         <EvidenceInformation
           evidenceType="connected to"
           subjectId={toSubjectId}

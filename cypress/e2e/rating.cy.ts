@@ -33,7 +33,6 @@ describe('Rating', () => {
     const ratingResponse: AuraRatingRetrieveResponse = {
       ratings: currentRatings,
     };
-    console.log({ ratingResponse });
     cy.intercept(
       {
         url: `/v1/ratings/${FAKE_BRIGHT_ID}`,
