@@ -85,6 +85,12 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
       )
       .flat();
   }, [brightIdBackup, loading, myRatings]);
+  console.log({
+    data: connectionsSortedDefault?.map((c) => ({
+      ...c,
+      rating: myRatings?.findIndex((r) => r.toBrightId === c.id),
+    })),
+  });
 
   const filterAndSortHookData = useFilterAndSort(
     connectionsSortedDefault,

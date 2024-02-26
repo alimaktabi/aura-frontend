@@ -34,7 +34,9 @@ import {
 } from '../utils/mutual-connections';
 import {
   oldRatings,
+  userInboundConnectionsResponse,
   userIncomingRatingsResponse,
+  userOutboundConnectionsResponse,
   userRatingsResponse,
 } from '../utils/rating';
 
@@ -157,14 +159,13 @@ Cypress.Commands.add('profileIntercepts', () => {
     },
   );
 
-  // nonsense response just for test to work
   cy.intercept(
     {
       url: `/auranode/brightid/v6/users/${FAKE_BRIGHT_ID}/connections/inbound?withVerifications=true`,
       method: 'GET',
     },
     {
-      body: connectionIncomingConnectionsResponse,
+      body: userInboundConnectionsResponse,
     },
   );
   cy.intercept(
@@ -173,7 +174,7 @@ Cypress.Commands.add('profileIntercepts', () => {
       method: 'GET',
     },
     {
-      body: connectionOutboundConnectionsResponse,
+      body: userOutboundConnectionsResponse,
     },
   );
   BRIGHT_ID_BACKUP.connections.forEach((conn) => {

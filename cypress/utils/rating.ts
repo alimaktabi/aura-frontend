@@ -1,15 +1,20 @@
-import { AuraRating } from 'types';
+import { AuraNodeConnectionsResponse, AuraRating } from 'types';
 
 import {
-  BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
+  justMet,
+  justMet2,
+  justMet3,
+  RANDOM_TIMESTAMP,
   ratedConnection,
   ratedConnection2,
   ratedConnection3,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
+  SAMPLE_AURA_VERIFICATION_OBJECT,
   unratedConnection,
 } from './data';
+import { toConnectionFormat } from './index';
 
 export const oldRatings: AuraRating[] = [
   {
@@ -122,12 +127,55 @@ export const userIncomingRatingsResponse: {
   ratings: incomingRatings,
 };
 
-export const connectionsInConnectionsPageFilterAll = [
-  ...BRIGHT_ID_BACKUP.connections,
+const userConnections = [
+  ratedConnection,
+  ratedConnection2,
+  ratedConnection3,
+  unratedConnection,
+  ratedConnectionNegative,
+  ratedConnectionWithoutEnergy,
+  justMet3,
+  justMet,
+  justMet2,
+];
+export const userOutboundConnectionsResponse: AuraNodeConnectionsResponse = {
+  data: {
+    connections: userConnections.map((c) => toConnectionFormat(c)),
+  },
+};
+export const userInboundConnectionsResponse: AuraNodeConnectionsResponse = {
+  data: {
+    connections: Array(9).fill({
+      id: FAKE_BRIGHT_ID,
+      level: 'just met',
+      timestamp: RANDOM_TIMESTAMP,
+      verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
+      reportReason: null,
+    }),
+  },
+};
+
+export const connectionsInConnectionsPageDefaultFilter = [
+  ...[justMet, justMet2, unratedConnection, justMet3].sort(
+    (a, b) =>
+      new Date(b.timestamp ?? 0).getTime() -
+      new Date(a.timestamp ?? 0).getTime(),
+  ),
+  ...[
+    ratedConnection,
+    ratedConnection2,
+    ratedConnection3,
+    ratedConnectionNegative,
+    ratedConnectionWithoutEnergy,
+  ].sort(
+    (a, b) =>
+      new Date(b.timestamp ?? 0).getTime() -
+      new Date(a.timestamp ?? 0).getTime(),
+  ),
 ];
 
 export const connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending =
-  [...connectionsInConnectionsPageFilterAll].sort(
+  [...connectionsInConnectionsPageDefaultFilter].sort(
     (a, b) =>
       new Date(a.timestamp ?? 0).getTime() -
       new Date(b.timestamp ?? 0).getTime(),
@@ -139,12 +187,12 @@ export const connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDe
   ].reverse();
 
 export const connectionsInConnectionsPageAlreadyKnownPlus =
-  connectionsInConnectionsPageFilterAll.filter(
+  connectionsInConnectionsPageDefaultFilter.filter(
     (user) => user.level === 'already known' || user.level === 'recovery',
   );
 
 export const connectionsInConnectionsPageJustMet =
-  connectionsInConnectionsPageFilterAll.filter(
+  connectionsInConnectionsPageDefaultFilter.filter(
     (user) => user.level === 'just met',
   );
 

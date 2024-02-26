@@ -1,5 +1,8 @@
 import { BrightIdProfile, Verifications } from 'api/auranode.service';
-import { BrightIdBackup, BrightIdBackupConnection } from 'types';
+import {
+  AuraNodeBrightIdConnectionWithBackupData,
+  BrightIdBackup,
+} from 'types';
 import {
   encryptData,
   encryptUserData,
@@ -31,8 +34,17 @@ const toSigningKey = (s: string) => {
   };
   return s.replace(/[-_]/g, (c: string) => alts[c]) + '=';
 };
+export const AURA_LEVEL = 'Bronze';
 
-export const unratedConnection: BrightIdBackupConnection = {
+export const SAMPLE_AURA_VERIFICATION_OBJECT = {
+  name: 'Aura',
+  block: 11760650,
+  timestamp: 1698721975910,
+  score: 100223.774421,
+  level: AURA_LEVEL,
+} as const;
+
+export const unratedConnection: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08',
   name: 'Unrated Connection',
   connectionDate: RANDOM_TIMESTAMP + 500,
@@ -43,13 +55,13 @@ export const unratedConnection: BrightIdBackupConnection = {
   notificationToken: '017381a8-8acc-417b-8e77-d7b7cc9b37b7',
   level: 'already known',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 500,
   incomingLevel: 'already known',
 };
 
-export const justMet: BrightIdBackupConnection = {
+export const justMet: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'k8rKbTInhbHxgQg7bJrhBfsMhhLz_VpXMQqhDwphX08',
   name: 'Just Met',
   connectionDate: RANDOM_TIMESTAMP + 5000,
@@ -60,13 +72,13 @@ export const justMet: BrightIdBackupConnection = {
   notificationToken: '00faf70f-8fcc-4129-8b5e-82037588e0e7',
   level: 'just met',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 5000,
   incomingLevel: 'just met',
 };
 
-export const justMet2: BrightIdBackupConnection = {
+export const justMet2: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'TInQg7bJrhBfsMQqhhbHxMhhLz_VpXgk8rKbDwphX08',
   name: 'Just Met 2',
   connectionDate: RANDOM_TIMESTAMP + 1000,
@@ -77,13 +89,13 @@ export const justMet2: BrightIdBackupConnection = {
   notificationToken: '691f81bf-e2b5-4f84-a22a-091ca9d5e6ae',
   level: 'just met',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 1000,
   incomingLevel: 'just met',
 };
 
-export const justMet3: BrightIdBackupConnection = {
+export const justMet3: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'qhhbHxMhhLz_VpXgk8TInQg7bJrhBfsMQrKbDwphX08',
   name: 'Just Met 3',
   connectionDate: RANDOM_TIMESTAMP + 200,
@@ -94,13 +106,13 @@ export const justMet3: BrightIdBackupConnection = {
   notificationToken: '3b4d7526-6b2b-4fbf-9db2-333ff5f23da0',
   level: 'just met',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 200,
   incomingLevel: 'just met',
 };
 
-export const ratedConnection: BrightIdBackupConnection = {
+export const ratedConnection: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q',
   name: 'Rated Connection',
   connectionDate: RANDOM_TIMESTAMP + 20,
@@ -111,13 +123,13 @@ export const ratedConnection: BrightIdBackupConnection = {
   notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
   level: 'already known',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 20,
   incomingLevel: 'already known',
 };
 
-export const ratedConnection2: BrightIdBackupConnection = {
+export const ratedConnection2: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'zx-DOpXZuDsiyh2MUBQGnSKhIADI9erfF2bR0tUgf7q',
   name: 'Rated Connection 2',
   connectionDate: RANDOM_TIMESTAMP + 30000,
@@ -128,13 +140,13 @@ export const ratedConnection2: BrightIdBackupConnection = {
   notificationToken: '0230078e-2b66-4165-93e2-f0a3363c2540',
   level: 'already known',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 30000,
   incomingLevel: 'already known',
 };
 
-export const ratedConnection3: BrightIdBackupConnection = {
+export const ratedConnection3: AuraNodeBrightIdConnectionWithBackupData = {
   id: 'px-9erfF2bR0DOpXZuDsiyh2MUBQGnSKhIADItUgf7q',
   name: 'Rated Connection 3',
   connectionDate: RANDOM_TIMESTAMP + 2000,
@@ -145,45 +157,47 @@ export const ratedConnection3: BrightIdBackupConnection = {
   notificationToken: '1f00f451-5ca9-43fa-a6bc-5438cd720b31',
   level: 'recovery',
   socialMedia: [],
-  verifications: [],
+  verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP + 2000,
   incomingLevel: 'recovery',
 };
 
-export const ratedConnectionWithoutEnergy: BrightIdBackupConnection = {
-  id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
-  name: 'Rated Without Energy',
-  connectionDate: RANDOM_TIMESTAMP + 2500,
-  photo: {
-    filename: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb.jpg',
-  },
-  status: 'verified',
-  notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
-  level: 'already known',
-  socialMedia: [],
-  verifications: [],
-  reportReason: null,
-  timestamp: RANDOM_TIMESTAMP + 2500,
-  incomingLevel: 'already known',
-};
+export const ratedConnectionWithoutEnergy: AuraNodeBrightIdConnectionWithBackupData =
+  {
+    id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
+    name: 'Rated Without Energy',
+    connectionDate: RANDOM_TIMESTAMP + 2500,
+    photo: {
+      filename: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb.jpg',
+    },
+    status: 'verified',
+    notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
+    level: 'already known',
+    socialMedia: [],
+    verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
+    reportReason: null,
+    timestamp: RANDOM_TIMESTAMP + 2500,
+    incomingLevel: 'already known',
+  };
 
-export const ratedConnectionNegative: BrightIdBackupConnection = {
-  id: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q',
-  name: 'Rated Connection Negative',
-  connectionDate: RANDOM_TIMESTAMP - 300,
-  photo: {
-    filename: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q.jpg',
-  },
-  status: 'verified',
-  notificationToken: 'b87b2e1d-9a27-4309-96d7-1efc9c91544e',
-  level: 'already known',
-  socialMedia: [],
-  verifications: [],
-  reportReason: null,
-  timestamp: RANDOM_TIMESTAMP - 300,
-  incomingLevel: 'already known',
-};
+export const ratedConnectionNegative: AuraNodeBrightIdConnectionWithBackupData =
+  {
+    id: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q',
+    name: 'Rated Connection Negative',
+    connectionDate: RANDOM_TIMESTAMP - 300,
+    photo: {
+      filename: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q.jpg',
+    },
+    status: 'verified',
+    notificationToken: 'b87b2e1d-9a27-4309-96d7-1efc9c91544e',
+    level: 'already known',
+    socialMedia: [],
+    verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
+    reportReason: null,
+    timestamp: RANDOM_TIMESTAMP - 300,
+    incomingLevel: 'already known',
+  };
 
 export const BRIGHT_ID_BACKUP: BrightIdBackup = {
   userData: {
@@ -231,20 +245,10 @@ export const PROFILE_PICTURE = encryptData(
   FAKE_BRIGHT_ID_PASSWORD,
 );
 
-export const AURA_LEVEL = 'Bronze';
-
 export const verificationsResponse: { data: { verifications: Verifications } } =
   {
     data: {
-      verifications: [
-        {
-          name: 'Aura',
-          block: 11760650,
-          timestamp: 1698721975910,
-          score: 100223.774421,
-          level: AURA_LEVEL,
-        },
-      ],
+      verifications: [SAMPLE_AURA_VERIFICATION_OBJECT],
     },
   };
 

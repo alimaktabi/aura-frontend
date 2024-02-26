@@ -1,9 +1,9 @@
-import { BrightIdBackupConnection } from 'types';
+import { BrightIdBackupWithAuraConnectionData } from 'types';
 import { RoutePath } from 'types/router';
 
 import { getTestSelector } from '../utils';
 import {
-  connectionsInConnectionsPageFilterAll,
+  connectionsInConnectionsPageDefaultFilter,
   connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
   connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
   connectionsInConnectionsPageJustMet,
@@ -17,9 +17,12 @@ describe('Connections Page', () => {
     cy.visit(RoutePath.HOME);
   });
 
-  function assertOrder(orderedConnections: BrightIdBackupConnection[]) {
+  function assertOrder(
+    orderedConnections: BrightIdBackupWithAuraConnectionData['connections'],
+  ) {
     orderedConnections.forEach((c, index) => {
       cy.get(getTestSelector(`user-item-${index}`)).should('exist');
+      if (c.name === undefined) throw Error('Connection name not found');
       cy.get(getTestSelector(`user-item-${index}-name`)).contains(c.name);
     });
     cy.get(getTestSelector(`user-item-${orderedConnections.length}`)).should(
@@ -27,10 +30,10 @@ describe('Connections Page', () => {
     );
   }
 
-  it('filters and sorts connections', () => {
-    assertOrder(connectionsInConnectionsPageFilterAll);
+  it('filters connections', () => {
+    assertOrder(connectionsInConnectionsPageDefaultFilter);
 
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageJustMet,
     );
 
@@ -40,12 +43,12 @@ describe('Connections Page', () => {
   });
 
   it('sorts connections', () => {
-    assertOrder(connectionsInConnectionsPageFilterAll);
+    assertOrder(connectionsInConnectionsPageDefaultFilter);
 
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
     );
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateDescending,
     );
 
@@ -67,9 +70,9 @@ describe('Connections Page', () => {
   });
 
   it('orders filtered list', () => {
-    assertOrder(connectionsInConnectionsPageFilterAll);
+    assertOrder(connectionsInConnectionsPageDefaultFilter);
 
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageJustMet,
     );
     expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
@@ -101,9 +104,9 @@ describe('Connections Page', () => {
   });
 
   it('filters ordered list', () => {
-    assertOrder(connectionsInConnectionsPageFilterAll);
+    assertOrder(connectionsInConnectionsPageDefaultFilter);
 
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageFilterAllSortedByLastConnectionUpdateAscending,
     );
     expect(
@@ -128,11 +131,11 @@ describe('Connections Page', () => {
   });
 
   it('keeps filters when navigating', () => {
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
 
-    assertOrder(connectionsInConnectionsPageFilterAll);
+    assertOrder(connectionsInConnectionsPageDefaultFilter);
     cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
       getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
@@ -154,11 +157,11 @@ describe('Connections Page', () => {
   });
 
   it('keeps filters after reload', () => {
-    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+    expect(connectionsInConnectionsPageDefaultFilter).to.not.deep.equal(
       connectionsInConnectionsPageJustMetSortedByLastConnectionUpdateAscending,
     );
 
-    assertOrder(connectionsInConnectionsPageFilterAll);
+    assertOrder(connectionsInConnectionsPageDefaultFilter);
     cy.get(getTestSelector('subject-sort-button')).click();
     cy.get(
       getTestSelector('subject-sort-option-LastConnectionUpdate-ascending'),
