@@ -1,3 +1,4 @@
+import EvaluationThumb from 'components/Shared/EvaluationThumb';
 import {
   getBgClassNameOfAuraRatingObject,
   getTextClassNameOfAuraRatingObject,
@@ -73,12 +74,7 @@ export const YourEvaluationInfo = ({
         } ${isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}
       >
         <div className="flex gap-0.5 items-center">
-          <img
-            src="/assets/images/Shared/thumbs-up-white.svg"
-            alt=""
-            width="17.5px"
-            height="16.63px"
-          />
+          <EvaluationThumb width="17.5px" height="16.63px" rating={rating} />
           <div>
             <span
               className="font-medium"
@@ -105,7 +101,10 @@ export const YourEvaluationInfo = ({
           <span className="font-medium">{'12%'}</span>
         </div>
       </div>
-      <div className="rounded-md p-2 bg-button-primary">
+      <div
+        onClick={() => setShowEvaluationFlow(true)}
+        className="rounded-md p-2 bg-button-primary cursor-pointer"
+      >
         <img
           src="/assets/images/Shared/edit-icon.svg"
           alt=""

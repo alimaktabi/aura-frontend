@@ -11,11 +11,10 @@ const EvaluateModalBody = ({
   onSubmitted,
 }: {
   subjectId: string;
-  onSubmitted: () => void;
+  onSubmitted: (newRating: number | null | undefined) => void;
 }) => {
   const [isYes, setIsYes] = useState(true);
   const [confidence, setConfidence] = useState(1);
-  const [isEdit] = useState(true);
   const [onDelete, setOnDelete] = useState(false);
   const { myRatingObject } = useSubjectInboundEvaluationsContext(subjectId);
   const authData = useSelector(selectAuthData);
@@ -40,7 +39,7 @@ const EvaluateModalBody = ({
       if (newRating !== prevRating) {
         await submitEvaluation(subjectId, newRating);
       }
-      onSubmitted();
+      onSubmitted(newRating);
     } catch (e) {
       alert(String(e));
     }
@@ -61,17 +60,6 @@ const EvaluateModalBody = ({
         as a <span className="font-bold">subject</span> in{' '}
         <span className="font-bold">brightID</span> domain
       </p>
-
-      {prevRating && (
-        <button
-          className="-mt-3 mb-3 bg-red-500 text-white p-1.5 rounded-xl transition-colors duration-200 transform hover:bg-red-600 focus:outline-none focus:bg-red-600"
-          onClick={() => {
-            submitEvaluation(subjectId, 0).then(onSubmitted);
-          }}
-        >
-          {loading ? 'Removing...' : 'Remove Your Evaluation'}
-        </button>
-      )}
 
       <p className="font-medium mb-2">
         Is this the account of {name} that should be Aura verified?
@@ -135,19 +123,9 @@ const EvaluateModalBody = ({
         setConfidence={setConfidence}
       />
       <div className="mt-36">
-        {!isEdit && (
-          <button
-            data-testid="submit-evaluation"
-            className="btn btn--big w-full"
-            onClick={submit}
-          >
-            {loading && !isEdit ? '...' : 'Submit Evaluation'}
-          </button>
-        )}
-        {isEdit && (
+        {prevRating ? (
           <div className="flex gap-3">
             <button
-              data-testid="submit-evaluation"
               className={`flex justify-center transition-all duration-300 ease-linear
             ${
               onDelete
@@ -156,7 +134,7 @@ const EvaluateModalBody = ({
             }
             `}
               // onClick={submit}
-              onClick={() => setOnDelete(!onDelete)}
+              onClick={() => (onDelete ? setOnDelete(false) : submit())}
             >
               <p
                 className={`${
@@ -166,11 +144,12 @@ const EvaluateModalBody = ({
                 Cancel
               </p>
               <p
+                data-testid="submit-evaluation"
                 className={`${
                   onDelete ? '!w-0 !h-0 opacity-0' : 'opacity-100'
                 }`}
               >
-                Update Evaluation
+                {loading ? '...' : 'Update Evaluation'}
               </p>
               {/*{loading && !isEdit ? '...' : 'Submit Evaluation'}*/}
             </button>
@@ -178,12 +157,24 @@ const EvaluateModalBody = ({
               className={`btn btn--big !bg-delete flex gap-2.5 transition-all duration-300 ease-linear ${
                 onDelete ? 'w-full justify-center items-center' : ''
               }`}
-              onClick={() => setOnDelete(!onDelete)}
+              onClick={() =>
+                onDelete
+                  ? submitEvaluation(subjectId, 0).then(() => onSubmitted(0))
+                  : setOnDelete(true)
+              }
             >
               <img src="/assets/images/Shared/erase-icon.svg" alt="" />
-              {onDelete && <span>Remove</span>}
+              {onDelete && <span>{loading ? '...' : 'Remove'}</span>}
             </button>
           </div>
+        ) : (
+          <button
+            data-testid="submit-evaluation"
+            className="btn btn--big w-full"
+            onClick={submit}
+          >
+            {loading ? '...' : 'Submit Evaluation'}
+          </button>
         )}
       </div>
     </div>

@@ -33,7 +33,8 @@ export const ProfileInfo = ({
   const inboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
   );
-  const { myConnectionToSubject } = useMyEvaluationsContext(subjectId);
+  const { myConnectionToSubject, myRatingNumberToSubject } =
+    useMyEvaluationsContext(subjectId);
 
   const { outboundConnections, outboundRatings } =
     useOutboundEvaluations(subjectId);
@@ -110,14 +111,17 @@ export const ProfileInfo = ({
           </p>
         </div>
       </div>
-      <NewEvaluationCard
-        subjectId={subjectId}
-        setShowEvaluationFlow={setShowEvaluationFlow}
-      />
-      <YourEvaluationInfo
-        toSubjectId={subjectId}
-        setShowEvaluationFlow={setShowEvaluationFlow}
-      />
+      {myRatingNumberToSubject ? (
+        <YourEvaluationInfo
+          toSubjectId={subjectId}
+          setShowEvaluationFlow={setShowEvaluationFlow}
+        />
+      ) : (
+        <NewEvaluationCard
+          subjectId={subjectId}
+          setShowEvaluationFlow={setShowEvaluationFlow}
+        />
+      )}
     </div>
   );
 };

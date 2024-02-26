@@ -25,30 +25,40 @@ const EvaluationFlow = ({
 
   const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(null);
 
-  const onSubmitted = useCallback(async () => {
-    const myRatingsCount = myRatings?.filter((r) => Number(r.rating)).length;
-    refreshInboundRatings();
-    refreshOutboundRatings();
-    if (myRatingsCount === undefined) return;
-    const isNewRating = !(myRatingObject && Number(myRatingObject.rating));
-    const newRatingCount = myRatingsCount + (isNewRating ? 1 : 0);
-    if (newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING) {
-      setShowEvaluationFlow(false);
-    } else {
-      console.log('hi');
-      setMyNewRatingCount(newRatingCount);
-    }
-  }, [
-    myRatingObject,
-    myRatings,
-    refreshInboundRatings,
-    refreshOutboundRatings,
-    setShowEvaluationFlow,
-  ]);
+  const onSubmitted = useCallback(
+    async (newRating: number | null | undefined) => {
+      const myRatingsCount = myRatings?.filter((r) => Number(r.rating)).length;
+      refreshInboundRatings();
+      refreshOutboundRatings();
+      if (!newRating) {
+        setShowEvaluationFlow(false);
+        return;
+      }
+      if (myRatingsCount === undefined) return;
+      const isNewRating = !(myRatingObject && Number(myRatingObject.rating));
+      const newRatingCount = myRatingsCount + (isNewRating ? 1 : 0);
+      if (newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING) {
+        setShowEvaluationFlow(false);
+      } else {
+        console.log('hi');
+        setMyNewRatingCount(newRatingCount);
+      }
+    },
+    [
+      myRatingObject,
+      myRatings,
+      refreshInboundRatings,
+      refreshOutboundRatings,
+      setShowEvaluationFlow,
+    ],
+  );
   return (
     <Modal
       isOpen={showEvaluationFlow}
-      closeModalHandler={() => setShowEvaluationFlow(false)}
+      closeModalHandler={() => {
+        setShowEvaluationFlow(false);
+        setMyNewRatingCount(null);
+      }}
       title={myNewRatingCount === null ? `Endorsing ${name}` : undefined}
     >
       {myNewRatingCount !== null ? (
