@@ -1,11 +1,12 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
+  browser-tools: circleci/browser-tools@1.4.6
 workflows:
   test:
     jobs:
       - cypress/run:
-          install-browsers: true
+          install-browsers: false
           package-manager: 'yarn'
           post-install: 'yarn build'
           start-command: 'npx serve -s -L build'
