@@ -58,7 +58,7 @@ export const oldRatings: AuraRating[] = [
     updatedAt: '2021-07-11T10:59:03.036Z',
   },
   {
-    id: 6070,
+    id: 6080,
     toBrightId: justMet2.id,
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '-1',
@@ -121,6 +121,11 @@ export const newRatings: AuraRating[] = [
     rating: '4',
     createdAt: '2021-07-17T20:59:03.036Z',
     updatedAt: '2021-07-17T20:59:03.036Z',
+  },
+  {
+    ...getRatingObject(justMet2.id, oldRatings)!,
+    rating: '0',
+    updatedAt: '2021-07-13T20:59:03.036Z',
   },
 ];
 export const userRatingsResponse: {

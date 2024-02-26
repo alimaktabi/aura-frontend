@@ -14,6 +14,7 @@ import { getTestSelector } from '../utils';
 import {
   BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
+  justMet2,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -253,6 +254,33 @@ describe('Rating', () => {
       RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', ratedConnection.id),
     );
     doRate(ratedConnection);
+  });
+
+  it('removes a rating', () => {
+    setCurrentRatingsIntercepts();
+    cy.intercept(
+      {
+        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${justMet2.id}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 200,
+      },
+    ).as('submitRating');
+
+    cy.visit(RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', justMet2.id));
+    cy.get(
+      getTestSelector(`your-evaluation-${FAKE_BRIGHT_ID}-${justMet2.id}-edit`),
+    ).click();
+    setNewRating(justMet2);
+    cy.get(getTestSelector('remove-evaluation')).click();
+    cy.get(getTestSelector('remove-evaluation')).click();
+    cy.wait('@submitRating')
+      .its('request.body')
+      .should((body) => {
+        expect(body).to.have.key('encryptedRating');
+      });
+    showsRateValue(justMet2, newRatings);
   });
 
   it('does not send request for an unchanged rate', () => {

@@ -154,6 +154,7 @@ const EvaluateModalBody = ({
               {/*{loading && !isEdit ? '...' : 'Submit Evaluation'}*/}
             </button>
             <button
+              data-testid="remove-evaluation"
               className={`btn btn--big !bg-delete flex gap-2.5 transition-all duration-300 ease-linear ${
                 onDelete ? 'w-full justify-center items-center' : ''
               }`}
