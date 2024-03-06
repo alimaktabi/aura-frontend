@@ -63,7 +63,7 @@ const Home = () => {
     <div>Loading...</div>
   ) : (
     <SubjectInboundEvaluationsContextProvider subjectId={authData.brightId}>
-      <div className="page flex flex-col gap-4">
+      <div id="scrollable-div" className="page flex flex-col gap-4">
         {/*<ProfileInfo*/}
         {/*  subjectId={authData.brightId}*/}
         {/*  isPerformance={true}*/}
@@ -111,6 +111,9 @@ const Home = () => {
             {filteredSubjects && !loading ? (
               <div className="overflow-auto flex-grow no-scrollbar">
                 <InfiniteScrollLocal
+                  getScrollParent={() =>
+                    document.getElementById('scrollable-div')
+                  }
                   className={'flex flex-col gap-3'}
                   items={filteredSubjects}
                   //TODO: optimize rendering by caching the rendered components

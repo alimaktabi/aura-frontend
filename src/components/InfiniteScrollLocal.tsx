@@ -6,6 +6,8 @@ interface InfiniteScrollLocalProps<T> extends React.HTMLProps<InfiniteScroll> {
   items: T[] | null | undefined;
   renderItem: (item: T, index: number) => JSX.Element;
   pageSize?: number;
+
+  getScrollParent?(): HTMLElement | null;
 }
 
 export default function InfiniteScrollLocal<T>({
@@ -34,16 +36,17 @@ export default function InfiniteScrollLocal<T>({
     () => !!items && items.length > itemsLocal.length,
     [items, itemsLocal.length],
   );
+  console.log({ itemsLocal: itemsLocal.length });
   return (
     <>
       {items && (
         <InfiniteScroll
+          {...props}
           pageStart={0}
           loadMore={loadMore}
           hasMore={hasMore}
           initialLoad={true}
           useWindow={false}
-          {...props}
         >
           {itemsLocal.map((item, index) => (
             <React.Fragment key={index}>
