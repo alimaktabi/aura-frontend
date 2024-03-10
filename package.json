@@ -43,9 +43,10 @@
     "eject": "react-app-rewired eject",
     "contracts:compile:abi": "typechain --target ethers-v5 --out-dir cypress/utils/mock-contracts/types \"./src/abis/**/*.json\"",
     "start:cypress": "env REACT_APP_IS_CYPRESS='true' react-app-rewired start",
+    "build:cypress": "env REACT_APP_IS_CYPRESS='true' react-app-rewired build",
     "cypress:open": "cypress open --browser chrome --e2e",
     "cypress": "start-server-and-test 'yarn start:cypress' http://localhost:3000 'yarn cypress:open'",
-    "cypress:headless": "yarn build && start-server-and-test 'serve -s -L build' http://localhost:3000 'cypress run --browser chrome --e2e'"
+    "cypress:headless": "yarn build:cypress && start-server-and-test 'serve -s -L build' http://localhost:3000 'cypress run --browser chrome --e2e'"
   },
   "eslintConfig": {
     "extends": [

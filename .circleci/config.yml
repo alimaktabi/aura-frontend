@@ -6,8 +6,10 @@ workflows:
   test:
     jobs:
       - cypress/run:
+          pre-steps:
+            - browser-tools/install-chrome
           install-browsers: false
           package-manager: 'yarn'
-          post-install: 'yarn build'
+          post-install: 'yarn build:cypress'
           start-command: 'npx serve -s -L build'
           cypress-command: 'npx cypress run --browser chrome'
