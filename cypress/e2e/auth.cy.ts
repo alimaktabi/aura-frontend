@@ -234,7 +234,9 @@ describe('Auth', () => {
     cy.setupProfile();
     cy.visit(RoutePath.DASHBOARD);
     cy.get(getTestSelector('logout-button')).click();
-    cy.get(getTestSelector('import-universal-link')).then(isLoggedOut);
+    cy.get(getTestSelector('import-universal-link'));
+    //TODO: find a way to avoid wait time
+    cy.wait(1000).then(isLoggedOut);
     // stays logged out
     cy.visit('/').then(isLoggedOut);
   });
