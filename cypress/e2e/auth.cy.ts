@@ -205,16 +205,14 @@ describe('Auth', () => {
     cy.url().should('include', RoutePath.HOME);
   });
 
-  const isLoggedOut = () => {
-    cy.get(getTestSelector('import-universal-link')).then(async () => {
-      const profileSliceData = JSON.parse(
-        JSON.parse((await localforage.getItem('persist:root')) || '{}')
-          .profile || '{}',
-      ) as ProfileState;
-      expect(profileSliceData.authData).to.be.null;
-      expect(profileSliceData.brightIdBackupEncrypted).to.be.null;
-    });
-  };
+  async function isLoggedOut() {
+    const profileSliceData = JSON.parse(
+      JSON.parse((await localforage.getItem('persist:root')) || '{}').profile ||
+        '{}',
+    ) as ProfileState;
+    expect(profileSliceData.authData).to.be.null;
+    expect(profileSliceData.brightIdBackupEncrypted).to.be.null;
+  }
 
   //
   // it('handle login failed response', () => {
@@ -235,7 +233,8 @@ describe('Auth', () => {
   it('logout', () => {
     cy.setupProfile();
     cy.visit(RoutePath.DASHBOARD);
-    cy.get(getTestSelector('logout-button')).click().then(isLoggedOut);
+    cy.get(getTestSelector('logout-button')).click();
+    cy.get(getTestSelector('import-universal-link')).then(isLoggedOut);
     // stays logged out
     cy.visit('/').then(isLoggedOut);
   });
