@@ -20,8 +20,8 @@ export const ToggleInput = ({
           }`}
         ></p>
         <p
-          className={`bg-transparent absolute cursor-pointer w-1/2 h-full flex items-center justify-center font-medium left-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${
-            isChecked ? 'text-white !font-bold' : 'text-black'
+          className={`bg-transparent absolute cursor-pointer w-1/2 h-full flex items-center justify-center left-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${
+            isChecked ? 'text-white font-bold' : 'text-black font-medium'
           }`}
           onClick={() => setIsChecked(true)}
           data-testid="table-view-switch-option-one"
@@ -29,8 +29,8 @@ export const ToggleInput = ({
           {option1}
         </p>
         <p
-          className={`bg-transparent absolute cursor-pointer flex justify-center items-center font-medium w-1/2 h-full right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${
-            isChecked ? 'text-black' : 'text-white !font-bold'
+          className={`bg-transparent absolute cursor-pointer flex justify-center items-center w-1/2 h-full right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${
+            isChecked ? 'text-black font-medium' : 'text-white font-bold'
           } ${
             option2Disabled ? 'text-gray50 pointer-events-none' : 'text-black'
           }`}
@@ -83,20 +83,20 @@ export const ToggleInputWithIcon = ({
           }`}
         ></span>
         <div
-          className={`bg-transparent absolute w-1/2 left-0 top-1/2 -translate-y-1/2 text-center font-bold transition-all duration-300 ease-in-out ${
-            isChecked ? 'text-white' : 'font-medium text-black'
+          className={`bg-transparent absolute w-1/2 left-0 top-1/2 -translate-y-1/2 text-center transition-all duration-300 ease-in-out ${
+            isChecked ? 'text-white font-bold' : 'font-medium text-black'
           }`}
           data-testid={`evaluate-positive`}
           onClick={() => setIsChecked(true)}
         >
-          <div className="flex gap-1 w-full justify-center">
+          <div className="flex gap-1 w-full justify-center cursor-pointer">
             <img src={!isChecked ? icon1 : icon1Converted} alt="" />
             {option1}
           </div>
         </div>
         <div
-          className={`cursor-pointer bg-transparent absolute w-1/2 right-0 top-1/2 -translate-y-1/2 text-center font-bold transition-all duration-300 ease-in-out ${
-            isChecked ? 'font-medium text-black' : 'text-white'
+          className={`cursor-pointer bg-transparent absolute w-1/2 right-0 top-1/2 -translate-y-1/2 text-center transition-all duration-300 ease-in-out ${
+            isChecked ? 'font-medium text-black' : 'text-white font-bold'
           }`}
           data-testid={`evaluate-negative`}
           onClick={() => setIsChecked(false)}

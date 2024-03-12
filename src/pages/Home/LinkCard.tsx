@@ -19,7 +19,7 @@ const LinkCard = () => {
 
 const LinkIcon = ({ image }: { image: string }) => {
   return (
-    <div className="rounded bg-pastel-purple p-2">
+    <div className="rounded bg-pastel-purple p-2 cursor-pointer">
       <img className="w-6 h-6" src={image} alt="" />
     </div>
   );

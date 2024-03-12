@@ -126,27 +126,26 @@ const EvaluateModalBody = ({
         {prevRating ? (
           <div className="flex gap-3">
             <button
-              className={`flex justify-center transition-all duration-300 ease-linear
+              className={`flex justify-center transition-all ease-linear
             ${
               onDelete
                 ? `btn btn--big btn--outlined-big`
                 : `btn btn--big w-full`
             }
             `}
-              // onClick={submit}
               onClick={() => (onDelete ? setOnDelete(false) : submit())}
             >
               <p
-                className={`${
-                  onDelete ? 'opacity-100' : '!w-0 !h-0 opacity-0'
+                className={`overflow-hidden ${
+                  onDelete ? 'opacity-100 w-20' : '!w-0 h-7 opacity-0'
                 }`}
               >
                 Cancel
               </p>
               <p
                 data-testid="submit-evaluation"
-                className={`${
-                  onDelete ? '!w-0 !h-0 opacity-0' : 'opacity-100'
+                className={`overflow-hidden ${
+                  onDelete ? '!w-0 h-7 opacity-0' : 'w-44 opacity-100'
                 }`}
               >
                 {loading ? '...' : 'Update Evaluation'}
@@ -155,7 +154,7 @@ const EvaluateModalBody = ({
             </button>
             <button
               data-testid="remove-evaluation"
-              className={`btn btn--big !bg-delete flex gap-2.5 transition-all duration-300 ease-linear ${
+              className={`btn btn--big !bg-delete flex gap-2.5 transition-all ease-linear ${
                 onDelete ? 'w-full justify-center items-center' : ''
               }`}
               onClick={() =>
@@ -165,7 +164,13 @@ const EvaluateModalBody = ({
               }
             >
               <img src="/assets/images/Shared/erase-icon.svg" alt="" />
-              {onDelete && <span>{loading ? '...' : 'Remove'}</span>}
+              <p
+                className={`transition-all overflow-hidden ${
+                  onDelete ? 'w-[68px] opacity-100' : 'w-0 opacity-0'
+                }`}
+              >
+                Remove
+              </p>
             </button>
           </div>
         ) : (

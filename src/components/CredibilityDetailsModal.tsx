@@ -39,7 +39,7 @@ const CredibilityDetails = ({
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div className="min-h-[450px] flex flex-col">
       <ToggleInputWithIcon
         option1={'Subject'}
         option2={'Player'}
@@ -51,7 +51,7 @@ const CredibilityDetails = ({
         setIsChecked={setIsSubject}
       />
       {isSubject && (
-        <div>
+        <>
           <div className="font-bold text-l">
             As a <span className="text-purple">Player</span>:
           </div>
@@ -78,11 +78,11 @@ const CredibilityDetails = ({
           <ReactECharts
             style={{ height: '110px' }}
             option={options2}
-            className="body__chart w-3/4 mb-5 mt-2"
+            className="body__chart w-full mb-5 mt-2"
           />
           <Link
             to={link}
-            className="flex btn btn--bg-orange w-full justify-center"
+            className="flex btn btn--bg-orange w-full justify-center mt-auto"
             onClick={(e) => {
               e.preventDefault();
               onClose();
@@ -91,10 +91,10 @@ const CredibilityDetails = ({
           >
             View Subject Profile
           </Link>
-        </div>
+        </>
       )}
       {!isSubject && (
-        <div className="w-full">
+        <>
           <div className="font-bold text-l">
             As a <span className="text-orange">Subject</span>:
           </div>
@@ -113,7 +113,7 @@ const CredibilityDetails = ({
           <div>
             Evaluations:{' '}
             <span className="font-bold">
-              {inboundRatings !== null ? inboundRatings.length : '...'}(
+              {inboundRatings !== null ? inboundRatings.length : '...'} (
               {inboundRatingsStatsString})
             </span>
           </div>
@@ -152,16 +152,16 @@ const CredibilityDetails = ({
           </div>
           <div>
             Your Evaluation Impact:
-            <span className="font-bold text-nl3">32%</span>
+            <span className="font-bold text-nl3"> 32%</span>
           </div>
           <ReactECharts
             style={{ height: '110px' }}
             option={options2}
-            className="body__chart w-3/4 mb-5 mt-2"
+            className="body__chart w-full mb-5 mt-2"
           />
           <Link
             to={link}
-            className="flex btn w-full justify-center"
+            className="flex btn w-full mt-auto justify-center"
             onClick={(e) => {
               e.preventDefault();
               onClose();
@@ -170,7 +170,7 @@ const CredibilityDetails = ({
           >
             View Player Profile
           </Link>
-        </div>
+        </>
       )}
     </div>
   );
@@ -185,9 +185,7 @@ const CredibilityDetailsModal = ({
   const name = useSubjectName(subjectId);
   return (
     <Modal isOpen={true} closeModalHandler={onClose} title={name}>
-      <div>
-        <CredibilityDetails subjectId={subjectId} onClose={onClose} />
-      </div>
+      <CredibilityDetails subjectId={subjectId} onClose={onClose} />
     </Modal>
   );
 };

@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,css,scss}'],
   theme: {
     extend: {
+      transitionProperty: {
+        'font-weight': 'font-weight',
+        size: 'width, height',
+      },
       colors: {
         gray00: '#393939',
         gray10: '#343434',
@@ -36,7 +40,7 @@ export default {
         black3: '#181818',
         pl1: '#D5ECDA',
         pl2: '#B4E6C0',
-        pl3: '#72BF83',
+        pl3: '#257036',
         pl4: '#5B9969',
         nl1: '#F5BFBF',
         nl2: '#EE9D9D',
