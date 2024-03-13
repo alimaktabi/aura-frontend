@@ -11,6 +11,7 @@ export const PlayerHistorySequence = ({
     <div className="flex bg-primary-l1 rounded w-full">
       <div
         className="rtl: flex flex-row min-w-full gap-1.5 py-3 overflow-auto first:pr-2.5 last:pl-2.5"
+        // TODO: refactor this to tailwindcss class
         style={{
           overflow: 'auto',
           scrollbarWidth: 'thin',
