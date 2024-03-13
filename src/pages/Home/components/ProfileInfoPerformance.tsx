@@ -42,7 +42,7 @@ const ProfileInfoPerformance = ({
           )}
           <div className="w-full relative bg-gray30 rounded-full h-4">
             <div
-              className={`${percentage} absolute bg-button-primary rounded-full h-full`}
+              className={`${percentage} absolute bg-primary-d1 rounded-full h-full`}
             ></div>
           </div>
         </div>
