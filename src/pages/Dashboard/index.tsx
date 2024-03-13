@@ -64,7 +64,7 @@ const Dashboard = () => {
           </p>
         </Link>
         {preferredView === 'Player' && (
-          <Link to="/subjects-evaluation" className="card">
+          <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
               src="/assets/images/Dashboard/subject-evaluation-icon.svg"
@@ -76,7 +76,7 @@ const Dashboard = () => {
           </Link>
         )}
         {preferredView === 'Trainer' && (
-          <Link to="/subjects-evaluation" className="card">
+          <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
               src="/assets/images/Dashboard/account-icon.svg"
@@ -88,7 +88,7 @@ const Dashboard = () => {
           </Link>
         )}
         {preferredView === 'Manager' && (
-          <Link to="/subjects-evaluation" className="card">
+          <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
               src="/assets/images/Dashboard/trainer-icon.svg"
@@ -101,7 +101,7 @@ const Dashboard = () => {
         )}
 
         {preferredView === 'Manager' && (
-          <Link to="/subjects-evaluation" className="card">
+          <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
               src="/assets/images/Dashboard/manager-icon.svg"
