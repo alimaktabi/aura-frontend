@@ -102,7 +102,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       </div>
       <ToggleInput
         option1="Overview"
-        option2="Evidence List"
+        option2="Detailed List"
         isChecked={isOverviewSelected}
         setIsChecked={setIsOverviewSelected}
       />
