@@ -166,7 +166,7 @@ const EvaluateModalBody = ({
               <img src="/assets/images/Shared/erase-icon.svg" alt="" />
               <p
                 className={`transition-all overflow-hidden ${
-                  onDelete ? 'w-[68px] opacity-100' : 'w-0 opacity-0'
+                  onDelete ? 'w-[75px] opacity-100' : 'w-0 opacity-0'
                 }`}
               >
                 Remove
