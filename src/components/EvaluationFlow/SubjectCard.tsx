@@ -42,7 +42,7 @@ export const SubjectCard = ({
         <div className="evaluation-left__top flex gap-3">
           <div className="evaluation__profile">
             <BrightIdProfilePicture
-              className="rounded-full w-12 h-12 border-2 border-white bg-center bg-cover"
+              className="rounded-full w-12 h-12 border-2 border-bright-l1 bg-center bg-cover"
               subjectId={subjectId}
             />
           </div>
@@ -53,7 +53,7 @@ export const SubjectCard = ({
             >
               {name}
             </p>
-            <p className="text-gray20">
+            <p className="text-gray10">
               Level: <span className="font-medium text-black">{auraLevel}</span>
             </p>
           </div>
@@ -64,7 +64,7 @@ export const SubjectCard = ({
       </div>
       <div className="evaluation-right flex flex-col gap-2 items-end">
         <div className="evaluation-right__top">
-          <p className="font-light text-gray20">
+          <p className="text-gray10">
             Score:{' '}
             <span className="font-medium text-black">
               {auraScore ? compactFormat(auraScore) : '-'}
@@ -76,7 +76,6 @@ export const SubjectCard = ({
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
             option={options3}
-            // className="w-26.5 h-12"
           />
         </div>
       </div>

@@ -36,6 +36,7 @@ export default {
         'red-card': '#E6C0C0',
         'soft-bright': '#FFEAD1',
         'button-primary': '#A982DF',
+        'bright-l1': '#F09F77',
         black2: '#2C2C2C',
         black3: '#181818',
         pl1: '#D5ECDA',
