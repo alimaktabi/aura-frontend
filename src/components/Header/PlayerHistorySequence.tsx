@@ -9,7 +9,14 @@ export const PlayerHistorySequence = ({
 }) => {
   return (
     <div className="flex bg-primary-l1 rounded w-full">
-      <div className="rtl: flex flex-row min-w-full gap-1.5 py-3 overflow-scroll no-scrollbar first:pr-2.5 last:pl-2.5">
+      <div
+        className="rtl: flex flex-row min-w-full gap-1.5 py-3 overflow-auto first:pr-2.5 last:pl-2.5"
+        style={{
+          overflow: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#A982DF #f5f5f5',
+        }}
+      >
         {playerHistorySequence.map((item, i) => (
           <>
             <PlayerHistoryItem
