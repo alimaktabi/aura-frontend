@@ -8,6 +8,7 @@ import {
   persistReducer,
   persistStore,
 } from 'redux-persist';
+import { PreferredView } from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
 import { profileSlice } from './profile';
@@ -23,11 +24,20 @@ const migrations: MigrationManifest = {
       },
     };
   },
+  2: (oldState: any) => {
+    return {
+      ...oldState,
+      profile: {
+        ...oldState.profile,
+        preferredView: PreferredView.PLAYER,
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: 'root',
-  version: 1,
+  version: 2,
   storage: localForage,
   blacklist: ['recoveryData'], // won't be persisted
   migrate: createMigrate(migrations, { debug: __DEV__ }),

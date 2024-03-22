@@ -1,7 +1,9 @@
 import { resetStore } from 'BrightID/actions';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'store/hooks';
+import { useDispatch, useSelector } from 'store/hooks';
+import { selectPreferredView } from 'store/profile/selectors';
+import { PreferredView } from 'types/dashboard';
 import { RoutePath } from 'types/router';
 import { __DEV__ } from 'utils/env';
 
@@ -9,19 +11,15 @@ import { Modal } from '../../components/Shared/Modal';
 import RoleSelectModal from './RoleSelectModal';
 
 const Dashboard = () => {
-  const preferredViews = ['Player', 'Trainer', 'Manager'];
-  const preferredView = preferredViews[0];
+  const preferredView = useSelector(selectPreferredView);
   const [isRoleSelectModalOpen, setIsRoleSelectModalOpen] = useState(false);
 
-  interface stringValue {
-    [key: string]: string;
-  }
+  const preferredViewIcon = {
+    [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
+    [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
+    [PreferredView.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
+  } as const;
 
-  const preferredViewIcon: stringValue = {
-    Player: '/assets/images/Dashboard/account-icon.svg',
-    Trainer: '/assets/images/Dashboard/trainer-icon.svg',
-    Manager: '/assets/images/Dashboard/manager-icon.svg',
-  };
   const dispatch = useDispatch();
   return (
     <div className="page page__dashboard">
@@ -63,7 +61,7 @@ const Dashboard = () => {
             Domain <br /> Overview
           </p>
         </Link>
-        {preferredView === 'Player' && (
+        {preferredView === PreferredView.PLAYER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
@@ -75,7 +73,7 @@ const Dashboard = () => {
             </p>
           </Link>
         )}
-        {preferredView === 'Trainer' && (
+        {preferredView === PreferredView.TRAINER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
@@ -87,7 +85,7 @@ const Dashboard = () => {
             </p>
           </Link>
         )}
-        {preferredView === 'Manager' && (
+        {preferredView === PreferredView.MANAGER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
@@ -100,7 +98,7 @@ const Dashboard = () => {
           </Link>
         )}
 
-        {preferredView === 'Manager' && (
+        {preferredView === PreferredView.MANAGER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
@@ -153,7 +151,9 @@ const Dashboard = () => {
         closeModalHandler={() => setIsRoleSelectModalOpen(false)}
         className="select-button-with-modal__modal"
       >
-        <RoleSelectModal />
+        <RoleSelectModal
+          closeModalHandler={() => setIsRoleSelectModalOpen(false)}
+        />
       </Modal>
     </div>
   );

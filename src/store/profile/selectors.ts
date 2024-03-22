@@ -25,6 +25,10 @@ export const selectPlayerOnboardingScreenShown = createSelector(
   (state: RootState) => state.profile,
   (profile) => profile.playerOnboardingScreenShown,
 );
+export const selectPreferredView = createSelector(
+  (state: RootState) => state.profile,
+  (profile) => profile.preferredView,
+);
 export const selectBrightIdBackup = createSelector(
   (state: RootState) => state.profile,
   (profile) => {

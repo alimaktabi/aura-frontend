@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RESET_STORE } from 'BrightID/actions';
+import { PreferredView } from 'types/dashboard';
 
 import { AuthDataWithPassword } from '../../types';
 import {
@@ -13,6 +14,7 @@ export type ProfileState = {
   brightIdBackupEncrypted: string | null;
   splashScreenShown: boolean;
   playerOnboardingScreenShown: boolean;
+  preferredView: PreferredView;
 };
 
 const initialProfileState: ProfileState = {
@@ -20,6 +22,7 @@ const initialProfileState: ProfileState = {
   brightIdBackupEncrypted: null,
   splashScreenShown: false,
   playerOnboardingScreenShown: false,
+  preferredView: PreferredView.PLAYER,
 };
 export const SET_SPLASH_SCREEN_SHOWN = 'SET_SPLASH_SCREEN_SHOWN';
 
@@ -32,6 +35,12 @@ export const SET_PLAYER_ONBOARDING_SCREEN_SHOWN =
 
 export const setPlayerOnboardingScreenShown = (value: boolean) => ({
   type: SET_PLAYER_ONBOARDING_SCREEN_SHOWN,
+  payload: value,
+});
+export const SET_PREFERRED_VIEW = 'SET_PREFERRED_VIEW';
+
+export const setPreferredView = (value: PreferredView) => ({
+  type: SET_PREFERRED_VIEW,
   payload: value,
 });
 
@@ -75,6 +84,12 @@ export const profileSlice = createSlice({
         (action) => action.type === SET_PLAYER_ONBOARDING_SCREEN_SHOWN,
         (state, action) => {
           state.playerOnboardingScreenShown = action.payload;
+        },
+      )
+      .addMatcher(
+        (action) => action.type === SET_PREFERRED_VIEW,
+        (state, action) => {
+          state.preferredView = action.payload;
         },
       );
   },
