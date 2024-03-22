@@ -1,12 +1,15 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { ConnectionAndEvaluationStatus } from 'components/ConnectionAndEvaluationStatus';
+import { ViewModeSubjectColors } from 'constants/index';
 import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerificationData';
 import { useSubjectName } from 'hooks/useSubjectName';
+import useViewMode from 'hooks/useViewMode';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { PreferredView } from 'types/dashboard';
 import { compactFormat } from 'utils/number';
 
 import { HorizontalProgressBar } from '../Shared/HorizontalProgressBar';
@@ -29,6 +32,8 @@ export const SubjectCard = ({
     inboundConnectionInfo?.verifications,
   );
 
+  const { viewMode } = useViewMode();
+
   return (
     <Link
       to={'/subject/' + subjectId}
@@ -42,7 +47,11 @@ export const SubjectCard = ({
         <div className="evaluation-left__top flex gap-3">
           <div className="evaluation__profile">
             <BrightIdProfilePicture
-              className="rounded-full w-12 h-12 border-2 border-bright-l1 bg-center bg-cover"
+              className={`rounded-full w-12 h-12 border-2 border-${
+                viewMode !== PreferredView.PLAYER
+                  ? ViewModeSubjectColors[viewMode]
+                  : 'bright-l1'
+              } bg-center bg-cover`}
               subjectId={subjectId}
             />
           </div>

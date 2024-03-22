@@ -108,6 +108,13 @@ export type AuraInboundConnectionAndRatingData = {
   inboundConnection?: BrightIdConnection;
 };
 
+export type AuraOutboundConnectionAndRatingData = {
+  toSubjectId: string;
+  name?: string;
+  rating?: AuraRating;
+  outboundConnection?: BrightIdConnection;
+};
+
 export type AuraRatingRetrieveResponse = {
   ratings: AuraRating[];
 };

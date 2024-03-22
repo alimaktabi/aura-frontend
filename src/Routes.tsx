@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import Home from './pages/Home';
 import Onboarding from './pages/Onboarding';
-import SubjectProfile from './pages/SubjectProfile';
+import SubjectProfile, { SubjectProfileHeader } from './pages/SubjectProfile';
 
 const routes = [
   {
@@ -57,7 +57,7 @@ const routes = [
     pathRegex: new RegExp(/^\/subject\/[a-zA-Z0-9_-]+/),
     element: <SubjectProfile />,
     header: {
-      title: 'Subject profile',
+      title: <SubjectProfileHeader />,
       icon: '/assets/images/Header/menu.svg',
     },
     requireAuth: false,

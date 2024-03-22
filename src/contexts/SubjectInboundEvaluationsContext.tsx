@@ -2,12 +2,12 @@ import useFilterAndSort from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
   AuraFilterOptions,
-  useEvaluationFilters,
+  useInboundEvaluationFilters,
 } from 'hooks/useFilters';
 import {
   AuraSortId,
   AuraSortOptions,
-  useEvaluationSorts,
+  useInboundEvaluationSorts,
 } from 'hooks/useSorts';
 import { useSubjectConnections } from 'hooks/useSubjectConnections';
 import { useSubjectInboundEvaluations } from 'hooks/useSubjectInboundEvaluations';
@@ -42,7 +42,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   const useSubjectInboundEvaluationsHookData =
     useSubjectInboundEvaluations(subjectId);
   const { inboundRatings } = useSubjectInboundEvaluationsHookData;
-  const filters = useEvaluationFilters(
+  const filters = useInboundEvaluationFilters(
     [
       AuraFilterId.EvaluationMutualConnections,
       AuraFilterId.EvaluationPositiveEvaluations,
@@ -58,7 +58,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     subjectId,
   );
 
-  const sorts = useEvaluationSorts([
+  const sorts = useInboundEvaluationSorts([
     AuraSortId.RecentEvaluation,
     AuraSortId.EvaluationScore,
     AuraSortId.EvaluationPlayerScore,

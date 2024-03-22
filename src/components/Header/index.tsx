@@ -16,9 +16,9 @@ const Header = () => {
 
   const navigate = useNavigate();
   const onIconClick = useCallback(() => {
-    if (currentRouteObject?.path === RoutePath.HOME)
-      navigate(RoutePath.DASHBOARD);
-    else navigate(-1);
+    if (currentRouteObject?.path === RoutePath.DASHBOARD)
+      navigate(RoutePath.HOME);
+    else navigate(RoutePath.DASHBOARD);
   }, [currentRouteObject, navigate]);
 
   if (!headerComponent) {

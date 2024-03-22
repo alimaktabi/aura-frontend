@@ -1,11 +1,14 @@
+import { ViewModeSubjectColors } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
+import { useOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
 import { AuraFilterId } from 'hooks/useFilters';
-import { useOutboundEvaluations } from 'hooks/useOutboundEvaluations';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import useViewMode from 'hooks/useViewMode';
 import moment from 'moment';
 import { useContext, useMemo } from 'react';
+import { ProfileTab } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
 import NewEvaluationCard from '../../../pages/SubjectProfile/NewEvaluationCard';
@@ -20,14 +23,16 @@ import { YourEvaluationInfo } from '../EvaluationInfo/YourEvaluationInfo';
 export const ProfileInfo = ({
   isPerformance = false,
   subjectId,
-  color = 'pastel-green',
   setShowEvaluationFlow,
+  setSelectedTab,
 }: {
   isPerformance?: boolean;
   subjectId: string;
-  color?: string;
   setShowEvaluationFlow: (value: boolean) => void;
+  setSelectedTab?: (value: ProfileTab) => void;
 }) => {
+  const { viewMode } = useViewMode();
+
   const { userHasRecovery, auraLevel } = useSubjectVerifications(subjectId);
   const name = useSubjectName(subjectId);
   const inboundEvaluationsContext = useContext(
@@ -37,7 +42,7 @@ export const ProfileInfo = ({
     useMyEvaluationsContext(subjectId);
 
   const { outboundConnections, outboundRatings } =
-    useOutboundEvaluations(subjectId);
+    useOutboundEvaluationsContext(subjectId);
 
   const lastActivity = useMemo(() => {
     if (outboundConnections !== null && outboundRatings !== null) {
@@ -59,9 +64,7 @@ export const ProfileInfo = ({
       <div className="card--header flex justify-between w-full items-center">
         <div className="card--header__left flex gap-4">
           <BrightIdProfilePicture
-            className={`card--header__left__avatar rounded-full border-[3px] ${
-              isPerformance ? 'border-' + color : 'border-pastel-purple'
-            } h-[51px] w-[51px]`}
+            className={`card--header__left__avatar rounded-full border-[3px] border-${ViewModeSubjectColors[viewMode]} h-[51px] w-[51px]`}
             subjectId={subjectId}
           />
           <div className="card--header__left__info flex flex-col justify-center">
@@ -88,6 +91,7 @@ export const ProfileInfo = ({
                     AuraFilterId.EvaluationTheirRecovery,
                     true,
                   );
+                  setSelectedTab?.(ProfileTab.EVALUATIONS);
                 }
               }}
               className={`${

@@ -3,3 +3,9 @@ export enum PreferredView {
   TRAINER = 'Trainer',
   MANAGER = 'Manager',
 }
+
+export enum ProfileTab {
+  OVERVIEW,
+  ACTIVITY,
+  EVALUATIONS,
+}

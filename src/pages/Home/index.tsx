@@ -2,6 +2,7 @@ import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
 import { SubjectSearch } from 'components/EvaluationFlow/SubjectSearch';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
+import useViewMode from 'hooks/useViewMode';
 import Onboarding from 'pages/Onboarding';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -53,6 +54,8 @@ const Home = () => {
     selectPlayerOnboardingScreenShown,
   );
 
+  const { subjectViewModeTitle } = useViewMode();
+
   if (!authData) {
     return <div>Not logged in</div>;
   }
@@ -89,7 +92,7 @@ const Home = () => {
           <div>
             <SubjectSearch />
             <div className="text-lg text-white mb-3 mt-3 flex">
-              Subjects{' '}
+              {subjectViewModeTitle + 's '}
               <strong className="ml-1">
                 ({brightIdBackup?.connections.length ?? '...'})
               </strong>

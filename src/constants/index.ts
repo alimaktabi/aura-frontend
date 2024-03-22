@@ -1,4 +1,5 @@
 import { AuraRating, ConnectionLevel } from 'types';
+import { PreferredView } from 'types/dashboard';
 
 // eslint-disable-next-line no-restricted-globals
 export const LOCATION_ORIGIN = location.origin;
@@ -74,3 +75,9 @@ export const MUTUAL_CONNECTIONS_TEST_NAMESPACE = 'mutual-connections-';
 
 export const PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING = 3;
 export const SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT = 4;
+
+export const ViewModeSubjectColors = {
+  [PreferredView.PLAYER]: 'pastel-orange',
+  [PreferredView.TRAINER]: 'pastel-purple',
+  [PreferredView.MANAGER]: 'pastel-blue',
+} as const;

@@ -236,7 +236,7 @@ const EvidenceUserProfile = ({ subjectId }: { subjectId: string }) => {
   );
 };
 
-const EvaluationInformation = ({
+export const EvaluationInformation = ({
   fromSubjectId,
   toSubjectId,
 }: {

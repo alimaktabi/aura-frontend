@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import {
   AuraInboundConnectionAndRatingData,
   AuraNodeBrightIdConnectionWithBackupData,
+  AuraOutboundConnectionAndRatingData,
   BrightIdConnection,
 } from 'types';
 
@@ -100,7 +101,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
   }, [sortIds]);
 }
 
-export function useEvaluationSorts(sortIds: AuraSortId[]) {
+export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {
   return useMemo(() => {
     const sorts: AuraSortOptions<AuraInboundConnectionAndRatingData> = [
       {
@@ -138,5 +139,46 @@ export function useEvaluationSorts(sortIds: AuraSortId[]) {
       .filter(
         (item) => item !== undefined,
       ) as AuraSortOptions<AuraInboundConnectionAndRatingData>;
+  }, [sortIds]);
+}
+
+export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
+  return useMemo(() => {
+    const sorts: AuraSortOptions<AuraOutboundConnectionAndRatingData> = [
+      {
+        id: AuraSortId.RecentEvaluation,
+        title: 'Date',
+        defaultAscending: false,
+        justDefaultDirection: true,
+        descendingLabel: 'Most Recent',
+        category: FilterOrSortCategory.Default,
+        func: (a, b) =>
+          new Date(b.rating?.updatedAt ?? 0).getTime() -
+          new Date(a.rating?.updatedAt ?? 0).getTime(),
+      },
+      {
+        id: AuraSortId.EvaluationScore,
+        title: 'Evaluation Score',
+        defaultAscending: false,
+        category: FilterOrSortCategory.Default,
+        func: (a, b) => {
+          return (
+            Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
+          );
+        },
+      },
+      {
+        id: AuraSortId.EvaluationPlayerScore,
+        title: 'Player Score (Not Implemented)',
+        category: FilterOrSortCategory.Default,
+        defaultAscending: true,
+        func: (_a, _b) => 1,
+      },
+    ];
+    return sortIds
+      .map((id) => sorts.find((f) => f.id === id))
+      .filter(
+        (item) => item !== undefined,
+      ) as AuraSortOptions<AuraOutboundConnectionAndRatingData>;
   }, [sortIds]);
 }

@@ -160,7 +160,7 @@ const CredibilityDetails = ({
             className="body__chart w-full mb-5 mt-2"
           />
           <Link
-            to={link}
+            to={link + '?viewmode=Trainer'}
             className="flex btn w-full mt-auto justify-center"
             onClick={(e) => {
               e.preventDefault();

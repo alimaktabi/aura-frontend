@@ -2,28 +2,97 @@ import CredibilityDetailsModal from 'components/CredibilityDetailsModal';
 import EvaluateOverlayCard from 'components/EvaluationFlow/EvaluateOverlayCard';
 import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
-import ActivitiesCard from 'components/Shared/ActivitiesCard/index';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
+import { SubjectOutboundEvaluationsContextProvider } from 'contexts/SubjectOutboundEvaluationsContext';
+import useViewMode from 'hooks/useViewMode';
 import { ConnectionLevel } from 'pages/SubjectProfile/ConnectionLevel';
 import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { PreferredView, ProfileTab } from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
-import EvaluationsDetails from '../../components/Shared/EvaluationsDetails';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
+import ProfileOverview from '../../components/Shared/ProfileOverview';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { selectAuthData } from '../../store/profile/selectors';
 
+const ProfileTabs = ({
+  selectedTab,
+  setSelectedTab,
+}: {
+  selectedTab: ProfileTab;
+  setSelectedTab: (value: ProfileTab) => void;
+}) => {
+  const { viewMode, subjectViewModeTitle } = useViewMode();
+  return (
+    <div className="px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card">
+      <div
+        className={'flex flex-row min-w-full gap-1.5 overflow-auto h-full'}
+        // TODO: refactor this to tailwindcss class
+        style={{
+          overflow: 'auto',
+          scrollbarWidth: 'none',
+        }}
+      >
+        {/*<p*/}
+        {/*  className={` absolute w-1/2 top-0 bottom-0 rounded-md ease-in-out ${*/}
+        {/*    isChecked ? 'left-0 right-1/2' : 'right-0 left-1/2'*/}
+        {/*  }`}*/}
+        {/*></p>*/}
+        {/*<p*/}
+        {/*  className={`bg-transparent absolute cursor-pointer w-1/2 h-full flex items-center justify-center left-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${*/}
+        {/*    isChecked ? 'text-white font-bold' : 'text-black font-medium'*/}
+        {/*  }`}*/}
+        {/*  onClick={() => setIsChecked(true)}*/}
+        {/*  data-testid="table-view-switch-option-one"*/}
+        {/*>*/}
+        {/*  {option1}*/}
+        {/*</p>*/}
+        <p
+          className={`rounded-md w-[150px] cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
+            selectedTab === ProfileTab.OVERVIEW
+              ? 'background bg-button-primary text-white font-bold'
+              : 'bg-transparent text-black font-medium'
+          }`}
+          onClick={() => setSelectedTab(ProfileTab.OVERVIEW)}
+          data-testid="table-view-switch-option-one"
+        >
+          Overview
+        </p>
+        <p
+          className={`rounded-md w-[180px] cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
+            selectedTab === ProfileTab.ACTIVITY
+              ? 'background bg-button-primary text-white font-bold'
+              : 'bg-transparent text-black font-medium'
+          }`}
+          onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
+          data-testid="table-view-switch-option-one"
+        >
+          {subjectViewModeTitle} Activity
+        </p>
+        <p
+          className={`rounded-md w-[230px] cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
+            selectedTab === ProfileTab.EVALUATIONS
+              ? 'background bg-button-primary text-white font-bold'
+              : 'bg-transparent text-black font-medium'
+          }`}
+          onClick={() => setSelectedTab(ProfileTab.EVALUATIONS)}
+          data-testid="table-view-switch-option-two"
+        >
+          {viewMode}s Evaluations
+        </p>
+      </div>
+    </div>
+  );
+};
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
-  const role = 'Player';
-
-  const [isOverviewSelected, setIsOverviewSelected] = useState(true);
+  const [selectedTab, setSelectedTab] = useState(ProfileTab.OVERVIEW);
 
   const [showEvaluateOverlayCard, setShowEvaluateOverlayCard] = useState(false);
   const [credibilityDetailsSubjectId, setCredibilityDetailsSubjectId] =
@@ -59,9 +128,11 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
 
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
+  const { viewMode } = useViewMode();
+
   return (
     <div className="page page__dashboard flex flex-col gap-4">
-      {!isOverviewSelected && showEvaluateOverlayCard && (
+      {selectedTab !== ProfileTab.OVERVIEW && showEvaluateOverlayCard && (
         <EvaluateOverlayCard
           className={`absolute top-24 z-10 min-h-[89px] w-[calc(100vw-40px)] max-w-[420px]`}
           subjectId={subjectId}
@@ -72,6 +143,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       <ProfileInfo
         subjectId={subjectId}
         setShowEvaluationFlow={setShowEvaluationFlow}
+        setSelectedTab={setSelectedTab}
       />
 
       {__DEV__ && <ConnectionLevel subjectId={subjectId} />}
@@ -90,7 +162,6 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {/*  />*/}
       {/*)}*/}
       {/* if role is not player then show activities card */}
-      {role !== 'Player' && <ActivitiesCard />}
 
       <div className="flex gap-1 -mb-1">
         <p className="font-bold text-lg text-white">Evidence</p>
@@ -100,16 +171,23 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           alt=""
         />
       </div>
-      <ToggleInput
-        option1="Overview"
-        option2="Detailed List"
-        isChecked={isOverviewSelected}
-        setIsChecked={setIsOverviewSelected}
-      />
-      {isOverviewSelected ? (
-        <EvaluationsDetails
+      {viewMode === PreferredView.PLAYER ? (
+        <ToggleInput
+          option1="Overview"
+          option2="Detailed List"
+          isChecked={selectedTab === ProfileTab.OVERVIEW}
+          setIsChecked={() => setSelectedTab(ProfileTab.OVERVIEW)}
+        />
+      ) : (
+        <ProfileTabs
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
+      )}
+      {selectedTab === ProfileTab.OVERVIEW ? (
+        <ProfileOverview
           subjectId={subjectId}
-          showEvidenceList={() => setIsOverviewSelected(false)}
+          showEvidenceList={() => setSelectedTab(ProfileTab.EVALUATIONS)}
         />
       ) : (
         <>
@@ -190,10 +268,16 @@ const SubjectProfile = () => {
   return !subjectId ? (
     <div>Unknown subject id</div>
   ) : (
-    <SubjectInboundEvaluationsContextProvider subjectId={subjectId}>
-      <SubjectProfileBody subjectId={subjectId} />
-    </SubjectInboundEvaluationsContextProvider>
+    <SubjectOutboundEvaluationsContextProvider subjectId={subjectId}>
+      <SubjectInboundEvaluationsContextProvider subjectId={subjectId}>
+        <SubjectProfileBody subjectId={subjectId} />
+      </SubjectInboundEvaluationsContextProvider>
+    </SubjectOutboundEvaluationsContextProvider>
   );
 };
 
+export const SubjectProfileHeader = () => {
+  const { subjectViewModeTitle } = useViewMode();
+  return <>{subjectViewModeTitle} profile</>;
+};
 export default SubjectProfile;

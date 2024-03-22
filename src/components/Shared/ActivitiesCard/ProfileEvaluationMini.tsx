@@ -1,22 +1,30 @@
-import { useSelector } from 'react-redux';
+import { useSubjectName } from 'hooks/useSubjectName';
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import { compactFormat } from 'utils/number';
 
-import { selectAuthData } from '../../../store/profile/selectors';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
-const ProfileEvaluationMini = () => {
-  const authData = useSelector(selectAuthData);
-
+const ProfileEvaluationMini = ({
+  fromSubjectId,
+  toSubjectId,
+}: {
+  fromSubjectId: string;
+  toSubjectId: string;
+}) => {
+  const name = useSubjectName(toSubjectId);
+  const { auraLevel, auraScore, loading } =
+    useSubjectVerifications(toSubjectId);
   return (
     <div className="card !bg-opacity-100 gap-2">
       <div className="flex w-full items-center">
         <BrightIdProfilePicture
           className={`card--header__left__avatar rounded border border-pastel-purple h-10 w-10`}
-          subjectId={authData?.brightId}
+          subjectId={toSubjectId}
         />
-        <p className="font-bold ml-1.5">Adam Stallard</p>
+        <p className="font-bold ml-1.5">{name}</p>
         <div className="ml-auto px-2 py-1.5 rounded bg-gray00">
           <p className="font-bold text-sm text-light-orange">
-            Lvl 1 13.4<span className="font-medium">m</span>
+            {auraLevel} {auraScore ? compactFormat(auraScore) : '-'}
           </p>
         </div>
       </div>
