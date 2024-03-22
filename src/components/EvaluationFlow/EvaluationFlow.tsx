@@ -40,7 +40,6 @@ const EvaluationFlow = ({
       if (newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING) {
         setShowEvaluationFlow(false);
       } else {
-        console.log('hi');
         setMyNewRatingCount(newRatingCount);
       }
     },

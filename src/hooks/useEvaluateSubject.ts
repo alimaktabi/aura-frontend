@@ -17,10 +17,11 @@ export function useEvaluateSubject() {
           fromBrightId: authData.brightId,
           toBrightId: subjectId,
         });
+        setLoading(false);
       } catch (e) {
-        alert(String(e));
+        setLoading(false);
+        throw e;
       }
-      setLoading(false);
     },
     [loading, authData],
   );
