@@ -23,13 +23,13 @@ export const useSubjectVerifications = (
       (myEvaluationsContext !== null &&
         myEvaluationsContext.myConnections === null) ||
       (subjectInboundEvaluationsContext !== null &&
-        subjectInboundEvaluationsContext.inboundConnections === null)
+        subjectInboundEvaluationsContext.connections === null)
     )
       return;
     const verificationDataFromConnectionsEndpoint =
       myEvaluationsContext?.myConnections?.find((c) => c.id === subjectId)
         ?.verifications ||
-      subjectInboundEvaluationsContext?.inboundConnections?.find(
+      subjectInboundEvaluationsContext?.connections?.find(
         (c) => c.id === subjectId,
       )?.verifications;
     if (verificationDataFromConnectionsEndpoint) {

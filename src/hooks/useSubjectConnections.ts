@@ -27,7 +27,7 @@ export const useInboundConnections = (subjectId: string | null | undefined) => {
 
   return {
     loading: useMemo(() => inboundConnections === null, [inboundConnections]),
-    inboundConnections,
+    connections: inboundConnections,
   };
 };
 
@@ -51,7 +51,7 @@ export const useOutboundConnections = (
       mounted = false;
     };
   }, [subjectId]);
-  return { outboundConnections };
+  return { connections: outboundConnections };
 };
 
 export const useSubjectConnections = (subjectId: string | null | undefined) => {

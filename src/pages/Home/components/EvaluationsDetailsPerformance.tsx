@@ -18,7 +18,7 @@ const EvaluationsDetailsPerformance = ({
   hasBtn?: boolean;
   title?: string;
 }) => {
-  const { inboundRatings, inboundRatingsStatsString } =
+  const { ratings: inboundRatings, inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectVerifications(subjectId);
 

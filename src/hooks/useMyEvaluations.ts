@@ -9,7 +9,7 @@ export const useMyEvaluations = () => {
   return {
     loading: outboundEvaluations.loading,
     refreshOutboundRatings: outboundEvaluations.refreshOutboundRatings,
-    myRatings: outboundEvaluations.outboundRatings,
-    myConnections: outboundEvaluations.outboundConnections,
+    myRatings: outboundEvaluations.ratings,
+    myConnections: outboundEvaluations.connections,
   };
 };

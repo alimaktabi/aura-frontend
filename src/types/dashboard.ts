@@ -9,3 +9,13 @@ export enum ProfileTab {
   ACTIVITY,
   EVALUATIONS,
 }
+
+export enum EvidenceViewMode {
+  INBOUND_EVALUATION,
+  OUTBOUND_ACTIVITY,
+}
+
+export enum EvidenceType {
+  EVALUATED,
+  CONNECTED,
+}

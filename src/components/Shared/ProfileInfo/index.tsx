@@ -41,7 +41,7 @@ export const ProfileInfo = ({
   const { myConnectionToSubject, myRatingNumberToSubject } =
     useMyEvaluationsContext(subjectId);
 
-  const { outboundConnections, outboundRatings } =
+  const { connections: outboundConnections, ratings: outboundRatings } =
     useOutboundEvaluationsContext(subjectId);
 
   const lastActivity = useMemo(() => {

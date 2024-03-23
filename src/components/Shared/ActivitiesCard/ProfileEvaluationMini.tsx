@@ -1,3 +1,4 @@
+import EvaluationInfo from 'components/Shared/EvaluationInfo/EvaluationInfo';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { compactFormat } from 'utils/number';
@@ -7,15 +8,21 @@ import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 const ProfileEvaluationMini = ({
   fromSubjectId,
   toSubjectId,
+  onClick,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  onClick?: () => void;
 }) => {
   const name = useSubjectName(toSubjectId);
-  const { auraLevel, auraScore, loading } =
-    useSubjectVerifications(toSubjectId);
+  const { auraLevel, auraScore } = useSubjectVerifications(toSubjectId);
   return (
-    <div className="card !bg-opacity-100 gap-2">
+    <div
+      className={`card !bg-opacity-100 gap-2 ${
+        onClick ? 'cursor-pointer' : ''
+      }`}
+      onClick={onClick}
+    >
       <div className="flex w-full items-center">
         <BrightIdProfilePicture
           className={`card--header__left__avatar rounded border border-pastel-purple h-10 w-10`}
@@ -28,13 +35,7 @@ const ProfileEvaluationMini = ({
           </p>
         </div>
       </div>
-      <div className="flex justify-between items-center bg-pl1 rounded-md px-1.5 py-2">
-        <p className="text-sm font-bold">Positive - Very High</p>
-        <div className="flex gap-1.5 items-center">
-          <p className="text-sm font-medium">2.32K (11%)</p>
-          <img src="/assets/images/Shared/green-pen-icon.svg" alt="" />
-        </div>
-      </div>
+      <EvaluationInfo fromSubjectId={fromSubjectId} toSubjectId={toSubjectId} />
     </div>
   );
 };

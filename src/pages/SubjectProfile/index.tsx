@@ -7,14 +7,18 @@ import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
-import { SubjectOutboundEvaluationsContextProvider } from 'contexts/SubjectOutboundEvaluationsContext';
+import {
+  SubjectOutboundEvaluationsContextProvider,
+  useOutboundEvaluationsContext,
+} from 'contexts/SubjectOutboundEvaluationsContext';
 import useViewMode from 'hooks/useViewMode';
+import { ActivityListSearch } from 'pages/SubjectProfile/ActivityListSearch';
 import { ConnectionLevel } from 'pages/SubjectProfile/ConnectionLevel';
 import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { PreferredView, ProfileTab } from 'types/dashboard';
+import { EvidenceViewMode, PreferredView, ProfileTab } from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
@@ -74,7 +78,7 @@ const ProfileTabs = ({
           onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
           data-testid="table-view-switch-option-one"
         >
-          {subjectViewModeTitle} Activity
+          Activity
         </p>
         <p
           className={`rounded-md w-[230px] cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
@@ -85,7 +89,7 @@ const ProfileTabs = ({
           onClick={() => setSelectedTab(ProfileTab.EVALUATIONS)}
           data-testid="table-view-switch-option-two"
         >
-          {viewMode}s Evaluations
+          Evaluations
         </p>
       </div>
     </div>
@@ -121,10 +125,18 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
 
   const { itemsFiltered: evaluations, loading: loadingInboundEvaluations } =
     useSubjectInboundEvaluationsContext(subjectId);
+  const {
+    itemsFiltered: outboundEvaluations,
+    loading: loadingOutboundEvaluations,
+  } = useOutboundEvaluationsContext(subjectId);
   const evaluators = useMemo(() => {
     if (!evaluations) return [];
     return evaluations.map((e) => e.fromSubjectId);
   }, [evaluations]);
+  const evaluateds = useMemo(() => {
+    if (!outboundEvaluations) return [];
+    return outboundEvaluations.map((e) => e.toSubjectId);
+  }, [outboundEvaluations]);
 
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
@@ -188,7 +200,33 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <ProfileOverview
           subjectId={subjectId}
           showEvidenceList={() => setSelectedTab(ProfileTab.EVALUATIONS)}
+          onLastEvaluationClick={setCredibilityDetailsSubjectId}
         />
+      ) : selectedTab === ProfileTab.ACTIVITY ? (
+        <>
+          <ActivityListSearch subjectId={subjectId} />
+          {loadingOutboundEvaluations ? (
+            <div
+              className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
+            >
+              Loading...
+            </div>
+          ) : (
+            <InfiniteScrollLocal
+              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+              items={evaluateds}
+              renderItem={(evaluated) => (
+                <ProfileEvaluation
+                  evidenceViewMode={EvidenceViewMode.OUTBOUND_ACTIVITY}
+                  onClick={() => setCredibilityDetailsSubjectId(evaluated)}
+                  key={evaluated}
+                  fromSubjectId={subjectId}
+                  toSubjectId={evaluated}
+                />
+              )}
+            />
+          )}
+        </>
       ) : (
         <>
           <EvidenceListSearch subjectId={subjectId} />
@@ -204,6 +242,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               items={evaluators}
               renderItem={(evaluator) => (
                 <ProfileEvaluation
+                  evidenceViewMode={EvidenceViewMode.INBOUND_EVALUATION}
                   onClick={() => setCredibilityDetailsSubjectId(evaluator)}
                   key={evaluator}
                   fromSubjectId={evaluator}

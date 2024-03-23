@@ -17,16 +17,21 @@ const ProfileOverview = ({
   showEvidenceList,
   hasHeader = false,
   hasBtn = false,
+  onLastEvaluationClick,
 }: {
   subjectId: string;
   showEvidenceList?: () => void;
   hasHeader?: boolean;
   hasBtn?: boolean;
   title?: string;
+  onLastEvaluationClick: (subjectId: string) => void;
 }) => {
   const { viewMode } = useViewMode();
-  const { inboundRatings, inboundRatingsStatsString, inboundConnections } =
-    useSubjectInboundEvaluationsContext(subjectId);
+  const {
+    ratings: inboundRatings,
+    inboundRatingsStatsString,
+    connections: inboundConnections,
+  } = useSubjectInboundEvaluationsContext(subjectId);
   const { auraScore } = useSubjectVerifications(subjectId);
 
   const [selectedLevel, setSelectedLevel] = useState(1);
@@ -45,7 +50,10 @@ const ProfileOverview = ({
         <div className=" mb-4 font-bold text-lg text-black">{title}</div>
       )}
       {viewMode !== PreferredView.PLAYER && (
-        <ActivitiesCard subjectId={subjectId} />
+        <ActivitiesCard
+          subjectId={subjectId}
+          onLastEvaluationClick={onLastEvaluationClick}
+        />
       )}
 
       <div className="flex flex-col gap-1.5">

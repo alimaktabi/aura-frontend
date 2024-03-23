@@ -47,7 +47,7 @@ export const useInboundRatings = (subjectId: string | null | undefined) => {
   return {
     refreshInboundRatings,
     loading,
-    inboundRatings,
+    ratings: inboundRatings,
     inboundPositiveRatingsCount,
     inboundNegativeRatingsCount,
     inboundRatingsStatsString,
@@ -79,7 +79,7 @@ export const useOutboundRatings = (subjectId: string | null | undefined) => {
 
   return {
     refreshOutboundRatings,
-    outboundRatings,
+    ratings: outboundRatings,
   };
 };
 

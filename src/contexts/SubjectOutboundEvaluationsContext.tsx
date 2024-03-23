@@ -39,7 +39,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
   ProviderProps
 > = ({ subjectId, children }) => {
   const useOutboundEvaluationsHookData = useOutboundEvaluations(subjectId);
-  const { outboundRatings } = useOutboundEvaluationsHookData;
+  const { ratings } = useOutboundEvaluationsHookData;
   const filters = useOutboundEvaluationFilters(
     [
       AuraFilterId.EvaluationMutualConnections,
@@ -68,11 +68,11 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
 
   const outboundOpinions: AuraOutboundConnectionAndRatingData[] =
     useMemo(() => {
-      const outboundConnections = subjectConnections.outboundConnections;
-      if (!outboundConnections || outboundRatings === null || !brightIdBackup)
+      const outboundConnections = subjectConnections.connections;
+      if (!outboundConnections || ratings === null || !brightIdBackup)
         return [];
       const outboundOpinions: AuraOutboundConnectionAndRatingData[] =
-        outboundRatings.map((r) => ({
+        ratings.map((r) => ({
           toSubjectId: r.toBrightId,
           rating: r,
           name: brightIdBackup.connections.find(
@@ -84,7 +84,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
         }));
       outboundConnections.forEach((c) => {
         const notRated =
-          outboundRatings.findIndex((r) => r.fromBrightId === c.id) === -1;
+          ratings.findIndex((r) => r.fromBrightId === c.id) === -1;
         if (notRated) {
           outboundOpinions.push({
             toSubjectId: c.id,
@@ -95,11 +95,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
         }
       });
       return outboundOpinions;
-    }, [
-      brightIdBackup,
-      outboundRatings,
-      subjectConnections.outboundConnections,
-    ]);
+    }, [brightIdBackup, ratings, subjectConnections.connections]);
 
   const filterAndSortHookData = useFilterAndSort(
     outboundOpinions,

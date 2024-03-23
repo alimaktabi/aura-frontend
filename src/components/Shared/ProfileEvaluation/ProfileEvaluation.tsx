@@ -11,6 +11,7 @@ import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { EvidenceType, EvidenceViewMode } from 'types/dashboard';
 import { RoutePath } from 'types/router';
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
@@ -21,10 +22,12 @@ const ProfileEvaluation = ({
   fromSubjectId,
   toSubjectId,
   onClick,
+  evidenceViewMode,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
   onClick: () => void;
+  evidenceViewMode: EvidenceViewMode;
 }) => {
   const { loading, ratingNumber } = useSubjectEvaluationFromContext({
     fromSubjectId,
@@ -39,11 +42,13 @@ const ProfileEvaluation = ({
         'Loading...'
       ) : ratingNumber ? (
         <EvaluatedCardBody
+          evidenceViewMode={evidenceViewMode}
           fromSubjectId={fromSubjectId}
           toSubjectId={toSubjectId}
         />
       ) : (
         <ConnectedCardBody
+          evidenceViewMode={evidenceViewMode}
           fromSubjectId={fromSubjectId}
           toSubjectId={toSubjectId}
         />
@@ -204,19 +209,29 @@ const Graph = () => {
 const EvidenceInformation = ({
   subjectId,
   evidenceType,
+  evidenceViewMode,
 }: {
   subjectId: string;
-  evidenceType?: 'evaluated' | 'connected to';
+  evidenceType?: EvidenceType;
+  evidenceViewMode: EvidenceViewMode;
 }) => {
   const name = useSubjectName(subjectId);
   return (
     <div className="evidence-information flex justify-between flex-1 gap-2">
       <div
         className={`${
-          evidenceType === 'evaluated' ? 'text-purple' : 'text-orange'
+          evidenceType === EvidenceType.EVALUATED
+            ? 'text-purple'
+            : 'text-orange'
         } text-xs font-medium`}
       >
-        {evidenceType}
+        {evidenceType === EvidenceType.EVALUATED
+          ? evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY
+            ? 'evaluated by'
+            : 'evaluated'
+          : evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY
+          ? 'connected by'
+          : 'connected to'}
       </div>
       <div className="text-xs font-medium truncate flex-1 text-right">
         {name}
@@ -283,30 +298,50 @@ export const EvaluationInformation = ({
 const EvaluatedCardBody = ({
   fromSubjectId,
   toSubjectId,
+  evidenceViewMode,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  evidenceViewMode: EvidenceViewMode;
 }) => {
+  const leftCardSide = useMemo(
+    () =>
+      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+        ? fromSubjectId
+        : toSubjectId,
+    [evidenceViewMode, fromSubjectId, toSubjectId],
+  );
+  const rightCardSide = useMemo(
+    () =>
+      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+        ? toSubjectId
+        : fromSubjectId,
+    [evidenceViewMode, fromSubjectId, toSubjectId],
+  );
   return (
     <>
       <div className="card__left-column w-[60%] flex gap-1.5">
         <div className="w-[50px] flex flex-col gap-1.5">
           <BrightIdProfilePicture
-            subjectId={fromSubjectId}
+            subjectId={leftCardSide}
             className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
           />
-          <ConnectionInfo subjectId={fromSubjectId} />
+          <ConnectionInfo subjectId={leftCardSide} />
         </div>
         <div className="flex flex-col gap-0 w-full">
-          <UserName subjectId={fromSubjectId} />
-          <UserInformation subjectId={fromSubjectId} />
+          <UserName subjectId={leftCardSide} />
+          <UserInformation subjectId={leftCardSide} />
           <Graph />
         </div>
         <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
       </div>
       <div className="card__right-column flex flex-col gap-1 w-[40%]">
-        <EvidenceInformation evidenceType="evaluated" subjectId={toSubjectId} />
-        <EvidenceUserProfile subjectId={toSubjectId} />
+        <EvidenceInformation
+          evidenceViewMode={evidenceViewMode}
+          evidenceType={EvidenceType.EVALUATED}
+          subjectId={rightCardSide}
+        />
+        <EvidenceUserProfile subjectId={rightCardSide} />
         <EvaluationInformation
           fromSubjectId={fromSubjectId}
           toSubjectId={toSubjectId}
@@ -347,14 +382,14 @@ const ConnectionInformation = ({
   fromSubjectId: string;
   toSubjectId: string;
 }) => {
-  const { inboundConnectionInfo, loading } = useSubjectEvaluationFromContext({
+  const { connectionInfo, loading } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
   });
   const connectionTime = useMemo(() => {
-    if (!inboundConnectionInfo?.timestamp) return '-';
-    return moment(inboundConnectionInfo.timestamp).fromNow();
-  }, [inboundConnectionInfo?.timestamp]);
+    if (!connectionInfo?.timestamp) return '-';
+    return moment(connectionInfo.timestamp).fromNow();
+  }, [connectionInfo?.timestamp]);
   return (
     <div className="flex flex-col py-1.5 items-center justify-center gap-1 bg-soft-bright rounded-md">
       {loading ? (
@@ -363,16 +398,16 @@ const ConnectionInformation = ({
         <>
           <div className="flex items-center gap-1.5">{connectionTime}</div>
           <div className="flex items-center gap-1.5">
-            {inboundConnectionInfo && (
+            {connectionInfo && (
               <img
                 src={`/assets/images/Shared/${
-                  connectionLevelIcons[inboundConnectionInfo.level]
+                  connectionLevelIcons[connectionInfo.level]
                 }.svg`}
                 className="h-[18px] w-[18px]"
                 alt=""
               />
             )}
-            <p className="text-sm font-bold">{inboundConnectionInfo?.level}</p>
+            <p className="text-sm font-bold">{connectionInfo?.level}</p>
           </div>
         </>
       )}
@@ -380,35 +415,52 @@ const ConnectionInformation = ({
   );
 };
 const ConnectedCardBody = ({
+  evidenceViewMode,
   fromSubjectId,
   toSubjectId,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  evidenceViewMode: EvidenceViewMode;
 }) => {
+  const leftCardSide = useMemo(
+    () =>
+      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+        ? fromSubjectId
+        : toSubjectId,
+    [evidenceViewMode, fromSubjectId, toSubjectId],
+  );
+  const rightCardSide = useMemo(
+    () =>
+      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+        ? toSubjectId
+        : fromSubjectId,
+    [evidenceViewMode, fromSubjectId, toSubjectId],
+  );
   return (
     <>
       <div className="card__left-column w-[60%] flex gap-1.5">
         <div className="w-[50px] flex flex-col gap-1.5">
           <BrightIdProfilePicture
-            subjectId={fromSubjectId}
+            subjectId={leftCardSide}
             className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
           />
-          <ConnectionInfo subjectId={fromSubjectId} />
+          <ConnectionInfo subjectId={leftCardSide} />
         </div>
         <div className="flex flex-col gap-0 w-full">
-          <UserName subjectId={fromSubjectId} />
-          <UserInformation subjectId={fromSubjectId} isConnected />
+          <UserName subjectId={leftCardSide} />
+          <UserInformation subjectId={leftCardSide} isConnected />
           <Graph />
         </div>
         <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
       </div>
       <div className="card__right-column flex flex-col gap-1 w-[40%]">
         <EvidenceInformation
-          evidenceType="connected to"
-          subjectId={toSubjectId}
+          evidenceViewMode={evidenceViewMode}
+          evidenceType={EvidenceType.CONNECTED}
+          subjectId={rightCardSide}
         />
-        <EvidenceUserProfile subjectId={toSubjectId} />
+        <EvidenceUserProfile subjectId={rightCardSide} />
         <ConnectionInformation
           fromSubjectId={fromSubjectId}
           toSubjectId={toSubjectId}

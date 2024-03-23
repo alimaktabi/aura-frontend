@@ -41,7 +41,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
 > = ({ subjectId, children }) => {
   const useSubjectInboundEvaluationsHookData =
     useSubjectInboundEvaluations(subjectId);
-  const { inboundRatings } = useSubjectInboundEvaluationsHookData;
+  const { ratings } = useSubjectInboundEvaluationsHookData;
   const filters = useInboundEvaluationFilters(
     [
       AuraFilterId.EvaluationMutualConnections,
@@ -69,11 +69,10 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   const brightIdBackup = useSelector(selectBrightIdBackup);
 
   const inboundOpinions: AuraInboundConnectionAndRatingData[] = useMemo(() => {
-    const inboundConnections = subjectConnections.inboundConnections;
-    if (!inboundConnections || inboundRatings === null || !brightIdBackup)
-      return [];
-    const inboundOpinions: AuraInboundConnectionAndRatingData[] =
-      inboundRatings.map((r) => ({
+    const inboundConnections = subjectConnections.connections;
+    if (!inboundConnections || ratings === null || !brightIdBackup) return [];
+    const inboundOpinions: AuraInboundConnectionAndRatingData[] = ratings.map(
+      (r) => ({
         fromSubjectId: r.fromBrightId,
         rating: r,
         name: brightIdBackup.connections.find(
@@ -82,10 +81,10 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
         inboundConnection: inboundConnections.find(
           (c) => c.id === r.fromBrightId,
         ),
-      }));
+      }),
+    );
     inboundConnections.forEach((c) => {
-      const notRated =
-        inboundRatings.findIndex((r) => r.fromBrightId === c.id) === -1;
+      const notRated = ratings.findIndex((r) => r.fromBrightId === c.id) === -1;
       if (notRated) {
         inboundOpinions.push({
           fromSubjectId: c.id,
@@ -96,7 +95,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
       }
     });
     return inboundOpinions;
-  }, [brightIdBackup, inboundRatings, subjectConnections.inboundConnections]);
+  }, [brightIdBackup, ratings, subjectConnections.connections]);
 
   const filterAndSortHookData = useFilterAndSort(
     inboundOpinions,
@@ -109,11 +108,9 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
 
   const myRatingObject = useMemo(() => {
     if (!authData) return undefined;
-    const rating = inboundRatings?.find(
-      (r) => r.fromBrightId === authData.brightId,
-    );
+    const rating = ratings?.find((r) => r.fromBrightId === authData.brightId);
     return rating;
-  }, [authData, inboundRatings]);
+  }, [authData, ratings]);
 
   return (
     <SubjectInboundEvaluationsContext.Provider

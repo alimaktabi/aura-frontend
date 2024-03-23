@@ -24,7 +24,7 @@ const CredibilityDetails = ({
 }) => {
   const authData = useSelector(selectAuthData);
   const { auraLevel, auraScore } = useSubjectVerifications(subjectId);
-  const { inboundRatings, inboundRatingsStatsString } =
+  const { ratings, inboundRatingsStatsString } =
     useSubjectInboundEvaluations(subjectId);
   const {
     loading,
@@ -32,7 +32,7 @@ const CredibilityDetails = ({
     myConnectionToSubject,
     myConfidenceValueInThisSubjectRating,
   } = useMyEvaluationsContext(subjectId);
-  const { outboundConnections } = useOutboundConnections(subjectId);
+  const { connections } = useOutboundConnections(subjectId);
   const { options2 } = useContext(EchartsContext);
   const [isSubject, setIsSubject] = useState(true);
   const link = '/subject/' + subjectId;
@@ -113,7 +113,7 @@ const CredibilityDetails = ({
           <div>
             Evaluations:{' '}
             <span className="font-bold">
-              {inboundRatings !== null ? inboundRatings.length : '...'} (
+              {ratings !== null ? ratings.length : '...'} (
               {inboundRatingsStatsString})
             </span>
           </div>
@@ -124,8 +124,8 @@ const CredibilityDetails = ({
           <div>
             Their Connection to you:{' '}
             <span className="font-bold">
-              {outboundConnections !== null
-                ? outboundConnections.find((c) => c.id === authData?.brightId)
+              {connections !== null
+                ? connections.find((c) => c.id === authData?.brightId)
                     ?.level || '-'
                 : '...'}
             </span>

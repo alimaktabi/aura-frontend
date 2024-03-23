@@ -67,7 +67,9 @@ export function useCategorizeAuraFilterOptions<T>(
 
 export function useSubjectFilters(filterIds: AuraFilterId[]) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { outboundRatings } = useOutboundRatings(brightIdBackup?.userData.id);
+  const { ratings: outboundRatings } = useOutboundRatings(
+    brightIdBackup?.userData.id,
+  );
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraNodeBrightIdConnectionWithBackupData> =
       [
@@ -178,7 +180,7 @@ export function useInboundEvaluationFilters(
   subjectId?: string,
 ) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { outboundConnections } = useOutboundConnections(subjectId);
+  const { connections } = useOutboundConnections(subjectId);
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
       {
@@ -222,8 +224,8 @@ export function useInboundEvaluationFilters(
         category: FilterOrSortCategory.Default,
         title: 'Their Recovery',
         func: (item) =>
-          outboundConnections?.find((c) => c.id === item.fromSubjectId)
-            ?.level === 'recovery',
+          connections?.find((c) => c.id === item.fromSubjectId)?.level ===
+          'recovery',
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
@@ -257,7 +259,7 @@ export function useInboundEvaluationFilters(
       .filter(
         (item) => item !== undefined,
       ) as AuraFilterOptions<AuraInboundConnectionAndRatingData>;
-  }, [brightIdBackup?.connections, filterIds, outboundConnections]);
+  }, [brightIdBackup?.connections, filterIds, connections]);
 }
 
 export function useOutboundEvaluationFilters(
@@ -265,7 +267,7 @@ export function useOutboundEvaluationFilters(
   subjectId?: string,
 ) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { outboundConnections } = useOutboundConnections(subjectId);
+  const { connections } = useOutboundConnections(subjectId);
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraOutboundConnectionAndRatingData> = [
       {
@@ -274,7 +276,7 @@ export function useOutboundEvaluationFilters(
         title: 'Mutual Connections',
         func: (item) =>
           !!brightIdBackup?.connections.find(
-            (conn) => item.rating?.fromBrightId === conn.id,
+            (conn) => item.rating?.toBrightId === conn.id,
           ),
       },
       {
@@ -309,7 +311,7 @@ export function useOutboundEvaluationFilters(
         category: FilterOrSortCategory.Default,
         title: 'Their Recovery',
         func: (item) =>
-          outboundConnections?.find((c) => c.id === item.toSubjectId)?.level ===
+          connections?.find((c) => c.id === item.toSubjectId)?.level ===
           'recovery',
       },
       {
@@ -344,5 +346,5 @@ export function useOutboundEvaluationFilters(
       .filter(
         (item) => item !== undefined,
       ) as AuraFilterOptions<AuraOutboundConnectionAndRatingData>;
-  }, [brightIdBackup?.connections, filterIds, outboundConnections]);
+  }, [brightIdBackup?.connections, filterIds, connections]);
 }

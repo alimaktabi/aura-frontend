@@ -51,12 +51,14 @@ export const useMyEvaluationsContext = (subjectId?: string) => {
     () => (myRatingToSubject ? Number(myRatingToSubject?.rating) : null),
     [myRatingToSubject],
   );
+  const myActiveRatings = useMemo(
+    () => context.myRatings?.filter((r) => Number(r.rating)),
+    [context.myRatings],
+  );
   const myLastRating = useMemo(
     () =>
-      context.myRatings?.length
-        ? context.myRatings[context.myRatings.length - 1]
-        : undefined,
-    [context.myRatings],
+      myActiveRatings ? myActiveRatings[myActiveRatings.length - 1] : undefined,
+    [myActiveRatings],
   );
   return {
     ...context,
