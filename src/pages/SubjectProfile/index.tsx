@@ -33,7 +33,6 @@ const ProfileTabs = ({
   selectedTab: ProfileTab;
   setSelectedTab: (value: ProfileTab) => void;
 }) => {
-  const { viewMode, subjectViewModeTitle } = useViewMode();
   return (
     <div className="px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card">
       <div
