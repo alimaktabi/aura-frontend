@@ -10,6 +10,7 @@ import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
+import { ProfileViewAs } from 'types/dashboard';
 import { compactFormat } from 'utils/number';
 
 import { HorizontalProgressBar } from './Shared/HorizontalProgressBar';
@@ -81,12 +82,12 @@ const CredibilityDetails = ({
             className="body__chart w-full mb-5 mt-2"
           />
           <Link
-            to={link}
+            to={link + '?viewas=' + ProfileViewAs.SUBJECT}
             className="flex btn btn--bg-orange w-full justify-center mt-auto"
             onClick={(e) => {
               e.preventDefault();
               onClose();
-              navigate(link);
+              navigate(link + '?viewas=' + ProfileViewAs.SUBJECT);
             }}
           >
             View Subject Profile
@@ -125,8 +126,8 @@ const CredibilityDetails = ({
             Their Connection to you:{' '}
             <span className="font-bold">
               {connections !== null
-                ? connections.find((c) => c.id === authData?.brightId)
-                    ?.level || '-'
+                ? connections.find((c) => c.id === authData?.brightId)?.level ||
+                  '-'
                 : '...'}
             </span>
           </div>
@@ -160,12 +161,12 @@ const CredibilityDetails = ({
             className="body__chart w-full mb-5 mt-2"
           />
           <Link
-            to={link + '?viewmode=Trainer'}
+            to={link + '?viewas=' + ProfileViewAs.PLAYER}
             className="flex btn w-full mt-auto justify-center"
             onClick={(e) => {
               e.preventDefault();
               onClose();
-              navigate(link);
+              navigate(link + '?viewas=' + ProfileViewAs.PLAYER);
             }}
           >
             View Player Profile
