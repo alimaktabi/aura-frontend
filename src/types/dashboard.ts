@@ -15,6 +15,13 @@ export enum EvidenceViewMode {
   OUTBOUND_ACTIVITY,
 }
 
+export enum ProfileViewAs {
+  SUBJECT = 'subject',
+  PLAYER = 'player',
+  TRAINER = 'trainer',
+  MANAGER = 'manager',
+}
+
 export enum EvidenceType {
   EVALUATED,
   CONNECTED,
