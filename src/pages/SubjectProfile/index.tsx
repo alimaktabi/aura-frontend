@@ -185,9 +185,11 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {viewMode === PreferredView.PLAYER ? (
         <ToggleInput
           option1="Overview"
-          option2="Detailed List"
+          option2="Evaluations"
           isChecked={selectedTab === ProfileTab.OVERVIEW}
-          setIsChecked={() => setSelectedTab(ProfileTab.OVERVIEW)}
+          setIsChecked={(value) =>
+            setSelectedTab(value ? ProfileTab.OVERVIEW : ProfileTab.EVALUATIONS)
+          }
         />
       ) : (
         <ProfileTabs
