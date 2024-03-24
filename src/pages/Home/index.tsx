@@ -1,10 +1,11 @@
 import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
 import { SubjectSearch } from 'components/EvaluationFlow/SubjectSearch';
+import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import useViewMode from 'hooks/useViewMode';
 import Onboarding from 'pages/Onboarding';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
@@ -32,7 +33,6 @@ const Home = () => {
   };
   const [isEvaluate, setIsEvaluate] = useState(true);
   const hasTrainers = false;
-  const isLocked = false;
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
@@ -50,6 +50,14 @@ const Home = () => {
 
   const { myRatings, loading: loadingMyEvaluations } =
     useMyEvaluationsContext();
+  const isLocked = useMemo(
+    () =>
+      !myRatings ||
+      myRatings.filter((r) => Number(r.rating)).length <
+        PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+    [myRatings],
+  );
+
   const playerOnboardingScreenShown = useSelector(
     selectPlayerOnboardingScreenShown,
   );
@@ -78,7 +86,6 @@ const Home = () => {
           isPerformance={true}
           // role="Player" // this name should be dynamic and be shown on the top of the page - value is set on Routes.tsx
           color={color.Player} // this color should be based on role
-          isLocked={isLocked}
           percentage={`w-[73%]`}
         />
         <ToggleInput
