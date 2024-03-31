@@ -86,7 +86,6 @@ const Home = () => {
           isPerformance={true}
           // role="Player" // this name should be dynamic and be shown on the top of the page - value is set on Routes.tsx
           color={color.Player} // this color should be based on role
-          percentage={`w-[73%]`}
         />
         <ToggleInput
           option1={'Evaluate'}

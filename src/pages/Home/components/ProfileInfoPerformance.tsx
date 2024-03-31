@@ -7,12 +7,10 @@ const ProfileInfoPerformance = ({
   subjectId,
   isPerformance,
   color = 'pastel-green',
-  percentage,
 }: {
   subjectId: string;
   isPerformance: boolean;
   color: string;
-  percentage: string;
 }) => {
   const { auraLevel } = useSubjectVerifications(subjectId);
   const { myRatings } = useMyEvaluationsContext();
@@ -27,6 +25,18 @@ const ProfileInfoPerformance = ({
         : undefined,
     [myRatings],
   );
+
+  const progressPercentage = useMemo(() => {
+    if (ratingsToBeDoneCount) {
+      return Math.floor(
+        ((PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
+          ratingsToBeDoneCount) *
+          100) /
+          PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+      );
+    }
+    return 73;
+  }, [ratingsToBeDoneCount]);
   return (
     <div className="card relative">
       <div className="absolute top-0 right-0">
@@ -65,7 +75,7 @@ const ProfileInfoPerformance = ({
           </div>
           <div className="w-full relative bg-gray30 rounded-full h-4">
             <div
-              className={`${percentage} absolute bg-primary-d1 rounded-full h-full`}
+              className={`w-[${progressPercentage}%] absolute bg-primary-d1 rounded-full h-full`}
             ></div>
           </div>
         </div>
