@@ -1,4 +1,5 @@
 import { resetStore } from 'BrightID/actions';
+import { preferredViewIcon } from 'constants/index';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'store/hooks';
@@ -13,12 +14,6 @@ import RoleSelectModal from './RoleSelectModal';
 const Dashboard = () => {
   const preferredView = useSelector(selectPreferredView);
   const [isRoleSelectModalOpen, setIsRoleSelectModalOpen] = useState(false);
-
-  const preferredViewIcon = {
-    [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
-    [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
-    [PreferredView.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
-  } as const;
 
   const dispatch = useDispatch();
   return (

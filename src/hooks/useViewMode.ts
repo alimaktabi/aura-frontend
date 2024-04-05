@@ -1,5 +1,6 @@
+import { viewAsToViewMode } from 'constants/index';
 import { useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { selectPreferredView } from 'store/profile/selectors';
 import { PreferredView, ProfileViewAs } from 'types/dashboard';
@@ -9,17 +10,8 @@ export default function useViewMode() {
   const [query] = useSearchParams();
   const viewMode = useMemo(() => {
     const viewAs = query.get('viewas');
-    if (viewAs === ProfileViewAs.SUBJECT) {
-      return PreferredView.PLAYER;
-    }
-    if (viewAs === ProfileViewAs.PLAYER) {
-      return PreferredView.TRAINER;
-    }
-    if (viewAs === ProfileViewAs.TRAINER) {
-      return PreferredView.MANAGER;
-    }
-    if (viewAs === ProfileViewAs.MANAGER) {
-      return PreferredView.MANAGER;
+    if (viewAs && (Object.values(ProfileViewAs) as string[]).includes(viewAs)) {
+      return viewAsToViewMode[viewAs as ProfileViewAs];
     }
     return preferredViewMode;
   }, [preferredViewMode, query]);
@@ -32,8 +24,25 @@ export default function useViewMode() {
       }[viewMode]),
     [viewMode],
   );
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const updateViewAs = (value: ProfileViewAs) => {
+    // Create a new URLSearchParams object based on the current query string
+    const searchParams = new URLSearchParams(location.search);
+
+    // Set the new or update the existing query parameter
+    searchParams.set('viewas', value);
+
+    // Navigate to the same route with the new query string
+    navigate(`${location.pathname}?${searchParams.toString()}`, {
+      replace: true,
+    });
+  };
+
   return {
     viewMode,
+    updateViewAs,
     subjectViewModeTitle,
   };
 }

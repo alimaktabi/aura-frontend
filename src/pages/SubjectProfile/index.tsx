@@ -4,6 +4,11 @@ import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
+  subjectViewAsIcon,
+  ViewModeSubjectColors,
+  viewModeToViewAs,
+} from 'constants/index';
+import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
@@ -15,10 +20,16 @@ import useViewMode from 'hooks/useViewMode';
 import { ActivityListSearch } from 'pages/SubjectProfile/ActivityListSearch';
 import { ConnectionLevel } from 'pages/SubjectProfile/ConnectionLevel';
 import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
+import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { EvidenceViewMode, PreferredView, ProfileTab } from 'types/dashboard';
+import {
+  EvidenceViewMode,
+  PreferredView,
+  ProfileTab,
+  ProfileViewAs,
+} from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
@@ -317,7 +328,34 @@ const SubjectProfile = () => {
 };
 
 export const SubjectProfileHeader = () => {
-  const { subjectViewModeTitle } = useViewMode();
-  return <>{subjectViewModeTitle} profile</>;
+  const { subjectViewModeTitle, updateViewAs, viewMode } = useViewMode();
+  return (
+    <>
+      {subjectViewModeTitle} profile
+      {(
+        [
+          ProfileViewAs.SUBJECT,
+          ProfileViewAs.PLAYER,
+          ProfileViewAs.TRAINER,
+        ] as const
+      ).map((subjectViewMode) => (
+        <div
+          className={`p-1 rounded-l ${
+            viewModeToViewAs[viewMode] === subjectViewMode
+              ? 'bg-' + ViewModeSubjectColors[viewMode]
+              : 'bg-[#999999]'
+          } ml-2`}
+          key={subjectViewMode}
+          onClick={() => updateViewAs(subjectViewMode)}
+        >
+          <img
+            className="w-4 h-4"
+            src={subjectViewAsIcon[subjectViewMode]}
+            alt=""
+          />
+        </div>
+      ))}
+    </>
+  );
 };
 export default SubjectProfile;

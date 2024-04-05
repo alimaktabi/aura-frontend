@@ -69,7 +69,7 @@ const Header = () => {
               onClick={() => setIsSequenceOpen(!isSequenceOpen)}
             />
           )}
-          <span className="header-title font-medium text-2xl text-white whitespace-nowrap w-full">
+          <span className="header-title font-medium text-2xl text-white whitespace-nowrap flex flex-wrap w-full items-center">
             {headerComponent.title}
           </span>
         </div>

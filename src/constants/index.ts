@@ -1,5 +1,5 @@
 import { AuraRating, ConnectionLevel } from 'types';
-import { PreferredView } from 'types/dashboard';
+import { PreferredView, ProfileViewAs } from 'types/dashboard';
 
 // eslint-disable-next-line no-restricted-globals
 export const LOCATION_ORIGIN = location.origin;
@@ -80,4 +80,37 @@ export const ViewModeSubjectColors = {
   [PreferredView.PLAYER]: 'pastel-orange',
   [PreferredView.TRAINER]: 'pastel-purple',
   [PreferredView.MANAGER]: 'pastel-blue',
+} as const;
+export const PreferredViewColors = {
+  [PreferredView.PLAYER]: 'pastel-purple',
+  [PreferredView.TRAINER]: 'pastel-green',
+  [PreferredView.MANAGER]: 'pastel-blue',
+} as const;
+
+export const viewModeToViewAs: {
+  [key in PreferredView]: ProfileViewAs;
+} = {
+  [PreferredView.PLAYER]: ProfileViewAs.SUBJECT,
+  [PreferredView.TRAINER]: ProfileViewAs.PLAYER,
+  [PreferredView.MANAGER]: ProfileViewAs.TRAINER,
+};
+export const viewAsToViewMode: {
+  [key in ProfileViewAs]: PreferredView;
+} = {
+  [ProfileViewAs.SUBJECT]: PreferredView.PLAYER,
+  [ProfileViewAs.PLAYER]: PreferredView.TRAINER,
+  [ProfileViewAs.TRAINER]: PreferredView.MANAGER,
+  [ProfileViewAs.MANAGER]: PreferredView.MANAGER,
+};
+
+export const subjectViewAsIcon = {
+  [ProfileViewAs.SUBJECT]: '/assets/images/Dashboard/brightid-icon.svg',
+  [ProfileViewAs.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
+  [ProfileViewAs.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
+} as const;
+
+export const preferredViewIcon = {
+  [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
+  [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
+  [PreferredView.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
 } as const;
