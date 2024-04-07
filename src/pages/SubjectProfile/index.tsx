@@ -4,7 +4,7 @@ import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
-  getViewModeSubjectColorClass,
+  getViewModeSubjectBackgroundColorClass,
   subjectViewAsIcon,
   viewModeToViewAs,
 } from 'constants/index';
@@ -150,7 +150,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
 
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
-  const { viewMode } = useViewMode();
+  const { currentViewMode } = useViewMode();
 
   return (
     <div className="page page__dashboard flex flex-col gap-4">
@@ -193,7 +193,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           alt=""
         />
       </div>
-      {viewMode === PreferredView.PLAYER ? (
+      {currentViewMode === PreferredView.PLAYER ? (
         <ToggleInput
           option1="Overview"
           option2="Evaluations"
@@ -328,7 +328,7 @@ const SubjectProfile = () => {
 };
 
 export const SubjectProfileHeader = () => {
-  const { subjectViewModeTitle, updateViewAs, viewMode } = useViewMode();
+  const { subjectViewModeTitle, updateViewAs, currentViewMode } = useViewMode();
 
   return (
     <>
@@ -342,10 +342,10 @@ export const SubjectProfileHeader = () => {
       ).map((subjectViewMode) => (
         <div
           className={`p-1 rounded-l ${
-            viewModeToViewAs[viewMode] === subjectViewMode
-              ? getViewModeSubjectColorClass(viewMode)
+            viewModeToViewAs[currentViewMode] === subjectViewMode
+              ? getViewModeSubjectBackgroundColorClass(currentViewMode)
               : 'bg-[#999999]'
-          } ml-2`}
+          } ml-2 cursor-pointer`}
           key={subjectViewMode}
           onClick={() => updateViewAs(subjectViewMode)}
         >

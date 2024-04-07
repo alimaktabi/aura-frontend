@@ -26,7 +26,7 @@ const ProfileOverview = ({
   title?: string;
   onLastEvaluationClick: (subjectId: string) => void;
 }) => {
-  const { viewMode } = useViewMode();
+  const { currentViewMode } = useViewMode();
   const {
     ratings: inboundRatings,
     inboundRatingsStatsString,
@@ -49,7 +49,7 @@ const ProfileOverview = ({
       {hasHeader && (
         <div className=" mb-4 font-bold text-lg text-black">{title}</div>
       )}
-      {viewMode !== PreferredView.PLAYER && (
+      {currentViewMode !== PreferredView.PLAYER && (
         <ActivitiesCard
           subjectId={subjectId}
           onLastEvaluationClick={onLastEvaluationClick}
@@ -57,9 +57,9 @@ const ProfileOverview = ({
       )}
 
       <div className="flex flex-col gap-1.5">
-        {viewMode !== PreferredView.PLAYER && (
+        {currentViewMode !== PreferredView.PLAYER && (
           <div className=" mt-4 font-semibold text-xl text-black">
-            {viewMode} Evaluations
+            {currentViewMode} Evaluations
           </div>
         )}
         {/*<ShowData*/}
@@ -67,7 +67,7 @@ const ProfileOverview = ({
         {/*  value={inboundConnections?.length ?? '...'}*/}
         {/*  details={null}*/}
         {/*/>*/}
-        {viewMode === PreferredView.PLAYER && (
+        {currentViewMode === PreferredView.PLAYER && (
           <>
             <div className="flex justify-between w-full">
               <p className="font-medium">Connections:</p>

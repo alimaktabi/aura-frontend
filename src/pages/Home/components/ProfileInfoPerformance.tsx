@@ -1,6 +1,10 @@
-import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
+import {
+  getViewModeBackgroundColorClass,
+  PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
+} from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import useViewMode from 'hooks/useViewMode';
 import { useMemo } from 'react';
 
 const ProfileInfoPerformance = ({
@@ -12,6 +16,7 @@ const ProfileInfoPerformance = ({
   isPerformance: boolean;
   color: string;
 }) => {
+  const { currentViewMode } = useViewMode();
   const { auraLevel } = useSubjectVerifications(subjectId);
   const { myRatings } = useMyEvaluationsContext();
   const ratingsToBeDoneCount = useMemo(
@@ -75,7 +80,9 @@ const ProfileInfoPerformance = ({
           </div>
           <div className="w-full relative bg-gray30 rounded-full h-4">
             <div
-              className={`absolute bg-primary-d1 rounded-full h-full`}
+              className={`absolute ${getViewModeBackgroundColorClass(
+                currentViewMode,
+              )} rounded-full h-full`}
               style={{ width: progressPercentage + '%' }}
             ></div>
           </div>

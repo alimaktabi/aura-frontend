@@ -75,24 +75,89 @@ export const MUTUAL_CONNECTIONS_TEST_NAMESPACE = 'mutual-connections-';
 
 export const PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING = 3;
 export const SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT = 4;
-export const getViewModeSubjectColorClass = (viewMode: PreferredView) => {
+export const getViewModeSubjectBackgroundColorClass = (
+  viewMode: PreferredView,
+) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
       return 'bg-pastel-orange';
     case PreferredView.TRAINER:
       return 'bg-pastel-purple';
     case PreferredView.MANAGER:
-      return 'bg-pastel-blue';
+      return 'bg-pastel-green';
     default:
-      return 'bg-[#999999]'; // Default color
+      return 'bg-[#999999]';
   }
 };
-export const PreferredViewColors = {
-  [PreferredView.PLAYER]: 'pastel-purple',
-  [PreferredView.TRAINER]: 'pastel-green',
-  [PreferredView.MANAGER]: 'pastel-blue',
-} as const;
+export const getViewModeSubjectBorderColorClass = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return 'border-pastel-orange';
+    case PreferredView.TRAINER:
+      return 'border-pastel-purple';
+    case PreferredView.MANAGER:
+      return 'border-pastel-green';
+    default:
+      return 'border-[#999999]';
+  }
+};
+export const getViewModeSubjectTextColorClass = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return 'text-pastel-orange';
+    case PreferredView.TRAINER:
+      return 'text-pastel-purple';
+    case PreferredView.MANAGER:
+      return 'text-pastel-green';
+    default:
+      return 'text-[#999999]';
+  }
+};
+export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return 'bg-pastel-purple';
+    case PreferredView.TRAINER:
+      return 'bg-pastel-green';
+    case PreferredView.MANAGER:
+      return 'bg-pastel-blue';
+    default:
+      return 'bg-[#999999]';
+  }
+};
+export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return 'border-pastel-purple';
+    case PreferredView.TRAINER:
+      return 'border-pastel-green';
+    case PreferredView.MANAGER:
+      return 'border-pastel-blue';
+    default:
+      return 'border-[#999999]';
+  }
+};
+export const getViewModeTextColorClass = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return 'text-pastel-purple';
+    case PreferredView.TRAINER:
+      return 'text-pastel-green';
+    case PreferredView.MANAGER:
+      return 'text-pastel-blue';
+    default:
+      return 'text-[#999999]';
+  }
+};
 
+export const viewModeToSubjectViewMode: {
+  [key in PreferredView]: PreferredView;
+} = {
+  // first property is just for avoiding type errors
+  [PreferredView.PLAYER]: PreferredView.PLAYER,
+  [PreferredView.TRAINER]: PreferredView.PLAYER,
+  [PreferredView.MANAGER]: PreferredView.TRAINER,
+};
 export const viewModeToViewAs: {
   [key in PreferredView]: ProfileViewAs;
 } = {
@@ -109,11 +174,14 @@ export const viewAsToViewMode: {
   [ProfileViewAs.MANAGER]: PreferredView.MANAGER,
 };
 
-export const subjectViewAsIcon = {
+export const subjectViewAsIcon: {
+  [key in ProfileViewAs]: string;
+} = {
   [ProfileViewAs.SUBJECT]: '/assets/images/Dashboard/brightid-icon.svg',
   [ProfileViewAs.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
   [ProfileViewAs.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
-} as const;
+  [ProfileViewAs.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
+};
 
 export const preferredViewIcon = {
   [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon.svg',

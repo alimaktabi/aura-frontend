@@ -1,4 +1,4 @@
-import { getViewModeSubjectColorClass } from 'constants/index';
+import { getViewModeSubjectBorderColorClass } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
@@ -31,7 +31,7 @@ export const ProfileInfo = ({
   setShowEvaluationFlow: (value: boolean) => void;
   setSelectedTab?: (value: ProfileTab) => void;
 }) => {
-  const { viewMode } = useViewMode();
+  const { currentViewMode } = useViewMode();
 
   const { userHasRecovery, auraLevel } = useSubjectVerifications(subjectId);
   const name = useSubjectName(subjectId);
@@ -64,8 +64,8 @@ export const ProfileInfo = ({
       <div className="card--header flex justify-between w-full items-center">
         <div className="card--header__left flex gap-4">
           <BrightIdProfilePicture
-            className={`card--header__left__avatar rounded-full border-[3px] border-${getViewModeSubjectColorClass(
-              viewMode,
+            className={`card--header__left__avatar rounded-full border-[3px] ${getViewModeSubjectBorderColorClass(
+              currentViewMode,
             )} h-[51px] w-[51px]`}
             subjectId={subjectId}
           />

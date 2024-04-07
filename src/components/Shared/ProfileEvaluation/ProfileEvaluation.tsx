@@ -3,11 +3,20 @@ import {
   getBgClassNameOfAuraRatingObject,
   getConfidenceValueOfAuraRatingNumber,
   getTextClassNameOfAuraRatingObject,
+  getViewModeBorderColorClass,
+  getViewModeSubjectBorderColorClass,
+  getViewModeSubjectTextColorClass,
+  getViewModeTextColorClass,
+  preferredViewIcon,
+  subjectViewAsIcon,
+  viewModeToSubjectViewMode,
+  viewModeToViewAs,
 } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import useViewMode from 'hooks/useViewMode';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -151,26 +160,35 @@ const UserName = ({ subjectId }: { subjectId: string }) => {
 const UserInformation = ({
   subjectId,
   isConnected,
+  evidenceViewMode,
 }: {
   subjectId: string;
   isConnected?: boolean;
+  evidenceViewMode: EvidenceViewMode;
 }) => {
+  const { currentViewMode } = useViewMode();
   const { auraLevel, auraScore, loading } = useSubjectVerifications(subjectId);
   return (
     <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5">
-      {isConnected ? (
-        <img
-          src="/assets/images/Shared/brightid-icon.svg"
-          alt=""
-          className="w-3.5 h-3.5 mx-1"
-        />
-      ) : (
-        <img src="/assets/images/player.svg" alt="" className="w-6 h-6" />
-      )}
+      <img
+        src={
+          evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+            ? preferredViewIcon[currentViewMode]
+            : subjectViewAsIcon[
+                viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]]
+              ]
+        }
+        alt=""
+        className="w-3.5 h-3.5 mx-1"
+      />
       {loading ? (
         <p
           className={`level text-sm font-bold mr-0.5 ${
-            isConnected ? 'text-light-orange' : 'text-purple2'
+            evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+              ? getViewModeTextColorClass(currentViewMode)
+              : getViewModeSubjectTextColorClass(
+                  viewModeToSubjectViewMode[currentViewMode],
+                )
           }`}
         >
           ...
@@ -179,14 +197,22 @@ const UserInformation = ({
         <>
           <p
             className={`level text-sm font-bold mr-0.5 ${
-              isConnected ? 'text-light-orange' : 'text-purple2'
+              evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+                ? getViewModeTextColorClass(currentViewMode)
+                : getViewModeSubjectTextColorClass(
+                    viewModeToSubjectViewMode[currentViewMode],
+                  )
             }`}
           >
             {auraLevel}
           </p>
           <p
             className={`text-sm font-bold ${
-              isConnected ? 'text-light-orange' : 'text-purple2'
+              evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+                ? getViewModeTextColorClass(currentViewMode)
+                : getViewModeSubjectTextColorClass(
+                    viewModeToSubjectViewMode[currentViewMode],
+                  )
             }`}
           >
             {/*13.4<span className="font-medium">m</span>*/}
@@ -216,13 +242,14 @@ const EvidenceInformation = ({
   evidenceViewMode: EvidenceViewMode;
 }) => {
   const name = useSubjectName(subjectId);
+  const { currentViewMode } = useViewMode();
   return (
     <div className="evidence-information flex justify-between flex-1 gap-2">
       <div
         className={`${
-          evidenceType === EvidenceType.EVALUATED
-            ? 'text-purple'
-            : 'text-orange'
+          evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+            ? getViewModeTextColorClass(currentViewMode)
+            : getViewModeSubjectTextColorClass(currentViewMode)
         } text-xs font-medium`}
       >
         {evidenceType === EvidenceType.EVALUATED
@@ -318,19 +345,29 @@ const EvaluatedCardBody = ({
         : fromSubjectId,
     [evidenceViewMode, fromSubjectId, toSubjectId],
   );
+  const { currentViewMode } = useViewMode();
   return (
     <>
       <div className="card__left-column w-[60%] flex gap-1.5">
         <div className="w-[50px] flex flex-col gap-1.5">
           <BrightIdProfilePicture
             subjectId={leftCardSide}
-            className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
+            className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 ${
+              evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+                ? getViewModeBorderColorClass(currentViewMode)
+                : getViewModeSubjectBorderColorClass(
+                    viewModeToSubjectViewMode[currentViewMode],
+                  )
+            }`}
           />
           <ConnectionInfo subjectId={leftCardSide} />
         </div>
         <div className="flex flex-col gap-0 w-full">
           <UserName subjectId={leftCardSide} />
-          <UserInformation subjectId={leftCardSide} />
+          <UserInformation
+            subjectId={leftCardSide}
+            evidenceViewMode={evidenceViewMode}
+          />
           <Graph />
         </div>
         <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
@@ -449,7 +486,11 @@ const ConnectedCardBody = ({
         </div>
         <div className="flex flex-col gap-0 w-full">
           <UserName subjectId={leftCardSide} />
-          <UserInformation subjectId={leftCardSide} isConnected />
+          <UserInformation
+            evidenceViewMode={evidenceViewMode}
+            subjectId={leftCardSide}
+            isConnected
+          />
           <Graph />
         </div>
         <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>

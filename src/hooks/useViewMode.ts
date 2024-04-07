@@ -8,7 +8,7 @@ import { PreferredView, ProfileViewAs } from 'types/dashboard';
 export default function useViewMode() {
   const preferredViewMode = useSelector(selectPreferredView);
   const [query] = useSearchParams();
-  const viewMode = useMemo(() => {
+  const currentViewMode = useMemo(() => {
     const viewAs = query.get('viewas');
     if (viewAs && (Object.values(ProfileViewAs) as string[]).includes(viewAs)) {
       return viewAsToViewMode[viewAs as ProfileViewAs];
@@ -21,8 +21,8 @@ export default function useViewMode() {
         [PreferredView.PLAYER]: 'Subject',
         [PreferredView.TRAINER]: 'Player',
         [PreferredView.MANAGER]: 'Trainer',
-      }[viewMode]),
-    [viewMode],
+      }[currentViewMode]),
+    [currentViewMode],
   );
 
   const location = useLocation();
@@ -41,7 +41,7 @@ export default function useViewMode() {
   };
 
   return {
-    viewMode,
+    currentViewMode,
     updateViewAs,
     subjectViewModeTitle,
   };

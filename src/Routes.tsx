@@ -4,7 +4,7 @@ import { RoutePath } from 'types/router';
 
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
-import Home from './pages/Home';
+import Home, { HomeHeader } from './pages/Home';
 import Onboarding from './pages/Onboarding';
 import SubjectProfile, { SubjectProfileHeader } from './pages/SubjectProfile';
 
@@ -67,7 +67,7 @@ const routes = [
     pathRegex: new RegExp(/^\/home/),
     element: <Home />,
     header: {
-      title: 'Home',
+      title: <HomeHeader />,
       icon: '/assets/images/Header/menu.svg',
     },
     requireAuth: true,
