@@ -1,6 +1,6 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { ConnectionAndEvaluationStatus } from 'components/ConnectionAndEvaluationStatus';
-import { ViewModeSubjectColors } from 'constants/index';
+import { getViewModeSubjectColorClass } from 'constants/index';
 import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
@@ -49,7 +49,7 @@ export const SubjectCard = ({
             <BrightIdProfilePicture
               className={`rounded-full w-12 h-12 border-2 border-${
                 viewMode !== PreferredView.PLAYER
-                  ? ViewModeSubjectColors[viewMode]
+                  ? getViewModeSubjectColorClass(viewMode)
                   : 'bright-l1'
               } bg-center bg-cover`}
               subjectId={subjectId}

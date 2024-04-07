@@ -4,8 +4,8 @@ import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
+  getViewModeSubjectColorClass,
   subjectViewAsIcon,
-  ViewModeSubjectColors,
   viewModeToViewAs,
 } from 'constants/index';
 import {
@@ -329,6 +329,7 @@ const SubjectProfile = () => {
 
 export const SubjectProfileHeader = () => {
   const { subjectViewModeTitle, updateViewAs, viewMode } = useViewMode();
+
   return (
     <>
       {subjectViewModeTitle} profile
@@ -342,7 +343,7 @@ export const SubjectProfileHeader = () => {
         <div
           className={`p-1 rounded-l ${
             viewModeToViewAs[viewMode] === subjectViewMode
-              ? 'bg-' + ViewModeSubjectColors[viewMode]
+              ? getViewModeSubjectColorClass(viewMode)
               : 'bg-[#999999]'
           } ml-2`}
           key={subjectViewMode}

@@ -75,12 +75,18 @@ export const MUTUAL_CONNECTIONS_TEST_NAMESPACE = 'mutual-connections-';
 
 export const PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING = 3;
 export const SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT = 4;
-
-export const ViewModeSubjectColors = {
-  [PreferredView.PLAYER]: 'pastel-orange',
-  [PreferredView.TRAINER]: 'pastel-purple',
-  [PreferredView.MANAGER]: 'pastel-blue',
-} as const;
+export const getViewModeSubjectColorClass = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return 'bg-pastel-orange';
+    case PreferredView.TRAINER:
+      return 'bg-pastel-purple';
+    case PreferredView.MANAGER:
+      return 'bg-pastel-blue';
+    default:
+      return 'bg-[#999999]'; // Default color
+  }
+};
 export const PreferredViewColors = {
   [PreferredView.PLAYER]: 'pastel-purple',
   [PreferredView.TRAINER]: 'pastel-green',

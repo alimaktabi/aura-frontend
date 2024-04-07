@@ -75,7 +75,8 @@ const ProfileInfoPerformance = ({
           </div>
           <div className="w-full relative bg-gray30 rounded-full h-4">
             <div
-              className={`w-[${progressPercentage}%] absolute bg-primary-d1 rounded-full h-full`}
+              className={`absolute bg-primary-d1 rounded-full h-full`}
+              style={{ width: progressPercentage + '%' }}
             ></div>
           </div>
         </div>
