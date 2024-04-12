@@ -1,7 +1,7 @@
 import { auraBrightIdNodeApi } from './index';
 
 export type AuraVerification = 'Bronze' | 'Silver' | 'Gold';
-export type AuraVerificationString = AuraVerification | 'Not yet';
+export type AuraVerificationString = AuraVerification | '-';
 
 export type Verifications = {
   name: string;
@@ -23,7 +23,7 @@ export const getAuraVerificationStringFromVerificationsResponse = (
   const auraVerification = data?.find(
     (verification) => verification.name === 'Aura',
   );
-  return auraVerification?.level || 'Not yet';
+  return auraVerification?.level || '-';
 };
 
 export const getVerifications = async (userId: string) => {

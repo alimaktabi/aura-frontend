@@ -172,10 +172,10 @@ export const HomeHeader = () => {
       Home
       {Object.values(PreferredView).map((viewMode) => (
         <div
-          className={`p-1 rounded-l ${
+          className={`p-1 rounded ${
             currentViewMode === viewMode
               ? getViewModeBackgroundColorClass(currentViewMode)
-              : 'bg-[#999999]'
+              : 'bg-gray100'
           } ml-2 cursor-pointer`}
           key={viewMode}
           onClick={() => dispatch(setPreferredView(viewMode))}

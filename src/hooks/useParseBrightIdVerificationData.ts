@@ -25,7 +25,7 @@ export const getAuraVerificationLevel = (
   const auraVerification = verifications.find(
     (verification) => verification.name === 'Aura',
   );
-  return auraVerification?.level ?? 'Not yet';
+  return auraVerification?.level ?? '-';
 };
 
 export default function useParseBrightIdVerificationData(

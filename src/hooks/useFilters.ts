@@ -84,8 +84,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           id: AuraFilterId.ConnectionLevelNotYet,
           category: FilterOrSortCategory.Level,
           title: 'Not yet',
-          func: (item) =>
-            getAuraVerificationLevel(item.verifications) === 'Not yet',
+          func: (item) => getAuraVerificationLevel(item.verifications) === '-',
         },
         {
           id: AuraFilterId.ConnectionLevelSybil,

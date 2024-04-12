@@ -1,11 +1,14 @@
 import {
   getViewModeBackgroundColorClass,
+  getViewModeUpArrowIcon,
   PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
 } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import useViewMode from 'hooks/useViewMode';
 import { useMemo } from 'react';
+
+import { PreferredView } from '../../../types/dashboard';
 
 const ProfileInfoPerformance = ({
   subjectId,
@@ -45,13 +48,19 @@ const ProfileInfoPerformance = ({
   return (
     <div className="card relative">
       <div className="absolute top-0 right-0">
-        <img src="/assets/images/Home/level-up-icon.svg" alt="" />
+        <img src={getViewModeUpArrowIcon(currentViewMode)} alt="" />
       </div>
       <div className="flex flex-row gap-4 w-full items-end">
         {ratingsToBeDoneCount === 0 && (
-          <div className="flex flex-col items-center justify-between gap-1.5 rounded-[6px] bg-primary-l1 px-2 py-1.5">
-            <div className="font-bold leading-4">Level</div>
-            <div className="font-black leading-6 text-2xl">{auraLevel}</div>
+          <div
+            className={`flex flex-col items-center gap-1 rounded-[6px] bg-opacity-50 ${getViewModeBackgroundColorClass(
+              currentViewMode,
+            )} px-2.5 py-2`}
+          >
+            <div className="font-bold text-sm">Level</div>
+            <div className="font-black text-2xl leading-6 text-center">
+              {auraLevel ?? '-'}
+            </div>
           </div>
         )}
         <div className="flex flex-col w-full gap-3.5">
@@ -70,9 +79,19 @@ const ProfileInfoPerformance = ({
               </>
             ) : (
               <>
-                <span className="text-2xl font-black">25,234</span>
+                <span className="text-xl font-black">25,234</span>
                 <span className="text-lg font-medium">to</span>
-                <span className="text-lg font-medium text-button-primary">
+                <span
+                  className={`text-lg font-semibold ${
+                    currentViewMode === PreferredView.PLAYER
+                      ? 'text-primary-d1'
+                      : currentViewMode === PreferredView.TRAINER
+                      ? 'text-pl2'
+                      : currentViewMode === PreferredView.MANAGER
+                      ? 'text-blue'
+                      : 'text-gray100'
+                  }`}
+                >
                   Level 3
                 </span>
               </>

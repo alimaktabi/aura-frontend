@@ -86,7 +86,7 @@ export const getViewModeSubjectBackgroundColorClass = (
     case PreferredView.MANAGER:
       return 'bg-pastel-green';
     default:
-      return 'bg-[#999999]';
+      return 'bg-gray100';
   }
 };
 export const getViewModeSubjectBorderColorClass = (viewMode: PreferredView) => {
@@ -98,7 +98,7 @@ export const getViewModeSubjectBorderColorClass = (viewMode: PreferredView) => {
     case PreferredView.MANAGER:
       return 'border-pastel-green';
     default:
-      return 'border-[#999999]';
+      return 'border-gray100';
   }
 };
 export const getViewModeSubjectTextColorClass = (viewMode: PreferredView) => {
@@ -110,19 +110,31 @@ export const getViewModeSubjectTextColorClass = (viewMode: PreferredView) => {
     case PreferredView.MANAGER:
       return 'text-pastel-green';
     default:
-      return 'text-[#999999]';
+      return 'text-gray100';
+  }
+};
+export const getViewModeUpArrowIcon = (viewMode: PreferredView) => {
+  switch (viewMode) {
+    case PreferredView.PLAYER:
+      return '/assets/images/Home/level-up-icon-purple.svg';
+    case PreferredView.TRAINER:
+      return '/assets/images/Home/level-up-icon-green.svg';
+    case PreferredView.MANAGER:
+      return '/assets/images/Home/level-up-icon-blue.svg';
+    default:
+      return '/assets/images/Home/level-up-icon-purple.svg';
   }
 };
 export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'bg-pastel-purple';
+      return 'bg-button-primary';
     case PreferredView.TRAINER:
-      return 'bg-pastel-green';
+      return 'bg-pl2';
     case PreferredView.MANAGER:
-      return 'bg-pastel-blue';
+      return 'bg-blue';
     default:
-      return 'bg-[#999999]';
+      return 'bg-gray100';
   }
 };
 export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
@@ -134,7 +146,7 @@ export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
     case PreferredView.MANAGER:
       return 'border-pastel-blue';
     default:
-      return 'border-[#999999]';
+      return 'border-gray100';
   }
 };
 export const getViewModeTextColorClass = (viewMode: PreferredView) => {
@@ -146,7 +158,7 @@ export const getViewModeTextColorClass = (viewMode: PreferredView) => {
     case PreferredView.MANAGER:
       return 'text-pastel-blue';
     default:
-      return 'text-[#999999]';
+      return 'text-gray100';
   }
 };
 
