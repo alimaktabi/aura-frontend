@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import Home, { HomeHeader } from './pages/Home';
 import Onboarding from './pages/Onboarding';
+import { RoleManagement } from './pages/RoleManagement';
 import { Settings } from './pages/Settings';
 import SubjectProfile, { SubjectProfileHeader } from './pages/SubjectProfile';
 
@@ -95,6 +96,19 @@ const routes = [
       icon: '/assets/images/Header/home.svg',
       iconClickedHandler: (navigate: NavigateFunction) => {
         navigate(RoutePath.HOME);
+      },
+    },
+    requireAuth: true,
+  },
+  {
+    path: RoutePath.ROLE_MANAGEMENT,
+    pathRegex: new RegExp(/^\/role-management/),
+    element: <RoleManagement />,
+    header: {
+      title: 'Role Management',
+      icon: '/assets/images/Header/back.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(-1);
       },
     },
     requireAuth: true,

@@ -7,4 +7,5 @@ export enum RoutePath {
   DOMAIN_OVERVIEW = '/domain-overview',
   SUBJECT_PROFILE = '/subject/:subjectIdProp',
   SETTINGS = '/settings',
+  ROLE_MANAGEMENT = '/role-management',
 }

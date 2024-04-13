@@ -88,12 +88,20 @@
     }
   }
 
+  &--small {
+    @apply px-4 py-1.5 font-medium rounded;
+  }
+
+  &--medium {
+    @apply px-4 py-2 font-bold rounded-[6px];
+  }
+
   &--big {
     @apply p-3.5 font-bold text-xl rounded-lg;
   }
 
   &--outlined {
-    @apply py-2 px-4 rounded-[6px] font-bold bg-transparent text-button-primary border border-button-primary;
+    @apply bg-transparent text-button-primary border border-button-primary;
   }
 
   &--outlined-big {

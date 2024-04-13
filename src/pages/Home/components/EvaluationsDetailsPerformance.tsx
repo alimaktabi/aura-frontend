@@ -78,7 +78,9 @@ const EvaluationsDetailsPerformance = ({
       </div>
       {hasBtn && (
         <>
-          <button className="btn--outlined mt-4">View All Evaluations</button>
+          <button className="btn--outlined btn--medium mt-4">
+            View All Evaluations
+          </button>
           <button className="btn mt-3">Find New Trainer</button>
         </>
       )}

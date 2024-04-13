@@ -13,7 +13,7 @@ export default {
         gray20: '#585858',
         gray30: '#D9D9D9',
         gray40: '#ECECEC',
-        gray50: '#CDCDCD',
+        gray50: '#848484',
         gray60: '#727272',
         gray70: '#E3E3E3',
         gray90: '#D9D9D9',
