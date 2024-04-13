@@ -1,10 +1,6 @@
 import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
 import { SubjectSearch } from 'components/EvaluationFlow/SubjectSearch';
-import {
-  getViewModeBackgroundColorClass,
-  PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
-  preferredViewIcon,
-} from 'constants/index';
+import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import useViewMode from 'hooks/useViewMode';
@@ -12,11 +8,10 @@ import Onboarding from 'pages/Onboarding';
 import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { setPreferredView } from 'store/profile';
-import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
 import FindTrainersCard from '../../components/Shared/FindTrainersCard';
+import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { SubjectInboundRatingsContextProvider } from '../../contexts/SubjectInboundRatingsContext';
 import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
@@ -168,24 +163,10 @@ const Home = () => {
 };
 
 export const HomeHeader = () => {
-  const { currentViewMode } = useViewMode();
-  const dispatch = useDispatch();
   return (
     <>
       Home
-      {Object.values(PreferredView).map((viewMode) => (
-        <div
-          className={`p-1 rounded ${
-            currentViewMode === viewMode
-              ? getViewModeBackgroundColorClass(currentViewMode)
-              : 'bg-gray100'
-          } ml-2 cursor-pointer`}
-          key={viewMode}
-          onClick={() => dispatch(setPreferredView(viewMode))}
-        >
-          <img className="w-4 h-4" src={preferredViewIcon[viewMode]} alt="" />
-        </div>
-      ))}
+      <HeaderPreferedView />
     </>
   );
 };

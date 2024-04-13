@@ -19,9 +19,9 @@ const Header = () => {
   if (!headerComponent) {
     headerComponent = {
       title: '',
-      icon: '/assets/images/Header/back.svg',
+      icon: '/assets/images/Header/home.svg',
       iconClickedHandler: () => {
-        navigate(-1);
+        navigate(RoutePath.HOME);
       },
     };
   }

@@ -4,11 +4,6 @@ import EvaluationFlow from 'components/EvaluationFlow/EvaluationFlow';
 import InfiniteScrollLocal from 'components/InfiniteScrollLocal';
 import ProfileEvaluation from 'components/Shared/ProfileEvaluation/ProfileEvaluation';
 import {
-  getViewModeSubjectBackgroundColorClass,
-  subjectViewAsIcon,
-  viewModeToViewAs,
-} from 'constants/index';
-import {
   SubjectInboundEvaluationsContextProvider,
   useSubjectInboundEvaluationsContext,
 } from 'contexts/SubjectInboundEvaluationsContext';
@@ -24,14 +19,10 @@ import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import {
-  EvidenceViewMode,
-  PreferredView,
-  ProfileTab,
-  ProfileViewAs,
-} from 'types/dashboard';
+import { EvidenceViewMode, PreferredView, ProfileTab } from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
+import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
@@ -333,29 +324,7 @@ export const SubjectProfileHeader = () => {
   return (
     <>
       {subjectViewModeTitle} profile
-      {(
-        [
-          ProfileViewAs.SUBJECT,
-          ProfileViewAs.PLAYER,
-          ProfileViewAs.TRAINER,
-        ] as const
-      ).map((subjectViewMode) => (
-        <div
-          className={`p-1 rounded-l ${
-            viewModeToViewAs[currentViewMode] === subjectViewMode
-              ? getViewModeSubjectBackgroundColorClass(currentViewMode)
-              : 'bg-[#999999]'
-          } ml-2 cursor-pointer`}
-          key={subjectViewMode}
-          onClick={() => updateViewAs(subjectViewMode)}
-        >
-          <img
-            className="w-4 h-4"
-            src={subjectViewAsIcon[subjectViewMode]}
-            alt=""
-          />
-        </div>
-      ))}
+      <HeaderPreferedView />
     </>
   );
 };
