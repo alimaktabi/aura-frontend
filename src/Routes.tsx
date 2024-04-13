@@ -1,11 +1,13 @@
 import Login from 'pages/Login';
 import Splash from 'pages/Splash';
+import { NavigateFunction } from 'react-router-dom';
 import { RoutePath } from 'types/router';
 
 import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import Home, { HomeHeader } from './pages/Home';
 import Onboarding from './pages/Onboarding';
+import { Settings } from './pages/Settings';
 import SubjectProfile, { SubjectProfileHeader } from './pages/SubjectProfile';
 
 const routes = [
@@ -38,7 +40,10 @@ const routes = [
     element: <Dashboard />,
     header: {
       title: 'Dashboard',
-      icon: null,
+      icon: '/assets/images/Header/home.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(RoutePath.HOME);
+      },
     },
     requireAuth: true,
   },
@@ -49,6 +54,9 @@ const routes = [
     header: {
       title: 'Domain overview',
       icon: '/assets/images/Header/home.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(RoutePath.HOME);
+      },
     },
     requireAuth: true,
   },
@@ -58,7 +66,10 @@ const routes = [
     element: <SubjectProfile />,
     header: {
       title: <SubjectProfileHeader />,
-      icon: '/assets/images/Header/menu.svg',
+      icon: '/assets/images/Header/home.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(RoutePath.HOME);
+      },
     },
     requireAuth: false,
   },
@@ -68,7 +79,23 @@ const routes = [
     element: <Home />,
     header: {
       title: <HomeHeader />,
-      icon: '/assets/images/Header/menu.svg',
+      icon: '/assets/images/Header/settings.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(RoutePath.SETTINGS);
+      },
+    },
+    requireAuth: true,
+  },
+  {
+    path: RoutePath.SETTINGS,
+    pathRegex: new RegExp(/^\/settings/),
+    element: <Settings />,
+    header: {
+      title: 'Settings',
+      icon: '/assets/images/Header/home.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(RoutePath.HOME);
+      },
     },
     requireAuth: true,
   },

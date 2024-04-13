@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
@@ -15,16 +15,14 @@ const Header = () => {
   let headerComponent = currentRouteObject?.header;
 
   const navigate = useNavigate();
-  const onIconClick = useCallback(() => {
-    if (currentRouteObject?.path === RoutePath.DASHBOARD)
-      navigate(RoutePath.HOME);
-    else navigate(RoutePath.DASHBOARD);
-  }, [currentRouteObject, navigate]);
 
   if (!headerComponent) {
     headerComponent = {
       title: '',
       icon: '/assets/images/Header/back.svg',
+      iconClickedHandler: () => {
+        navigate(-1);
+      },
     };
   }
 
@@ -74,9 +72,9 @@ const Header = () => {
           </span>
         </div>
         <span className="header-right flex items-center">
-          {headerComponent.icon && (
+          {headerComponent && (
             <span
-              onClick={onIconClick}
+              onClick={() => headerComponent!.iconClickedHandler(navigate)}
               className="header-icon !cursor-pointer"
               data-testid="nav-button"
             >

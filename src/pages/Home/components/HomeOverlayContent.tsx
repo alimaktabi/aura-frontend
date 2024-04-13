@@ -17,7 +17,6 @@ export const HomeOverlayContent = () => {
   const [isRoleSelectModalOpen, setIsRoleSelectModalOpen] = useState(false);
 
   const dispatch = useDispatch();
-
   return (
     <MoveUpIn duration={0.4} delay={0.1} y={20}>
       <div className="row mb-4">

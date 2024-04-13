@@ -6,4 +6,5 @@ export enum RoutePath {
   HOME = '/home',
   DOMAIN_OVERVIEW = '/domain-overview',
   SUBJECT_PROFILE = '/subject/:subjectIdProp',
+  SETTINGS = '/settings',
 }
