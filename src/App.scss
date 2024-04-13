@@ -29,6 +29,10 @@
   &__splash {
     @apply min-h-screen;
   }
+
+  &__settings {
+    @apply flex-1;
+  }
 }
 
 .no-scrollbar {

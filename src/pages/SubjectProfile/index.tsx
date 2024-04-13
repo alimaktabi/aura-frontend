@@ -319,12 +319,12 @@ const SubjectProfile = () => {
 };
 
 export const SubjectProfileHeader = () => {
-  const { subjectViewModeTitle, updateViewAs, currentViewMode } = useViewMode();
+  const { subjectViewModeTitle } = useViewMode();
 
   return (
     <>
       {subjectViewModeTitle} profile
-      <HeaderPreferedView />
+      <HeaderPreferedView.ViewModeSwitch />
     </>
   );
 };
