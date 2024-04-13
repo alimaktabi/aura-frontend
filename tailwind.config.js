@@ -40,6 +40,7 @@ export default {
         'soft-bright': '#FFEAD1',
         'button-primary': '#A982DF',
         'bright-l1': '#F09F77',
+        'overlay-bg': '#4f4f4f',
         black2: '#2C2C2C',
         black3: '#181818',
         pl1: '#D5ECDA',
