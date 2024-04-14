@@ -64,6 +64,8 @@ const Home = () => {
     selectPlayerOnboardingScreenShown,
   );
 
+  const [view, setView] = useState(true);
+
   const { subjectViewModeTitle } = useViewMode();
 
   if (!authData) {
@@ -118,6 +120,12 @@ const Home = () => {
                 className="w-7 h-7 ml-1 mt-0.5 cursor-pointer"
                 onClick={refreshBrightIdBackup}
               />
+              <p
+                className="ml-auto font-medium cursor-pointer text-white"
+                onClick={() => setView(!view)}
+              >
+                {view ? 'View Managers' : 'View Trainers'}
+              </p>
             </div>
             {filteredSubjects && !loading ? (
               <div className="overflow-auto flex-grow no-scrollbar">
