@@ -3,7 +3,6 @@ import Splash from 'pages/Splash';
 import { NavigateFunction } from 'react-router-dom';
 import { RoutePath } from 'types/router';
 
-import Dashboard from './pages/Dashboard';
 import DomainOverview from './pages/DomainOverview';
 import Home, { HomeHeader } from './pages/Home';
 import Onboarding from './pages/Onboarding';
@@ -35,19 +34,19 @@ const routes = [
     noHeader: true,
     requireAuth: false,
   },
-  {
-    path: RoutePath.DASHBOARD,
-    pathRegex: new RegExp(/^\/dashboard/),
-    element: <Dashboard />,
-    header: {
-      title: 'Dashboard',
-      icon: '/assets/images/Header/home.svg',
-      iconClickedHandler: (navigate: NavigateFunction) => {
-        navigate(RoutePath.HOME);
-      },
-    },
-    requireAuth: true,
-  },
+  // {
+  //   path: RoutePath.DASHBOARD,
+  //   pathRegex: new RegExp(/^\/dashboard/),
+  //   element: <Dashboard />,
+  //   header: {
+  //     title: 'Dashboard',
+  //     icon: '/assets/images/Header/home.svg',
+  //     iconClickedHandler: (navigate: NavigateFunction) => {
+  //       navigate(RoutePath.HOME);
+  //     },
+  //   },
+  //   requireAuth: true,
+  // },
   {
     path: RoutePath.DOMAIN_OVERVIEW,
     pathRegex: new RegExp(/^\/domain-overview/),
