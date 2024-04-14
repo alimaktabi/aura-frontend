@@ -93,7 +93,7 @@
   }
 
   &--medium {
-    @apply px-4 py-2 font-bold rounded-[6px];
+    @apply px-4 py-2 font-bold rounded-md;
   }
 
   &--big {
@@ -109,14 +109,14 @@
   }
 
   &--text-black {
-    @apply text-black font-semibold
+    @apply text-black font-semibold;
   }
 
   &--bg-orange {
-    @apply bg-orange
+    @apply bg-orange;
   }
 }
 
 #qr-code {
-  @apply rounded-xl
+  @apply rounded-xl;
 }
