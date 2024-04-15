@@ -13,18 +13,19 @@ import { setPreferredView } from '../../store/profile';
 import { PreferredView, ProfileViewAs } from '../../types/dashboard';
 
 export const HeaderPreferedView = {
-  ViewModeSwitch: () => {
+  ProfileHeaderViews: () => {
     const { updateViewAs, currentViewMode } = useViewMode();
+
+    const views = [
+      ProfileViewAs.SUBJECT,
+      ProfileViewAs.PLAYER,
+      ProfileViewAs.TRAINER,
+      ProfileViewAs.MANAGER,
+    ];
 
     return (
       <>
-        {(
-          [
-            ProfileViewAs.SUBJECT,
-            ProfileViewAs.PLAYER,
-            ProfileViewAs.TRAINER,
-          ] as const
-        ).map((subjectViewMode) => (
+        {views.map((subjectViewMode) => (
           <div
             className={`p-1 rounded ${
               viewModeToViewAs[currentViewMode] === subjectViewMode
