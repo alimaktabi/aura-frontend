@@ -35,13 +35,11 @@ const Header = () => {
     });
   }, [location.pathname]);
 
-  if (!currentRouteObject) {
-    return null;
-  }
+  let headerComponent: any;
 
-  let headerComponent = currentRouteObject.header;
-
-  if (!headerComponent) {
+  if (currentRouteObject) {
+    headerComponent = currentRouteObject.header;
+  } else {
     headerComponent = {
       title: <></>,
       icon: '/assets/images/Header/home.svg',

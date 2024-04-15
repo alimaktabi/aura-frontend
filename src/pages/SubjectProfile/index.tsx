@@ -176,10 +176,10 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
       {/*)}*/}
       {/* if role is not player then show activities card */}
 
-      <div className="flex gap-1 -mb-1">
+      <div className="flex gap-1 -mb-1 items-center">
         <p className="font-bold text-lg text-white">Evidence</p>
         <img
-          className="cursor-pointer"
+          className="cursor-pointer w-4 h-4"
           src="/assets/images/SubjectProfile/evidence-info-icon.svg"
           alt=""
         />
