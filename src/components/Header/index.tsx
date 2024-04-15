@@ -7,24 +7,11 @@ import { PlayerHistorySequence } from './PlayerHistorySequence';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentRouteObject = useMemo(
     () => routes.find((route) => route.pathRegex.test(location.pathname)),
     [location.pathname],
   );
-
-  let headerComponent = currentRouteObject?.header;
-
-  const navigate = useNavigate();
-
-  if (!headerComponent) {
-    headerComponent = {
-      title: '',
-      icon: '/assets/images/Header/home.svg',
-      iconClickedHandler: () => {
-        navigate(RoutePath.HOME);
-      },
-    };
-  }
 
   const [playerHistorySequence, setPlayerHistorySequence] = useState<string[]>(
     [],
@@ -48,16 +35,32 @@ const Header = () => {
     });
   }, [location.pathname]);
 
+  if (!currentRouteObject) {
+    return null;
+  }
+
+  let headerComponent = currentRouteObject.header;
+
+  if (!headerComponent) {
+    headerComponent = {
+      title: <></>,
+      icon: '/assets/images/Header/home.svg',
+      iconClickedHandler: () => {
+        navigate(RoutePath.HOME);
+      },
+    };
+  }
+
   return (
     <div className="flex flex-col gap-2.5 px-6 pt-9">
       {isSequenceOpen && (
         <PlayerHistorySequence playerHistorySequence={playerHistorySequence} />
       )}
       <header className="header pb-4 flex justify-between">
-        <div className="header-left flex gap-1.5">
+        <div className="header-left items-center flex gap-1.5">
           {playerHistorySequence.length !== 0 && (
             <img
-              className="cursor-pointer"
+              className="cursor-pointer w-6 h-[18px]"
               src={
                 isSequenceOpen
                   ? '/assets/images/Header/close-sequence.svg'
@@ -67,20 +70,20 @@ const Header = () => {
               onClick={() => setIsSequenceOpen(!isSequenceOpen)}
             />
           )}
-          <span className="header-title font-medium text-2xl text-white whitespace-nowrap flex flex-wrap w-full items-center">
+          <div className="header-title font-medium text-2xl text-white whitespace-nowrap flex items-center">
             {headerComponent.title}
-          </span>
+          </div>
         </div>
         <span className="header-right flex items-center">
-          {headerComponent && (
-            <span
-              onClick={() => headerComponent!.iconClickedHandler(navigate)}
-              className="header-icon !cursor-pointer"
-              data-testid="nav-button"
-            >
-              <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
-            </span>
-          )}
+          <span
+            onClick={() =>
+              headerComponent && headerComponent.iconClickedHandler(navigate)
+            }
+            className="header-icon !cursor-pointer"
+            data-testid="nav-button"
+          >
+            <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
+          </span>
         </span>
       </header>
     </div>
