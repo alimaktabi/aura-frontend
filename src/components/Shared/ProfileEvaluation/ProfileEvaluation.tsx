@@ -175,7 +175,12 @@ const UserInformation = ({
           evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
             ? preferredViewIcon[currentViewMode]
             : subjectViewAsIcon[
-                viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]]
+                viewModeToViewAs[
+                  evidenceViewMode ===
+                  EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                    ? currentViewMode
+                    : viewModeToSubjectViewMode[currentViewMode]
+                ]
               ]
         }
         alt=""
@@ -187,7 +192,10 @@ const UserInformation = ({
             evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
               ? getViewModeTextColorClass(currentViewMode)
               : getViewModeSubjectTextColorClass(
-                  viewModeToSubjectViewMode[currentViewMode],
+                  evidenceViewMode ===
+                    EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                    ? currentViewMode
+                    : viewModeToSubjectViewMode[currentViewMode],
                 )
           }`}
         >
@@ -200,7 +208,10 @@ const UserInformation = ({
               evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
                 ? getViewModeTextColorClass(currentViewMode)
                 : getViewModeSubjectTextColorClass(
-                    viewModeToSubjectViewMode[currentViewMode],
+                    evidenceViewMode ===
+                      EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                      ? currentViewMode
+                      : viewModeToSubjectViewMode[currentViewMode],
                   )
             }`}
           >
@@ -211,7 +222,10 @@ const UserInformation = ({
               evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
                 ? getViewModeTextColorClass(currentViewMode)
                 : getViewModeSubjectTextColorClass(
-                    viewModeToSubjectViewMode[currentViewMode],
+                    evidenceViewMode ===
+                      EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                      ? currentViewMode
+                      : viewModeToSubjectViewMode[currentViewMode],
                   )
             }`}
           >
@@ -356,7 +370,10 @@ const EvaluatedCardBody = ({
               evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
                 ? getViewModeBorderColorClass(currentViewMode)
                 : getViewModeSubjectBorderColorClass(
-                    viewModeToSubjectViewMode[currentViewMode],
+                    evidenceViewMode ===
+                      EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                      ? currentViewMode
+                      : viewModeToSubjectViewMode[currentViewMode],
                   )
             }`}
           />

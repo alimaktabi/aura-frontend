@@ -35,13 +35,13 @@ const ProfileTabs = ({
   selectedTab: ProfileTab;
   setSelectedTab: (value: ProfileTab) => void;
 }) => {
+  const { currentViewMode } = useViewMode();
   return (
     <div className="px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card">
       <div
         className={'flex flex-row min-w-full gap-1.5 overflow-auto h-full'}
         // TODO: refactor this to tailwindcss class
         style={{
-          overflow: 'auto',
           scrollbarWidth: 'none',
         }}
       >
@@ -92,6 +92,19 @@ const ProfileTabs = ({
         >
           Evaluations
         </p>
+        {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER && (
+          <p
+            className={`rounded-md w-[300px] cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
+              selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+                ? 'background bg-button-primary text-white font-bold'
+                : 'bg-transparent text-black font-medium'
+            }`}
+            onClick={() => setSelectedTab(ProfileTab.ACTIVITY_ON_MANAGERS)}
+            data-testid="table-view-switch-option-two"
+          >
+            Activity on Managers
+          </p>
+        )}
       </div>
     </div>
   );
@@ -142,6 +155,23 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
   const { currentViewMode } = useViewMode();
+
+  useEffect(() => {
+    if (currentViewMode === PreferredView.PLAYER) {
+      if (
+        ![ProfileTab.OVERVIEW, ProfileTab.EVALUATIONS].includes(selectedTab)
+      ) {
+        setSelectedTab(ProfileTab.OVERVIEW);
+      }
+      return;
+    }
+    if (
+      currentViewMode !== PreferredView.MANAGER_EVALUATING_MANAGER &&
+      selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+    ) {
+      setSelectedTab(ProfileTab.ACTIVITY);
+    }
+  }, [currentViewMode, selectedTab]);
 
   return (
     <div className="page page__dashboard flex flex-col gap-4">
@@ -221,6 +251,33 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               renderItem={(evaluated) => (
                 <ProfileEvaluation
                   evidenceViewMode={EvidenceViewMode.OUTBOUND_ACTIVITY}
+                  onClick={() => setCredibilityDetailsSubjectId(evaluated)}
+                  key={evaluated}
+                  fromSubjectId={subjectId}
+                  toSubjectId={evaluated}
+                />
+              )}
+            />
+          )}
+        </>
+      ) : selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS ? (
+        <>
+          <ActivityListSearch subjectId={subjectId} />
+          {loadingOutboundEvaluations ? (
+            <div
+              className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
+            >
+              Loading...
+            </div>
+          ) : (
+            <InfiniteScrollLocal
+              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+              items={evaluateds}
+              renderItem={(evaluated) => (
+                <ProfileEvaluation
+                  evidenceViewMode={
+                    EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                  }
                   onClick={() => setCredibilityDetailsSubjectId(evaluated)}
                   key={evaluated}
                   fromSubjectId={subjectId}

@@ -108,7 +108,7 @@ export const getViewModeSubjectTextColorClass = (viewMode: PreferredView) => {
     case PreferredView.MANAGER_EVALUATING_TRAINER:
       return 'text-pastel-green';
     case PreferredView.MANAGER_EVALUATING_MANAGER:
-      return 'border-pastel-blue';
+      return 'text-pastel-blue';
     default:
       return 'text-gray100';
   }
