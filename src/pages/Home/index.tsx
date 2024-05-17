@@ -8,6 +8,7 @@ import Onboarding from 'pages/Onboarding';
 import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
 import FindTrainersCard from '../../components/Shared/FindTrainersCard';
@@ -64,9 +65,8 @@ const Home = () => {
     selectPlayerOnboardingScreenShown,
   );
 
-  const [view, setView] = useState(true);
-
-  const { subjectViewModeTitle } = useViewMode();
+  const { subjectViewModeTitle, currentViewMode, setPreferredView } =
+    useViewMode();
 
   if (!authData) {
     return <div>Not logged in</div>;
@@ -120,12 +120,26 @@ const Home = () => {
                 className="w-7 h-7 ml-1 mt-0.5 cursor-pointer"
                 onClick={refreshBrightIdBackup}
               />
-              <p
-                className="ml-auto font-medium cursor-pointer text-white"
-                onClick={() => setView(!view)}
-              >
-                {view ? 'View Managers' : 'View Trainers'}
-              </p>
+              {currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER && (
+                <p
+                  className="ml-auto font-medium cursor-pointer text-white"
+                  onClick={() =>
+                    setPreferredView(PreferredView.MANAGER_EVALUATING_MANAGER)
+                  }
+                >
+                  View Managers
+                </p>
+              )}
+              {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER && (
+                <p
+                  className="ml-auto font-medium cursor-pointer text-white"
+                  onClick={() =>
+                    setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
+                  }
+                >
+                  View Trainers
+                </p>
+              )}
             </div>
             {filteredSubjects && !loading ? (
               <div className="overflow-auto flex-grow no-scrollbar">

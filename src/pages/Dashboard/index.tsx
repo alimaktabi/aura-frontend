@@ -80,7 +80,7 @@ const Dashboard = () => {
             </p>
           </Link>
         )}
-        {preferredView === PreferredView.MANAGER && (
+        {preferredView === PreferredView.MANAGER_EVALUATING_TRAINER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
@@ -93,7 +93,7 @@ const Dashboard = () => {
           </Link>
         )}
 
-        {preferredView === PreferredView.MANAGER && (
+        {preferredView === PreferredView.MANAGER_EVALUATING_TRAINER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"

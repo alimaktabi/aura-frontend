@@ -1,7 +1,8 @@
 import { viewAsToViewMode } from 'constants/index';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { useSelector } from 'store/hooks';
+import { useDispatch, useSelector } from 'store/hooks';
+import { setPreferredView as setPreferredViewAction } from 'store/profile';
 import { selectPreferredView } from 'store/profile/selectors';
 import { PreferredView, ProfileViewAs } from 'types/dashboard';
 
@@ -15,12 +16,21 @@ export default function useViewMode() {
     }
     return preferredViewMode;
   }, [preferredViewMode, query]);
+  const dispatch = useDispatch();
+  const setPreferredView = useCallback(
+    (value: PreferredView) => {
+      dispatch(setPreferredViewAction(value));
+    },
+    [dispatch],
+  );
+
   const subjectViewModeTitle = useMemo(
     () =>
       ({
         [PreferredView.PLAYER]: 'Subject',
         [PreferredView.TRAINER]: 'Player',
-        [PreferredView.MANAGER]: 'Trainer',
+        [PreferredView.MANAGER_EVALUATING_TRAINER]: 'Trainer',
+        [PreferredView.MANAGER_EVALUATING_MANAGER]: 'Manager',
       }[currentViewMode]),
     [currentViewMode],
   );
@@ -43,6 +53,7 @@ export default function useViewMode() {
   return {
     currentViewMode,
     updateViewAs,
+    setPreferredView,
     subjectViewModeTitle,
   };
 }

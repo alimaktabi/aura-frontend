@@ -1,7 +1,8 @@
 export enum PreferredView {
-  PLAYER = 'Player',
-  TRAINER = 'Trainer',
-  MANAGER = 'Manager',
+  PLAYER,
+  TRAINER,
+  MANAGER_EVALUATING_TRAINER,
+  MANAGER_EVALUATING_MANAGER,
 }
 
 export enum ProfileTab {

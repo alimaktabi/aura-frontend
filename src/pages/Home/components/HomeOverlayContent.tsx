@@ -81,7 +81,7 @@ export const HomeOverlayContent = () => {
             </p>
           </Link>
         )}
-        {preferredView === PreferredView.MANAGER && (
+        {preferredView === PreferredView.MANAGER_EVALUATING_TRAINER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"
@@ -94,7 +94,7 @@ export const HomeOverlayContent = () => {
           </Link>
         )}
 
-        {preferredView === PreferredView.MANAGER && (
+        {preferredView === PreferredView.MANAGER_EVALUATING_TRAINER && (
           <Link to={RoutePath.HOME} className="card">
             <img
               className="icon"

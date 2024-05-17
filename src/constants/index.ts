@@ -75,19 +75,15 @@ export const MUTUAL_CONNECTIONS_TEST_NAMESPACE = 'mutual-connections-';
 
 export const PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING = 3;
 export const SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT = 4;
-export const getViewModeSubjectBackgroundColorClass = (
-  viewMode: PreferredView,
-) => {
-  switch (viewMode) {
-    case PreferredView.PLAYER:
-      return 'bg-pastel-orange';
-    case PreferredView.TRAINER:
-      return 'bg-pastel-purple';
-    case PreferredView.MANAGER:
-      return 'bg-pastel-green';
-    default:
-      return 'bg-gray100';
-  }
+
+//TODO: remove the functions and just use the mappings, and make sure tailwindcss classes still work properly
+export const viewModeSubjectBackgroundColorClass: {
+  [key in PreferredView]: string;
+} = {
+  [PreferredView.PLAYER]: 'bg-pastel-orange',
+  [PreferredView.TRAINER]: 'bg-pastel-purple',
+  [PreferredView.MANAGER_EVALUATING_TRAINER]: 'bg-pastel-green',
+  [PreferredView.MANAGER_EVALUATING_MANAGER]: 'bg-pastel-blue',
 };
 export const getViewModeSubjectBorderColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
@@ -95,8 +91,10 @@ export const getViewModeSubjectBorderColorClass = (viewMode: PreferredView) => {
       return 'border-pastel-orange';
     case PreferredView.TRAINER:
       return 'border-pastel-purple';
-    case PreferredView.MANAGER:
+    case PreferredView.MANAGER_EVALUATING_TRAINER:
       return 'border-pastel-green';
+    case PreferredView.MANAGER_EVALUATING_MANAGER:
+      return 'border-pastel-blue';
     default:
       return 'border-gray100';
   }
@@ -107,8 +105,10 @@ export const getViewModeSubjectTextColorClass = (viewMode: PreferredView) => {
       return 'text-pastel-orange';
     case PreferredView.TRAINER:
       return 'text-pastel-purple';
-    case PreferredView.MANAGER:
+    case PreferredView.MANAGER_EVALUATING_TRAINER:
       return 'text-pastel-green';
+    case PreferredView.MANAGER_EVALUATING_MANAGER:
+      return 'border-pastel-blue';
     default:
       return 'text-gray100';
   }
@@ -119,7 +119,8 @@ export const getViewModeUpArrowIcon = (viewMode: PreferredView) => {
       return '/assets/images/Home/level-up-icon-purple.svg';
     case PreferredView.TRAINER:
       return '/assets/images/Home/level-up-icon-green.svg';
-    case PreferredView.MANAGER:
+    case PreferredView.MANAGER_EVALUATING_TRAINER:
+    case PreferredView.MANAGER_EVALUATING_MANAGER:
       return '/assets/images/Home/level-up-icon-blue.svg';
     default:
       return '/assets/images/Home/level-up-icon-purple.svg';
@@ -131,7 +132,8 @@ export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
       return 'bg-button-primary';
     case PreferredView.TRAINER:
       return 'bg-pl2';
-    case PreferredView.MANAGER:
+    case PreferredView.MANAGER_EVALUATING_TRAINER:
+    case PreferredView.MANAGER_EVALUATING_MANAGER:
       return 'bg-blue';
     default:
       return 'bg-gray100';
@@ -143,7 +145,8 @@ export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
       return 'border-pastel-purple';
     case PreferredView.TRAINER:
       return 'border-pastel-green';
-    case PreferredView.MANAGER:
+    case PreferredView.MANAGER_EVALUATING_TRAINER:
+    case PreferredView.MANAGER_EVALUATING_MANAGER:
       return 'border-pastel-blue';
     default:
       return 'border-gray100';
@@ -155,11 +158,22 @@ export const getViewModeTextColorClass = (viewMode: PreferredView) => {
       return 'text-pastel-purple';
     case PreferredView.TRAINER:
       return 'text-pastel-green';
-    case PreferredView.MANAGER:
+    case PreferredView.MANAGER_EVALUATING_TRAINER:
+    case PreferredView.MANAGER_EVALUATING_MANAGER:
       return 'text-pastel-blue';
     default:
       return 'text-gray100';
   }
+};
+
+export const viewModeToString: {
+  [key in PreferredView]: string;
+} = {
+  // first property is just for avoiding type errors
+  [PreferredView.PLAYER]: 'Player',
+  [PreferredView.TRAINER]: 'Trainer',
+  [PreferredView.MANAGER_EVALUATING_TRAINER]: 'Manager',
+  [PreferredView.MANAGER_EVALUATING_MANAGER]: 'Manager',
 };
 
 export const viewModeToSubjectViewMode: {
@@ -168,22 +182,26 @@ export const viewModeToSubjectViewMode: {
   // first property is just for avoiding type errors
   [PreferredView.PLAYER]: PreferredView.PLAYER,
   [PreferredView.TRAINER]: PreferredView.PLAYER,
-  [PreferredView.MANAGER]: PreferredView.TRAINER,
+  [PreferredView.MANAGER_EVALUATING_TRAINER]: PreferredView.TRAINER,
+  [PreferredView.MANAGER_EVALUATING_MANAGER]:
+    PreferredView.MANAGER_EVALUATING_TRAINER,
 };
+
 export const viewModeToViewAs: {
   [key in PreferredView]: ProfileViewAs;
 } = {
   [PreferredView.PLAYER]: ProfileViewAs.SUBJECT,
   [PreferredView.TRAINER]: ProfileViewAs.PLAYER,
-  [PreferredView.MANAGER]: ProfileViewAs.TRAINER,
+  [PreferredView.MANAGER_EVALUATING_TRAINER]: ProfileViewAs.TRAINER,
+  [PreferredView.MANAGER_EVALUATING_MANAGER]: ProfileViewAs.MANAGER,
 };
 export const viewAsToViewMode: {
   [key in ProfileViewAs]: PreferredView;
 } = {
   [ProfileViewAs.SUBJECT]: PreferredView.PLAYER,
   [ProfileViewAs.PLAYER]: PreferredView.TRAINER,
-  [ProfileViewAs.TRAINER]: PreferredView.MANAGER,
-  [ProfileViewAs.MANAGER]: PreferredView.MANAGER,
+  [ProfileViewAs.TRAINER]: PreferredView.MANAGER_EVALUATING_TRAINER,
+  [ProfileViewAs.MANAGER]: PreferredView.MANAGER_EVALUATING_MANAGER,
 };
 
 export const subjectViewAsIcon: {
@@ -195,8 +213,13 @@ export const subjectViewAsIcon: {
   [ProfileViewAs.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
 };
 
-export const preferredViewIcon = {
+export const preferredViewIcon: {
+  [key in PreferredView]: string;
+} = {
   [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
   [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
-  [PreferredView.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
+  [PreferredView.MANAGER_EVALUATING_TRAINER]:
+    '/assets/images/Dashboard/manager-icon.svg',
+  [PreferredView.MANAGER_EVALUATING_MANAGER]:
+    '/assets/images/Dashboard/manager-icon.svg',
 } as const;

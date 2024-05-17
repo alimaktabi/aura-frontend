@@ -87,7 +87,8 @@ const ProfileInfoPerformance = ({
                       ? 'text-primary-d1'
                       : currentViewMode === PreferredView.TRAINER
                       ? 'text-pl2'
-                      : currentViewMode === PreferredView.MANAGER
+                      : currentViewMode ===
+                        PreferredView.MANAGER_EVALUATING_TRAINER
                       ? 'text-blue'
                       : 'text-gray100'
                   }`}

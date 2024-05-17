@@ -2,14 +2,12 @@ import * as React from 'react';
 
 import {
   getViewModeBackgroundColorClass,
-  getViewModeSubjectBackgroundColorClass,
   preferredViewIcon,
   subjectViewAsIcon,
+  viewModeSubjectBackgroundColorClass,
   viewModeToViewAs,
 } from '../../constants';
 import useViewMode from '../../hooks/useViewMode';
-import { useDispatch } from '../../store/hooks';
-import { setPreferredView } from '../../store/profile';
 import { PreferredView, ProfileViewAs } from '../../types/dashboard';
 
 export const HeaderPreferedView = {
@@ -29,7 +27,7 @@ export const HeaderPreferedView = {
           <div
             className={`p-1 rounded ${
               viewModeToViewAs[currentViewMode] === subjectViewMode
-                ? getViewModeSubjectBackgroundColorClass(currentViewMode)
+                ? viewModeSubjectBackgroundColorClass[currentViewMode]
                 : 'bg-gray100'
             } ml-2 cursor-pointer`}
             key={subjectViewMode}
@@ -46,24 +44,55 @@ export const HeaderPreferedView = {
     );
   },
   PreferedView: () => {
-    const { currentViewMode } = useViewMode();
-    const dispatch = useDispatch();
+    const { currentViewMode, setPreferredView } = useViewMode();
 
     return (
       <>
-        {Object.values(PreferredView).map((viewMode) => (
-          <div
-            className={`p-1 rounded ${
-              currentViewMode === viewMode
-                ? getViewModeBackgroundColorClass(currentViewMode)
-                : 'bg-gray100'
-            } ml-2 cursor-pointer`}
-            key={viewMode}
-            onClick={() => dispatch(setPreferredView(viewMode))}
-          >
-            <img className="w-4 h-4" src={preferredViewIcon[viewMode]} alt="" />
-          </div>
-        ))}
+        <div
+          className={`p-1 rounded ${
+            currentViewMode === PreferredView.PLAYER
+              ? getViewModeBackgroundColorClass(currentViewMode)
+              : 'bg-gray100'
+          } ml-2 cursor-pointer`}
+          onClick={() => setPreferredView(PreferredView.PLAYER)}
+        >
+          <img
+            className="w-4 h-4"
+            src={preferredViewIcon[PreferredView.PLAYER]}
+            alt=""
+          />
+        </div>
+        <div
+          className={`p-1 rounded ${
+            currentViewMode === PreferredView.TRAINER
+              ? getViewModeBackgroundColorClass(currentViewMode)
+              : 'bg-gray100'
+          } ml-2 cursor-pointer`}
+          onClick={() => setPreferredView(PreferredView.TRAINER)}
+        >
+          <img
+            className="w-4 h-4"
+            src={preferredViewIcon[PreferredView.TRAINER]}
+            alt=""
+          />
+        </div>
+        <div
+          className={`p-1 rounded ${
+            currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
+            currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
+              ? getViewModeBackgroundColorClass(currentViewMode)
+              : 'bg-gray100'
+          } ml-2 cursor-pointer`}
+          onClick={() =>
+            setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
+          }
+        >
+          <img
+            className="w-4 h-4"
+            src={preferredViewIcon[PreferredView.MANAGER_EVALUATING_TRAINER]}
+            alt=""
+          />
+        </div>
       </>
     );
   },
