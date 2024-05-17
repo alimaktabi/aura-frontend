@@ -37,12 +37,23 @@ const ProfileTabs = ({
 }) => {
   const { currentViewMode } = useViewMode();
   return (
-    <div className="px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card">
+    <div
+      className={`px-1.5 py-1.5 w-full ${
+        currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
+          ? 'min-h-[67px]'
+          : 'min-h-[52px]'
+      } rounded-lg bg-white-90-card`}
+    >
       <div
-        className={'flex flex-row min-w-full gap-1.5 overflow-auto h-full'}
-        // TODO: refactor this to tailwindcss class
+        className={`flex flex-row min-w-full gap-1.5 overflow-x-auto overflow-y-hidden h-full ${
+          currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
+            ? 'pb-1'
+            : ''
+        }`}
+        // TODO: refactor this to tailwindcss class and values
         style={{
-          scrollbarWidth: 'none',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#C9A2FF rgba(209, 213, 219, 0.5)',
         }}
       >
         {/*<p*/}
@@ -60,7 +71,7 @@ const ProfileTabs = ({
         {/*  {option1}*/}
         {/*</p>*/}
         <p
-          className={`rounded-md w-[150px] cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
+          className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.OVERVIEW
               ? 'background bg-button-primary text-white font-bold'
               : 'bg-transparent text-black font-medium'
@@ -71,7 +82,7 @@ const ProfileTabs = ({
           Overview
         </p>
         <p
-          className={`rounded-md w-[180px] cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
+          className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.ACTIVITY
               ? 'background bg-button-primary text-white font-bold'
               : 'bg-transparent text-black font-medium'
@@ -82,7 +93,7 @@ const ProfileTabs = ({
           Activity
         </p>
         <p
-          className={`rounded-md w-[230px] cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
+          className={`rounded-md min-w-[100px] w-full cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.EVALUATIONS
               ? 'background bg-button-primary text-white font-bold'
               : 'bg-transparent text-black font-medium'
@@ -94,7 +105,7 @@ const ProfileTabs = ({
         </p>
         {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER && (
           <p
-            className={`rounded-md w-[300px] cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
+            className={`rounded-md min-w-[180px] w-full cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
               selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
                 ? 'background bg-button-primary text-white font-bold'
                 : 'bg-transparent text-black font-medium'
