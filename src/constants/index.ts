@@ -207,19 +207,19 @@ export const viewAsToViewMode: {
 export const subjectViewAsIcon: {
   [key in ProfileViewAs]: string;
 } = {
-  [ProfileViewAs.SUBJECT]: '/assets/images/Dashboard/brightid-icon.svg',
-  [ProfileViewAs.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
-  [ProfileViewAs.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
-  [ProfileViewAs.MANAGER]: '/assets/images/Dashboard/manager-icon.svg',
+  [ProfileViewAs.SUBJECT]: '/assets/images/Dashboard/brightid-icon-white.svg',
+  [ProfileViewAs.PLAYER]: '/assets/images/Dashboard/account-icon-white.svg',
+  [ProfileViewAs.TRAINER]: '/assets/images/Dashboard/trainer-icon-white.svg',
+  [ProfileViewAs.MANAGER]: '/assets/images/Dashboard/manager-icon-white.svg',
 };
 
 export const preferredViewIcon: {
   [key in PreferredView]: string;
 } = {
-  [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon.svg',
-  [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon.svg',
+  [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon-white.svg',
+  [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon-white.svg',
   [PreferredView.MANAGER_EVALUATING_TRAINER]:
-    '/assets/images/Dashboard/manager-icon.svg',
+    '/assets/images/Dashboard/manager-icon-white.svg',
   [PreferredView.MANAGER_EVALUATING_MANAGER]:
-    '/assets/images/Dashboard/manager-icon.svg',
+    '/assets/images/Dashboard/manager-icon-white.svg',
 } as const;
