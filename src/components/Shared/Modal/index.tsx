@@ -24,7 +24,7 @@ export const Modal: FC<{
     <>
       {isOpen && (
         <div
-          className={`fixed z-[100] left-0 top-0 w-full h-full overflow-hidden backdrop-blur-sm flex items-center justify-center bg-modal-backdrop ${className}`}
+          className={`fixed z-[100] bg-[#4F4F4F80] left-0 top-0 w-full h-full overflow-hidden backdrop-blur-sm flex items-center justify-center bg-modal-backdrop ${className}`}
           onClick={(_e) => closeModalHandler?.()}
           data-testid="modal-wrapper"
         >
