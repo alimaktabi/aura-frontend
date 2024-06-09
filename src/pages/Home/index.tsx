@@ -12,6 +12,7 @@ import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
 import { EmptySubjectList } from '../../components/Shared/EmptyAndLoadingStates/EmptySubjectList';
+import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/LoadingList';
 import FindTrainersCard from '../../components/Shared/FindTrainersCard';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
@@ -76,7 +77,7 @@ const Home = () => {
   return myRatings?.length === 0 && !playerOnboardingScreenShown ? (
     <Onboarding />
   ) : loadingMyEvaluations ? (
-    <div>Loading...</div>
+    <LoadingList />
   ) : (
     <SubjectInboundEvaluationsContextProvider subjectId={authData.brightId}>
       <div id="scrollable-div" className="page flex flex-col gap-4">
@@ -163,7 +164,7 @@ const Home = () => {
                 <EmptySubjectList />
               )
             ) : (
-              <div>loading...</div>
+              <LoadingList />
             )}
           </div>
         ) : (

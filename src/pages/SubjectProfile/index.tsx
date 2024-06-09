@@ -24,6 +24,7 @@ import { __DEV__ } from 'utils/env';
 
 import { EmptyActivitiesList } from '../../components/Shared/EmptyAndLoadingStates/EmptyActivitiesList';
 import { EmptyEvaluationsList } from '../../components/Shared/EmptyAndLoadingStates/EmptyEvaluationsList';
+import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/LoadingList';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
@@ -252,11 +253,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <>
           <ActivityListSearch subjectId={subjectId} />
           {loadingOutboundEvaluations ? (
-            <div
-              className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
-            >
-              Loading...
-            </div>
+            <LoadingList />
           ) : evaluateds.length > 0 ? (
             <InfiniteScrollLocal
               className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
@@ -279,11 +276,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <>
           <ActivityListSearch subjectId={subjectId} />
           {loadingOutboundEvaluations ? (
-            <div
-              className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
-            >
-              Loading...
-            </div>
+            <LoadingList />
           ) : evaluateds.length > 0 ? (
             <InfiniteScrollLocal
               className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
@@ -308,11 +301,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <>
           <EvidenceListSearch subjectId={subjectId} />
           {loadingInboundEvaluations ? (
-            <div
-              className={`profile-evaluation-card card flex !flex-row gap-1.5 w-full pl-[9px] pt-[11px] pr-[14px] pb-3`}
-            >
-              Loading...
-            </div>
+            <LoadingList />
           ) : evaluators.length > 0 ? (
             <InfiniteScrollLocal
               className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
