@@ -74,13 +74,19 @@ const Header = () => {
         </div>
         <span className="header-right flex items-center">
           <span
+            key={headerComponent.icon}
             onClick={() =>
               headerComponent && headerComponent.iconClickedHandler(navigate)
             }
             className="header-icon !cursor-pointer"
             data-testid="nav-button"
           >
-            <img className="w-6 h-6" src={headerComponent.icon} alt={''} />
+            <img
+              key={headerComponent.icon}
+              className="w-6 h-6"
+              src={headerComponent.icon}
+              alt={''}
+            />
           </span>
         </span>
       </header>

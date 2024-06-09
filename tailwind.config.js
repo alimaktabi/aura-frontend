@@ -55,6 +55,7 @@ export default {
         'primary-d1': '#A982DF',
         'white-90-card': '#FFFFFFE6',
         delete: '#D39090',
+        'natural-black': '#292534',
       },
     },
   },
