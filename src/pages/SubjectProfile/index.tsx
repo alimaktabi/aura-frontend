@@ -22,6 +22,8 @@ import { useParams } from 'react-router-dom';
 import { EvidenceViewMode, PreferredView, ProfileTab } from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
+import { EmptyActivitiesList } from '../../components/Shared/EmptyAndLoadingStates/EmptyActivitiesList';
+import { EmptyEvaluationsList } from '../../components/Shared/EmptyAndLoadingStates/EmptyEvaluationsList';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
@@ -255,7 +257,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
             >
               Loading...
             </div>
-          ) : (
+          ) : evaluateds.length > 0 ? (
             <InfiniteScrollLocal
               className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
               items={evaluateds}
@@ -269,6 +271,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                 />
               )}
             />
+          ) : (
+            <EmptyActivitiesList />
           )}
         </>
       ) : selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS ? (
@@ -280,7 +284,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
             >
               Loading...
             </div>
-          ) : (
+          ) : evaluateds.length > 0 ? (
             <InfiniteScrollLocal
               className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
               items={evaluateds}
@@ -296,6 +300,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                 />
               )}
             />
+          ) : (
+            <EmptyActivitiesList />
           )}
         </>
       ) : (
@@ -307,7 +313,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
             >
               Loading...
             </div>
-          ) : (
+          ) : evaluators.length > 0 ? (
             <InfiniteScrollLocal
               className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
               items={evaluators}
@@ -321,6 +327,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                 />
               )}
             />
+          ) : (
+            <EmptyEvaluationsList />
           )}
         </>
       )}
