@@ -11,7 +11,7 @@ const NotEvaluatedCard = ({
         <div
           data-testid={`evaluate-not-evaluated-subject-${subjectId}`}
           onClick={() => setShowEvaluationFlow(true)}
-          className="flex-1 flex flex-row py-4 justify-center items-center bg-pastel-purple gap-2.5 rounded-lg cursor-pointer"
+          className="flex-1 flex flex-row py-4 justify-center items-center bg-natural-black gap-2.5 rounded-lg cursor-pointer"
         >
           <img
             className=" w-auto -mr-1"

@@ -129,7 +129,7 @@ export const getViewModeUpArrowIcon = (viewMode: PreferredView) => {
 export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'bg-button-primary';
+      return 'bg-purple3';
     case PreferredView.TRAINER:
       return 'bg-pl2';
     case PreferredView.MANAGER_EVALUATING_TRAINER:
