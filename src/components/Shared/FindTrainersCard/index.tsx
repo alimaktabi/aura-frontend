@@ -4,7 +4,7 @@ import LinkCard from '../../../pages/Home/LinkCard';
 
 const FindTrainersCard = () => {
   return (
-    <div className="card">
+    <div className="card !bg-[#ECECEC]">
       <div className="mb-4.5 font-bold text-lg text-black">Find Trainers</div>
       <div className="flex flex-col gap-2.5">
         <TrainersListBrief
