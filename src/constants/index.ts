@@ -81,7 +81,7 @@ export const viewModeSubjectBackgroundColorClass: {
   [key in PreferredView]: string;
 } = {
   [PreferredView.PLAYER]: 'bg-pastel-orange',
-  [PreferredView.TRAINER]: 'bg-pastel-purple',
+  [PreferredView.TRAINER]: 'bg-natural-black',
   [PreferredView.MANAGER_EVALUATING_TRAINER]: 'bg-pastel-green',
   [PreferredView.MANAGER_EVALUATING_MANAGER]: 'bg-pastel-blue',
 };
@@ -129,7 +129,7 @@ export const getViewModeUpArrowIcon = (viewMode: PreferredView) => {
 export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'bg-purple3';
+      return 'bg-natural-black';
     case PreferredView.TRAINER:
       return 'bg-pl2';
     case PreferredView.MANAGER_EVALUATING_TRAINER:
@@ -142,7 +142,7 @@ export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
 export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'border-pastel-purple';
+      return 'border-natural-black';
     case PreferredView.TRAINER:
       return 'border-pastel-green';
     case PreferredView.MANAGER_EVALUATING_TRAINER:
@@ -155,7 +155,7 @@ export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
 export const getViewModeTextColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'text-pastel-purple';
+      return 'text-natural-black';
     case PreferredView.TRAINER:
       return 'text-pastel-green';
     case PreferredView.MANAGER_EVALUATING_TRAINER:
