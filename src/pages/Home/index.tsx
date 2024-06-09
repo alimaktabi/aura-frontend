@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
+import { EmptySubjectList } from '../../components/Shared/EmptyAndLoadingStates/EmptySubjectList';
 import FindTrainersCard from '../../components/Shared/FindTrainersCard';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
@@ -142,21 +143,25 @@ const Home = () => {
               )}
             </div>
             {filteredSubjects && !loading ? (
-              <div className="overflow-auto flex-grow no-scrollbar">
-                <InfiniteScrollLocal
-                  getScrollParent={() =>
-                    document.getElementById('scrollable-div')
-                  }
-                  className={'flex flex-col gap-3'}
-                  items={filteredSubjects}
-                  //TODO: optimize rendering by caching the rendered components
-                  renderItem={(conn, index) => (
-                    <SubjectInboundRatingsContextProvider subjectId={conn.id}>
-                      <SubjectCard index={index} subjectId={conn.id} />
-                    </SubjectInboundRatingsContextProvider>
-                  )}
-                />
-              </div>
+              filteredSubjects.length > 0 ? (
+                <div className="overflow-auto flex-grow no-scrollbar">
+                  <InfiniteScrollLocal
+                    getScrollParent={() =>
+                      document.getElementById('scrollable-div')
+                    }
+                    className={'flex flex-col gap-3'}
+                    items={filteredSubjects}
+                    //TODO: optimize rendering by caching the rendered components
+                    renderItem={(conn, index) => (
+                      <SubjectInboundRatingsContextProvider subjectId={conn.id}>
+                        <SubjectCard index={index} subjectId={conn.id} />
+                      </SubjectInboundRatingsContextProvider>
+                    )}
+                  />
+                </div>
+              ) : (
+                <EmptySubjectList />
+              )
             ) : (
               <div>loading...</div>
             )}
