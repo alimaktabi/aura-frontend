@@ -15,7 +15,8 @@ type NodeOps =
   | RemoveMembershipOp
   | RemoveSigningKeyOp
   | SocialRecoveryOp
-  | SpendSponsorshipOp;
+  | SpendSponsorshipOp
+  | EvaluateOp;
 
 type SubmittedOp = NodeOps & {
   hash: string;
@@ -61,6 +62,18 @@ type ConnectOp = BaseOp & {
   reportReason?: string;
   replacedWith?: string;
   requestProof?: string;
+};
+
+type EvaluateOp = BaseOp & {
+  name: 'Evaluate';
+  evaluator: string;
+  evaluated: string;
+  evaluation: 'positive' | 'negative';
+  confidence: string;
+  domain: string;
+  category: string;
+  timestamp: number;
+  sig?: string;
 };
 
 type DismissOp = BaseOp & {

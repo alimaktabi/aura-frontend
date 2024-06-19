@@ -117,6 +117,42 @@ export class NodeApi {
     return this.submitOp(op, message);
   }
 
+  async evaluate(
+    evaluator: string,
+    evaluated: string,
+    evaluation: 'positive' | 'negative',
+    confidence: string,
+    domain: string,
+    category: string,
+    timestamp: number,
+  ) {
+    console.log({
+      id: this.id,
+      secretKey: this.secretKey,
+    });
+    if (this.id === undefined || this.secretKey === undefined) {
+      throw new Error('Missing API credentials');
+    }
+    const sk = new Uint8Array(Object.values(this.secretKey));
+
+    const op: EvaluateOp = {
+      name: 'Evaluate',
+      evaluator,
+      evaluated,
+      evaluation,
+      confidence,
+      domain,
+      category,
+      timestamp,
+      v,
+    };
+
+    const message = stringify(op);
+    const signed = nacl.sign.detached(strToUint8Array(message), sk);
+    op.sig = uInt8ArrayToB64(signed);
+    return this.submitOp(op, message);
+  }
+
   async submitOp(signedOp: NodeOps, message: string): Promise<SubmittedOp> {
     // post to node and check result
     const res = await this.api.post<OperationPostRes, ErrRes>(
