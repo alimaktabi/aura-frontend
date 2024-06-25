@@ -27,7 +27,7 @@ export function useEvaluateSubject() {
     }
 
     getData();
-  }, [authData, connectionOp?.state, dispatch]);
+  }, [connectionOp?.state]);
 
   const submitEvaluation = useCallback(
     async (subjectId: string, newRating: number) => {
@@ -38,12 +38,11 @@ export function useEvaluateSubject() {
           authData.brightId,
           subjectId,
           newRating < 0 ? 'negative' : 'positive',
-          String(Math.abs(newRating)),
+          Math.abs(newRating),
           'BrightID',
-          'subject',
+          'player',
           Date.now(),
         );
-
         dispatch(addOperation(op));
         setConnectionOpHash(op.hash);
       } catch (e) {

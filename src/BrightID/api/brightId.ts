@@ -121,7 +121,7 @@ export class NodeApi {
     evaluator: string,
     evaluated: string,
     evaluation: 'positive' | 'negative',
-    confidence: string,
+    confidence: number,
     domain: string,
     category: string,
     timestamp: number,
