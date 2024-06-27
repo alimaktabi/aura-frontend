@@ -10,11 +10,11 @@
     },
     {
       "source": "/auranode/:path*",
-      "destination": "https://aura-node.brightid.org/:path*"
+      "destination": "https://aura-test.brightid.org/:path*"
     },
     {
       "source": "/auranode/:path*/",
-      "destination": "https://aura-node.brightid.org/:path*/"
+      "destination": "https://aura-test.brightid.org/:path*/"
     },
     {
       "source": "/(.*)",
