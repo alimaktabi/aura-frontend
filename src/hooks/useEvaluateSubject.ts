@@ -8,6 +8,9 @@ import {
   selectOperationByHash,
 } from '../BrightID/reducer/operationsSlice';
 import { operation_states } from '../BrightID/utils/constants';
+import { viewModeToViewAs } from '../constants';
+import { EvaluationValue } from '../types/dashboard';
+import useViewMode from './useViewMode';
 
 export function useEvaluateSubject() {
   const authData = useSelector(selectAuthData);
@@ -22,13 +25,14 @@ export function useEvaluateSubject() {
   useEffect(() => {
     async function getData() {
       if (connectionOp?.state === operation_states.APPLIED) {
-        window.location.reload();
+        setLoading(false);
       }
     }
 
     getData();
   }, [connectionOp?.state]);
 
+  const { currentViewMode } = useViewMode();
   const submitEvaluation = useCallback(
     async (subjectId: string, newRating: number) => {
       if (!api || !authData) return;
@@ -37,10 +41,10 @@ export function useEvaluateSubject() {
         const op = await api.evaluate(
           authData.brightId,
           subjectId,
-          newRating < 0 ? 'negative' : 'positive',
+          newRating < 0 ? EvaluationValue.NEGATIVE : EvaluationValue.POSITIVE,
           Math.abs(newRating),
           'BrightID',
-          'player',
+          viewModeToViewAs[currentViewMode],
           Date.now(),
         );
         dispatch(addOperation(op));
@@ -50,7 +54,7 @@ export function useEvaluateSubject() {
         throw e;
       }
     },
-    [api, authData, dispatch],
+    [api, authData, currentViewMode, dispatch],
   );
 
   return { submitEvaluation, loading };

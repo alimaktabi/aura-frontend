@@ -1,6 +1,7 @@
 /**
  * Operation Types
  */
+import { EvaluationCategory, EvaluationValue } from '../../types/dashboard';
 
 type NodeOps =
   | AddAdminOp
@@ -68,10 +69,10 @@ type EvaluateOp = BaseOp & {
   name: 'Evaluate';
   evaluator: string;
   evaluated: string;
-  evaluation: 'positive' | 'negative';
+  evaluation: EvaluationValue;
   confidence: number;
-  domain: string;
-  category: string;
+  domain: 'BrightID';
+  category: EvaluationCategory;
   timestamp: number;
   sig?: string;
 };

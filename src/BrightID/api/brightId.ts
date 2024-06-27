@@ -10,6 +10,15 @@ import {
 import stringify from 'fast-json-stable-stringify';
 import nacl from 'tweetnacl';
 
+import { EvaluationCategory, EvaluationValue } from '../../types/dashboard';
+import {
+  ConnectOp,
+  EvaluateOp,
+  NodeOps,
+  SpendSponsorshipOp,
+  SubmittedOp,
+} from './operation_types';
+
 const v = 6;
 
 export class NodeApi {
@@ -120,10 +129,10 @@ export class NodeApi {
   async evaluate(
     evaluator: string,
     evaluated: string,
-    evaluation: 'positive' | 'negative',
+    evaluation: EvaluationValue,
     confidence: number,
-    domain: string,
-    category: string,
+    domain: 'BrightID',
+    category: EvaluationCategory,
     timestamp: number,
   ) {
     console.log({
