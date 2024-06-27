@@ -38,17 +38,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Provider store={store}>
       <EchartsContextProvider>
         <PersistGate persistor={persistor}>
-          <MyEvaluationsContextProvider>
-            <SubjectsListContextProvider>
-              <NodeApiGateContextProvider>
-                <BrowserRouter>
+          <BrowserRouter>
+            <MyEvaluationsContextProvider>
+              <SubjectsListContextProvider>
+                <NodeApiGateContextProvider>
                   <BrowserHistoryContextProvider>
                     <App />
                   </BrowserHistoryContextProvider>
-                </BrowserRouter>
-              </NodeApiGateContextProvider>
-            </SubjectsListContextProvider>
-          </MyEvaluationsContextProvider>
+                </NodeApiGateContextProvider>
+              </SubjectsListContextProvider>
+            </MyEvaluationsContextProvider>
+          </BrowserRouter>
         </PersistGate>
       </EchartsContextProvider>
     </Provider>

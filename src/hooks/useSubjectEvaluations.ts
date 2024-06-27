@@ -4,8 +4,10 @@ import {
   getInboundConnections,
   getOutboundConnections,
 } from '../api/connections.service';
+import { viewModeToViewAs } from '../constants';
 import { AuraNodeBrightIdConnection, AuraRating } from '../types';
 import { EvaluationValue } from '../types/dashboard';
+import useViewMode from './useViewMode';
 
 export const useInboundEvaluations = (subjectId: string | null | undefined) => {
   const [inboundConnections, setInboundConnections] = useState<
@@ -34,27 +36,30 @@ export const useInboundEvaluations = (subjectId: string | null | undefined) => {
     };
   }, [refreshInboundEvaluations]);
 
+  const { currentViewMode } = useViewMode();
   const inboundRatings: AuraRating[] | null = useMemo(() => {
     if (!inboundConnections || !subjectId) return null;
     return inboundConnections.reduce(
       (a, c) =>
         a.concat(
-          ...(c.auraEvaluations?.map((e) => ({
-            fromBrightId: c.id,
-            toBrightId: subjectId,
-            rating: String(
-              (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
-                e.confidence,
-            ),
-            category: e.category,
-            id: 0,
-            createdAt: new Date(c.timestamp).toISOString(),
-            updatedAt: new Date(c.timestamp).toISOString(),
-          })) ?? []),
+          ...(c.auraEvaluations
+            ?.filter((e) => e.category === viewModeToViewAs[currentViewMode])
+            .map((e) => ({
+              fromBrightId: c.id,
+              toBrightId: subjectId,
+              rating: String(
+                (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
+                  e.confidence,
+              ),
+              category: e.category,
+              id: 0,
+              createdAt: new Date(c.timestamp).toISOString(),
+              updatedAt: new Date(c.timestamp).toISOString(),
+            })) ?? []),
         ),
       [] as AuraRating[],
     );
-  }, [inboundConnections, subjectId]);
+  }, [currentViewMode, inboundConnections, subjectId]);
 
   const inboundPositiveRatingsCount = useMemo(
     () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
@@ -111,27 +116,30 @@ export const useOutboundEvaluations = (
     };
   }, [refreshOutboundEvaluations]);
 
+  const { currentViewMode } = useViewMode();
   const outboundRatings: AuraRating[] | null = useMemo(() => {
     if (!outboundConnections || !subjectId) return null;
     return outboundConnections.reduce(
       (a, c) =>
         a.concat(
-          ...(c.auraEvaluations?.map((e) => ({
-            fromBrightId: c.id,
-            toBrightId: subjectId,
-            rating: String(
-              (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
-                e.confidence,
-            ),
-            category: e.category,
-            id: 0,
-            createdAt: new Date(c.timestamp).toISOString(),
-            updatedAt: new Date(c.timestamp).toISOString(),
-          })) ?? []),
+          ...(c.auraEvaluations
+            ?.filter((e) => e.category === viewModeToViewAs[currentViewMode])
+            .map((e) => ({
+              fromBrightId: subjectId,
+              toBrightId: c.id,
+              rating: String(
+                (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
+                  e.confidence,
+              ),
+              category: e.category,
+              id: 0,
+              createdAt: new Date(c.timestamp).toISOString(),
+              updatedAt: new Date(c.timestamp).toISOString(),
+            })) ?? []),
         ),
       [] as AuraRating[],
     );
-  }, [outboundConnections, subjectId]);
+  }, [currentViewMode, outboundConnections, subjectId]);
 
   return {
     loading,
