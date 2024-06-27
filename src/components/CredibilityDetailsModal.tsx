@@ -2,7 +2,7 @@ import Modal from 'components/Shared/Modal';
 import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
-import { useOutboundConnections } from 'hooks/useSubjectConnections';
+import { useOutboundEvaluations } from 'hooks/useSubjectEvaluations';
 import { useSubjectInboundEvaluations } from 'hooks/useSubjectInboundEvaluations';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
@@ -33,7 +33,7 @@ const CredibilityDetails = ({
     myConnectionToSubject,
     myConfidenceValueInThisSubjectRating,
   } = useMyEvaluationsContext(subjectId);
-  const { connections } = useOutboundConnections(subjectId);
+  const { connections } = useOutboundEvaluations(subjectId);
   const { options2 } = useContext(EchartsContext);
   const [isSubject, setIsSubject] = useState(true);
   const link = '/subject/' + subjectId;
