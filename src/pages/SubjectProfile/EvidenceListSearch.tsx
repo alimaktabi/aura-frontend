@@ -16,7 +16,7 @@ export const EvidenceListSearch = ({ subjectId }: { subjectId: string }) => {
     setSelectedSort,
     filters,
     sorts,
-  } = useSubjectInboundEvaluationsContext(subjectId);
+  } = useSubjectInboundEvaluationsContext({ subjectId });
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [isSortsModalOpen, setIsSortsModalOpen] = useState(false);

@@ -10,7 +10,7 @@ export const YourEvaluationInfo = ({
   toSubjectId: string;
   setShowEvaluationFlow: (value: boolean) => void;
 }) => {
-  const { loading } = useMyEvaluationsContext(toSubjectId);
+  const { loading } = useMyEvaluationsContext({ subjectId: toSubjectId });
   const authData = useSelector(selectAuthData);
   if (!authData) return <></>;
   if (loading)

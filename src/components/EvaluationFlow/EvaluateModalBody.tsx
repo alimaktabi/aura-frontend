@@ -6,6 +6,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData } from 'store/profile/selectors';
 
+import useViewMode from '../../hooks/useViewMode';
+
 const EvaluateModalBody = ({
   subjectId,
   onSubmitted,
@@ -16,7 +18,7 @@ const EvaluateModalBody = ({
   const [isYes, setIsYes] = useState(true);
   const [confidence, setConfidence] = useState(1);
   const [onDelete, setOnDelete] = useState(false);
-  const { myRatingObject } = useSubjectInboundEvaluationsContext(subjectId);
+  const { myRatingObject } = useSubjectInboundEvaluationsContext({ subjectId });
   const authData = useSelector(selectAuthData);
   const prevRating = useMemo(
     () => (myRatingObject ? Number(myRatingObject.rating) : undefined),
@@ -65,10 +67,12 @@ const EvaluateModalBody = ({
     submitEvaluation,
   ]);
 
+  const { subjectViewModeTitle } = useViewMode();
+
   return (
     <div>
       <p className="subtitle -mt-6 mb-6">
-        as a <span className="font-bold">subject</span> in{' '}
+        as a <span className="font-bold">{subjectViewModeTitle}</span> in{' '}
         <span className="font-bold">brightID</span> domain
       </p>
 

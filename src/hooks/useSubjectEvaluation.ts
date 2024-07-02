@@ -1,14 +1,22 @@
-import { getConfidenceValueOfAuraRatingObject } from 'constants/index';
+import {
+  getConfidenceValueOfAuraRatingObject,
+  viewModeToViewAs,
+} from 'constants/index';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { SubjectOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
 import { useContext, useMemo } from 'react';
 
+import { EvaluationCategory } from '../types/dashboard';
+import useViewMode from './useViewMode';
+
 export const useSubjectEvaluationFromContext = ({
   fromSubjectId,
   toSubjectId,
+  evaluationCategory,
 }: {
   fromSubjectId: string | undefined;
   toSubjectId: string;
+  evaluationCategory?: EvaluationCategory;
 }) => {
   const inboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
@@ -17,10 +25,14 @@ export const useSubjectEvaluationFromContext = ({
     SubjectOutboundEvaluationsContext,
   );
 
+  const { currentViewMode } = useViewMode();
   const rating = useMemo(() => {
     if (inboundEvaluationsContext?.subjectId === toSubjectId) {
       const ratingObject = inboundEvaluationsContext.ratings?.find(
-        (r) => r.fromBrightId === fromSubjectId,
+        (r) =>
+          r.fromBrightId === fromSubjectId &&
+          r.category ===
+            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
       );
       if (ratingObject) {
         return ratingObject;
@@ -28,7 +40,10 @@ export const useSubjectEvaluationFromContext = ({
     }
     if (outboundEvaluationsContext?.subjectId === fromSubjectId) {
       const ratingObject = outboundEvaluationsContext?.ratings?.find(
-        (r) => r.toBrightId === toSubjectId,
+        (r) =>
+          r.toBrightId === toSubjectId &&
+          r.category ===
+            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
       );
       if (ratingObject) {
         return ratingObject;
@@ -36,9 +51,13 @@ export const useSubjectEvaluationFromContext = ({
     }
     return null;
   }, [
+    currentViewMode,
+    evaluationCategory,
     fromSubjectId,
-    inboundEvaluationsContext,
-    outboundEvaluationsContext,
+    inboundEvaluationsContext?.ratings,
+    inboundEvaluationsContext?.subjectId,
+    outboundEvaluationsContext?.ratings,
+    outboundEvaluationsContext?.subjectId,
     toSubjectId,
   ]);
 

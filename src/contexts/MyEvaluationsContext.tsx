@@ -1,6 +1,12 @@
-import { getConfidenceValueOfAuraRatingObject } from 'constants/index';
+import {
+  getConfidenceValueOfAuraRatingObject,
+  viewModeToViewAs,
+} from 'constants/index';
 import { useMyEvaluations } from 'hooks/useMyEvaluations';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+
+import useViewMode from '../hooks/useViewMode';
+import { EvaluationCategory } from '../types/dashboard';
 
 // Define the context
 export const MyEvaluationsContext = createContext<ReturnType<
@@ -27,21 +33,35 @@ export const MyEvaluationsContextProvider: React.FC<ProviderProps> = ({
   );
 };
 
-export const useMyEvaluationsContext = (subjectId?: string) => {
+export const useMyEvaluationsContext = (props?: {
+  subjectId?: string;
+  evaluationCategory?: EvaluationCategory;
+}) => {
   const context = useContext(MyEvaluationsContext);
   if (context === null) {
     throw new Error(
       'MyEvaluationsContext must be used within a MyEvaluationsContextProvider',
     );
   }
+  const { currentViewMode } = useViewMode();
+  const myRatings = useMemo(() => {
+    if (!context.myRatings) return null;
+    return context.myRatings.filter(
+      (r) =>
+        r.category ===
+        (props?.evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+    );
+  }, [context.myRatings, currentViewMode, props?.evaluationCategory]);
+
   const myRatingToSubject = useMemo(() => {
-    if (!subjectId || !context.myRatings) return undefined;
-    return context.myRatings.find((r) => r.toBrightId === subjectId);
-  }, [context.myRatings, subjectId]);
+    if (!props?.subjectId || !myRatings) return undefined;
+    return myRatings.find((r) => r.toBrightId === props?.subjectId);
+  }, [myRatings, props?.subjectId]);
+
   const myConnectionToSubject = useMemo(() => {
-    if (!subjectId || !context.myConnections) return undefined;
-    return context.myConnections.find((c) => c.id === subjectId);
-  }, [context.myConnections, subjectId]);
+    if (!props?.subjectId || !context.myConnections) return undefined;
+    return context.myConnections.find((c) => c.id === props?.subjectId);
+  }, [context.myConnections, props?.subjectId]);
 
   const myConfidenceValueInThisSubjectRating = useMemo(
     () => getConfidenceValueOfAuraRatingObject(myRatingToSubject),
@@ -52,8 +72,8 @@ export const useMyEvaluationsContext = (subjectId?: string) => {
     [myRatingToSubject],
   );
   const myActiveRatings = useMemo(
-    () => context.myRatings?.filter((r) => Number(r.rating)),
-    [context.myRatings],
+    () => myRatings?.filter((r) => Number(r.rating)),
+    [myRatings],
   );
   const myLastRating = useMemo(
     () =>
@@ -62,6 +82,7 @@ export const useMyEvaluationsContext = (subjectId?: string) => {
   );
   return {
     ...context,
+    myRatings,
     myLastRating,
     myRatingToSubject,
     myConnectionToSubject,

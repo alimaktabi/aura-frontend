@@ -66,12 +66,25 @@ const ProfileEvaluation = ({
   );
 };
 
-const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
+const ConnectionInfo = ({
+  subjectId,
+  evidenceViewMode,
+}: {
+  subjectId: string;
+  evidenceViewMode: EvidenceViewMode;
+}) => {
+  const { currentViewMode } = useViewMode();
   const {
     myRatingToSubject: rating,
     loading,
     myConnectionToSubject: inboundConnectionInfo,
-  } = useMyEvaluationsContext(subjectId);
+  } = useMyEvaluationsContext({
+    subjectId,
+    evaluationCategory:
+      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+        ? viewModeToViewAs[currentViewMode]
+        : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+  });
   const bgColor = useMemo(() => {
     if (rating && Number(rating?.rating) !== 0) {
       return getBgClassNameOfAuraRatingObject(rating);
@@ -100,15 +113,16 @@ const ConnectionInfo = ({ subjectId }: { subjectId: string }) => {
       ) : (
         <>
           <div className="flex gap-0.5 justify-center items-center">
-            {inboundConnectionInfo && (
-              <img
-                src={`/assets/images/Shared/${
-                  connectionLevelIcons[inboundConnectionInfo.level]
-                }.svg`}
-                className="h-[18px] w-[18px]"
-                alt=""
-              />
-            )}
+            {inboundConnectionInfo &&
+              connectionLevelIcons[inboundConnectionInfo.level] && (
+                <img
+                  src={`/assets/images/Shared/${
+                    connectionLevelIcons[inboundConnectionInfo.level]
+                  }.svg`}
+                  className="h-[18px] w-[18px]"
+                  alt=""
+                />
+              )}
             {!!rating && Number(rating?.rating) !== 0 && (
               <p
                 className={`text-sm font-bold ${getTextClassNameOfAuraRatingObject(
@@ -295,13 +309,20 @@ const EvidenceUserProfile = ({ subjectId }: { subjectId: string }) => {
 export const EvaluationInformation = ({
   fromSubjectId,
   toSubjectId,
+  evidenceViewMode,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  evidenceViewMode: EvidenceViewMode;
 }) => {
+  const { currentViewMode } = useViewMode();
   const { rating, loading } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
+    evaluationCategory:
+      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+        ? viewModeToViewAs[currentViewMode]
+        : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   //TODO: change bg color on negative rating
   return (
@@ -377,7 +398,10 @@ const EvaluatedCardBody = ({
                   )
             }`}
           />
-          <ConnectionInfo subjectId={leftCardSide} />
+          <ConnectionInfo
+            evidenceViewMode={evidenceViewMode}
+            subjectId={leftCardSide}
+          />
         </div>
         <div className="flex flex-col gap-0 w-full">
           <UserName subjectId={leftCardSide} />
@@ -397,6 +421,7 @@ const EvaluatedCardBody = ({
         />
         <EvidenceUserProfile subjectId={rightCardSide} />
         <EvaluationInformation
+          evidenceViewMode={evidenceViewMode}
           fromSubjectId={fromSubjectId}
           toSubjectId={toSubjectId}
         />
@@ -499,7 +524,10 @@ const ConnectedCardBody = ({
             subjectId={leftCardSide}
             className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 border-pastel-purple`}
           />
-          <ConnectionInfo subjectId={leftCardSide} />
+          <ConnectionInfo
+            evidenceViewMode={evidenceViewMode}
+            subjectId={leftCardSide}
+          />
         </div>
         <div className="flex flex-col gap-0 w-full">
           <UserName subjectId={leftCardSide} />

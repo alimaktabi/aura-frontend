@@ -16,7 +16,7 @@ export const ActivityListSearch = ({ subjectId }: { subjectId: string }) => {
     setSelectedSort,
     filters,
     sorts,
-  } = useOutboundEvaluationsContext(subjectId);
+  } = useOutboundEvaluationsContext({ subjectId });
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [isSortsModalOpen, setIsSortsModalOpen] = useState(false);

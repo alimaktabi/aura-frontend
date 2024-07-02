@@ -103,7 +103,10 @@ export const connectionIncomingRatingsResponse: {
 
 export const connectionIncomingConnectionsSortByConnectionLevelDescending = [
   ...connectionIncomingConnections,
-].sort((a, b) => connectionLevelMap[b.level] - connectionLevelMap[a.level]);
+].sort(
+  (a, b) =>
+    (connectionLevelMap[b.level] ?? 0) - (connectionLevelMap[a.level] ?? 0),
+);
 
 const getIncomingRatingFrom = (connection: BrightIdConnection) =>
   Number(

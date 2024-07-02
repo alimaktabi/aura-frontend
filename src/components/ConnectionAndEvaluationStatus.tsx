@@ -17,7 +17,7 @@ export const ConnectionAndEvaluationStatus = ({
     myRatingNumberToSubject: ratingNumber,
     myConnectionToSubject: inboundConnectionInfo,
     myConfidenceValueInThisSubjectRating: confidenceValue,
-  } = useMyEvaluationsContext(subjectId);
+  } = useMyEvaluationsContext({ subjectId });
 
   return (
     <div className="w-full flex gap-1">

@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
 
 export function ConnectionLevel({ subjectId }: { subjectId: string }) {
-  const { myConnectionToSubject: connection } =
-    useMyEvaluationsContext(subjectId);
+  const { myConnectionToSubject: connection } = useMyEvaluationsContext({
+    subjectId,
+  });
 
   const dispatch = useDispatch();
   const api = useContext(NodeApiContext);

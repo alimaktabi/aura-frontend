@@ -9,26 +9,27 @@ import {
   AuraSortOptions,
   useInboundEvaluationSorts,
 } from 'hooks/useSorts';
-import { useSubjectEvaluations } from 'hooks/useSubjectEvaluations';
-import { useSubjectInboundEvaluations } from 'hooks/useSubjectInboundEvaluations';
+import { useInboundEvaluations } from 'hooks/useSubjectEvaluations';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData, selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
 
+import { viewModeToViewAs } from '../constants';
+import useViewMode from '../hooks/useViewMode';
+import { EvaluationCategory } from '../types/dashboard';
+
+type SubjectInboundEvaluationsContextType = ReturnType<
+  typeof useInboundEvaluations
+> & {
+  subjectId: string;
+} & ReturnType<typeof useFilterAndSort<AuraInboundConnectionAndRatingData>> & {
+    sorts: AuraSortOptions<AuraInboundConnectionAndRatingData>;
+    filters: AuraFilterOptions<AuraInboundConnectionAndRatingData>;
+  };
 // Define the context
-export const SubjectInboundEvaluationsContext = createContext<
-  | (ReturnType<typeof useSubjectInboundEvaluations> & {
-      subjectId: string;
-    } & ReturnType<
-        typeof useFilterAndSort<AuraInboundConnectionAndRatingData>
-      > & {
-        sorts: AuraSortOptions<AuraInboundConnectionAndRatingData>;
-        filters: AuraFilterOptions<AuraInboundConnectionAndRatingData>;
-        myRatingObject: AuraRating | undefined;
-      })
-  | null
->(null);
+export const SubjectInboundEvaluationsContext =
+  createContext<SubjectInboundEvaluationsContextType | null>(null);
 
 interface ProviderProps {
   subjectId: string;
@@ -39,9 +40,10 @@ interface ProviderProps {
 export const SubjectInboundEvaluationsContextProvider: React.FC<
   ProviderProps
 > = ({ subjectId, children }) => {
-  const useSubjectInboundEvaluationsHookData =
-    useSubjectInboundEvaluations(subjectId);
-  const { ratings } = useSubjectInboundEvaluationsHookData;
+  const useSubjectInboundEvaluationsHookData = useInboundEvaluations({
+    subjectId,
+  });
+  const { ratings, connections } = useSubjectInboundEvaluationsHookData;
   const filters = useInboundEvaluationFilters(
     [
       AuraFilterId.EvaluationMutualConnections,
@@ -64,12 +66,10 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     AuraSortId.EvaluationPlayerScore,
   ]);
 
-  const subjectConnections = useSubjectEvaluations(subjectId);
-
   const brightIdBackup = useSelector(selectBrightIdBackup);
 
   const inboundOpinions: AuraInboundConnectionAndRatingData[] = useMemo(() => {
-    const inboundConnections = subjectConnections.connections;
+    const inboundConnections = connections;
     if (!inboundConnections || ratings === null || !brightIdBackup) return [];
     const inboundOpinions: AuraInboundConnectionAndRatingData[] = ratings.map(
       (r) => ({
@@ -95,7 +95,7 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
       }
     });
     return inboundOpinions;
-  }, [brightIdBackup, ratings, subjectConnections.connections]);
+  }, [brightIdBackup, ratings, connections]);
 
   const filterAndSortHookData = useFilterAndSort(
     inboundOpinions,
@@ -104,13 +104,6 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     useMemo(() => ['fromSubjectId', 'name'], []),
     'evaluationsList',
   );
-  const authData = useSelector(selectAuthData);
-
-  const myRatingObject = useMemo(() => {
-    if (!authData) return undefined;
-    const rating = ratings?.find((r) => r.fromBrightId === authData.brightId);
-    return rating;
-  }, [authData, ratings]);
 
   return (
     <SubjectInboundEvaluationsContext.Provider
@@ -120,7 +113,6 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
         sorts,
         filters,
         subjectId,
-        myRatingObject,
       }}
     >
       {children}
@@ -128,19 +120,77 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   );
 };
 
-export const useSubjectInboundEvaluationsContext = (subjectId: string) => {
+export const useSubjectInboundEvaluationsContext = (props: {
+  subjectId: string;
+  evaluationCategory?: EvaluationCategory;
+}): SubjectInboundEvaluationsContextType & {
+  myRatingObject: AuraRating | undefined;
+} => {
   const context = useContext(SubjectInboundEvaluationsContext);
   if (context === null) {
     throw new Error(
       'SubjectInboundEvaluationsContext must be used within a SubjectInboundEvaluationsContextProvider',
     );
   }
-  if (context.subjectId !== subjectId) {
+  if (context.subjectId !== props.subjectId) {
     throw new Error(
       'SubjectInboundEvaluationsContextProvider for ' +
-        subjectId +
+        props.subjectId +
         'not provided',
     );
   }
-  return context;
+
+  const { currentViewMode } = useViewMode();
+  const ratings = useMemo(
+    () =>
+      context.ratings
+        ? context.ratings.filter(
+            (r) =>
+              r.category ===
+              (props?.evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+          )
+        : null,
+    [context.ratings, currentViewMode, props?.evaluationCategory],
+  );
+  const authData = useSelector(selectAuthData);
+  const myRatingObject = useMemo(() => {
+    if (!authData) return undefined;
+    return ratings?.find((r) => r.fromBrightId === authData.brightId);
+  }, [authData, ratings]);
+
+  const inboundPositiveRatingsCount = useMemo(
+    () => ratings?.filter((r) => Number(r.rating) > 0).length,
+    [ratings],
+  );
+  const inboundNegativeRatingsCount = useMemo(
+    () => ratings?.filter((r) => Number(r.rating) < 0).length,
+    [ratings],
+  );
+  const inboundRatingsStatsString = useMemo(() => {
+    return `${inboundPositiveRatingsCount ?? '...'} Pos / ${
+      inboundNegativeRatingsCount ?? '...'
+    } Neg`;
+  }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
+
+  return {
+    ...context,
+    itemsFiltered: useMemo(
+      () =>
+        context.itemsFiltered
+          ? context.itemsFiltered.filter(
+              (o) =>
+                o.rating === undefined ||
+                o.rating?.category ===
+                  (props?.evaluationCategory ??
+                    viewModeToViewAs[currentViewMode]),
+            )
+          : null,
+      [context.itemsFiltered, currentViewMode, props?.evaluationCategory],
+    ),
+    ratings,
+    inboundPositiveRatingsCount,
+    inboundNegativeRatingsCount,
+    inboundRatingsStatsString,
+    myRatingObject,
+  };
 };

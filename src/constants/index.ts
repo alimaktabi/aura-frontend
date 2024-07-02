@@ -9,7 +9,9 @@ export const TOAST_SUCCESS = 'success';
 export const TOAST_ERROR = 'danger';
 
 // eslint-disable-next-line no-unused-vars
-export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
+export const connectionLevelMap: {
+  [c in ConnectionLevel]: number | undefined;
+} = {
   reported: 0,
   suspicious: 1,
   'just met': 2,
@@ -185,6 +187,17 @@ export const viewModeToSubjectViewMode: {
   [PreferredView.MANAGER_EVALUATING_TRAINER]: PreferredView.TRAINER,
   [PreferredView.MANAGER_EVALUATING_MANAGER]:
     PreferredView.MANAGER_EVALUATING_TRAINER,
+};
+export const viewModeToEvaluatorViewMode: {
+  [key in PreferredView]: PreferredView;
+} = {
+  [PreferredView.PLAYER]: PreferredView.TRAINER,
+  [PreferredView.TRAINER]: PreferredView.MANAGER_EVALUATING_TRAINER,
+  [PreferredView.MANAGER_EVALUATING_TRAINER]:
+    PreferredView.MANAGER_EVALUATING_MANAGER,
+  // last property is just for avoiding type errors
+  [PreferredView.MANAGER_EVALUATING_MANAGER]:
+    PreferredView.MANAGER_EVALUATING_MANAGER,
 };
 
 export const viewModeToViewAs: {

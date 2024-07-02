@@ -10,7 +10,7 @@ export function EvaluatorInfo({ evaluatorId }: { evaluatorId: string }) {
     myRatingNumberToSubject: ratingNumber,
     loading,
     myConnectionToSubject: inboundConnectionInfo,
-  } = useMyEvaluationsContext(evaluatorId);
+  } = useMyEvaluationsContext({ subjectId: evaluatorId });
 
   return (
     <div className="card__top-row__left flex items-start gap-1">

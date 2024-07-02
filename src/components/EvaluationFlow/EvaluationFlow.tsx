@@ -19,9 +19,10 @@ const EvaluationFlow = ({
   const name = useSubjectName(subjectId);
 
   const { refreshInboundRatings, myRatingObject } =
-    useSubjectInboundEvaluationsContext(subjectId);
-  const { refreshOutboundRatings, myRatings } =
-    useMyEvaluationsContext(subjectId);
+    useSubjectInboundEvaluationsContext({ subjectId });
+  const { refreshOutboundRatings, myRatings } = useMyEvaluationsContext({
+    subjectId,
+  });
 
   const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(null);
 

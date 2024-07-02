@@ -13,7 +13,9 @@ const ActivitiesCard = ({
   onLastEvaluationClick: (subjectId: string) => void;
 }) => {
   const { subjectViewModeTitle } = useViewMode();
-  const { ratings: outboundRatings } = useOutboundEvaluationsContext(subjectId);
+  const { ratings: outboundRatings } = useOutboundEvaluationsContext({
+    subjectId,
+  });
   const outboundActiveRatings = useMemo(
     () => outboundRatings?.filter((r) => Number(r.rating)),
     [outboundRatings],

@@ -4,7 +4,9 @@ import { selectAuthData } from 'store/profile/selectors';
 
 export const useMyEvaluations = () => {
   const authData = useSelector(selectAuthData);
-  const outboundEvaluations = useOutboundEvaluations(authData?.brightId);
+  const outboundEvaluations = useOutboundEvaluations({
+    subjectId: authData?.brightId,
+  });
 
   return {
     loading: outboundEvaluations.loading,

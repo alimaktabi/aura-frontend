@@ -4,12 +4,16 @@ import {
   getInboundConnections,
   getOutboundConnections,
 } from '../api/connections.service';
-import { viewModeToViewAs } from '../constants';
 import { AuraNodeBrightIdConnection, AuraRating } from '../types';
-import { EvaluationValue } from '../types/dashboard';
-import useViewMode from './useViewMode';
+import { EvaluationCategory, EvaluationValue } from '../types/dashboard';
 
-export const useInboundEvaluations = (subjectId: string | null | undefined) => {
+export const useInboundEvaluations = ({
+  subjectId,
+  evaluationCategory,
+}: {
+  subjectId: string | null | undefined;
+  evaluationCategory?: EvaluationCategory;
+}) => {
   const [inboundConnections, setInboundConnections] = useState<
     AuraNodeBrightIdConnection[] | null
   >(null);
@@ -36,14 +40,17 @@ export const useInboundEvaluations = (subjectId: string | null | undefined) => {
     };
   }, [refreshInboundEvaluations]);
 
-  const { currentViewMode } = useViewMode();
   const inboundRatings: AuraRating[] | null = useMemo(() => {
     if (!inboundConnections || !subjectId) return null;
     return inboundConnections.reduce(
       (a, c) =>
         a.concat(
           ...(c.auraEvaluations
-            ?.filter((e) => e.category === viewModeToViewAs[currentViewMode])
+            ?.filter(
+              (r) =>
+                evaluationCategory === undefined ||
+                r.category === evaluationCategory,
+            )
             .map((e) => ({
               fromBrightId: c.id,
               toBrightId: subjectId,
@@ -59,7 +66,7 @@ export const useInboundEvaluations = (subjectId: string | null | undefined) => {
         ),
       [] as AuraRating[],
     );
-  }, [currentViewMode, inboundConnections, subjectId]);
+  }, [evaluationCategory, inboundConnections, subjectId]);
 
   const inboundPositiveRatingsCount = useMemo(
     () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
@@ -87,9 +94,13 @@ export const useInboundEvaluations = (subjectId: string | null | undefined) => {
   };
 };
 
-export const useOutboundEvaluations = (
-  subjectId: string | null | undefined,
-) => {
+export const useOutboundEvaluations = ({
+  subjectId,
+  evaluationCategory,
+}: {
+  subjectId: string | null | undefined;
+  evaluationCategory?: EvaluationCategory;
+}) => {
   const [outboundConnections, setOutboundConnections] = useState<
     AuraNodeBrightIdConnection[] | null
   >(null);
@@ -116,14 +127,17 @@ export const useOutboundEvaluations = (
     };
   }, [refreshOutboundEvaluations]);
 
-  const { currentViewMode } = useViewMode();
   const outboundRatings: AuraRating[] | null = useMemo(() => {
     if (!outboundConnections || !subjectId) return null;
     return outboundConnections.reduce(
       (a, c) =>
         a.concat(
           ...(c.auraEvaluations
-            ?.filter((e) => e.category === viewModeToViewAs[currentViewMode])
+            ?.filter(
+              (r) =>
+                evaluationCategory === undefined ||
+                r.category === evaluationCategory,
+            )
             .map((e) => ({
               fromBrightId: subjectId,
               toBrightId: c.id,
@@ -139,7 +153,7 @@ export const useOutboundEvaluations = (
         ),
       [] as AuraRating[],
     );
-  }, [currentViewMode, outboundConnections, subjectId]);
+  }, [evaluationCategory, outboundConnections, subjectId]);
 
   return {
     loading,
@@ -149,8 +163,11 @@ export const useOutboundEvaluations = (
   };
 };
 
-export const useSubjectEvaluations = (subjectId: string | null | undefined) => {
-  const inboundConnectionsData = useInboundEvaluations(subjectId);
-  const outboundConnectionsData = useOutboundEvaluations(subjectId);
+export const useSubjectEvaluations = (props: {
+  subjectId: string | null | undefined;
+  evaluationCategory?: EvaluationCategory;
+}) => {
+  const inboundConnectionsData = useInboundEvaluations(props);
+  const outboundConnectionsData = useOutboundEvaluations(props);
   return { ...inboundConnectionsData, ...outboundConnectionsData };
 };

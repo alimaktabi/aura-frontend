@@ -25,7 +25,7 @@ export const SubjectCard = ({
   const { options3 } = useContext(EchartsContext);
 
   const { myConnectionToSubject: inboundConnectionInfo } =
-    useMyEvaluationsContext(subjectId);
+    useMyEvaluationsContext({ subjectId });
 
   const { auraLevel, auraScore } = useParseBrightIdVerificationData(
     inboundConnectionInfo?.verifications,

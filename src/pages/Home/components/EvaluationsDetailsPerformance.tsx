@@ -19,7 +19,7 @@ const EvaluationsDetailsPerformance = ({
   title?: string;
 }) => {
   const { ratings: inboundRatings, inboundRatingsStatsString } =
-    useSubjectInboundEvaluationsContext(subjectId);
+    useSubjectInboundEvaluationsContext({ subjectId });
   const { auraScore } = useSubjectVerifications(subjectId);
 
   const { options } = useContext(EchartsContext);

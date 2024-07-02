@@ -9,27 +9,28 @@ import {
   AuraSortOptions,
   useOutboundEvaluationSorts,
 } from 'hooks/useSorts';
-import {
-  useOutboundEvaluations,
-  useSubjectEvaluations,
-} from 'hooks/useSubjectEvaluations';
+import { useOutboundEvaluations } from 'hooks/useSubjectEvaluations';
 import React, { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraOutboundConnectionAndRatingData } from 'types';
 
+import { viewModeToViewAs } from '../constants';
+import useViewMode from '../hooks/useViewMode';
+import { EvaluationCategory } from '../types/dashboard';
+
+type SubjectOutboundEvaluationsContextType = ReturnType<
+  typeof useOutboundEvaluations
+> & {
+  subjectId: string;
+} & ReturnType<typeof useFilterAndSort<AuraOutboundConnectionAndRatingData>> & {
+    sorts: AuraSortOptions<AuraOutboundConnectionAndRatingData>;
+    filters: AuraFilterOptions<AuraOutboundConnectionAndRatingData>;
+  };
+
 // Define the context
-export const SubjectOutboundEvaluationsContext = createContext<
-  | (ReturnType<typeof useOutboundEvaluations> & {
-      subjectId: string;
-    } & ReturnType<
-        typeof useFilterAndSort<AuraOutboundConnectionAndRatingData>
-      > & {
-        sorts: AuraSortOptions<AuraOutboundConnectionAndRatingData>;
-        filters: AuraFilterOptions<AuraOutboundConnectionAndRatingData>;
-      })
-  | null
->(null);
+export const SubjectOutboundEvaluationsContext =
+  createContext<SubjectOutboundEvaluationsContextType | null>(null);
 
 interface ProviderProps {
   subjectId: string;
@@ -40,8 +41,8 @@ interface ProviderProps {
 export const SubjectOutboundEvaluationsContextProvider: React.FC<
   ProviderProps
 > = ({ subjectId, children }) => {
-  const useOutboundEvaluationsHookData = useOutboundEvaluations(subjectId);
-  const { ratings } = useOutboundEvaluationsHookData;
+  const useOutboundEvaluationsHookData = useOutboundEvaluations({ subjectId });
+  const { ratings, connections } = useOutboundEvaluationsHookData;
   const filters = useOutboundEvaluationFilters(
     [
       AuraFilterId.EvaluationMutualConnections,
@@ -64,13 +65,11 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
     AuraSortId.EvaluationPlayerScore,
   ]);
 
-  const subjectConnections = useSubjectEvaluations(subjectId);
-
   const brightIdBackup = useSelector(selectBrightIdBackup);
 
   const outboundOpinions: AuraOutboundConnectionAndRatingData[] =
     useMemo(() => {
-      const outboundConnections = subjectConnections.connections;
+      const outboundConnections = connections;
       if (!outboundConnections || ratings === null || !brightIdBackup)
         return [];
       const outboundOpinions: AuraOutboundConnectionAndRatingData[] =
@@ -85,8 +84,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
           ),
         }));
       outboundConnections.forEach((c) => {
-        const notRated =
-          ratings.findIndex((r) => r.fromBrightId === c.id) === -1;
+        const notRated = ratings.findIndex((r) => r.toBrightId === c.id) === -1;
         if (notRated) {
           outboundOpinions.push({
             toSubjectId: c.id,
@@ -97,8 +95,13 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
         }
       });
       return outboundOpinions;
-    }, [brightIdBackup, ratings, subjectConnections.connections]);
+    }, [brightIdBackup, ratings, connections]);
 
+  console.log({
+    connections,
+    ratings,
+    outboundOpinions,
+  });
   const filterAndSortHookData = useFilterAndSort(
     outboundOpinions,
     filters,
@@ -122,19 +125,51 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
   );
 };
 
-export const useOutboundEvaluationsContext = (subjectId: string) => {
+export const useOutboundEvaluationsContext = (props: {
+  subjectId: string;
+  evaluationCategory?: EvaluationCategory;
+}): SubjectOutboundEvaluationsContextType => {
   const context = useContext(SubjectOutboundEvaluationsContext);
   if (context === null) {
     throw new Error(
       'SubjectOutboundEvaluationsContext must be used within a SubjectOutboundEvaluationsContextProvider',
     );
   }
-  if (context.subjectId !== subjectId) {
+  if (context.subjectId !== props.subjectId) {
     throw new Error(
       'SubjectOutboundEvaluationsContextProvider for ' +
-        subjectId +
+        props.subjectId +
         'not provided',
     );
   }
-  return context;
+  const { currentViewMode } = useViewMode();
+  const itemsFiltered = useMemo(
+    () =>
+      context.itemsFiltered
+        ? context.itemsFiltered.filter(
+            (o) =>
+              o.rating === undefined ||
+              o.rating.category ===
+                (props?.evaluationCategory ??
+                  viewModeToViewAs[currentViewMode]),
+          )
+        : null,
+    [context.itemsFiltered, currentViewMode, props?.evaluationCategory],
+  );
+  return {
+    ...context,
+    itemsFiltered,
+    ratings: useMemo(
+      () =>
+        context.ratings
+          ? context.ratings.filter(
+              (r) =>
+                r.category ===
+                (props?.evaluationCategory ??
+                  viewModeToViewAs[currentViewMode]),
+            )
+          : null,
+      [context.ratings, currentViewMode, props?.evaluationCategory],
+    ),
+  };
 };

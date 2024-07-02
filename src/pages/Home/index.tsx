@@ -16,7 +16,6 @@ import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/Loadi
 import FindTrainersCard from '../../components/Shared/FindTrainersCard';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
-import { SubjectInboundRatingsContextProvider } from '../../contexts/SubjectInboundRatingsContext';
 import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
 import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
 import { useDispatch } from '../../store/hooks';
@@ -154,9 +153,7 @@ const Home = () => {
                     items={filteredSubjects}
                     //TODO: optimize rendering by caching the rendered components
                     renderItem={(conn, index) => (
-                      <SubjectInboundRatingsContextProvider subjectId={conn.id}>
-                        <SubjectCard index={index} subjectId={conn.id} />
-                      </SubjectInboundRatingsContextProvider>
+                      <SubjectCard index={index} subjectId={conn.id} />
                     )}
                   />
                 </div>

@@ -2,11 +2,13 @@ import Modal from 'components/Shared/Modal';
 import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
-import { useOutboundEvaluations } from 'hooks/useSubjectEvaluations';
-import { useSubjectInboundEvaluations } from 'hooks/useSubjectInboundEvaluations';
+import {
+  useInboundEvaluations,
+  useOutboundEvaluations,
+} from 'hooks/useSubjectEvaluations';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
@@ -23,19 +25,26 @@ const CredibilityDetails = ({
   subjectId: string;
   onClose: () => void;
 }) => {
+  const [isSubject, setIsSubject] = useState(true);
+  const evaluationCategory = useMemo(
+    () => (isSubject ? EvaluationCategory.SUBJECT : EvaluationCategory.PLAYER),
+    [isSubject],
+  );
+
   const authData = useSelector(selectAuthData);
   const { auraLevel, auraScore } = useSubjectVerifications(subjectId);
-  const { ratings, inboundRatingsStatsString } =
-    useSubjectInboundEvaluations(subjectId);
+  const { ratings, inboundRatingsStatsString } = useInboundEvaluations({
+    subjectId,
+    evaluationCategory,
+  });
   const {
     loading,
     myRatingToSubject,
     myConnectionToSubject,
     myConfidenceValueInThisSubjectRating,
-  } = useMyEvaluationsContext(subjectId);
-  const { connections } = useOutboundEvaluations(subjectId);
+  } = useMyEvaluationsContext({ subjectId, evaluationCategory });
+  const { connections } = useOutboundEvaluations({ subjectId });
   const { options2 } = useContext(EchartsContext);
-  const [isSubject, setIsSubject] = useState(true);
   const link = '/subject/' + subjectId;
   const navigate = useNavigate();
 
@@ -54,7 +63,7 @@ const CredibilityDetails = ({
       {isSubject && (
         <>
           <div className="font-bold text-l">
-            As a <span className="text-purple">Player</span>:
+            As a <span className="text-orange">Subject</span>:
           </div>
           <div>
             Level: <span className="font-bold">1</span>
@@ -97,7 +106,7 @@ const CredibilityDetails = ({
       {!isSubject && (
         <>
           <div className="font-bold text-l">
-            As a <span className="text-orange">Subject</span>:
+            As a <span className="text-purple">Player</span>:
           </div>
           <div>
             Level: <span className="font-bold">{auraLevel}</span>

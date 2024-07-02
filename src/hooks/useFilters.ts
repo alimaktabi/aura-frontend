@@ -66,9 +66,9 @@ export function useCategorizeAuraFilterOptions<T>(
 
 export function useSubjectFilters(filterIds: AuraFilterId[]) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { ratings: outboundRatings } = useOutboundEvaluations(
-    brightIdBackup?.userData.id,
-  );
+  const { ratings: outboundRatings } = useOutboundEvaluations({
+    subjectId: brightIdBackup?.userData.id,
+  });
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraNodeBrightIdConnectionWithBackupData> =
       [
@@ -178,7 +178,7 @@ export function useInboundEvaluationFilters(
   subjectId?: string,
 ) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { connections } = useOutboundEvaluations(subjectId);
+  const { connections } = useOutboundEvaluations({ subjectId });
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
       {
@@ -265,7 +265,7 @@ export function useOutboundEvaluationFilters(
   subjectId?: string,
 ) {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { connections } = useOutboundEvaluations(subjectId);
+  const { connections } = useOutboundEvaluations({ subjectId });
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraOutboundConnectionAndRatingData> = [
       {

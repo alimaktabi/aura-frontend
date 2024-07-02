@@ -39,10 +39,10 @@ export const ProfileInfo = ({
     SubjectInboundEvaluationsContext,
   );
   const { myConnectionToSubject, myRatingNumberToSubject } =
-    useMyEvaluationsContext(subjectId);
+    useMyEvaluationsContext({ subjectId });
 
   const { connections: outboundConnections, ratings: outboundRatings } =
-    useOutboundEvaluationsContext(subjectId);
+    useOutboundEvaluationsContext({ subjectId });
 
   const lastActivity = useMemo(() => {
     if (outboundConnections !== null && outboundRatings !== null) {

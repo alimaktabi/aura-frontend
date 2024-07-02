@@ -8,11 +8,11 @@ export const YourEvaluation = ({
   setShowEvaluationFlow,
 }: {
   subjectId: string;
-
   setShowEvaluationFlow: (value: boolean) => void;
 }) => {
-  const { myRatingToSubject: rating, loading } =
-    useMyEvaluationsContext(subjectId);
+  const { myRatingToSubject: rating, loading } = useMyEvaluationsContext({
+    subjectId,
+  });
 
   return (
     <div className="card flex flex-col gap-2.5">

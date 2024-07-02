@@ -29,6 +29,7 @@ import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
+import { viewModeToSubjectViewMode, viewModeToViewAs } from '../../constants';
 import { selectAuthData } from '../../store/profile/selectors';
 
 const ProfileTabs = ({
@@ -150,13 +151,21 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         ?.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  const { currentViewMode } = useViewMode();
 
   const { itemsFiltered: evaluations, loading: loadingInboundEvaluations } =
-    useSubjectInboundEvaluationsContext(subjectId);
+    useSubjectInboundEvaluationsContext({
+      subjectId,
+      evaluationCategory: viewModeToViewAs[currentViewMode],
+    });
   const {
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
-  } = useOutboundEvaluationsContext(subjectId);
+  } = useOutboundEvaluationsContext({
+    subjectId,
+    evaluationCategory:
+      viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+  });
   const evaluators = useMemo(() => {
     if (!evaluations) return [];
     return evaluations.map((e) => e.fromSubjectId);
@@ -167,8 +176,6 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   }, [outboundEvaluations]);
 
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
-
-  const { currentViewMode } = useViewMode();
 
   useEffect(() => {
     if (currentViewMode === PreferredView.PLAYER) {
