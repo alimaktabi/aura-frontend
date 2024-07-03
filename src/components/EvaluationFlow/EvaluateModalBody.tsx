@@ -73,7 +73,7 @@ const EvaluateModalBody = ({
     <div>
       <p className="subtitle -mt-6 mb-6">
         as a <span className="font-bold">{subjectViewModeTitle}</span> in{' '}
-        <span className="font-bold">brightID</span> domain
+        <span className="font-bold">BrightID</span> domain
       </p>
 
       <p className="font-medium mb-2">
