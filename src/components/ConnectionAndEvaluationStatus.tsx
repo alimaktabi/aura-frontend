@@ -22,16 +22,17 @@ export const ConnectionAndEvaluationStatus = ({
   return (
     <div className="w-full flex gap-1">
       <div className="flex gap-1 p-2 rounded-md bg-soft-bright">
-        {inboundConnectionInfo && (
-          <img
-            src={`/assets/images/Shared/${
-              connectionLevelIcons[inboundConnectionInfo.level]
-            }.svg`}
-            alt=""
-            width="20px"
-            height="20px"
-          />
-        )}
+        {inboundConnectionInfo &&
+          connectionLevelIcons[inboundConnectionInfo.level] && (
+            <img
+              src={`/assets/images/Shared/${
+                connectionLevelIcons[inboundConnectionInfo.level]
+              }.svg`}
+              alt=""
+              width="20px"
+              height="20px"
+            />
+          )}
         {!ratingNumber && (
           <p className="font-medium text-black text-sm">
             {inboundConnectionInfo?.level}
