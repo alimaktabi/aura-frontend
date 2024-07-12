@@ -7,6 +7,9 @@ import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEval
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useCallback, useState } from 'react';
 
+import useViewMode from '../../hooks/useViewMode';
+import { PreferredView } from '../../types/dashboard';
+
 const EvaluationFlow = ({
   showEvaluationFlow,
   subjectId,
@@ -25,6 +28,7 @@ const EvaluationFlow = ({
   });
 
   const [myNewRatingCount, setMyNewRatingCount] = useState<number | null>(null);
+  const { currentViewMode } = useViewMode();
 
   const onSubmitted = useCallback(
     async (newRating: number | null | undefined) => {
@@ -38,13 +42,17 @@ const EvaluationFlow = ({
       if (myRatingsCount === undefined) return;
       const isNewRating = !(myRatingObject && Number(myRatingObject.rating));
       const newRatingCount = myRatingsCount + (isNewRating ? 1 : 0);
-      if (newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING) {
+      if (
+        currentViewMode !== PreferredView.PLAYER ||
+        newRatingCount > PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING
+      ) {
         setShowEvaluationFlow(false);
       } else {
         setMyNewRatingCount(newRatingCount);
       }
     },
     [
+      currentViewMode,
       myRatingObject,
       myRatings,
       refreshInboundRatings,
