@@ -71,7 +71,7 @@ const NewPlayerGuideAfterEvaluation = ({
           data-testid="find-trainers-button"
           className="btn btn--big w-full"
           onClick={() => {
-            navigate(RoutePath.HOME);
+            navigate(RoutePath.HOME + '?tab=levelup');
           }}
         >
           Find Trainers

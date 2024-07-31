@@ -6,8 +6,9 @@ import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboun
 import useViewMode from 'hooks/useViewMode';
 import Onboarding from 'pages/Onboarding';
 import * as React from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
@@ -36,6 +37,12 @@ const Home = () => {
     Manager: 'pastel-blue',
   };
   const [isEvaluate, setIsEvaluate] = useState(true);
+  const [query] = useSearchParams();
+  useEffect(() => {
+    if (query.get('tab') === 'levelup') {
+      setIsEvaluate(false);
+    }
+  }, [query]);
   const hasTrainers = false;
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
