@@ -139,7 +139,7 @@ const ProfileOverview = ({
                 className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
                 onClick={() =>
                   setEvidenceListFilter(
-                    AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
+                    AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
                   )
                 }
               >

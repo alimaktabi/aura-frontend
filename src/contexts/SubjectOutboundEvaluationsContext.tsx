@@ -52,7 +52,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
       AuraFilterId.EvaluationJustConnections,
       AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
       AuraFilterId.EvaluationConnectionTypeJustMet,
-      AuraFilterId.EvaluationConnectionTypeAlreadyKnown,
+      AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
       AuraFilterId.EvaluationConnectionTypeRecovery,
       AuraFilterId.EvaluationTheirRecovery,
     ],

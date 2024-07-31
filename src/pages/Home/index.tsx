@@ -47,7 +47,7 @@ const Home = () => {
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
-
+ 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
