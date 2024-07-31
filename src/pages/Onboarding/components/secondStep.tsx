@@ -73,9 +73,7 @@ const SecondStep = () => {
                 <FadeIn delay={0.3} className="text-white w-full">
                   <p>
                     <span className="text-purple2">Evaluation </span>
-                    of other players: information about your connection. This
-                    helps in ensuring the accuracy and reliability of the
-                    evaluation process.
+                    <CustomTrans i18nKey="playerOnboarding.step2.evaluationCardDescription" />
                   </p>
                 </FadeIn>
               </FadeIn>
@@ -126,8 +124,7 @@ const SecondStep = () => {
               <FadeIn delay={0.3} className="text-white w-full">
                 <p>
                   <span className="text-light-orange">Connection </span>
-                  information about your connection. This helps in ensuring the
-                  accuracy and reliability of the evaluation process.
+                  <CustomTrans i18nKey="playerOnboarding.step2.connectionCardDescription" />
                 </p>
               </FadeIn>
             </FadeIn>

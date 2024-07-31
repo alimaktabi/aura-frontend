@@ -58,7 +58,7 @@ const NewPlayerGuideAfterEvaluation = ({
         <p>
           You completed{' '}
           <span data-testid="ratings-done-count">{ratingsDoneCount}</span>{' '}
-          evaluations. Start getting feedback by Aura trainers!
+          evaluations. Start getting feedback from Aura trainers!
         </p>
         <div className="grow bg-[#D9D9D9] rounded-xl h-[14px] overflow-hidden mt-[20px]">
           <span
@@ -71,7 +71,6 @@ const NewPlayerGuideAfterEvaluation = ({
           data-testid="find-trainers-button"
           className="btn btn--big w-full"
           onClick={() => {
-            closeModalHandler?.();
             navigate(RoutePath.HOME);
           }}
         >

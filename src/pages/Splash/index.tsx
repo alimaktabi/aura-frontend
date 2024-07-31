@@ -2,6 +2,7 @@ import { useDispatch } from 'store/hooks';
 import { setSplashScreenShown } from 'store/profile';
 
 import { FadeIn, Scale } from '../../animations';
+import CustomTrans from '../../components/CustomTrans';
 
 const Spalsh = () => {
   const dispatch = useDispatch();
@@ -13,20 +14,12 @@ const Spalsh = () => {
         </FadeIn>
         <FadeIn delay={0.15}>
           <p className="text-white font-black text-2xl mb-9">
-            A leap forward
-            <br />
-            toward Trusted Identity
+            <CustomTrans i18nKey="welcomeScreen.tagline" />
           </p>
         </FadeIn>
         <FadeIn delay={0.2}>
           <p className="text-white font-medium text-lg">
-            Use Aura to evaluate{' '}
-            <img
-              className="inline ml-1"
-              src="/assets/images/Shared/brighthid.svg"
-              alt=""
-            />{' '}
-            accounts and take a step toward a safer and more trustworthy online community where your identity is secured and recognized.
+            <CustomTrans i18nKey="welcomeScreen.description" />
           </p>
         </FadeIn>
       </section>

@@ -48,7 +48,7 @@ const PlayerCard = () => {
           <img src="/assets/images/Shared/guide-black.svg" alt="" />
           <p className="font-medium underline -mb-1">Guide</p>
         </div>
-        <button className="btn btn--outlined btn--small">Deactivate</button>
+        <button className="btn btn--outlined btn--small">Hide</button>
       </section>
     </div>
   );

@@ -12,16 +12,9 @@ import {
 } from 'BrightID/components/Onboarding/RecoveryFlow/recoveryDataSlice';
 import { RecoveryErrorType } from 'BrightID/components/Onboarding/RecoveryFlow/RecoveryError';
 import { createRecoveryChannel } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/channelThunks';
-import {
-  setRecoveryKeys,
-  setupRecovery,
-} from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks';
+import { setRecoveryKeys, setupRecovery } from 'BrightID/components/Onboarding/RecoveryFlow/thunks/recoveryThunks';
 import { setUserId, userSelector } from 'BrightID/reducer/userSlice';
-import {
-  recover_steps,
-  RecoveryCodeScreenAction,
-  urlTypesOfActions,
-} from 'BrightID/utils/constants';
+import { recover_steps, RecoveryCodeScreenAction, urlTypesOfActions } from 'BrightID/utils/constants';
 import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
 import { LOCATION_ORIGIN } from 'constants/index';
 import { AURA_NODE_URL } from 'constants/urls';
@@ -35,6 +28,7 @@ import { copyToClipboard } from 'utils/copyToClipboard';
 import { __DEV__ } from 'utils/env';
 
 import { FadeIn } from '../../../../animations';
+import CustomTrans from '../../../../components/CustomTrans';
 
 /**
  * Recovery Code screen of BrightID/
@@ -254,7 +248,7 @@ const RecoveryCodeScreen = () => {
         <section className="content pl-5 pr-12 mb-6">
           <p className="text-white font-black text-5xl mb-6">Login</p>
           <p className="text-white font-medium text-lg">
-            Logging in to Arua...
+            Downloading backup data...
           </p>
         </section>
       ) : (
@@ -265,8 +259,12 @@ const RecoveryCodeScreen = () => {
             </FadeIn>
             <FadeIn delay={0.15}>
               <p className="text-white font-medium text-lg">
-                Make sure you have BrightID application installed on your phone,
-                then scan this QR code.
+                <span className="hidden md:block">
+                  <CustomTrans i18nKey="login.topDescriptionDesktop" />
+                </span>
+                <span className="block md:hidden">
+                  <CustomTrans i18nKey="login.topDescriptionMobile" />
+                </span>
               </p>
             </FadeIn>
           </section>

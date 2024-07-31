@@ -1,4 +1,12 @@
 {
+  "welcomeScreen": {
+    "tagline": "Welcome Aura player",
+    "description": "Level up to help your friends and family get Aura verified"
+  },
+  "login": {
+    "topDescriptionDesktop": "Scan to log in",
+    "topDescriptionMobile": "Tap to log in"
+  },
   "playerOnboarding": {
     "step1": {
       "title": "Find a<br />Subject",
@@ -6,14 +14,16 @@
     },
     "step2": {
       "title": "Gather<br />Information",
-      "description": "Gather information to help you to make an accurate evaluation"
+      "description": "Gather information to help you to make an accurate evaluation",
+      "connectionCardDescription": "See who has connected to the subject in BrightID",
+      "evaluationCardDescription": "See how other Aura players have evaluated the subject"
     },
     "step3": {
-      "title": "Evaluate <br />the Subject",
+      "title": "Evaluate<br />the Subject",
       "description": "Once you have enough information, tell other players what you think about the subject and how confident are you about your answer"
     },
     "step4": {
-      "title": "Get feedback<br />from a trainer",
+      "title": "Level up",
       "description": "To be effective at helping others get verified, you’ll need to reach higher levels. Reach level 1+ by playing well and finding trainers to evaluate your play."
     }
   }
