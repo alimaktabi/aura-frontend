@@ -8,7 +8,7 @@ import Onboarding from 'pages/Onboarding';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
@@ -38,16 +38,25 @@ const Home = () => {
   };
   const [isEvaluate, setIsEvaluate] = useState(true);
   const [query] = useSearchParams();
+  const navigate = useNavigate();
   useEffect(() => {
     if (query.get('tab') === 'levelup') {
       setIsEvaluate(false);
+
+      // Clear the 'tab' query parameter
+      query.delete('tab');
+      navigate({
+        pathname: window.location.pathname,
+        search: query.toString(),
+      });
     }
-  }, [query]);
+  }, [query, navigate]);
+
   const hasTrainers = false;
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
- 
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 

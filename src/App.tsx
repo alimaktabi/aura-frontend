@@ -76,7 +76,7 @@ function App() {
               }
             />
           ))}
-          <Route path="*" element={<Navigate to={'/home'} />} />
+          <Route path="*" element={<Navigate to={'/home'} replace={true} />} />
         </Routes>
         <div className="sticky bottom-8 pr-5 pl-5">
           <EvaluationOpNotifications />
