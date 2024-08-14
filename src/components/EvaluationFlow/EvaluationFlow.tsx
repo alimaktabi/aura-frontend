@@ -68,7 +68,7 @@ const EvaluationFlow = ({
         setShowEvaluationFlow(false);
         setMyNewRatingCount(null);
       }}
-      title={myNewRatingCount === null ? `Endorsing ${name}` : undefined}
+      title={myNewRatingCount === null ? `Evaluating ${name}` : undefined}
     >
       {myNewRatingCount !== null ? (
         <NewPlayerGuideAfterEvaluation
