@@ -60,7 +60,15 @@ export const ActivityListSearch = ({ subjectId }: { subjectId: string }) => {
           title="Sort By"
           testidPrefix={'subject-sort'}
           iconLeft={false}
-          selectedItem={selectedSort?.title || 'No sort'}
+          selectedItem={
+            selectedSort
+              ? `${selectedSort.title} (${
+                  selectedSort.defaultAscending !== selectedSort.isReversed
+                    ? selectedSort.ascendingLabel || 'Ascending'
+                    : selectedSort.descendingLabel || 'Descending'
+                })`
+              : 'No sort'
+          }
           isOpen={isSortsModalOpen}
           openModalHandler={() => setIsSortsModalOpen(true)}
           closeModalHandler={() => setIsSortsModalOpen(false)}

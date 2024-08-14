@@ -60,7 +60,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
     const sorts: AuraSortOptions<AuraNodeBrightIdConnectionWithBackupData> = [
       {
         id: AuraSortId.ConnectionLastUpdated,
-        title: 'Last Connection Update',
+        title: 'Last Connected',
         defaultAscending: false,
         category: FilterOrSortCategory.Default,
         ascendingLabel: 'Oldest',
