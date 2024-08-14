@@ -56,7 +56,9 @@ function App() {
 
   return (
     <div
-      className={`app_container ${hasDarkBackground && 'app_container__dark'}`}
+      className={`app_container ${
+        hasDarkBackground && 'app_container__dark'
+      } relative`}
     >
       <div className="app">
         {!noHeader && <Header />}
@@ -76,7 +78,9 @@ function App() {
           ))}
           <Route path="*" element={<Navigate to={'/home'} />} />
         </Routes>
-        <EvaluationOpNotifications />
+        <div className="sticky bottom-8 pr-5 pl-5">
+          <EvaluationOpNotifications />
+        </div>
       </div>
     </div>
   );
