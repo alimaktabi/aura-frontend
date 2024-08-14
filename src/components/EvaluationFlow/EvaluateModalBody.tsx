@@ -39,10 +39,7 @@ const EvaluateModalBody = ({
     if (loading || !authData?.brightId) return;
     try {
       const newRating = isYes ? confidence : -1 * confidence;
-      if (newRating !== prevRating) {
-        await submitEvaluation(subjectId, newRating);
-        onSubmitted(newRating);
-      }
+      await submitEvaluation(subjectId, newRating);
       onSubmitted(newRating);
     } catch (e) {
       alert(String(e));
@@ -53,7 +50,6 @@ const EvaluateModalBody = ({
     isYes,
     loading,
     onSubmitted,
-    prevRating,
     subjectId,
     submitEvaluation,
   ]);
