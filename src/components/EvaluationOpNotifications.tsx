@@ -34,6 +34,11 @@ export default function EvaluationOpNotifications() {
           operation.state === operation_states.APPLIED
         ) {
           alert(`Operation Applied!`);
+        } else if (
+          prevOperation.state !== operation_states.FAILED &&
+          operation.state === operation_states.FAILED
+        ) {
+          alert(`Operation Failed!`);
         }
       });
     }
