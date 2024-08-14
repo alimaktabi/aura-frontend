@@ -36,7 +36,6 @@ export default function InfiniteScrollLocal<T>({
     () => !!items && items.length > itemsLocal.length,
     [items, itemsLocal.length],
   );
-  console.log({ itemsLocal: itemsLocal.length });
   return (
     <>
       {items && (

@@ -96,12 +96,6 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
       });
       return outboundOpinions;
     }, [brightIdBackup, ratings, connections]);
-
-  console.log({
-    connections,
-    ratings,
-    outboundOpinions,
-  });
   const filterAndSortHookData = useFilterAndSort(
     outboundOpinions,
     filters,

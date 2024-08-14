@@ -10,11 +10,13 @@ import {
 } from 'BrightID/utils/constants';
 import { AppDispatch, GetState, RootState } from 'store';
 
-import { SubmittedOp } from '../api/operation_types';
+import { EvaluateOp, SubmittedOp } from '../api/operation_types';
 
 export type Operation = SubmittedOp & {
   state: (typeof operation_states)[keyof typeof operation_states];
 };
+
+export type EvaluateSubmittedOperation = Operation & EvaluateOp;
 
 const operationsAdapter = createEntityAdapter<Operation>({
   selectId: (op) => op.hash,
@@ -70,6 +72,14 @@ const pendingStates = [
 export const selectPendingOperations = createSelector(
   selectAllOperations,
   (operations) => operations.filter((op) => pendingStates.includes(op.state)),
+);
+
+export const selectEvaluateOperations = createSelector(
+  [selectAllOperations],
+  (operations) =>
+    operations.filter(
+      (op) => op.name === 'Evaluate',
+    ) as EvaluateSubmittedOperation[],
 );
 
 const outdatedStates = [

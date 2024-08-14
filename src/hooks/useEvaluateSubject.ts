@@ -24,13 +24,14 @@ export function useEvaluateSubject() {
   );
   useEffect(() => {
     async function getData() {
+      console.log({ connectionOp });
       if (connectionOp?.state === operation_states.APPLIED) {
         setLoading(false);
       }
     }
 
     getData();
-  }, [connectionOp?.state]);
+  }, [connectionOp]);
 
   const { currentViewMode } = useViewMode();
   const submitEvaluation = useCallback(

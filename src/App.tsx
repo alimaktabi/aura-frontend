@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
 
+import EvaluationOpNotifications from './components/EvaluationOpNotifications';
 import Header from './components/Header';
 import {
   selectIsLoggedIn,
@@ -75,6 +76,7 @@ function App() {
           ))}
           <Route path="*" element={<Navigate to={'/home'} />} />
         </Routes>
+        <EvaluationOpNotifications />
       </div>
     </div>
   );
