@@ -1,16 +1,100 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   EvaluateSubmittedOperation,
   selectEvaluateOperations,
 } from '../BrightID/reducer/operationsSlice';
 import { operation_states } from '../BrightID/utils/constants';
+import {
+  getBgClassNameOfAuraRatingNumber,
+  getViewModeSubjectBorderColorClass,
+  subjectViewAsIconColored,
+  viewAsToViewMode,
+} from '../constants';
+import { useSubjectName } from '../hooks/useSubjectName';
 import { useSelector } from '../store/hooks';
+import BrightIdProfilePicture from './BrightIdProfilePicture';
+import EvaluationThumb from './Shared/EvaluationThumb';
+
+type EvaluateOpNotificationData = {
+  text: string;
+  operation: EvaluateSubmittedOperation;
+};
+
+function EvaluateOpNotification({
+  notification,
+  dismiss,
+}: {
+  notification: EvaluateOpNotificationData;
+  dismiss: () => void;
+}) {
+  const subjectName = useSubjectName(notification.operation.evaluated);
+  return (
+    <div className="card !bg-neutral-l2 !border-neutral-l3 flex flex-col gap-1">
+      <div className="flex w-full justify-between items-center">
+        <div className="flex gap-2 items-center">
+          <img
+            src="/assets/images/Shared/close-filled-red.svg"
+            className="cursor-pointer"
+            onClick={dismiss}
+            alt=""
+          />
+          <BrightIdProfilePicture
+            subjectId={notification.operation.evaluated}
+            className={`border-solid border rounded w-4 h-4 ${getViewModeSubjectBorderColorClass(
+              viewAsToViewMode[notification.operation.category],
+            )}`}
+          />
+          <div>{subjectName}</div>
+          <img
+            src={subjectViewAsIconColored[notification.operation.category]}
+            className="w-4 h-4"
+            alt=""
+          />
+          <div
+            className={`rounded flex px-3 py-1 gap-1 items-center ${getBgClassNameOfAuraRatingNumber(
+              notification.operation.confidence,
+            )}`}
+          >
+            <EvaluationThumb
+              rating={notification.operation.confidence}
+              className="w-3.5 h-3.5"
+              alt=""
+            />
+            <span
+              className={`font-medium text-xs  ${
+                Math.abs(notification.operation.confidence) > 2
+                  ? 'text-white'
+                  : 'text-black'
+              }`}
+            >
+              (
+              {notification.operation.confidence > 0
+                ? `+${notification.operation.confidence}`
+                : notification.operation.confidence}
+              )
+            </span>
+          </div>
+        </div>
+        <p className="font-bold text-sm text-button-primary">
+          {notification.text}
+        </p>
+      </div>
+      {/*TODO: Handle failed notifications*/}
+      {/*<div className="flex w-full justify-between items-center">*/}
+      {/*<div className="flex gap-0.5">*/}
+      {/*  <p className="font-medium text-sm text-nl3">Try Again</p>*/}
+      {/*  <img src="/assets/images/Shared/refresh-red.svg" alt="" />*/}
+      {/*</div>*/}
+      {/*</div>*/}
+    </div>
+  );
+}
 
 export default function EvaluationOpNotifications() {
   const operations = useSelector(selectEvaluateOperations);
   const prevOperationsRef = useRef<EvaluateSubmittedOperation[] | null>(null);
-  const [isDetailed, setIsDetailed] = useState(false);
 
   useEffect(() => {
     const storedOperations = localStorage.getItem('prevOperations');
@@ -21,7 +105,39 @@ export default function EvaluationOpNotifications() {
     }
   }, []);
 
-  const [notificationText, setNotificationText] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState<
+    (EvaluateOpNotificationData & {
+      id: string;
+    })[]
+  >([]);
+
+  const removeNotification = useCallback((id: string) => {
+    setNotifications((currentNotifications) => {
+      console.log({
+        currentNotifications,
+        id,
+      });
+      return currentNotifications.filter((n) => n.id !== id);
+    });
+  }, []);
+
+  const addNotification = useCallback(
+    (data: EvaluateOpNotificationData) => {
+      const newId = uuidv4();
+      setNotifications((currentNotifications) =>
+        currentNotifications.concat([
+          {
+            id: newId,
+            ...data,
+          },
+        ]),
+      );
+      if (data.operation.state !== operation_states.FAILED) {
+        setTimeout(() => removeNotification(newId), 5000);
+      }
+    },
+    [removeNotification],
+  );
 
   useEffect(() => {
     const prevOperations = prevOperationsRef.current;
@@ -31,19 +147,26 @@ export default function EvaluationOpNotifications() {
           (op) => op.hash === operation.hash,
         );
         if (!prevOperation) {
-          setNotificationText(
-            `Operation Submitted! Waiting for verification...`,
-          );
+          addNotification({
+            operation,
+            text: `Waiting...`,
+          });
         } else if (
           prevOperation.state !== operation_states.APPLIED &&
           operation.state === operation_states.APPLIED
         ) {
-          setNotificationText(`Operation Applied!`);
+          addNotification({
+            operation,
+            text: `Applied!`,
+          });
         } else if (
           prevOperation.state !== operation_states.FAILED &&
           operation.state === operation_states.FAILED
         ) {
-          setNotificationText(`Operation Failed!`);
+          addNotification({
+            operation,
+            text: `Failed!`,
+          });
         }
       });
     }
@@ -51,100 +174,20 @@ export default function EvaluationOpNotifications() {
     // Update ref and localStorage with the latest operations
     prevOperationsRef.current = operations;
     localStorage.setItem('prevOperations', JSON.stringify(operations));
-  }, [operations]);
+  }, [addNotification, operations]);
 
-  return notificationText === null ? (
+  return notifications.length === 0 ? (
     <></>
   ) : (
-    <div className="card !bg-neutral-l2 !border-neutral-l3 w-full">
+    <div className="w-full">
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <div className="flex w-full justify-between items-center">
-            <img
-              src="/assets/images/Shared/close-filled-red.svg"
-              className="cursor-pointer"
-              onClick={() => setNotificationText(null)}
-              alt=""
-            />
-            <p className="font-bold text-sm text-button-primary">
-              {notificationText}
-            </p>
-          </div>
-          <div className="flex w-full justify-between items-center">
-            {/*TODO: Handle failed notifications*/}
-            {/*<div className="flex gap-0.5">*/}
-            {/*  <p className="font-medium text-sm text-nl3">Try Again</p>*/}
-            {/*  <img src="/assets/images/Shared/refresh-red.svg" alt="" />*/}
-            {/*</div>*/}
-            <div
-              className="flex gap-0.5 cursor-pointer"
-              onClick={() => setIsDetailed(!isDetailed)}
-            >
-              <p className="font-medium text-sm text-primary-d2">
-                View Details
-              </p>
-              <img
-                src={
-                  isDetailed
-                    ? '/assets/images/Shared/arrow-up-purple.svg'
-                    : '/assets/images/Shared/arrow-down-purple.svg'
-                }
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
-        {isDetailed && (
-          <>
-            <div className="flex w-full justify-between items-center">
-              <div className="flex gap-1 items-center">
-                <img
-                  src="/assets/images/profile.jpg"
-                  className="border-solid border rounded w-4 h-4 border-orange"
-                  alt=""
-                />
-                <div>Adam Stallard (hardcoded now)</div>
-                <img
-                  src="/assets/images/Shared/brightid-icon.svg"
-                  className="w-3 h-3"
-                  alt=""
-                />
-              </div>
-              <div className="rounded flex px-3 py-1 bg-pl3 gap-1 items-center">
-                <img
-                  src="/assets/images/Shared/thumbs-up-white.svg"
-                  className="w-3.5 h-3.5"
-                  alt=""
-                />
-                <span className="font-medium text-xs text-white">(+4)</span>
-              </div>
-            </div>
-
-            <div className="flex w-full justify-between items-center">
-              <div className="flex gap-1 items-center">
-                <img
-                  src="/assets/images/profile.jpg"
-                  className="border-solid border rounded w-4 h-4 border-orange"
-                  alt=""
-                />
-                <div>Adam Stallard (hardcoded now)</div>
-                <img
-                  src="/assets/images/Shared/brightid-icon.svg"
-                  className="w-3 h-3"
-                  alt=""
-                />
-              </div>
-              <div className="rounded flex px-3 py-1 bg-pl3 gap-1 items-center">
-                <img
-                  src="/assets/images/Shared/thumbs-up-white.svg"
-                  className="w-3.5 h-3.5"
-                  alt=""
-                />
-                <span className="font-medium text-xs text-white">(+4)</span>
-              </div>
-            </div>
-          </>
-        )}
+        {notifications.map((notification) => (
+          <EvaluateOpNotification
+            key={notification.id}
+            notification={notification}
+            dismiss={() => removeNotification(notification.id)}
+          />
+        ))}
       </div>
     </div>
   );

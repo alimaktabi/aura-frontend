@@ -62,7 +62,11 @@ export default function EvaluationInfo({
       } ${isYourEvaluation ? 'p-1.5' : 'p-2.5'}`}
     >
       <div className="flex gap-0.5 items-center">
-        <EvaluationThumb width="17.5px" height="16.63px" rating={rating} />
+        <EvaluationThumb
+          width="17.5px"
+          height="16.63px"
+          rating={rating && Number(rating?.rating)}
+        />
         <div>
           <span
             className="font-medium"

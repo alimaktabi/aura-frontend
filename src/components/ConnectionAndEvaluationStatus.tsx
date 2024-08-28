@@ -45,7 +45,11 @@ export const ConnectionAndEvaluationStatus = ({
             ratingNumber,
           )} ${getTextClassNameOfAuraRatingNumber(ratingNumber)} py-2.5 px-3`}
         >
-          <EvaluationThumb width="18px" height="18px" rating={rating} />
+          <EvaluationThumb
+            width="18px"
+            height="18px"
+            rating={rating && Number(rating?.rating)}
+          />
           <p className="font-bold text-sm leading-4">
             {confidenceValue} ({ratingNumber})
           </p>

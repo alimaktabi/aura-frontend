@@ -6,7 +6,9 @@ import {
   selectBrightIdBackup,
 } from '../store/profile/selectors';
 
-export const useSubjectName = (subjectId: string | null | undefined) => {
+export const useSubjectName = (
+  subjectId: string | null | undefined,
+): string => {
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useSelector(selectBrightIdBackup);
 

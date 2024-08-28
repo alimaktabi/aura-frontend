@@ -238,6 +238,15 @@ export const subjectViewAsIcon: {
     '/assets/images/Dashboard/manager-icon-white.svg',
 };
 
+export const subjectViewAsIconColored: {
+  [key in EvaluationCategory]: string;
+} = {
+  [EvaluationCategory.SUBJECT]: '/assets/images/Shared/brightid-icon.svg',
+  [EvaluationCategory.PLAYER]: '/assets/images/Shared/player.svg',
+  [EvaluationCategory.TRAINER]: '/assets/images/Shared/trainer.svg',
+  [EvaluationCategory.MANAGER]: '/assets/images/Shared/manager-icon-s-blue.svg',
+};
+
 export const preferredViewIcon: {
   [key in PreferredView]: string;
 } = {

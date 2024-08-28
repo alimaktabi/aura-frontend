@@ -335,7 +335,7 @@ export const EvaluationInformation = ({
         '...'
       ) : (
         <div className="flex items-center gap-1.5">
-          <EvaluationThumb rating={rating} />
+          <EvaluationThumb rating={rating && Number(rating?.rating)} />
           <p
             className={`${getTextClassNameOfAuraRatingObject(
               rating,
