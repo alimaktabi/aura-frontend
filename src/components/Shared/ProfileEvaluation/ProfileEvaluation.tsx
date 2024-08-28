@@ -183,7 +183,7 @@ const UserInformation = ({
   const { currentViewMode } = useViewMode();
   const { auraLevel, auraScore, loading } = useSubjectVerifications(subjectId);
   return (
-    <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5">
+    <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5 text-white">
       <img
         src={
           evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION

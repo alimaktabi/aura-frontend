@@ -152,7 +152,7 @@ export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
 export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'border-natural-black';
+      return 'border-pastel-orange';
     case PreferredView.TRAINER:
       return 'border-pastel-green';
     case PreferredView.MANAGER_EVALUATING_TRAINER:
@@ -165,7 +165,7 @@ export const getViewModeBorderColorClass = (viewMode: PreferredView) => {
 export const getViewModeTextColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'text-natural-black';
+      return 'text-pastel-orange';
     case PreferredView.TRAINER:
       return 'text-pastel-green';
     case PreferredView.MANAGER_EVALUATING_TRAINER:
