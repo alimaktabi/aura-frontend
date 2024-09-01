@@ -189,7 +189,7 @@ export default function EvaluationOpNotifications() {
     <></>
   ) : (
     <div className="w-full">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         {notifications.map((notification) => (
           <EvaluateOpNotification
             key={notification.id}
