@@ -7,6 +7,7 @@ import {
   getViewModeSubjectBorderColorClass,
   getViewModeSubjectTextColorClass,
   getViewModeTextColorClass,
+  INBOUND_EVIDENCE_VIEW_MODES,
   preferredViewIcon,
   subjectViewAsIcon,
   viewModeToSubjectViewMode,
@@ -38,9 +39,15 @@ const ProfileEvaluation = ({
   onClick: () => void;
   evidenceViewMode: EvidenceViewMode;
 }) => {
+  const { currentViewMode } = useViewMode();
   const { loading, ratingNumber } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
+    evaluationCategory:
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode) ||
+      evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+        ? viewModeToViewAs[currentViewMode]
+        : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   return (
     <div
@@ -49,7 +56,8 @@ const ProfileEvaluation = ({
     >
       {loading ? (
         'Loading...'
-      ) : ratingNumber ? (
+      ) : ratingNumber &&
+        evidenceViewMode !== EvidenceViewMode.INBOUND_CONNECTION ? (
         <EvaluatedCardBody
           evidenceViewMode={evidenceViewMode}
           fromSubjectId={fromSubjectId}
@@ -80,10 +88,9 @@ const ConnectionInfo = ({
     myConnectionToSubject: inboundConnectionInfo,
   } = useMyEvaluationsContext({
     subjectId,
-    evaluationCategory:
-      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
-        ? viewModeToViewAs[currentViewMode]
-        : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+    evaluationCategory: INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
+      ? viewModeToViewAs[currentViewMode]
+      : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   const bgColor = useMemo(() => {
     if (rating && Number(rating?.rating) !== 0) {
@@ -186,7 +193,7 @@ const UserInformation = ({
     <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5 text-white">
       <img
         src={
-          evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+          INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
             ? preferredViewIcon[currentViewMode]
             : subjectViewAsIcon[
                 viewModeToViewAs[
@@ -203,7 +210,7 @@ const UserInformation = ({
       {loading ? (
         <p
           className={`level text-sm font-bold mr-0.5 ${
-            evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+            INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
               ? getViewModeTextColorClass(currentViewMode)
               : getViewModeSubjectTextColorClass(
                   evidenceViewMode ===
@@ -219,7 +226,7 @@ const UserInformation = ({
         <>
           <p
             className={`level text-sm font-bold mr-0.5 ${
-              evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+              INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
                 ? getViewModeTextColorClass(currentViewMode)
                 : getViewModeSubjectTextColorClass(
                     evidenceViewMode ===
@@ -233,7 +240,7 @@ const UserInformation = ({
           </p>
           <p
             className={`text-sm font-bold ${
-              evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+              INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
                 ? getViewModeTextColorClass(currentViewMode)
                 : getViewModeSubjectTextColorClass(
                     evidenceViewMode ===
@@ -275,7 +282,7 @@ const EvidenceInformation = ({
     <div className="evidence-information flex justify-between flex-1 gap-2">
       <div
         className={`${
-          evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+          INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
             ? getViewModeTextColorClass(currentViewMode)
             : getViewModeSubjectTextColorClass(currentViewMode)
         } text-xs font-medium`}
@@ -320,7 +327,8 @@ export const EvaluationInformation = ({
     fromSubjectId,
     toSubjectId,
     evaluationCategory:
-      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode) ||
+      evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
         ? viewModeToViewAs[currentViewMode]
         : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
@@ -368,14 +376,14 @@ const EvaluatedCardBody = ({
 }) => {
   const leftCardSide = useMemo(
     () =>
-      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
         ? fromSubjectId
         : toSubjectId,
     [evidenceViewMode, fromSubjectId, toSubjectId],
   );
   const rightCardSide = useMemo(
     () =>
-      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
         ? toSubjectId
         : fromSubjectId,
     [evidenceViewMode, fromSubjectId, toSubjectId],
@@ -388,7 +396,7 @@ const EvaluatedCardBody = ({
           <BrightIdProfilePicture
             subjectId={leftCardSide}
             className={`w-[46px] h-[46px] !min-w-[46px] rounded-lg border-2 ${
-              evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+              INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
                 ? getViewModeBorderColorClass(currentViewMode)
                 : getViewModeSubjectBorderColorClass(
                     evidenceViewMode ===
@@ -504,14 +512,14 @@ const ConnectedCardBody = ({
 }) => {
   const leftCardSide = useMemo(
     () =>
-      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
         ? fromSubjectId
         : toSubjectId,
     [evidenceViewMode, fromSubjectId, toSubjectId],
   );
   const rightCardSide = useMemo(
     () =>
-      evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
         ? toSubjectId
         : fromSubjectId,
     [evidenceViewMode, fromSubjectId, toSubjectId],

@@ -7,12 +7,14 @@ export enum PreferredView {
 
 export enum ProfileTab {
   OVERVIEW,
+  CONNECTIONS,
   ACTIVITY,
   EVALUATIONS,
   ACTIVITY_ON_MANAGERS,
 }
 
 export enum EvidenceViewMode {
+  INBOUND_CONNECTION,
   INBOUND_EVALUATION,
   OUTBOUND_ACTIVITY,
   OUTBOUND_ACTIVITY_ON_MANAGERS,

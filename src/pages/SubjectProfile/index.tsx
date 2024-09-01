@@ -28,7 +28,6 @@ import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/Loadi
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
-import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { viewModeToSubjectViewMode, viewModeToViewAs } from '../../constants';
 import { selectAuthData } from '../../store/profile/selectors';
 
@@ -42,18 +41,10 @@ const ProfileTabs = ({
   const { currentViewMode } = useViewMode();
   return (
     <div
-      className={`px-1.5 py-1.5 w-full ${
-        currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
-          ? 'min-h-[67px]'
-          : 'min-h-[52px]'
-      } rounded-lg bg-white-90-card`}
+      className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card`}
     >
       <div
-        className={`flex flex-row min-w-full gap-1.5 overflow-x-auto overflow-y-hidden h-full ${
-          currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
-            ? 'pb-1'
-            : ''
-        }`}
+        className={`flex flex-row min-w-full gap-1.5 overflow-x-auto overflow-y-hidden h-full`}
         // TODO: refactor this to tailwindcss class and values
         style={{
           scrollbarWidth: 'thin',
@@ -85,17 +76,31 @@ const ProfileTabs = ({
         >
           Overview
         </p>
-        <p
-          className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
-            selectedTab === ProfileTab.ACTIVITY
-              ? 'background bg-button-primary text-white font-bold'
-              : 'bg-transparent text-black font-medium'
-          }`}
-          onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
-          data-testid="table-view-switch-option-one"
-        >
-          Activity
-        </p>
+        {currentViewMode === PreferredView.PLAYER ? (
+          <p
+            className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
+              selectedTab === ProfileTab.CONNECTIONS
+                ? 'background bg-button-primary text-white font-bold'
+                : 'bg-transparent text-black font-medium'
+            }`}
+            onClick={() => setSelectedTab(ProfileTab.CONNECTIONS)}
+            data-testid="table-view-switch-option-one"
+          >
+            Connections
+          </p>
+        ) : (
+          <p
+            className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
+              selectedTab === ProfileTab.ACTIVITY
+                ? 'background bg-button-primary text-white font-bold'
+                : 'bg-transparent text-black font-medium'
+            }`}
+            onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
+            data-testid="table-view-switch-option-one"
+          >
+            Activity
+          </p>
+        )}
         <p
           className={`rounded-md min-w-[100px] w-full cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.EVALUATIONS
@@ -107,19 +112,6 @@ const ProfileTabs = ({
         >
           Evaluations
         </p>
-        {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER && (
-          <p
-            className={`rounded-md min-w-[180px] w-full cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
-              selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
-                ? 'background bg-button-primary text-white font-bold'
-                : 'bg-transparent text-black font-medium'
-            }`}
-            onClick={() => setSelectedTab(ProfileTab.ACTIVITY_ON_MANAGERS)}
-            data-testid="table-view-switch-option-two"
-          >
-            Activity on Managers
-          </p>
-        )}
       </div>
     </div>
   );
@@ -174,11 +166,19 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   });
   const evaluators = useMemo(() => {
     if (!evaluations) return [];
-    return evaluations.map((e) => e.fromSubjectId);
-  }, [evaluations]);
+    if (selectedTab === ProfileTab.CONNECTIONS) {
+      return evaluations
+        .filter((e) => e.inboundConnection)
+        .map((e) => e.fromSubjectId);
+    } else {
+      return evaluations.filter((e) => e.rating).map((e) => e.fromSubjectId);
+    }
+  }, [evaluations, selectedTab]);
   const evaluateds = useMemo(() => {
     if (!outboundEvaluations) return [];
-    return outboundEvaluations.map((e) => e.toSubjectId);
+    return outboundEvaluations
+      .filter((e) => e.rating)
+      .map((e) => e.toSubjectId);
   }, [outboundEvaluations]);
 
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
@@ -186,17 +186,28 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   useEffect(() => {
     if (currentViewMode === PreferredView.PLAYER) {
       if (
-        ![ProfileTab.OVERVIEW, ProfileTab.EVALUATIONS].includes(selectedTab)
+        ![
+          ProfileTab.OVERVIEW,
+          ProfileTab.EVALUATIONS,
+          ProfileTab.CONNECTIONS,
+        ].includes(selectedTab)
       ) {
         setSelectedTab(ProfileTab.OVERVIEW);
       }
       return;
     }
     if (
-      currentViewMode !== PreferredView.MANAGER_EVALUATING_MANAGER &&
-      selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+      !(
+        currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER &&
+        selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+      ) &&
+      ![
+        ProfileTab.OVERVIEW,
+        ProfileTab.EVALUATIONS,
+        ProfileTab.ACTIVITY,
+      ].includes(selectedTab)
     ) {
-      setSelectedTab(ProfileTab.ACTIVITY);
+      setSelectedTab(ProfileTab.OVERVIEW);
     }
   }, [currentViewMode, selectedTab]);
 
@@ -241,54 +252,15 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           alt=""
         />
       </div>
-      {currentViewMode === PreferredView.PLAYER ? (
-        <ToggleInput
-          option1="Overview"
-          option2="Evaluations"
-          isChecked={selectedTab === ProfileTab.OVERVIEW}
-          setIsChecked={(value) =>
-            setSelectedTab(value ? ProfileTab.OVERVIEW : ProfileTab.EVALUATIONS)
-          }
-        />
-      ) : (
-        <ProfileTabs
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-        />
-      )}
+      <ProfileTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       {selectedTab === ProfileTab.OVERVIEW ? (
         <ProfileOverview
           subjectId={subjectId}
           showEvidenceList={() => setSelectedTab(ProfileTab.EVALUATIONS)}
           onLastEvaluationClick={setCredibilityDetailsSubjectId}
         />
-      ) : selectedTab === ProfileTab.ACTIVITY ? (
-        <>
-          <ActivityListSearch subjectId={subjectId} />
-          {loadingOutboundEvaluations ? (
-            <LoadingList />
-          ) : evaluateds.length > 0 ? (
-            <InfiniteScrollLocal
-              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-              items={evaluateds}
-              renderItem={(evaluated) => (
-                <ProfileEvaluation
-                  evidenceViewMode={EvidenceViewMode.OUTBOUND_ACTIVITY}
-                  onClick={() => setCredibilityDetailsSubjectId(evaluated)}
-                  key={evaluated}
-                  fromSubjectId={subjectId}
-                  toSubjectId={evaluated}
-                />
-              )}
-            />
-          ) : (
-            <EmptyActivitiesList
-              hasFilter={outboundEvaluationsSelectedFilterId !== null}
-              clearFilter={clearOutboundEvaluationsFilter}
-            />
-          )}
-        </>
-      ) : selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS ? (
+      ) : selectedTab === ProfileTab.ACTIVITY ||
+        selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS ? (
         <>
           <ActivityListSearch subjectId={subjectId} />
           {loadingOutboundEvaluations ? (
@@ -300,7 +272,9 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               renderItem={(evaluated) => (
                 <ProfileEvaluation
                   evidenceViewMode={
-                    EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                    selectedTab === ProfileTab.ACTIVITY
+                      ? EvidenceViewMode.OUTBOUND_ACTIVITY
+                      : EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
                   }
                   onClick={() => setCredibilityDetailsSubjectId(evaluated)}
                   key={evaluated}
@@ -327,7 +301,11 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               items={evaluators}
               renderItem={(evaluator) => (
                 <ProfileEvaluation
-                  evidenceViewMode={EvidenceViewMode.INBOUND_EVALUATION}
+                  evidenceViewMode={
+                    selectedTab === ProfileTab.CONNECTIONS
+                      ? EvidenceViewMode.INBOUND_CONNECTION
+                      : EvidenceViewMode.INBOUND_EVALUATION
+                  }
                   onClick={() => setCredibilityDetailsSubjectId(evaluator)}
                   key={evaluator}
                   fromSubjectId={evaluator}

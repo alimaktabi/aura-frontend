@@ -45,6 +45,7 @@ export const useSubjectEvaluationFromContext = ({
           r.category ===
             (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
       );
+      console.log({ ratingObject });
       if (ratingObject) {
         return ratingObject;
       }

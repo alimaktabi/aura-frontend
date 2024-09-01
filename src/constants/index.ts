@@ -1,5 +1,9 @@
 import { AuraRating, ConnectionLevel } from 'types';
-import { EvaluationCategory, PreferredView } from 'types/dashboard';
+import {
+  EvaluationCategory,
+  EvidenceViewMode,
+  PreferredView,
+} from 'types/dashboard';
 
 // eslint-disable-next-line no-restricted-globals
 export const LOCATION_ORIGIN = location.origin;
@@ -257,3 +261,13 @@ export const preferredViewIcon: {
   [PreferredView.MANAGER_EVALUATING_MANAGER]:
     '/assets/images/Dashboard/manager-icon-white.svg',
 } as const;
+
+export const INBOUND_EVIDENCE_VIEW_MODES = [
+  EvidenceViewMode.INBOUND_CONNECTION,
+  EvidenceViewMode.INBOUND_EVALUATION,
+];
+
+export const OUTBOUND_EVIDENCE_VIEW_MODES = [
+  EvidenceViewMode.OUTBOUND_ACTIVITY,
+  EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS,
+];
