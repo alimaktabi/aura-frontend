@@ -101,7 +101,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
     filters,
     sorts,
     useMemo(() => ['toSubjectId', 'name'], []),
-    'evaluationsList',
+    'activityList',
   );
 
   return (

@@ -153,14 +153,20 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   }, []);
   const { currentViewMode } = useViewMode();
 
-  const { itemsFiltered: evaluations, loading: loadingInboundEvaluations } =
-    useSubjectInboundEvaluationsContext({
-      subjectId,
-      evaluationCategory: viewModeToViewAs[currentViewMode],
-    });
+  const {
+    itemsFiltered: evaluations,
+    loading: loadingInboundEvaluations,
+    selectedFilterId: inboundEvaluationsSelectedFilterId,
+    clearFilter: clearInboundEvaluationsFilter,
+  } = useSubjectInboundEvaluationsContext({
+    subjectId,
+    evaluationCategory: viewModeToViewAs[currentViewMode],
+  });
   const {
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
+    selectedFilterId: outboundEvaluationsSelectedFilterId,
+    clearFilter: clearOutboundEvaluationsFilter,
   } = useOutboundEvaluationsContext({
     subjectId,
     evaluationCategory:
@@ -276,7 +282,10 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               )}
             />
           ) : (
-            <EmptyActivitiesList />
+            <EmptyActivitiesList
+              hasFilter={outboundEvaluationsSelectedFilterId !== null}
+              clearFilter={clearOutboundEvaluationsFilter}
+            />
           )}
         </>
       ) : selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS ? (
@@ -301,7 +310,10 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               )}
             />
           ) : (
-            <EmptyActivitiesList />
+            <EmptyActivitiesList
+              hasFilter={outboundEvaluationsSelectedFilterId !== null}
+              clearFilter={clearOutboundEvaluationsFilter}
+            />
           )}
         </>
       ) : (
@@ -324,7 +336,10 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               )}
             />
           ) : (
-            <EmptyEvaluationsList />
+            <EmptyEvaluationsList
+              hasFilter={inboundEvaluationsSelectedFilterId !== null}
+              clearFilter={clearInboundEvaluationsFilter}
+            />
           )}
         </>
       )}

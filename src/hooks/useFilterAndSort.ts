@@ -131,10 +131,14 @@ export default function useFilterAndSort<T>(
     setSelectedSort(null);
   }, [setSelectedSort]);
 
+  const clearFilter = useCallback(() => {
+    toggleFilterById(null);
+  }, [toggleFilterById]);
+
   const clearSortAndFilter = useCallback(() => {
     clearSort();
-    toggleFilterById(null);
-  }, [clearSort, toggleFilterById]);
+    clearFilter();
+  }, [clearFilter, clearSort]);
 
   return {
     selectedFilter,
@@ -147,6 +151,7 @@ export default function useFilterAndSort<T>(
     setSearchString,
     itemsFiltered,
     clearSort,
+    clearFilter,
     clearSortAndFilter,
   };
 }

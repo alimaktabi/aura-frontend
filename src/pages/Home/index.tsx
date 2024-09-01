@@ -55,7 +55,11 @@ const Home = () => {
   const hasTrainers = false;
   const authData = useSelector(selectAuthData);
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
-  const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
+  const {
+    itemsFiltered: filteredSubjects,
+    selectedFilterId,
+    clearFilter,
+  } = useSubjectsListContext();
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -174,7 +178,10 @@ const Home = () => {
                   />
                 </div>
               ) : (
-                <EmptySubjectList />
+                <EmptySubjectList
+                  clearFilter={clearFilter}
+                  hasFilter={selectedFilterId !== null}
+                />
               )
             ) : (
               <LoadingList />
