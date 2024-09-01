@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -33,7 +34,15 @@ function EvaluateOpNotification({
   return (
     <div className="card !bg-neutral-l2 !border-neutral-l3 flex flex-col gap-1">
       <div className="flex w-full justify-between items-center">
-        <div className="flex gap-2 items-center">
+        <Link
+          className="flex gap-2 items-center"
+          to={
+            '/subject/' +
+            notification.operation.evaluated +
+            '?viewas=' +
+            notification.operation.category
+          }
+        >
           <img
             src="/assets/images/Shared/close-filled-red.svg"
             className="cursor-pointer"
@@ -76,7 +85,7 @@ function EvaluateOpNotification({
               )
             </span>
           </div>
-        </div>
+        </Link>
         <p className="font-bold text-sm text-button-primary">
           {notification.text}
         </p>
