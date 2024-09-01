@@ -1,4 +1,4 @@
-import { viewAsToViewMode } from 'constants/index';
+import { viewAsToViewMode, viewModeSubjectString } from 'constants/index';
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'store/hooks';
@@ -28,13 +28,7 @@ export default function useViewMode() {
   );
 
   const subjectViewModeTitle = useMemo(
-    () =>
-      ({
-        [PreferredView.PLAYER]: 'Subject',
-        [PreferredView.TRAINER]: 'Player',
-        [PreferredView.MANAGER_EVALUATING_TRAINER]: 'Trainer',
-        [PreferredView.MANAGER_EVALUATING_MANAGER]: 'Manager',
-      }[currentViewMode]),
+    () => viewModeSubjectString[currentViewMode],
     [currentViewMode],
   );
 

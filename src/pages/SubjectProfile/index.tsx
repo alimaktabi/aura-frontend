@@ -19,7 +19,12 @@ import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { EvidenceViewMode, PreferredView, ProfileTab } from 'types/dashboard';
+import {
+  EvaluationCategory,
+  EvidenceViewMode,
+  PreferredView,
+  ProfileTab,
+} from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
 import { EmptyActivitiesList } from '../../components/Shared/EmptyAndLoadingStates/EmptyActivitiesList';
@@ -28,7 +33,12 @@ import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/Loadi
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
-import { viewModeToSubjectViewMode, viewModeToViewAs } from '../../constants';
+import {
+  viewModeSubjectString,
+  viewModeToString,
+  viewModeToSubjectViewMode,
+  viewModeToViewAs,
+} from '../../constants';
 import { selectAuthData } from '../../store/profile/selectors';
 
 const ProfileTabs = ({
@@ -146,6 +156,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const { currentViewMode } = useViewMode();
 
   const {
+    itemsOriginal: evaluationsOriginal,
     itemsFiltered: evaluations,
     loading: loadingInboundEvaluations,
     selectedFilterId: inboundEvaluationsSelectedFilterId,
@@ -155,6 +166,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     evaluationCategory: viewModeToViewAs[currentViewMode],
   });
   const {
+    itemsOriginal: outboundEvaluationsOriginal,
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
     selectedFilterId: outboundEvaluationsSelectedFilterId,
@@ -162,24 +174,29 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   } = useOutboundEvaluationsContext({
     subjectId,
     evaluationCategory:
-      viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+      selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+        ? EvaluationCategory.MANAGER
+        : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
-  const evaluators = useMemo(() => {
-    if (!evaluations) return [];
-    if (selectedTab === ProfileTab.CONNECTIONS) {
-      return evaluations
-        .filter((e) => e.inboundConnection)
-        .map((e) => e.fromSubjectId);
-    } else {
-      return evaluations.filter((e) => e.rating).map((e) => e.fromSubjectId);
-    }
-  }, [evaluations, selectedTab]);
-  const evaluateds = useMemo(() => {
-    if (!outboundEvaluations) return [];
-    return outboundEvaluations
-      .filter((e) => e.rating)
-      .map((e) => e.toSubjectId);
-  }, [outboundEvaluations]);
+
+  const [evaluators, evaluatorsOriginal] = useMemo(() => {
+    return [evaluations, evaluationsOriginal].map((items) => {
+      if (!items) return [];
+      if (selectedTab === ProfileTab.CONNECTIONS) {
+        return items
+          .filter((e) => e.inboundConnection)
+          .map((e) => e.fromSubjectId);
+      } else {
+        return items.filter((e) => e.rating).map((e) => e.fromSubjectId);
+      }
+    });
+  }, [evaluations, evaluationsOriginal, selectedTab]);
+
+  const [evaluateds, evaluatedsOriginal] = useMemo(() => {
+    return [outboundEvaluations, outboundEvaluationsOriginal].map(
+      (items) => items?.filter((e) => e.rating).map((e) => e.toSubjectId) || [],
+    );
+  }, [outboundEvaluations, outboundEvaluationsOriginal]);
 
   const [showEvaluationFlow, setShowEvaluationFlow] = useState(false);
 
@@ -265,29 +282,65 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           <ActivityListSearch subjectId={subjectId} />
           {loadingOutboundEvaluations ? (
             <LoadingList />
-          ) : evaluateds.length > 0 ? (
-            <InfiniteScrollLocal
-              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-              items={evaluateds}
-              renderItem={(evaluated) => (
-                <ProfileEvaluation
-                  evidenceViewMode={
-                    selectedTab === ProfileTab.ACTIVITY
-                      ? EvidenceViewMode.OUTBOUND_ACTIVITY
-                      : EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
-                  }
-                  onClick={() => setCredibilityDetailsSubjectId(evaluated)}
-                  key={evaluated}
-                  fromSubjectId={subjectId}
-                  toSubjectId={evaluated}
+          ) : (
+            <>
+              <div className="text-lg text-white flex">
+                {selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+                  ? 'Managers'
+                  : viewModeSubjectString[
+                      viewModeToSubjectViewMode[currentViewMode]
+                    ] + 's '}
+                <strong className="ml-1">({evaluatedsOriginal.length})</strong>
+                {outboundEvaluationsSelectedFilterId !== null && (
+                  <span className="ml-2">
+                    ({evaluateds.length} filter result
+                    {evaluateds.length !== 1 ? 's' : ''})
+                  </span>
+                )}
+                {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER &&
+                  (selectedTab === ProfileTab.ACTIVITY ? (
+                    <p
+                      className="ml-auto font-medium cursor-pointer text-white"
+                      onClick={() =>
+                        setSelectedTab(ProfileTab.ACTIVITY_ON_MANAGERS)
+                      }
+                    >
+                      View Managers
+                    </p>
+                  ) : (
+                    <p
+                      className="ml-auto font-medium cursor-pointer text-white"
+                      onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
+                    >
+                      View Trainers
+                    </p>
+                  ))}
+              </div>
+              {evaluateds.length > 0 ? (
+                <InfiniteScrollLocal
+                  className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+                  items={evaluateds}
+                  renderItem={(evaluated) => (
+                    <ProfileEvaluation
+                      evidenceViewMode={
+                        selectedTab === ProfileTab.ACTIVITY
+                          ? EvidenceViewMode.OUTBOUND_ACTIVITY
+                          : EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+                      }
+                      onClick={() => setCredibilityDetailsSubjectId(evaluated)}
+                      key={evaluated}
+                      fromSubjectId={subjectId}
+                      toSubjectId={evaluated}
+                    />
+                  )}
+                />
+              ) : (
+                <EmptyActivitiesList
+                  hasFilter={outboundEvaluationsSelectedFilterId !== null}
+                  clearFilter={clearOutboundEvaluationsFilter}
                 />
               )}
-            />
-          ) : (
-            <EmptyActivitiesList
-              hasFilter={outboundEvaluationsSelectedFilterId !== null}
-              clearFilter={clearOutboundEvaluationsFilter}
-            />
+            </>
           )}
         </>
       ) : (
@@ -295,29 +348,43 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           <EvidenceListSearch subjectId={subjectId} />
           {loadingInboundEvaluations ? (
             <LoadingList />
-          ) : evaluators.length > 0 ? (
-            <InfiniteScrollLocal
-              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-              items={evaluators}
-              renderItem={(evaluator) => (
-                <ProfileEvaluation
-                  evidenceViewMode={
-                    selectedTab === ProfileTab.CONNECTIONS
-                      ? EvidenceViewMode.INBOUND_CONNECTION
-                      : EvidenceViewMode.INBOUND_EVALUATION
-                  }
-                  onClick={() => setCredibilityDetailsSubjectId(evaluator)}
-                  key={evaluator}
-                  fromSubjectId={evaluator}
-                  toSubjectId={subjectId}
+          ) : (
+            <>
+              <div className="text-lg text-white flex">
+                {viewModeToString[currentViewMode] + 's '}
+                <strong className="ml-1">({evaluatorsOriginal.length})</strong>
+                {inboundEvaluationsSelectedFilterId !== null && (
+                  <span className="ml-2">
+                    ({evaluators.length} filter result
+                    {evaluators.length !== 1 ? 's' : ''})
+                  </span>
+                )}
+              </div>
+              {evaluators.length > 0 ? (
+                <InfiniteScrollLocal
+                  className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+                  items={evaluators}
+                  renderItem={(evaluator) => (
+                    <ProfileEvaluation
+                      evidenceViewMode={
+                        selectedTab === ProfileTab.CONNECTIONS
+                          ? EvidenceViewMode.INBOUND_CONNECTION
+                          : EvidenceViewMode.INBOUND_EVALUATION
+                      }
+                      onClick={() => setCredibilityDetailsSubjectId(evaluator)}
+                      key={evaluator}
+                      fromSubjectId={evaluator}
+                      toSubjectId={subjectId}
+                    />
+                  )}
+                />
+              ) : (
+                <EmptyEvaluationsList
+                  hasFilter={inboundEvaluationsSelectedFilterId !== null}
+                  clearFilter={clearInboundEvaluationsFilter}
                 />
               )}
-            />
-          ) : (
-            <EmptyEvaluationsList
-              hasFilter={inboundEvaluationsSelectedFilterId !== null}
-              clearFilter={clearInboundEvaluationsFilter}
-            />
+            </>
           )}
         </>
       )}

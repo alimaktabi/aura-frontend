@@ -189,6 +189,14 @@ export const viewModeToString: {
   [PreferredView.MANAGER_EVALUATING_TRAINER]: 'Manager',
   [PreferredView.MANAGER_EVALUATING_MANAGER]: 'Manager',
 };
+export const viewModeSubjectString: {
+  [key in PreferredView]: string;
+} = {
+  [PreferredView.PLAYER]: 'Subject',
+  [PreferredView.TRAINER]: 'Player',
+  [PreferredView.MANAGER_EVALUATING_TRAINER]: 'Trainer',
+  [PreferredView.MANAGER_EVALUATING_MANAGER]: 'Manager',
+};
 
 export const viewModeToSubjectViewMode: {
   [key in PreferredView]: PreferredView;

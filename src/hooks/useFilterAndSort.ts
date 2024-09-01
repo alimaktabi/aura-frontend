@@ -149,6 +149,7 @@ export default function useFilterAndSort<T>(
     setSelectedSort,
     searchString,
     setSearchString,
+    itemsOriginal: items,
     itemsFiltered,
     clearSort,
     clearFilter,

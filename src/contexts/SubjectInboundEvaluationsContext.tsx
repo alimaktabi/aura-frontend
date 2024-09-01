@@ -172,21 +172,30 @@ export const useSubjectInboundEvaluationsContext = (props: {
     } Neg`;
   }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
 
+  const [itemsFiltered, itemsOriginal] = useMemo(
+    () =>
+      [context.itemsFiltered, context.itemsOriginal].map(
+        (items) =>
+          items?.filter(
+            (o) =>
+              o.rating === undefined ||
+              o.rating.category ===
+                (props?.evaluationCategory ??
+                  viewModeToViewAs[currentViewMode]),
+          ) || null,
+      ),
+    [
+      context.itemsFiltered,
+      context.itemsOriginal,
+      currentViewMode,
+      props?.evaluationCategory,
+    ],
+  );
+
   return {
     ...context,
-    itemsFiltered: useMemo(
-      () =>
-        context.itemsFiltered
-          ? context.itemsFiltered.filter(
-              (o) =>
-                o.rating === undefined ||
-                o.rating?.category ===
-                  (props?.evaluationCategory ??
-                    viewModeToViewAs[currentViewMode]),
-            )
-          : null,
-      [context.itemsFiltered, currentViewMode, props?.evaluationCategory],
-    ),
+    itemsFiltered,
+    itemsOriginal,
     ratings,
     inboundPositiveRatingsCount,
     inboundNegativeRatingsCount,
