@@ -75,7 +75,7 @@ const EvaluateModalBody = ({
             }`}
           ></span>
           <p
-            className={`bg-transparent absolute w-1/2 left-0 top-1/2 -translate-y-1/2 text-center font-bold text-lg transition-all duration-300 ease-in-out ${
+            className={`cursor-pointer bg-transparent absolute w-1/2 left-0 top-1/2 -translate-y-1/2 text-center font-bold text-lg transition-all duration-300 ease-in-out ${
               isYes ? 'text-white' : 'text-black'
             }`}
             data-testid={`evaluate-positive`}
@@ -124,6 +124,11 @@ const EvaluateModalBody = ({
         confidence={confidence}
         setConfidence={setConfidence}
       />
+      <p className="font-medium mt-1">
+        ... this account{' '}
+        <span className="font-bold">should {isYes ? '' : 'not '}be</span>{' '}
+        verified.
+      </p>
       <div className="mt-36">
         {prevRating ? (
           <div className="flex gap-3">
