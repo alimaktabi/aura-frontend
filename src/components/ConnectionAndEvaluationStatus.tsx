@@ -6,6 +6,7 @@ import {
   getBgClassNameOfAuraRatingNumber,
   getTextClassNameOfAuraRatingNumber,
 } from '../constants';
+import LoadingSpinner from './Shared/LoadingSpinner';
 
 export const ConnectionAndEvaluationStatus = ({
   subjectId,
@@ -51,8 +52,11 @@ export const ConnectionAndEvaluationStatus = ({
             rating={rating && Number(rating?.rating)}
           />
           <p className="font-bold text-sm leading-4">
-            {confidenceValue} ({ratingNumber})
+            {rating?.isPending ? '' : `${confidenceValue} `}({ratingNumber})
           </p>
+          {rating?.isPending && (
+            <LoadingSpinner className="w-[18px] h-[18px] ml-1" />
+          )}
         </div>
       ) : (
         <></>
