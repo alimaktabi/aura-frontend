@@ -10,7 +10,13 @@ import {
   useInboundEvaluationSorts,
 } from 'hooks/useSorts';
 import { useInboundEvaluations } from 'hooks/useSubjectEvaluations';
-import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthData, selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
@@ -18,6 +24,7 @@ import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
 import { viewModeToViewAs } from '../constants';
 import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
+import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
 
 type SubjectInboundEvaluationsContextType = ReturnType<
   typeof useInboundEvaluations
@@ -40,9 +47,10 @@ interface ProviderProps {
 export const SubjectInboundEvaluationsContextProvider: React.FC<
   ProviderProps
 > = ({ subjectId, children }) => {
-  const useSubjectInboundEvaluationsHookData = useInboundEvaluations({
-    subjectId,
-  });
+  const { refreshInboundRatings, ...useSubjectInboundEvaluationsHookData } =
+    useInboundEvaluations({
+      subjectId,
+    });
   const { ratings, connections } = useSubjectInboundEvaluationsHookData;
   const filters = useInboundEvaluationFilters(
     [
@@ -105,9 +113,17 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
     'evaluationsList',
   );
 
+  const { refreshCounter } = useRefreshEvaluationsContext();
+  useEffect(() => {
+    if (refreshCounter > 0) {
+      refreshInboundRatings();
+    }
+  }, [refreshCounter, refreshInboundRatings]);
+
   return (
     <SubjectInboundEvaluationsContext.Provider
       value={{
+        refreshInboundRatings,
         ...useSubjectInboundEvaluationsHookData,
         ...filterAndSortHookData,
         sorts,

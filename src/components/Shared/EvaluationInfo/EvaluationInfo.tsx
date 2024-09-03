@@ -94,9 +94,15 @@ export default function EvaluationInfo({
           </span>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <span className="font-medium">{'12%'}</span>
-      </div>
+      {rating && (
+        <div className="flex items-center gap-2">
+          {rating.isPending ? (
+            <span className="font-medium italic">Pending</span>
+          ) : (
+            <span className="font-medium">{'12%'}</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -10,7 +10,13 @@ import {
   useOutboundEvaluationSorts,
 } from 'hooks/useSorts';
 import { useOutboundEvaluations } from 'hooks/useSubjectEvaluations';
-import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraOutboundConnectionAndRatingData } from 'types';
@@ -18,6 +24,7 @@ import { AuraOutboundConnectionAndRatingData } from 'types';
 import { viewModeToViewAs } from '../constants';
 import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
+import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
 
 type SubjectOutboundEvaluationsContextType = ReturnType<
   typeof useOutboundEvaluations
@@ -41,7 +48,10 @@ interface ProviderProps {
 export const SubjectOutboundEvaluationsContextProvider: React.FC<
   ProviderProps
 > = ({ subjectId, children }) => {
-  const useOutboundEvaluationsHookData = useOutboundEvaluations({ subjectId });
+  const { refreshOutboundRatings, ...useOutboundEvaluationsHookData } =
+    useOutboundEvaluations({
+      subjectId,
+    });
   const { ratings, connections } = useOutboundEvaluationsHookData;
   const filters = useOutboundEvaluationFilters(
     [
@@ -104,9 +114,17 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
     'activityList',
   );
 
+  const { refreshCounter } = useRefreshEvaluationsContext();
+  useEffect(() => {
+    if (refreshCounter > 0) {
+      refreshOutboundRatings();
+    }
+  }, [refreshCounter, refreshOutboundRatings]);
+
   return (
     <SubjectOutboundEvaluationsContext.Provider
       value={{
+        refreshOutboundRatings,
         ...useOutboundEvaluationsHookData,
         ...filterAndSortHookData,
         sorts,

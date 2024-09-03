@@ -3,10 +3,17 @@ import {
   viewModeToViewAs,
 } from 'constants/index';
 import { useMyEvaluations } from 'hooks/useMyEvaluations';
-import React, { createContext, ReactNode, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 
 import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
+import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
 
 // Define the context
 export const MyEvaluationsContext = createContext<ReturnType<
@@ -21,10 +28,20 @@ interface ProviderProps {
 export const MyEvaluationsContextProvider: React.FC<ProviderProps> = ({
   children,
 }) => {
-  const useMyEvaluationsHookData = useMyEvaluations();
+  const { refreshOutboundRatings, ...useMyEvaluationsHookData } =
+    useMyEvaluations();
+
+  const { refreshCounter } = useRefreshEvaluationsContext();
+  useEffect(() => {
+    if (refreshCounter > 0) {
+      refreshOutboundRatings();
+    }
+  }, [refreshCounter, refreshOutboundRatings]);
+
   return (
     <MyEvaluationsContext.Provider
       value={{
+        refreshOutboundRatings,
         ...useMyEvaluationsHookData,
       }}
     >
