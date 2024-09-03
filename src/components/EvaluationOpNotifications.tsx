@@ -13,6 +13,7 @@ import {
   subjectViewAsIconColored,
   viewAsToViewMode,
 } from '../constants';
+import { useMyEvaluationsContext } from '../contexts/MyEvaluationsContext';
 import { useSubjectName } from '../hooks/useSubjectName';
 import { useSelector } from '../store/hooks';
 import BrightIdProfilePicture from './BrightIdProfilePicture';
@@ -147,7 +148,7 @@ export default function EvaluationOpNotifications() {
     },
     [removeNotification],
   );
-
+  const { refreshOutboundRatings } = useMyEvaluationsContext();
   useEffect(() => {
     const prevOperations = prevOperationsRef.current;
     if (prevOperations) {
@@ -168,6 +169,7 @@ export default function EvaluationOpNotifications() {
             operation,
             text: `Applied!`,
           });
+          refreshOutboundRatings();
         } else if (
           prevOperation.state !== operation_states.FAILED &&
           operation.state === operation_states.FAILED
@@ -183,7 +185,7 @@ export default function EvaluationOpNotifications() {
     // Update ref and localStorage with the latest operations
     prevOperationsRef.current = operations;
     localStorage.setItem('prevOperations', JSON.stringify(operations));
-  }, [addNotification, operations]);
+  }, [addNotification, operations, refreshOutboundRatings]);
 
   return notifications.length === 0 ? (
     <></>

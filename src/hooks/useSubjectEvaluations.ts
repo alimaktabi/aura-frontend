@@ -4,6 +4,9 @@ import {
   getInboundConnections,
   getOutboundConnections,
 } from '../api/connections.service';
+import { selectEvaluateOperations } from '../BrightID/reducer/operationsSlice';
+import { operation_states } from '../BrightID/utils/constants';
+import { useSelector } from '../store/hooks';
 import { AuraNodeBrightIdConnection, AuraRating } from '../types';
 import { EvaluationCategory, EvaluationValue } from '../types/dashboard';
 
@@ -40,33 +43,76 @@ export const useInboundEvaluations = ({
     };
   }, [refreshInboundEvaluations]);
 
+  const operations = useSelector(selectEvaluateOperations);
   const inboundRatings: AuraRating[] | null = useMemo(() => {
     if (!inboundConnections || !subjectId) return null;
-    return inboundConnections.reduce(
-      (a, c) =>
-        a.concat(
-          ...(c.auraEvaluations
-            ?.filter(
-              (r) =>
-                evaluationCategory === undefined ||
-                r.category === evaluationCategory,
-            )
-            .map((e) => ({
-              fromBrightId: c.id,
-              toBrightId: subjectId,
-              rating: String(
-                (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
-                  e.confidence,
-              ),
-              category: e.category,
-              id: 0,
-              createdAt: new Date(c.timestamp).toISOString(),
-              updatedAt: new Date(c.timestamp).toISOString(),
-            })) ?? []),
-        ),
-      [] as AuraRating[],
-    );
-  }, [evaluationCategory, inboundConnections, subjectId]);
+    const pendingRatings: AuraRating[] = [];
+    operations
+      .filter(
+        (op) =>
+          (evaluationCategory === undefined ||
+            op.category === evaluationCategory) &&
+          op.evaluated === subjectId &&
+          (op.state === operation_states.INIT ||
+            op.state === operation_states.SENT),
+      )
+      .reverse()
+      .forEach((ratingOp) => {
+        if (
+          pendingRatings.findIndex(
+            (pr) =>
+              pr.toBrightId === ratingOp.evaluated &&
+              pr.category === ratingOp.category,
+          ) === -1
+        ) {
+          pendingRatings.unshift({
+            rating: `${
+              ratingOp.evaluation === EvaluationValue.NEGATIVE ? '-' : ''
+            }${ratingOp.confidence}`,
+            category: ratingOp.category,
+            fromBrightId: ratingOp.evaluator,
+            toBrightId: ratingOp.evaluated,
+            isPending: true,
+            createdAt: new Date(ratingOp.timestamp).toISOString(),
+            updatedAt: new Date(ratingOp.timestamp).toISOString(),
+            timestamp: ratingOp.timestamp,
+          });
+        }
+      });
+    return inboundConnections
+      .reduce(
+        (a, c) =>
+          a.concat(
+            ...(c.auraEvaluations
+              ?.filter(
+                (r) =>
+                  (evaluationCategory === undefined ||
+                    r.category === evaluationCategory) &&
+                  pendingRatings.findIndex(
+                    (pr) =>
+                      pr.fromBrightId === c.id && pr.category === r.category,
+                  ) === -1,
+              )
+              .map((e) => ({
+                fromBrightId: c.id,
+                toBrightId: subjectId,
+                rating: String(
+                  (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
+                    e.confidence,
+                ),
+                category: e.category,
+                id: 0,
+                createdAt: new Date(c.timestamp).toISOString(),
+                updatedAt: new Date(c.timestamp).toISOString(),
+                timestamp: c.timestamp,
+                isPending: false,
+              })) ?? []),
+          ),
+        [] as AuraRating[],
+      )
+      .concat(pendingRatings)
+      .sort((a, b) => a.timestamp - b.timestamp);
+  }, [evaluationCategory, inboundConnections, operations, subjectId]);
 
   const inboundPositiveRatingsCount = useMemo(
     () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
@@ -127,33 +173,76 @@ export const useOutboundEvaluations = ({
     };
   }, [refreshOutboundEvaluations]);
 
+  const operations = useSelector(selectEvaluateOperations);
   const outboundRatings: AuraRating[] | null = useMemo(() => {
     if (!outboundConnections || !subjectId) return null;
-    return outboundConnections.reduce(
-      (a, c) =>
-        a.concat(
-          ...(c.auraEvaluations
-            ?.filter(
-              (r) =>
-                evaluationCategory === undefined ||
-                r.category === evaluationCategory,
-            )
-            .map((e) => ({
-              fromBrightId: subjectId,
-              toBrightId: c.id,
-              rating: String(
-                (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
-                  e.confidence,
-              ),
-              category: e.category,
-              id: 0,
-              createdAt: new Date(c.timestamp).toISOString(),
-              updatedAt: new Date(c.timestamp).toISOString(),
-            })) ?? []),
-        ),
-      [] as AuraRating[],
-    );
-  }, [evaluationCategory, outboundConnections, subjectId]);
+    const pendingRatings: AuraRating[] = [];
+    operations
+      .filter(
+        (op) =>
+          (evaluationCategory === undefined ||
+            op.category === evaluationCategory) &&
+          op.evaluator === subjectId &&
+          (op.state === operation_states.INIT ||
+            op.state === operation_states.SENT),
+      )
+      .reverse()
+      .forEach((ratingOp) => {
+        if (
+          pendingRatings.findIndex(
+            (pr) =>
+              pr.toBrightId === ratingOp.evaluated &&
+              pr.category === ratingOp.category,
+          ) === -1
+        ) {
+          pendingRatings.unshift({
+            rating: `${
+              ratingOp.evaluation === EvaluationValue.NEGATIVE ? '-' : ''
+            }${ratingOp.confidence}`,
+            category: ratingOp.category,
+            fromBrightId: ratingOp.evaluator,
+            toBrightId: ratingOp.evaluated,
+            isPending: true,
+            createdAt: new Date(ratingOp.timestamp).toISOString(),
+            updatedAt: new Date(ratingOp.timestamp).toISOString(),
+            timestamp: ratingOp.timestamp,
+          });
+        }
+      });
+    return outboundConnections
+      .reduce(
+        (a, c) =>
+          a.concat(
+            ...(c.auraEvaluations
+              ?.filter(
+                (r) =>
+                  (evaluationCategory === undefined ||
+                    r.category === evaluationCategory) &&
+                  pendingRatings.findIndex(
+                    (pr) =>
+                      pr.toBrightId === c.id && pr.category === r.category,
+                  ) === -1,
+              )
+              .map((e) => ({
+                fromBrightId: subjectId,
+                toBrightId: c.id,
+                rating: String(
+                  (e.evaluation === EvaluationValue.POSITIVE ? 1 : -1) *
+                    e.confidence,
+                ),
+                category: e.category,
+                id: 0,
+                createdAt: new Date(c.timestamp).toISOString(),
+                updatedAt: new Date(c.timestamp).toISOString(),
+                timestamp: c.timestamp,
+                isPending: false,
+              })) ?? []),
+          ),
+        [] as AuraRating[],
+      )
+      .concat(pendingRatings)
+      .sort((a, b) => a.timestamp - b.timestamp);
+  }, [evaluationCategory, operations, outboundConnections, subjectId]);
 
   return {
     loading,

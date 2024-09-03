@@ -6,17 +6,22 @@ import {
 import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import { useMemo } from 'react';
 
+import { EvaluationCategory } from '../../../types/dashboard';
+
 export default function EvaluationInfo({
   fromSubjectId,
   toSubjectId,
+  evaluationCategory,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
+  evaluationCategory: EvaluationCategory;
 }) {
   const isYourEvaluation = true;
   const { rating, loading, confidenceValue } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
+    evaluationCategory,
   });
 
   //TODO: get notes from api

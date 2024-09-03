@@ -3,6 +3,10 @@ import useViewMode from 'hooks/useViewMode';
 import moment from 'moment/moment';
 import { useMemo } from 'react';
 
+import {
+  viewModeToSubjectViewMode,
+  viewModeToViewAs,
+} from '../../../constants';
 import ProfileEvaluationMini from './ProfileEvaluationMini';
 
 const ActivitiesCard = ({
@@ -12,9 +16,11 @@ const ActivitiesCard = ({
   subjectId: string;
   onLastEvaluationClick: (subjectId: string) => void;
 }) => {
-  const { subjectViewModeTitle } = useViewMode();
+  const { subjectViewModeTitle, currentViewMode } = useViewMode();
   const { ratings: outboundRatings } = useOutboundEvaluationsContext({
     subjectId,
+    evaluationCategory:
+      viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   const outboundActiveRatings = useMemo(
     () => outboundRatings?.filter((r) => Number(r.rating)),
@@ -64,6 +70,9 @@ const ActivitiesCard = ({
           <ProfileEvaluationMini
             fromSubjectId={subjectId}
             toSubjectId={lastRating.toBrightId}
+            evaluationCategory={
+              viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]]
+            }
             onClick={() => onLastEvaluationClick(lastRating.toBrightId)}
           ></ProfileEvaluationMini>
         )}

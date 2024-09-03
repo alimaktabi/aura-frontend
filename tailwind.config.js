@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,css,scss}'],
   theme: {
     extend: {
+      animation: {
+        'spin-slow': 'spin 2s linear infinite',
+        'spin-fast': 'spin 0.5s linear infinite',
+      },
       transitionProperty: {
         'font-weight': 'font-weight',
         size: 'width, height',

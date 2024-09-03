@@ -3,16 +3,19 @@ import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { compactFormat } from 'utils/number';
 
+import { EvaluationCategory } from '../../../types/dashboard';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
 const ProfileEvaluationMini = ({
   fromSubjectId,
   toSubjectId,
   onClick,
+  evaluationCategory,
 }: {
   fromSubjectId: string;
   toSubjectId: string;
   onClick?: () => void;
+  evaluationCategory: EvaluationCategory;
 }) => {
   const name = useSubjectName(toSubjectId);
   const { auraLevel, auraScore } = useSubjectVerifications(toSubjectId);
@@ -35,7 +38,11 @@ const ProfileEvaluationMini = ({
           </p>
         </div>
       </div>
-      <EvaluationInfo fromSubjectId={fromSubjectId} toSubjectId={toSubjectId} />
+      <EvaluationInfo
+        fromSubjectId={fromSubjectId}
+        toSubjectId={toSubjectId}
+        evaluationCategory={evaluationCategory}
+      />
     </div>
   );
 };

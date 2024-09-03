@@ -14,7 +14,10 @@ import {
   viewModeToViewAs,
 } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
-import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
+import {
+  useSubjectConnectionInfoFromContext,
+  useSubjectEvaluationFromContext,
+} from 'hooks/useSubjectEvaluation';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import useViewMode from 'hooks/useViewMode';
@@ -469,7 +472,7 @@ const ConnectionInformation = ({
   fromSubjectId: string;
   toSubjectId: string;
 }) => {
-  const { connectionInfo, loading } = useSubjectEvaluationFromContext({
+  const { connectionInfo, loading } = useSubjectConnectionInfoFromContext({
     fromSubjectId,
     toSubjectId,
   });

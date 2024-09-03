@@ -1,4 +1,7 @@
-import { getViewModeSubjectBorderColorClass } from 'constants/index';
+import {
+  getViewModeSubjectBorderColorClass,
+  viewModeToViewAs,
+} from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
@@ -39,7 +42,10 @@ export const ProfileInfo = ({
     SubjectInboundEvaluationsContext,
   );
   const { myConnectionToSubject, myRatingNumberToSubject } =
-    useMyEvaluationsContext({ subjectId });
+    useMyEvaluationsContext({
+      subjectId,
+      evaluationCategory: viewModeToViewAs[currentViewMode],
+    });
 
   const { connections: outboundConnections, ratings: outboundRatings } =
     useOutboundEvaluationsContext({ subjectId });
@@ -120,6 +126,7 @@ export const ProfileInfo = ({
         <YourEvaluationInfo
           toSubjectId={subjectId}
           setShowEvaluationFlow={setShowEvaluationFlow}
+          evaluationCategory={viewModeToViewAs[currentViewMode]}
         />
       ) : (
         <NewEvaluationCard

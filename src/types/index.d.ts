@@ -98,13 +98,15 @@ export type EnergyAllocationUpdateResponse = {
 };
 
 export type AuraRating = {
-  id: number;
+  id?: number;
   toBrightId: string;
   fromBrightId: string;
   rating: string;
+  timestamp: number;
   createdAt: string;
   updatedAt: string;
   category: EvaluationCategory;
+  isPending: boolean;
 };
 
 export type AuraInboundConnectionAndRatingData = {

@@ -9,14 +9,12 @@ import { useContext, useMemo } from 'react';
 import { EvaluationCategory } from '../types/dashboard';
 import useViewMode from './useViewMode';
 
-export const useSubjectEvaluationFromContext = ({
+export const useSubjectConnectionInfoFromContext = ({
   fromSubjectId,
   toSubjectId,
-  evaluationCategory,
 }: {
   fromSubjectId: string | undefined;
   toSubjectId: string;
-  evaluationCategory?: EvaluationCategory;
 }) => {
   const inboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
@@ -24,44 +22,6 @@ export const useSubjectEvaluationFromContext = ({
   const outboundEvaluationsContext = useContext(
     SubjectOutboundEvaluationsContext,
   );
-
-  const { currentViewMode } = useViewMode();
-  const rating = useMemo(() => {
-    if (inboundEvaluationsContext?.subjectId === toSubjectId) {
-      const ratingObject = inboundEvaluationsContext.ratings?.find(
-        (r) =>
-          r.fromBrightId === fromSubjectId &&
-          r.category ===
-            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
-      );
-      if (ratingObject) {
-        return ratingObject;
-      }
-    }
-    if (outboundEvaluationsContext?.subjectId === fromSubjectId) {
-      const ratingObject = outboundEvaluationsContext?.ratings?.find(
-        (r) =>
-          r.toBrightId === toSubjectId &&
-          r.category ===
-            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
-      );
-      console.log({ ratingObject });
-      if (ratingObject) {
-        return ratingObject;
-      }
-    }
-    return null;
-  }, [
-    currentViewMode,
-    evaluationCategory,
-    fromSubjectId,
-    inboundEvaluationsContext?.ratings,
-    inboundEvaluationsContext?.subjectId,
-    outboundEvaluationsContext?.ratings,
-    outboundEvaluationsContext?.subjectId,
-    toSubjectId,
-  ]);
-
   const connectionInfo = useMemo(() => {
     if (inboundEvaluationsContext?.subjectId === toSubjectId) {
       const ratingObject = inboundEvaluationsContext.connections?.find(
@@ -84,6 +44,68 @@ export const useSubjectEvaluationFromContext = ({
     fromSubjectId,
     inboundEvaluationsContext,
     outboundEvaluationsContext,
+    toSubjectId,
+  ]);
+  return {
+    connectionInfo,
+    loading:
+      (inboundEvaluationsContext?.subjectId === toSubjectId &&
+        inboundEvaluationsContext?.loading) ||
+      (outboundEvaluationsContext?.subjectId === fromSubjectId &&
+        outboundEvaluationsContext?.loading),
+  };
+};
+
+export const useSubjectEvaluationFromContext = ({
+  fromSubjectId,
+  toSubjectId,
+  evaluationCategory,
+}: {
+  fromSubjectId: string | undefined;
+  toSubjectId: string;
+  evaluationCategory: EvaluationCategory;
+}) => {
+  const inboundEvaluationsContext = useContext(
+    SubjectInboundEvaluationsContext,
+  );
+  const outboundEvaluationsContext = useContext(
+    SubjectOutboundEvaluationsContext,
+  );
+
+  const { currentViewMode } = useViewMode();
+  const rating = useMemo(() => {
+    if (!fromSubjectId) return null;
+    if (inboundEvaluationsContext?.subjectId === toSubjectId) {
+      const ratingObject = inboundEvaluationsContext.ratings?.find(
+        (r) =>
+          r.fromBrightId === fromSubjectId &&
+          r.category ===
+            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+      );
+      if (ratingObject) {
+        return ratingObject;
+      }
+    }
+    if (outboundEvaluationsContext?.subjectId === fromSubjectId) {
+      const ratingObject = outboundEvaluationsContext?.ratings?.find(
+        (r) =>
+          r.toBrightId === toSubjectId &&
+          r.category ===
+            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+      );
+      if (ratingObject) {
+        return ratingObject;
+      }
+    }
+    return null;
+  }, [
+    currentViewMode,
+    evaluationCategory,
+    fromSubjectId,
+    inboundEvaluationsContext?.ratings,
+    inboundEvaluationsContext?.subjectId,
+    outboundEvaluationsContext?.ratings,
+    outboundEvaluationsContext?.subjectId,
     toSubjectId,
   ]);
 
@@ -113,6 +135,5 @@ export const useSubjectEvaluationFromContext = ({
         outboundEvaluationsContext?.loading),
     ratingNumber,
     confidenceValue,
-    connectionInfo,
   };
 };
