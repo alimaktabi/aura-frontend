@@ -5,7 +5,7 @@ import {
   getOutboundConnections,
 } from '../api/connections.service';
 import { selectEvaluateOperations } from '../BrightID/reducer/operationsSlice';
-import { operation_states } from '../BrightID/utils/constants';
+import { pendingOperationStates } from '../constants';
 import { useSelector } from '../store/hooks';
 import { AuraNodeBrightIdConnection, AuraRating } from '../types';
 import { EvaluationCategory, EvaluationValue } from '../types/dashboard';
@@ -53,8 +53,7 @@ export const useInboundEvaluations = ({
           (evaluationCategory === undefined ||
             op.category === evaluationCategory) &&
           op.evaluated === subjectId &&
-          (op.state === operation_states.INIT ||
-            op.state === operation_states.SENT),
+          pendingOperationStates.includes(op.state),
       )
       .reverse()
       .forEach((ratingOp) => {
@@ -183,8 +182,7 @@ export const useOutboundEvaluations = ({
           (evaluationCategory === undefined ||
             op.category === evaluationCategory) &&
           op.evaluator === subjectId &&
-          (op.state === operation_states.INIT ||
-            op.state === operation_states.SENT),
+          pendingOperationStates.includes(op.state),
       )
       .reverse()
       .forEach((ratingOp) => {

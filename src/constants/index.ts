@@ -5,6 +5,8 @@ import {
   PreferredView,
 } from 'types/dashboard';
 
+import { operation_states } from '../BrightID/utils/constants';
+
 // eslint-disable-next-line no-restricted-globals
 export const LOCATION_ORIGIN = location.origin;
 export const CONNECTION_SEARCH_SEED = 5;
@@ -290,3 +292,9 @@ export const OUTBOUND_EVIDENCE_VIEW_MODES = [
   EvidenceViewMode.OUTBOUND_ACTIVITY,
   EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS,
 ];
+
+export const pendingOperationStates = [
+  operation_states.UNKNOWN,
+  operation_states.INIT,
+  operation_states.SENT,
+] as const;

@@ -41,7 +41,7 @@ export const ProfileInfo = ({
   const inboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
   );
-  const { myConnectionToSubject, myRatingNumberToSubject } =
+  const { myConnectionToSubject, myRatingNumberToSubject, loading } =
     useMyEvaluationsContext({
       subjectId,
       evaluationCategory: viewModeToViewAs[currentViewMode],
@@ -122,16 +122,16 @@ export const ProfileInfo = ({
           </p>
         </div>
       </div>
-      {myRatingNumberToSubject ? (
+      {!loading && !myRatingNumberToSubject ? (
+        <NewEvaluationCard
+          subjectId={subjectId}
+          setShowEvaluationFlow={setShowEvaluationFlow}
+        />
+      ) : (
         <YourEvaluationInfo
           toSubjectId={subjectId}
           setShowEvaluationFlow={setShowEvaluationFlow}
           evaluationCategory={viewModeToViewAs[currentViewMode]}
-        />
-      ) : (
-        <NewEvaluationCard
-          subjectId={subjectId}
-          setShowEvaluationFlow={setShowEvaluationFlow}
         />
       )}
     </div>
