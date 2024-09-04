@@ -262,6 +262,17 @@ export const subjectViewAsIconColored: {
 export const preferredViewIcon: {
   [key in PreferredView]: string;
 } = {
+  [PreferredView.PLAYER]: '/assets/images/Dashboard/account-icon-white.svg',
+  [PreferredView.TRAINER]: '/assets/images/Dashboard/trainer-icon-white.svg',
+  [PreferredView.MANAGER_EVALUATING_TRAINER]:
+    '/assets/images/Dashboard/manager-icon-white.svg',
+  [PreferredView.MANAGER_EVALUATING_MANAGER]:
+    '/assets/images/Dashboard/manager-icon-white.svg',
+} as const;
+
+export const preferredViewIconColored: {
+  [key in PreferredView]: string;
+} = {
   [PreferredView.PLAYER]: '/assets/images/Shared/player.svg',
   [PreferredView.TRAINER]: '/assets/images/Shared/trainer.svg',
   [PreferredView.MANAGER_EVALUATING_TRAINER]:

@@ -8,7 +8,7 @@ import {
   getViewModeSubjectTextColorClass,
   getViewModeTextColorClass,
   INBOUND_EVIDENCE_VIEW_MODES,
-  preferredViewIcon,
+  preferredViewIconColored,
   subjectViewAsIconColored,
   viewModeToSubjectViewMode,
   viewModeToViewAs,
@@ -199,7 +199,7 @@ const UserInformation = ({
           evidenceViewMode === EvidenceViewMode.INBOUND_CONNECTION
             ? '/assets/images/Shared/brightid-icon.svg'
             : evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
-            ? preferredViewIcon[currentViewMode]
+            ? preferredViewIconColored[currentViewMode]
             : subjectViewAsIconColored[
                 viewModeToViewAs[
                   evidenceViewMode ===
