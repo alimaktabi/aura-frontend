@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectAuthData } from 'store/profile/selectors';
 
 import useViewMode from '../../hooks/useViewMode';
+import CustomTrans from '../CustomTrans';
 
 const EvaluateModalBody = ({
   subjectId,
@@ -64,7 +65,10 @@ const EvaluateModalBody = ({
       </p>
 
       <p className="font-medium mb-2">
-        Is this the account of {name} that should be Aura verified?
+        <CustomTrans
+          i18nKey={`evaluationQuestion.${subjectViewModeTitle.toLowerCase()}`}
+          values={{ name }}
+        />
       </p>
 
       <div className="p-1.5 rounded-lg bg-white w-full mb-5">
@@ -125,9 +129,11 @@ const EvaluateModalBody = ({
         setConfidence={setConfidence}
       />
       <p className="font-medium mt-1">
-        ... this account{' '}
-        <span className="font-bold">should {isYes ? '' : 'not '}be</span>{' '}
-        verified.
+        <CustomTrans
+          i18nKey={`evaluationExpression.${subjectViewModeTitle.toLowerCase()}.${
+            isYes ? 'positive' : 'negative'
+          }`}
+        />
       </p>
       <div className="mt-36">
         {prevRating ? (

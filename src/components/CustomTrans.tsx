@@ -7,6 +7,7 @@ const CustomTrans: typeof Trans = ({ ...args }) => {
       components={{
         ...args.components,
         br: <br />,
+        strong: <strong className="font-bold" />,
       }}
     />
   );
