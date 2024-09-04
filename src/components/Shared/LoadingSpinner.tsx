@@ -3,14 +3,18 @@ import React from 'react';
 
 export interface LoadingSpinnerProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string;
+  spinnerClassName?: string;
 }
 
-const LoadingSpinner = ({ className, ...props }: LoadingSpinnerProps) => {
+const LoadingSpinner = ({
+  spinnerClassName,
+  className,
+  ...props
+}: LoadingSpinnerProps) => {
   return (
     <div className={`flex justify-center items-center ${className}`} {...props}>
       <div
-        className={`animate-spin-slow w-full h-full rounded-full border-2 border-gray-300 border-t-transparent`}
+        className={`animate-spin-slow w-full h-full rounded-full border-2 border-gray-300 border-t-transparent ${spinnerClassName}`}
       ></div>
     </div>
   );

@@ -55,7 +55,14 @@ export const ConnectionAndEvaluationStatus = ({
             {rating?.isPending ? '' : `${confidenceValue} `}({ratingNumber})
           </p>
           {rating?.isPending && (
-            <LoadingSpinner className="w-[18px] h-[18px] ml-1" />
+            <LoadingSpinner
+              className="w-[18px] h-[18px] ml-1"
+              spinnerClassName={
+                Math.abs(Number(rating.rating)) > 2
+                  ? 'border-white'
+                  : 'border-black'
+              }
+            />
           )}
         </div>
       ) : (
