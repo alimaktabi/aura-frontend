@@ -60,7 +60,7 @@ export const ConnectionAndEvaluationStatus = ({
               spinnerClassName={
                 Math.abs(Number(rating.rating)) > 2
                   ? 'border-white'
-                  : 'border-black'
+                  : 'border-gray-950'
               }
             />
           )}

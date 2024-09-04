@@ -7,6 +7,7 @@ import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import { useMemo } from 'react';
 
 import { EvaluationCategory } from '../../../types/dashboard';
+import LoadingSpinner from '../LoadingSpinner';
 
 export default function EvaluationInfo({
   fromSubjectId,
@@ -97,7 +98,17 @@ export default function EvaluationInfo({
       {rating && (
         <div className="flex items-center gap-2">
           {rating.isPending ? (
-            <span className="font-medium italic">Pending</span>
+            <>
+              <span className="font-medium italic">Pending</span>
+              <LoadingSpinner
+                className="w-[20px] h-[20px]"
+                spinnerClassName={
+                  Math.abs(Number(rating.rating)) > 2
+                    ? 'border-white'
+                    : 'border-gray-950'
+                }
+              />
+            </>
           ) : (
             <span className="font-medium">{'12%'}</span>
           )}

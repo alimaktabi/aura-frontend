@@ -4,7 +4,6 @@ import { selectAuthData } from 'store/profile/selectors';
 
 import { useSubjectEvaluationFromContext } from '../../../hooks/useSubjectEvaluation';
 import { EvaluationCategory } from '../../../types/dashboard';
-import LoadingSpinner from '../LoadingSpinner';
 
 export const YourEvaluationInfo = ({
   toSubjectId,
@@ -16,7 +15,7 @@ export const YourEvaluationInfo = ({
   evaluationCategory: EvaluationCategory;
 }) => {
   const authData = useSelector(selectAuthData);
-  const { rating, loading } = useSubjectEvaluationFromContext({
+  const { loading } = useSubjectEvaluationFromContext({
     fromSubjectId: authData?.brightId,
     toSubjectId,
     evaluationCategory,
@@ -35,14 +34,6 @@ export const YourEvaluationInfo = ({
         toSubjectId={toSubjectId}
         evaluationCategory={evaluationCategory}
       />
-      {rating?.isPending && (
-        <div
-          data-testid={`your-evaluation-${authData?.brightId}-${toSubjectId}-edit`}
-          className="rounded-md p-2 bg-button-primary cursor-pointer"
-        >
-          <LoadingSpinner className="w-[20px] h-[20px]" />
-        </div>
-      )}
       <div
         onClick={() => setShowEvaluationFlow(true)}
         data-testid={`your-evaluation-${authData?.brightId}-${toSubjectId}-edit`}
