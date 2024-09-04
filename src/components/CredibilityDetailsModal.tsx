@@ -15,6 +15,10 @@ import { selectAuthData } from 'store/profile/selectors';
 import { EvaluationCategory } from 'types/dashboard';
 import { compactFormat } from 'utils/number';
 
+import {
+  getViewModeSubjectTextColorClass,
+  viewAsToViewMode,
+} from '../constants';
 import { HorizontalProgressBar } from './Shared/HorizontalProgressBar';
 import { ToggleInputWithIcon } from './Shared/ToggleInput';
 
@@ -50,7 +54,16 @@ const CredibilityDetailsForRole = ({
   return (
     <>
       <div className="font-bold text-l">
-        As a <span className="text-purple">Player</span>:
+        As a{' '}
+        <span
+          className={getViewModeSubjectTextColorClass(
+            viewAsToViewMode[roleEvaluationCategory],
+          )}
+        >
+          {roleEvaluationCategory.slice(0, 1).toUpperCase() +
+            roleEvaluationCategory.slice(1)}
+        </span>
+        :
       </div>
       <div>
         Level: <span className="font-bold">{auraLevel}</span>

@@ -351,7 +351,9 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           ) : (
             <>
               <div className="text-lg text-white flex">
-                {viewModeToString[currentViewMode] + 's '}
+                {selectedTab === ProfileTab.CONNECTIONS
+                  ? 'Subjects'
+                  : viewModeToString[currentViewMode] + 's '}
                 <strong className="ml-1">({evaluatorsOriginal.length})</strong>
                 {inboundEvaluationsSelectedFilterId !== null && (
                   <span className="ml-2">

@@ -9,7 +9,7 @@ import {
   getViewModeTextColorClass,
   INBOUND_EVIDENCE_VIEW_MODES,
   preferredViewIcon,
-  subjectViewAsIcon,
+  subjectViewAsIconColored,
   viewModeToSubjectViewMode,
   viewModeToViewAs,
 } from 'constants/index';
@@ -196,9 +196,11 @@ const UserInformation = ({
     <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5 text-white">
       <img
         src={
-          INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
+          evidenceViewMode === EvidenceViewMode.INBOUND_CONNECTION
+            ? '/assets/images/Shared/brightid-icon.svg'
+            : evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
             ? preferredViewIcon[currentViewMode]
-            : subjectViewAsIcon[
+            : subjectViewAsIconColored[
                 viewModeToViewAs[
                   evidenceViewMode ===
                   EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
