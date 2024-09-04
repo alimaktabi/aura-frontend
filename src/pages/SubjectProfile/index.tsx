@@ -101,7 +101,8 @@ const ProfileTabs = ({
         ) : (
           <p
             className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
-              selectedTab === ProfileTab.ACTIVITY
+              selectedTab === ProfileTab.ACTIVITY ||
+              selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
                 ? 'background bg-button-primary text-white font-bold'
                 : 'bg-transparent text-black font-medium'
             }`}
