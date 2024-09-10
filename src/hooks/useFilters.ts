@@ -187,7 +187,9 @@ export function useInboundEvaluationFilters(
         title: 'Mutual Connections',
         func: (item) =>
           !!brightIdBackup?.connections.find(
-            (conn) => item.rating?.fromBrightId === conn.id,
+            (conn) =>
+              item.rating?.fromBrightId === conn.id ||
+              item.inboundConnection?.id === conn.id,
           ),
       },
       {
@@ -276,7 +278,9 @@ export function useOutboundEvaluationFilters(
         title: 'Mutual Connections',
         func: (item) =>
           !!brightIdBackup?.connections.find(
-            (conn) => item.rating?.toBrightId === conn.id,
+            (conn) =>
+              item.rating?.toBrightId === conn.id ||
+              item.outboundConnection?.id === conn.id,
           ),
       },
       {
