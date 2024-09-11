@@ -5,17 +5,8 @@ import { useSubjectsListContext } from 'contexts/SubjectsListContext';
 import * as React from 'react';
 import { useState } from 'react';
 
-function ModalBody({
-  isModalOpen,
-  setIsModalOpen,
-}: {
-  isModalOpen: boolean;
-  setIsModalOpen: (isModalOpen: boolean) => void;
-}) {
+function FilterAndSortModalBody() {
   const {
-    searchString,
-    setSearchString,
-    selectedFilters,
     selectedFilterIds,
     toggleFiltersById,
     selectedSort,
@@ -77,10 +68,7 @@ export const SubjectSearch = () => {
           openModalHandler={() => setIsModalOpen(true)}
           closeModalHandler={() => setIsModalOpen(false)}
         >
-          <ModalBody
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-          />
+          <FilterAndSortModalBody />
         </SelectButtonWithModal>
         <SelectButtonWithModal
           title="Custom View"
@@ -99,10 +87,7 @@ export const SubjectSearch = () => {
           openModalHandler={() => setIsModalOpen(true)}
           closeModalHandler={() => setIsModalOpen(false)}
         >
-          <ModalBody
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-          />
+          <FilterAndSortModalBody />
         </SelectButtonWithModal>
       </div>
     </div>
