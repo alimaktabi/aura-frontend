@@ -8,12 +8,12 @@ import {
 
 export function FiltersModal<T>({
   filters,
-  selectedFilterId,
+  selectedFilterIds,
   toggleFilterById,
   testidPrefix,
 }: {
   filters: AuraFilterOptions<T>;
-  selectedFilterId: AuraFilterId | null;
+  selectedFilterIds: AuraFilterId[] | null;
   toggleFilterById: (item: AuraFilterId | null) => void;
   testidPrefix?: string;
 }) {
@@ -33,7 +33,7 @@ export function FiltersModal<T>({
                   .join('')}`}
                 key={item.id}
                 title={item.title}
-                isSelected={selectedFilterId === item.id}
+                isSelected={selectedFilterIds?.includes(item.id) ?? false}
                 onClick={() => toggleFilterById(item.id)}
               />
             ))}

@@ -9,8 +9,8 @@ export const EvidenceListSearch = ({ subjectId }: { subjectId: string }) => {
   const {
     searchString,
     setSearchString,
-    selectedFilter,
-    selectedFilterId,
+    selectedFilters,
+    selectedFilterIds,
     toggleFilterById,
     selectedSort,
     setSelectedSort,
@@ -41,7 +41,9 @@ export const EvidenceListSearch = ({ subjectId }: { subjectId: string }) => {
           testidPrefix={'subject-filter'}
           title="Filters"
           iconLeft={false}
-          selectedItem={selectedFilter?.title ?? 'No filter'}
+          selectedItem={
+            selectedFilters?.map((f) => f.title).join(', ') ?? 'No filter'
+          }
           isOpen={isFiltersModalOpen}
           openModalHandler={() => setIsFiltersModalOpen(true)}
           closeModalHandler={() => setIsFiltersModalOpen(false)}
@@ -49,11 +51,8 @@ export const EvidenceListSearch = ({ subjectId }: { subjectId: string }) => {
           <FiltersModal
             testidPrefix={'subject-filter'}
             filters={filters}
-            selectedFilterId={selectedFilterId}
-            toggleFilterById={(value) => {
-              setIsFiltersModalOpen(false);
-              toggleFilterById(value);
-            }}
+            selectedFilterIds={selectedFilterIds}
+            toggleFilterById={toggleFilterById}
           />
         </SelectButtonWithModal>
         <SelectButtonWithModal

@@ -57,7 +57,7 @@ const Home = () => {
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
   const {
     itemsFiltered: filteredSubjects,
-    selectedFilterId,
+    selectedFilterIds,
     clearFilter,
   } = useSubjectsListContext();
 
@@ -180,7 +180,7 @@ const Home = () => {
               ) : (
                 <EmptySubjectList
                   clearFilter={clearFilter}
-                  hasFilter={selectedFilterId !== null}
+                  hasFilter={selectedFilterIds !== null}
                 />
               )
             ) : (

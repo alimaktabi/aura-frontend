@@ -16,13 +16,25 @@ export default function useFilterAndSort<T>(
   searchKeys?: (keyof T)[],
   localStoragePrefix?: string,
 ) {
-  const [selectedFilterId, setSelectedFilterId] = useState<AuraFilterId | null>(
-    null,
-  );
+  const [selectedFilterIds, setSelectedFilterIds] = useState<
+    AuraFilterId[] | null
+  >(null);
   const toggleFilterById = useCallback(
     (filterId: AuraFilterId | null, forceNewValue = false) => {
-      setSelectedFilterId((value) => {
-        const newValue = forceNewValue || value !== filterId ? filterId : null;
+      setSelectedFilterIds((value) => {
+        let newValue: AuraFilterId[] | null = [];
+        if (filterId !== null) {
+          if (forceNewValue) {
+            newValue = [filterId];
+          } else {
+            newValue = value?.includes(filterId)
+              ? value.filter((f) => f !== filterId)
+              : [...(value || []), filterId];
+          }
+        }
+        if (newValue.length === 0) {
+          newValue = null;
+        }
         if (localStoragePrefix) {
           if (newValue !== null) {
             localStorage.setItem(
@@ -78,10 +90,12 @@ export default function useFilterAndSort<T>(
 
   useEffect(() => {
     if (localStoragePrefix) {
-      const filterId = localStorage.getItem(localStoragePrefix + 'FilterId');
-      if (filterId) {
-        setSelectedFilterId(Number(filterId));
-      }
+      const filterIds = localStorage.getItem(localStoragePrefix + 'FilterIds');
+      try {
+        if (filterIds && Array.isArray(JSON.parse(filterIds))) {
+          setSelectedFilterIds(JSON.parse(filterIds));
+        }
+      } catch (e) {}
       const sortId = localStorage.getItem(localStoragePrefix + 'SortId');
       if (sortId) {
         setSelectedSortId(Number(sortId));
@@ -93,9 +107,12 @@ export default function useFilterAndSort<T>(
   }, [localStoragePrefix]);
 
   const [searchString, setSearchString] = useState('');
-  const selectedFilter = useMemo(
-    () => filters.find((f) => f.id === selectedFilterId),
-    [filters, selectedFilterId],
+  const selectedFilters = useMemo(
+    () =>
+      selectedFilterIds
+        ? filters.filter((f) => selectedFilterIds.includes(f.id))
+        : null,
+    [filters, selectedFilterIds],
   );
   const selectedSort: AuraSelectedSort<T> | null = useMemo(() => {
     const obj = sorts.find((s) => s.id === selectedSortId);
@@ -118,14 +135,16 @@ export default function useFilterAndSort<T>(
           String(item[key]).toLowerCase().includes(searchStringFinal),
         ),
       );
-    } else if (selectedFilter) {
-      result = items.filter(selectedFilter.func);
+    } else if (selectedFilters) {
+      selectedFilters.forEach((selectedFilters) => {
+        result = items.filter(selectedFilters.func);
+      });
     }
     if (selectedSort) {
       result.sort(selectedSort?.func);
     }
     return selectedSort?.isReversed ? result.reverse() : result;
-  }, [items, searchString, searchKeys, selectedFilter, selectedSort]);
+  }, [items, searchString, searchKeys, selectedFilters, selectedSort]);
 
   const clearSort = useCallback(() => {
     setSelectedSort(null);
@@ -141,9 +160,9 @@ export default function useFilterAndSort<T>(
   }, [clearFilter, clearSort]);
 
   return {
-    selectedFilter,
+    selectedFilters,
     selectedSort,
-    selectedFilterId,
+    selectedFilterIds,
     toggleFilterById,
     selectedSortId,
     setSelectedSort,

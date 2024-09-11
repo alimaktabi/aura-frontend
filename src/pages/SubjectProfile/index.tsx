@@ -160,7 +160,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     itemsOriginal: evaluationsOriginal,
     itemsFiltered: evaluations,
     loading: loadingInboundEvaluations,
-    selectedFilterId: inboundEvaluationsSelectedFilterId,
+    selectedFilterIds: inboundEvaluationsSelectedFilterId,
     clearFilter: clearInboundEvaluationsFilter,
   } = useSubjectInboundEvaluationsContext({
     subjectId,
@@ -170,7 +170,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     itemsOriginal: outboundEvaluationsOriginal,
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
-    selectedFilterId: outboundEvaluationsSelectedFilterId,
+    selectedFilterIds: outboundEvaluationsSelectedFilterId,
     clearFilter: clearOutboundEvaluationsFilter,
   } = useOutboundEvaluationsContext({
     subjectId,
