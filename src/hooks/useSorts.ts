@@ -12,9 +12,9 @@ export enum AuraSortId {
   RecentEvaluation = 1,
   EvaluationScore,
   ConnectionLastUpdated,
-  MostMutualConnections,
+  // MostMutualConnections,
   ConnectionScore,
-  ConnectionMostEvaluations,
+  // ConnectionMostEvaluations,
   EvaluationPlayerScore,
 }
 
@@ -69,13 +69,13 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
           new Date(b.timestamp ?? 0).getTime() -
           new Date(a.timestamp ?? 0).getTime(),
       },
-      {
-        id: AuraSortId.ConnectionMostEvaluations,
-        title: 'Most Evaluations (Not Implemented)',
-        defaultAscending: true,
-        category: FilterOrSortCategory.Default,
-        func: (_a, _b) => 1,
-      },
+      // {
+      //   id: AuraSortId.ConnectionMostEvaluations,
+      //   title: 'Most Evaluations (Not Implemented)',
+      //   defaultAscending: true,
+      //   category: FilterOrSortCategory.Default,
+      //   func: (_a, _b) => 1,
+      // },
       {
         id: AuraSortId.ConnectionScore,
         title: 'Score',
@@ -85,13 +85,13 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
           (getAuraVerificationScore(a.verifications) ?? 0) -
           (getAuraVerificationScore(b.verifications) ?? 0),
       },
-      {
-        id: AuraSortId.MostMutualConnections,
-        title: 'Most Mutual Connections (Not Implemented)',
-        defaultAscending: true,
-        category: FilterOrSortCategory.Default,
-        func: (_a, _b) => 1,
-      },
+      // {
+      //   id: AuraSortId.MostMutualConnections,
+      //   title: 'Most Mutual Connections (Not Implemented)',
+      //   defaultAscending: true,
+      //   category: FilterOrSortCategory.Default,
+      //   func: (_a, _b) => 1,
+      // },
     ];
     return sortIds
       .map((id) => sorts.find((f) => f.id === id))
