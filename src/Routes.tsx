@@ -79,10 +79,6 @@ const routes = [
     element: <Home />,
     header: {
       title: <HomeHeader />,
-      icon: '/assets/images/Header/settings.svg',
-      iconClickedHandler: (navigate: NavigateFunction) => {
-        navigate(RoutePath.SETTINGS);
-      },
     },
     requireAuth: true,
   },

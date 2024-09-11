@@ -81,21 +81,23 @@ const Header = () => {
       )}
       <header className="header pb-4 flex justify-between">
         <div className="header-left items-center flex gap-1.5">
-          <span
-            key={headerComponent.icon}
-            onClick={() =>
-              headerComponent && headerComponent.iconClickedHandler(navigate)
-            }
-            className="header-icon !cursor-pointer mr-0.5"
-            data-testid="nav-button"
-          >
-            <img
+          {headerComponent.icon && (
+            <span
               key={headerComponent.icon}
-              className="w-6 h-6"
-              src={headerComponent.icon}
-              alt={''}
-            />
-          </span>
+              onClick={() =>
+                headerComponent && headerComponent.iconClickedHandler(navigate)
+              }
+              className="header-icon !cursor-pointer mr-0.5"
+              data-testid="nav-button"
+            >
+              <img
+                key={headerComponent.icon}
+                className="w-6 h-6"
+                src={headerComponent.icon}
+                alt={''}
+              />
+            </span>
+          )}
           {playerHistorySequence.length !== 0 && (
             <img
               className="cursor-pointer w-6 h-[18px]"
@@ -112,6 +114,23 @@ const Header = () => {
             {headerComponent.title}
           </div>
         </div>
+        {!matchPath(RoutePath.SETTINGS, pathname) && (
+          <span className="header-right flex items-center">
+            <span
+              key="/assets/images/Header/settings.svg"
+              onClick={() => navigate(RoutePath.SETTINGS)}
+              className="header-icon !cursor-pointer"
+              data-testid="nav-button"
+            >
+              <img
+                key="/assets/images/Header/settings.svg"
+                className="w-6 h-6"
+                src="/assets/images/Header/settings.svg"
+                alt={''}
+              />
+            </span>
+          </span>
+        )}
       </header>
     </div>
   );
