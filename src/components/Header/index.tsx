@@ -1,39 +1,64 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
+import { findLastIndex } from 'utils/index';
 
+import useViewMode from '../../hooks/useViewMode';
+import { PlayerHistorySequenceType } from '../../types';
 import { PlayerHistorySequence } from './PlayerHistorySequence';
 
 const Header = () => {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const currentRouteObject = useMemo(
-    () => routes.find((route) => route.pathRegex.test(location.pathname)),
-    [location.pathname],
+    () => routes.find((route) => route.pathRegex.test(pathname)),
+    [pathname],
   );
 
-  const [playerHistorySequence, setPlayerHistorySequence] = useState<string[]>(
-    [],
-  );
+  const [playerHistorySequence, setPlayerHistorySequence] = useState<
+    PlayerHistorySequenceType[]
+  >([]);
   const [isSequenceOpen, setIsSequenceOpen] = useState(false);
 
+  const { currentEvaluationCategory } = useViewMode();
+
   useEffect(() => {
-    const subjectProfileRoute = RoutePath.SUBJECT_PROFILE.replace(
-      ':subjectIdProp',
-      '',
-    );
-    const subjectId = location.pathname.split(subjectProfileRoute)[1];
-    if (!subjectId) return;
+    const subjectIdProp = matchPath(RoutePath.SUBJECT_PROFILE, pathname)?.params
+      .subjectIdProp;
+    console.log({ subjectIdProp });
+    if (!subjectIdProp) return;
     setPlayerHistorySequence((prevSequence) => {
-      const index = prevSequence.indexOf(subjectId);
-      if (index === -1) {
-        return [...prevSequence, subjectId];
-      } else {
-        return prevSequence.slice(0, index + 1);
+      if (
+        findLastIndex(prevSequence, (h) => h.subjectId === subjectIdProp) ===
+        prevSequence.length - 1
+      ) {
+        return [
+          ...prevSequence.slice(0, prevSequence.length - 1),
+          {
+            subjectId: subjectIdProp,
+            evaluationCategory: currentEvaluationCategory,
+          },
+        ];
       }
+      const index = findLastIndex(
+        prevSequence,
+        (h) =>
+          h.subjectId === subjectIdProp &&
+          h.evaluationCategory === currentEvaluationCategory,
+      );
+      if (index === -1) {
+        return [
+          ...prevSequence,
+          {
+            subjectId: subjectIdProp,
+            evaluationCategory: currentEvaluationCategory,
+          },
+        ];
+      }
+      return prevSequence.slice(0, index + 1);
     });
-  }, [location.pathname]);
+  }, [currentEvaluationCategory, pathname]);
 
   let headerComponent: any;
 
@@ -56,6 +81,21 @@ const Header = () => {
       )}
       <header className="header pb-4 flex justify-between">
         <div className="header-left items-center flex gap-1.5">
+          <span
+            key={headerComponent.icon}
+            onClick={() =>
+              headerComponent && headerComponent.iconClickedHandler(navigate)
+            }
+            className="header-icon !cursor-pointer mr-0.5"
+            data-testid="nav-button"
+          >
+            <img
+              key={headerComponent.icon}
+              className="w-6 h-6"
+              src={headerComponent.icon}
+              alt={''}
+            />
+          </span>
           {playerHistorySequence.length !== 0 && (
             <img
               className="cursor-pointer w-6 h-[18px]"
@@ -72,23 +112,6 @@ const Header = () => {
             {headerComponent.title}
           </div>
         </div>
-        <span className="header-right flex items-center">
-          <span
-            key={headerComponent.icon}
-            onClick={() =>
-              headerComponent && headerComponent.iconClickedHandler(navigate)
-            }
-            className="header-icon !cursor-pointer"
-            data-testid="nav-button"
-          >
-            <img
-              key={headerComponent.icon}
-              className="w-6 h-6"
-              src={headerComponent.icon}
-              alt={''}
-            />
-          </span>
-        </span>
       </header>
     </div>
   );

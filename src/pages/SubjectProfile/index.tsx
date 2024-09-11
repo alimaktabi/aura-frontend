@@ -458,7 +458,7 @@ export const SubjectProfileHeader = () => {
 
   return (
     <>
-      {subjectViewModeTitle} profile
+      {subjectViewModeTitle} Profile
       <HeaderPreferedView.ProfileHeaderViews />
     </>
   );

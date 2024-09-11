@@ -126,3 +126,8 @@ export type AuraOutboundConnectionAndRatingData = {
 export type AuraRatingRetrieveResponse = {
   ratings: AuraRating[];
 };
+
+export type PlayerHistorySequenceType = {
+  subjectId: string;
+  evaluationCategory: EvaluationCategory;
+};

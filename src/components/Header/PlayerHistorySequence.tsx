@@ -1,11 +1,14 @@
 import { useSubjectName } from 'hooks/useSubjectName';
 import { Link } from 'react-router-dom';
+import { PlayerHistorySequenceType } from 'types';
 import { RoutePath } from 'types/router';
+
+import { subjectViewAsIconColored } from '../../constants';
 
 export const PlayerHistorySequence = ({
   playerHistorySequence,
 }: {
-  playerHistorySequence: string[];
+  playerHistorySequence: PlayerHistorySequenceType[];
 }) => {
   return (
     <div className="flex bg-primary-l1 rounded w-full">
@@ -20,10 +23,7 @@ export const PlayerHistorySequence = ({
       >
         {playerHistorySequence.map((item, i) => (
           <>
-            <PlayerHistoryItem
-              item={item}
-              icon={'/assets/images/Shared/brightid-icon.svg'}
-            />
+            <PlayerHistoryItem item={item} />
             {i !== playerHistorySequence.length - 1 && (
               <img src="/assets/images/Header/play-icon.svg" alt="" />
             )}
@@ -34,14 +34,23 @@ export const PlayerHistorySequence = ({
   );
 };
 
-const PlayerHistoryItem = ({ item, icon }: { item: string; icon: string }) => {
-  const name = useSubjectName(item);
+const PlayerHistoryItem = ({ item }: { item: PlayerHistorySequenceType }) => {
+  const name = useSubjectName(item.subjectId);
   return (
     <Link
-      to={RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', item)}
+      to={
+        RoutePath.SUBJECT_PROFILE.replace(':subjectIdProp', item.subjectId) +
+        '?viewas=' +
+        item.evaluationCategory
+      }
       className="flex gap-1 items-center"
     >
-      <img src={icon} alt="" width="10px" height="10px" />
+      <img
+        src={subjectViewAsIconColored[item.evaluationCategory]}
+        alt=""
+        width="10px"
+        height="10px"
+      />
       <p className="whitespace-nowrap text-black text-xs mr-1.5">{name}</p>
     </Link>
   );

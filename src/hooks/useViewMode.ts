@@ -1,4 +1,8 @@
-import { viewAsToViewMode, viewModeSubjectString } from 'constants/index';
+import {
+  viewAsToViewMode,
+  viewModeSubjectString,
+  viewModeToViewAs,
+} from 'constants/index';
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'store/hooks';
@@ -19,6 +23,11 @@ export default function useViewMode() {
     }
     return preferredViewMode;
   }, [preferredViewMode, query]);
+  const currentEvaluationCategory = useMemo(
+    () => viewModeToViewAs[currentViewMode],
+    [currentViewMode],
+  );
+
   const dispatch = useDispatch();
   const setPreferredView = useCallback(
     (value: PreferredView) => {
@@ -52,5 +61,6 @@ export default function useViewMode() {
     updateViewAs,
     setPreferredView,
     subjectViewModeTitle,
+    currentEvaluationCategory,
   };
 }
