@@ -19,11 +19,6 @@ export enum AuraFilterId {
   EvaluationPositiveEvaluations,
   EvaluationNegativeEvaluations,
   ConnectionMutualConnections,
-  ConnectionLevelNotYet,
-  ConnectionLevelSybil,
-  ConnectionLevelBronze,
-  ConnectionLevelSilver,
-  ConnectionLevelGold,
   ConnectionYourEvaluationPositive,
   ConnectionYourEvaluationNegative,
   ConnectionYourEvaluationNotEvaluatedYet,
@@ -34,6 +29,11 @@ export enum AuraFilterId {
   EvaluationConnectionTypeAlreadyKnownPlus,
   EvaluationConnectionTypeRecovery,
   EvaluationTheirRecovery,
+  ConnectionLevelNotYet = 1000,
+  ConnectionLevelSybil,
+  ConnectionLevelBronze,
+  ConnectionLevelSilver,
+  ConnectionLevelGold,
 }
 
 export type AuraFilterOption<T> = {
