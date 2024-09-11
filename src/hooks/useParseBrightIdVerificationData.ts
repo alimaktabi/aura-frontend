@@ -1,6 +1,8 @@
 import { AuraVerificationString, Verifications } from 'api/auranode.service';
 import { useMemo } from 'react';
 
+import { EvaluationCategory } from '../types/dashboard';
+
 export const getUserHasRecovery = (
   verifications: Verifications | undefined,
 ) => {
@@ -9,8 +11,10 @@ export const getUserHasRecovery = (
     (verification) => verification.name === 'SocialRecoverySetup',
   );
 };
+//TODO: filter aura verification based on evaluationCategory and make it required parameter
 export const getAuraVerificationScore = (
   verifications: Verifications | undefined,
+  _evaluationCategory?: EvaluationCategory,
 ): number | null => {
   if (!verifications) return null;
   const auraVerification = verifications.find(
@@ -20,6 +24,7 @@ export const getAuraVerificationScore = (
 };
 export const getAuraVerificationLevel = (
   verifications: Verifications | undefined,
+  _evaluationCategory?: EvaluationCategory,
 ): AuraVerificationString | null => {
   if (!verifications) return null;
   const auraVerification = verifications.find(

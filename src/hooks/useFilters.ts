@@ -10,6 +10,8 @@ import {
   BrightIdConnection,
 } from 'types';
 
+import useViewMode from './useViewMode';
+
 export enum AuraFilterId {
   EvaluationMutualConnections = 1,
   EvaluationJustEvaluations,
@@ -69,6 +71,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
   const { ratings: outboundRatings } = useOutboundEvaluations({
     subjectId: brightIdBackup?.userData.id,
   });
+  const { currentEvaluationCategory } = useViewMode();
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraNodeBrightIdConnectionWithBackupData> =
       [
@@ -83,7 +86,11 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           id: AuraFilterId.ConnectionLevelNotYet,
           category: FilterOrSortCategory.Level,
           title: 'Not yet',
-          func: (item) => getAuraVerificationLevel(item.verifications) === '-',
+          func: (item) =>
+            getAuraVerificationLevel(
+              item.verifications,
+              currentEvaluationCategory,
+            ) === '-',
         },
         {
           id: AuraFilterId.ConnectionLevelSybil,
@@ -96,21 +103,30 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           category: FilterOrSortCategory.Level,
           title: 'Bronze',
           func: (item) =>
-            getAuraVerificationLevel(item.verifications) === 'Bronze',
+            getAuraVerificationLevel(
+              item.verifications,
+              currentEvaluationCategory,
+            ) === 'Bronze',
         },
         {
           id: AuraFilterId.ConnectionLevelSilver,
           category: FilterOrSortCategory.Level,
           title: 'Silver',
           func: (item) =>
-            getAuraVerificationLevel(item.verifications) === 'Silver',
+            getAuraVerificationLevel(
+              item.verifications,
+              currentEvaluationCategory,
+            ) === 'Silver',
         },
         {
           id: AuraFilterId.ConnectionLevelGold,
           category: FilterOrSortCategory.Level,
           title: 'Gold',
           func: (item) =>
-            getAuraVerificationLevel(item.verifications) === 'Gold',
+            getAuraVerificationLevel(
+              item.verifications,
+              currentEvaluationCategory,
+            ) === 'Gold',
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationPositive,
@@ -118,7 +134,9 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           title: 'Positive',
           func: (item) => {
             const rating = outboundRatings?.find(
-              (r) => r.toBrightId === item.id,
+              (r) =>
+                r.toBrightId === item.id &&
+                r.category === currentEvaluationCategory,
             )?.rating;
             if (rating !== undefined) {
               return Number(rating) > 0;
@@ -132,7 +150,9 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           title: 'Negative',
           func: (item) => {
             const rating = outboundRatings?.find(
-              (r) => r.toBrightId === item.id,
+              (r) =>
+                r.toBrightId === item.id &&
+                r.category === currentEvaluationCategory,
             )?.rating;
             if (rating !== undefined) {
               return Number(rating) < 0;
@@ -146,7 +166,9 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           title: 'Not Evaluated Yet',
           func: (item) => {
             const rating = outboundRatings?.find(
-              (r) => r.toBrightId === item.id,
+              (r) =>
+                r.toBrightId === item.id &&
+                r.category === currentEvaluationCategory,
             )?.rating;
             return !rating || !Number(rating);
           },
@@ -170,7 +192,12 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
       .filter(
         (item) => item !== undefined,
       ) as AuraFilterOptions<BrightIdConnection>;
-  }, [brightIdBackup?.connections, filterIds, outboundRatings]);
+  }, [
+    brightIdBackup?.connections,
+    currentEvaluationCategory,
+    filterIds,
+    outboundRatings,
+  ]);
 }
 
 export function useInboundEvaluationFilters(
