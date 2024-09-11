@@ -52,9 +52,9 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
     useMemo(
       () => [
         AuraSortId.ConnectionLastUpdated,
-        AuraSortId.ConnectionMostEvaluations,
+        // AuraSortId.ConnectionMostEvaluations,
         AuraSortId.ConnectionScore,
-        AuraSortId.MostMutualConnections,
+        // AuraSortId.MostMutualConnections,
       ],
       [],
     ),
