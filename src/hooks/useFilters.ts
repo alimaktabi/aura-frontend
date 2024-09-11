@@ -14,8 +14,8 @@ import useViewMode from './useViewMode';
 
 export enum AuraFilterId {
   EvaluationMutualConnections = 1,
-  EvaluationJustEvaluations,
-  EvaluationJustConnections,
+  // EvaluationJustEvaluations,
+  // EvaluationJustConnections,
   EvaluationPositiveEvaluations,
   EvaluationNegativeEvaluations,
   ConnectionMutualConnections,
@@ -219,19 +219,19 @@ export function useInboundEvaluationFilters(
               item.inboundConnection?.id === conn.id,
           ),
       },
-      {
-        id: AuraFilterId.EvaluationJustEvaluations,
-        category: FilterOrSortCategory.Default,
-        title: 'Just Evaluations',
-        func: (item) =>
-          item.rating !== undefined && Number(item.rating.rating) !== 0,
-      },
-      {
-        id: AuraFilterId.EvaluationJustConnections,
-        category: FilterOrSortCategory.Default,
-        title: 'Just Connections',
-        func: (item) => item.rating === undefined,
-      },
+      // {
+      //   id: AuraFilterId.EvaluationJustEvaluations,
+      //   category: FilterOrSortCategory.Default,
+      //   title: 'Just Evaluations',
+      //   func: (item) =>
+      //     item.rating !== undefined && Number(item.rating.rating) !== 0,
+      // },
+      // {
+      //   id: AuraFilterId.EvaluationJustConnections,
+      //   category: FilterOrSortCategory.Default,
+      //   title: 'Just Connections',
+      //   func: (item) => item.rating === undefined,
+      // },
       {
         id: AuraFilterId.EvaluationPositiveEvaluations,
         category: FilterOrSortCategory.Default,
@@ -310,19 +310,19 @@ export function useOutboundEvaluationFilters(
               item.outboundConnection?.id === conn.id,
           ),
       },
-      {
-        id: AuraFilterId.EvaluationJustEvaluations,
-        category: FilterOrSortCategory.Default,
-        title: 'Just Evaluations',
-        func: (item) =>
-          item.rating !== undefined && Number(item.rating.rating) !== 0,
-      },
-      {
-        id: AuraFilterId.EvaluationJustConnections,
-        category: FilterOrSortCategory.Default,
-        title: 'Just Connections',
-        func: (item) => item.rating === undefined,
-      },
+      // {
+      //   id: AuraFilterId.EvaluationJustEvaluations,
+      //   category: FilterOrSortCategory.Default,
+      //   title: 'Just Evaluations',
+      //   func: (item) =>
+      //     item.rating !== undefined && Number(item.rating.rating) !== 0,
+      // },
+      // {
+      //   id: AuraFilterId.EvaluationJustConnections,
+      //   category: FilterOrSortCategory.Default,
+      //   title: 'Just Connections',
+      //   func: (item) => item.rating === undefined,
+      // },
       {
         id: AuraFilterId.EvaluationPositiveEvaluations,
         category: FilterOrSortCategory.Default,
