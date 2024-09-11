@@ -41,7 +41,7 @@ export function SortsModal<T>({
           )}
           {res[category]?.map((item) => (
             <div key={item.id}>
-              <p className="text-black2">{item.title}</p>
+              <p className="text-black2 pb-2">{item.title}</p>
               <div className="flex flex-row gap-2">
                 <ModalSortItem
                   testidPrefix={testidPrefix}

@@ -2,9 +2,16 @@ import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
 import { SortsModal } from 'components/EvaluationFlow/SortsModal';
 import { SelectButtonWithModal } from 'components/Shared/SelectButtonWithModal';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
+import * as React from 'react';
 import { useState } from 'react';
 
-export const SubjectSearch = () => {
+function ModalBody({
+  isModalOpen,
+  setIsModalOpen,
+}: {
+  isModalOpen: boolean;
+  setIsModalOpen: (isModalOpen: boolean) => void;
+}) {
   const {
     searchString,
     setSearchString,
@@ -17,8 +24,31 @@ export const SubjectSearch = () => {
     sorts,
   } = useSubjectsListContext();
 
-  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
-  const [isSortsModalOpen, setIsSortsModalOpen] = useState(false);
+  return (
+    <div>
+      <p className="text-black2 font-bold">Filters</p>
+      <FiltersModal
+        testidPrefix={'subject-filter'}
+        filters={filters}
+        selectedFilterIds={selectedFilterIds}
+        toggleFiltersById={toggleFiltersById}
+      />
+      <p className="text-black2 font-bold pt-3 pb-1">Sorts</p>
+      <SortsModal
+        testidPrefix={'subject-sort'}
+        sorts={sorts}
+        selectedSort={selectedSort}
+        setSelectedSort={setSelectedSort}
+      />
+    </div>
+  );
+}
+
+export const SubjectSearch = () => {
+  const { searchString, setSearchString, selectedFilters, selectedSort } =
+    useSubjectsListContext();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="card flex flex-col gap-4 max-h-[175px]">
       <div className="card__input flex gap-2 items-center rounded bg-gray30 px-3.5">
@@ -38,24 +68,22 @@ export const SubjectSearch = () => {
       <div className="card__filters flex gap-3">
         <SelectButtonWithModal
           testidPrefix={'subject-filter'}
-          title="Filters"
+          title="Custom View"
           iconLeft={false}
           selectedItem={
             selectedFilters?.map((f) => f.title).join(', ') ?? 'No filter'
           }
-          isOpen={isFiltersModalOpen}
-          openModalHandler={() => setIsFiltersModalOpen(true)}
-          closeModalHandler={() => setIsFiltersModalOpen(false)}
+          isOpen={isModalOpen}
+          openModalHandler={() => setIsModalOpen(true)}
+          closeModalHandler={() => setIsModalOpen(false)}
         >
-          <FiltersModal
-            testidPrefix={'subject-filter'}
-            filters={filters}
-            selectedFilterIds={selectedFilterIds}
-            toggleFiltersById={toggleFiltersById}
+          <ModalBody
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
           />
         </SelectButtonWithModal>
         <SelectButtonWithModal
-          title="Sort By"
+          title="Custom View"
           testidPrefix={'subject-sort'}
           iconLeft={false}
           selectedItem={
@@ -67,18 +95,13 @@ export const SubjectSearch = () => {
                 })`
               : 'No sort'
           }
-          isOpen={isSortsModalOpen}
-          openModalHandler={() => setIsSortsModalOpen(true)}
-          closeModalHandler={() => setIsSortsModalOpen(false)}
+          isOpen={isModalOpen}
+          openModalHandler={() => setIsModalOpen(true)}
+          closeModalHandler={() => setIsModalOpen(false)}
         >
-          <SortsModal
-            testidPrefix={'subject-sort'}
-            sorts={sorts}
-            selectedSort={selectedSort}
-            setSelectedSort={(...value) => {
-              setIsSortsModalOpen(false);
-              setSelectedSort(...value);
-            }}
+          <ModalBody
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
           />
         </SelectButtonWithModal>
       </div>

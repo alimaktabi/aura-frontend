@@ -35,7 +35,7 @@ export const Modal: FC<{
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
           >
-            <div className="modal-header flex justify-between items-center mb-6 sticky top-0 bg-gray40 z-20">
+            <div className="modal-header flex justify-between items-center sticky top-0 bg-gray40 z-20">
               <p className="text-black2 font-bold">{title ?? ''}</p>
 
               <img
@@ -47,7 +47,7 @@ export const Modal: FC<{
                 alt={'X'}
               />
             </div>
-            <div className="scrollable-content mt-4.5 w-full flex gap-2 overflow-y-auto max-h-[calc(100vh-100px)]">
+            <div className="scrollable-content mt-3 w-full flex gap-2 overflow-y-auto max-h-[calc(100vh-100px)]">
               {children}
             </div>
           </div>
