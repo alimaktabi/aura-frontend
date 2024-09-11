@@ -16,7 +16,7 @@ export const EmptySubjectList = ({
       <p className="text-center text-white">
         {hasFilter ? (
           <span className="underline cursor-pointer" onClick={clearFilter}>
-            Reset filters to default
+            Reset view to default
           </span>
         ) : (
           <>

@@ -18,7 +18,7 @@ export const EmptyActivitiesList = ({
           className="text-center text-white underline cursor-pointer"
           onClick={clearFilter}
         >
-          Reset filters to default
+          Reset view to default
         </p>
       )}
     </div>

@@ -137,8 +137,8 @@ export default function useFilterAndSort<T>(
         ),
       );
     } else if (selectedFilters) {
-      selectedFilters.forEach((selectedFilters) => {
-        result = items.filter(selectedFilters.func);
+      selectedFilters.forEach((selectedFilter) => {
+        result = result.filter(selectedFilter.func);
       });
     }
     if (selectedSort) {
