@@ -19,33 +19,34 @@ export default function useFilterAndSort<T>(
   const [selectedFilterIds, setSelectedFilterIds] = useState<
     AuraFilterId[] | null
   >(null);
-  const toggleFilterById = useCallback(
-    (filterId: AuraFilterId | null, forceNewValue = false) => {
+  const toggleFiltersById = useCallback(
+    (filterIds: AuraFilterId[] | null, forceNewValue = false) => {
       setSelectedFilterIds((value) => {
-        let newValue: AuraFilterId[] | null = [];
-        if (filterId !== null) {
+        let newValue: AuraFilterId[] = [];
+        if (filterIds !== null) {
           if (forceNewValue) {
-            newValue = [filterId];
+            newValue = filterIds;
           } else {
-            newValue = value?.includes(filterId)
-              ? value.filter((f) => f !== filterId)
-              : [...(value || []), filterId];
+            newValue = value ?? [];
+            filterIds.forEach((filterId) => {
+              newValue = newValue.includes(filterId)
+                ? newValue.filter((f) => f !== filterId)
+                : [...(value || []), filterId];
+            });
           }
         }
-        if (newValue.length === 0) {
-          newValue = null;
-        }
+        const newValueFinal = newValue.length > 0 ? newValue : null;
         if (localStoragePrefix) {
-          if (newValue !== null) {
+          if (newValueFinal !== null) {
             localStorage.setItem(
-              localStoragePrefix + 'FilterId',
+              localStoragePrefix + 'FilterIds',
               String(newValue),
             );
           } else {
-            localStorage.removeItem(localStoragePrefix + 'FilterId');
+            localStorage.removeItem(localStoragePrefix + 'FilterIds');
           }
         }
-        return newValue;
+        return newValueFinal;
       });
     },
     [localStoragePrefix],
@@ -151,8 +152,8 @@ export default function useFilterAndSort<T>(
   }, [setSelectedSort]);
 
   const clearFilter = useCallback(() => {
-    toggleFilterById(null);
-  }, [toggleFilterById]);
+    toggleFiltersById(null);
+  }, [toggleFiltersById]);
 
   const clearSortAndFilter = useCallback(() => {
     clearSort();
@@ -163,7 +164,7 @@ export default function useFilterAndSort<T>(
     selectedFilters,
     selectedSort,
     selectedFilterIds,
-    toggleFilterById,
+    toggleFiltersById,
     selectedSortId,
     setSelectedSort,
     searchString,

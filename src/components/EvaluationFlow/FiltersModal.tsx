@@ -9,12 +9,12 @@ import {
 export function FiltersModal<T>({
   filters,
   selectedFilterIds,
-  toggleFilterById,
+  toggleFiltersById,
   testidPrefix,
 }: {
   filters: AuraFilterOptions<T>;
   selectedFilterIds: AuraFilterId[] | null;
-  toggleFilterById: (item: AuraFilterId | null) => void;
+  toggleFiltersById: (item: AuraFilterId[] | null) => void;
   testidPrefix?: string;
 }) {
   const res = useCategorizeAuraFilterOptions(filters);
@@ -34,7 +34,7 @@ export function FiltersModal<T>({
                 key={item.id}
                 title={item.title}
                 isSelected={selectedFilterIds?.includes(item.id) ?? false}
-                onClick={() => toggleFilterById(item.id)}
+                onClick={() => toggleFiltersById([item.id])}
               />
             ))}
           </div>

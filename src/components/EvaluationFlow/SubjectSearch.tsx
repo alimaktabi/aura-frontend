@@ -10,7 +10,7 @@ export const SubjectSearch = () => {
     setSearchString,
     selectedFilters,
     selectedFilterIds,
-    toggleFilterById,
+    toggleFiltersById,
     selectedSort,
     setSelectedSort,
     filters,
@@ -51,7 +51,7 @@ export const SubjectSearch = () => {
             testidPrefix={'subject-filter'}
             filters={filters}
             selectedFilterIds={selectedFilterIds}
-            toggleFilterById={toggleFilterById}
+            toggleFiltersById={toggleFiltersById}
           />
         </SelectButtonWithModal>
         <SelectButtonWithModal

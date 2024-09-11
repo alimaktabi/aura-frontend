@@ -95,8 +95,8 @@ export const ProfileInfo = ({
             <div
               onClick={() => {
                 if (userHasRecovery) {
-                  inboundEvaluationsContext?.toggleFilterById(
-                    AuraFilterId.EvaluationTheirRecovery,
+                  inboundEvaluationsContext?.toggleFiltersById(
+                    [AuraFilterId.EvaluationTheirRecovery],
                     true,
                   );
                   setSelectedTab?.(ProfileTab.EVALUATIONS);

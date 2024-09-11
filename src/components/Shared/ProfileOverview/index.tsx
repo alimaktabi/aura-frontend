@@ -40,14 +40,14 @@ const ProfileOverview = ({
 
   const [selectedLevel, setSelectedLevel] = useState(1);
 
-  const { toggleFilterById } = useSubjectInboundEvaluationsContext({
+  const { toggleFiltersById } = useSubjectInboundEvaluationsContext({
     subjectId,
   });
 
   const { options2 } = useContext(EchartsContext);
 
   const setEvidenceListFilter = (filterId: AuraFilterId) => {
-    toggleFilterById(filterId, true);
+    toggleFiltersById([filterId], true);
     showEvidenceList?.();
   };
   return (
