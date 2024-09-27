@@ -191,9 +191,6 @@ export default function useFilterAndSort<T>(
       for (const item of selectedFilters) {
         filtersByCategory[item.category].push(item);
       }
-
-      console.log({ filtersByCategory });
-
       Object.values(FilterCategoryId).forEach((fcid) => {
         if (filtersByCategory[fcid].length > 0) {
           if (filterCategories[fcid].type === FilterCategoryType.Disjunctive) {
