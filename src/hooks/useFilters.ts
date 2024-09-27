@@ -22,8 +22,10 @@ export enum AuraFilterId {
   ConnectionYourEvaluationPositive,
   ConnectionYourEvaluationNegative,
   ConnectionYourEvaluationNotEvaluatedYet,
+  ConnectionConnectionTypeSuspiciousOrReported,
   ConnectionConnectionTypeJustMet,
   ConnectionConnectionTypeAlreadyKnownPlus,
+  ConnectionConnectionTypeRecovery,
   EvaluationConnectionTypeSuspiciousOrReported,
   EvaluationConnectionTypeJustMet,
   EvaluationConnectionTypeAlreadyKnownPlus,
@@ -174,6 +176,13 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           },
         },
         {
+          id: AuraFilterId.ConnectionConnectionTypeSuspiciousOrReported,
+          category: FilterCategoryId.ConnectionType,
+          title: 'Suspicious | Reported',
+          func: (item) =>
+            item.level === 'suspicious' || item.level === 'reported',
+        },
+        {
           id: AuraFilterId.ConnectionConnectionTypeJustMet,
           category: FilterCategoryId.ConnectionType,
           title: 'Just Met',
@@ -185,6 +194,12 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           title: 'Already Known+',
           func: (item) =>
             item.level === 'already known' || item.level === 'recovery',
+        },
+        {
+          id: AuraFilterId.ConnectionConnectionTypeRecovery,
+          category: FilterCategoryId.ConnectionType,
+          title: 'Recovery',
+          func: (item) => item.level === 'recovery',
         },
       ];
     return filterIds
