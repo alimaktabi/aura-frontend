@@ -26,6 +26,7 @@ export type AuraEvaluation = {
   confidence: number;
   domain: 'BrightID';
   category: EvaluationCategory;
+  modified: number;
 };
 
 export type AuraNodeBrightIdConnection = BrightIdConnection & {
