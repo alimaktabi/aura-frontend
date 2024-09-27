@@ -24,9 +24,13 @@ const Header = () => {
   const { currentEvaluationCategory } = useViewMode();
 
   useEffect(() => {
+    if (matchPath(RoutePath.HOME, pathname)) {
+      setIsSequenceOpen(false);
+      setPlayerHistorySequence([]);
+      return;
+    }
     const subjectIdProp = matchPath(RoutePath.SUBJECT_PROFILE, pathname)?.params
       .subjectIdProp;
-    console.log({ subjectIdProp });
     if (!subjectIdProp) return;
     setPlayerHistorySequence((prevSequence) => {
       if (
