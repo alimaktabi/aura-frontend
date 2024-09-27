@@ -1,5 +1,5 @@
 import useBrightIdBackupWithAuraConnectionData from 'hooks/useBrightIdBackupWithAuraConnectionData';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { FilterCategoryId } from 'hooks/useFilterAndSort';
 import { getAuraVerificationLevel } from 'hooks/useParseBrightIdVerificationData';
 import { useOutboundEvaluations } from 'hooks/useSubjectEvaluations';
 import { useMemo } from 'react';
@@ -39,7 +39,7 @@ export enum AuraFilterId {
 export type AuraFilterOption<T> = {
   id: AuraFilterId;
   title: string;
-  category: FilterOrSortCategory;
+  category: FilterCategoryId;
   func: (item: T) => boolean;
 };
 
@@ -50,7 +50,7 @@ export function useCategorizeAuraFilterOptions<T>(
 ) {
   return useMemo(() => {
     const result: {
-      [category in FilterOrSortCategory]?: AuraFilterOptions<T>;
+      [category in FilterCategoryId]?: AuraFilterOptions<T>;
     } = {};
 
     for (const item of filters) {
@@ -77,14 +77,14 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
       [
         {
           id: AuraFilterId.ConnectionMutualConnections,
-          category: FilterOrSortCategory.Default,
+          category: FilterCategoryId.Default,
           title: 'Mutual Connections',
           func: (item) =>
             !!brightIdBackup?.connections.find((conn) => item.id === conn.id),
         },
         {
           id: AuraFilterId.ConnectionLevelNotYet,
-          category: FilterOrSortCategory.Level,
+          category: FilterCategoryId.Level,
           title: 'Not yet',
           func: (item) =>
             getAuraVerificationLevel(
@@ -94,13 +94,13 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionLevelSybil,
-          category: FilterOrSortCategory.Level,
+          category: FilterCategoryId.Level,
           title: 'Sybil (Not implemented)',
           func: (_item) => true,
         },
         {
           id: AuraFilterId.ConnectionLevelBronze,
-          category: FilterOrSortCategory.Level,
+          category: FilterCategoryId.Level,
           title: 'Bronze',
           func: (item) =>
             getAuraVerificationLevel(
@@ -110,7 +110,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionLevelSilver,
-          category: FilterOrSortCategory.Level,
+          category: FilterCategoryId.Level,
           title: 'Silver',
           func: (item) =>
             getAuraVerificationLevel(
@@ -120,7 +120,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionLevelGold,
-          category: FilterOrSortCategory.Level,
+          category: FilterCategoryId.Level,
           title: 'Gold',
           func: (item) =>
             getAuraVerificationLevel(
@@ -130,7 +130,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationPositive,
-          category: FilterOrSortCategory.YourEvaluation,
+          category: FilterCategoryId.YourEvaluation,
           title: 'Positive',
           func: (item) => {
             const rating = outboundRatings?.find(
@@ -146,7 +146,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationNegative,
-          category: FilterOrSortCategory.YourEvaluation,
+          category: FilterCategoryId.YourEvaluation,
           title: 'Negative',
           func: (item) => {
             const rating = outboundRatings?.find(
@@ -162,7 +162,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationNotEvaluatedYet,
-          category: FilterOrSortCategory.YourEvaluation,
+          category: FilterCategoryId.YourEvaluation,
           title: 'Not Evaluated Yet',
           func: (item) => {
             const rating = outboundRatings?.find(
@@ -175,13 +175,13 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         },
         {
           id: AuraFilterId.ConnectionConnectionTypeJustMet,
-          category: FilterOrSortCategory.ConnectionType,
+          category: FilterCategoryId.ConnectionType,
           title: 'Just Met',
           func: (item) => item.level === 'just met',
         },
         {
           id: AuraFilterId.ConnectionConnectionTypeAlreadyKnownPlus,
-          category: FilterOrSortCategory.ConnectionType,
+          category: FilterCategoryId.ConnectionType,
           title: 'Already Known+',
           func: (item) =>
             item.level === 'already known' || item.level === 'recovery',
@@ -210,7 +210,7 @@ export function useInboundEvaluationFilters(
     const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
       {
         id: AuraFilterId.EvaluationMutualConnections,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Mutual Connections',
         func: (item) =>
           !!brightIdBackup?.connections.find(
@@ -221,34 +221,34 @@ export function useInboundEvaluationFilters(
       },
       // {
       //   id: AuraFilterId.EvaluationJustEvaluations,
-      //   category: FilterOrSortCategory.Default,
+      //   category: FilterCategoryId.Default,
       //   title: 'Just Evaluations',
       //   func: (item) =>
       //     item.rating !== undefined && Number(item.rating.rating) !== 0,
       // },
       // {
       //   id: AuraFilterId.EvaluationJustConnections,
-      //   category: FilterOrSortCategory.Default,
+      //   category: FilterCategoryId.Default,
       //   title: 'Just Connections',
       //   func: (item) => item.rating === undefined,
       // },
       {
         id: AuraFilterId.EvaluationPositiveEvaluations,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Positive Evaluations',
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) > 0,
       },
       {
         id: AuraFilterId.EvaluationNegativeEvaluations,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Negative Evaluations',
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) < 0,
       },
       {
         id: AuraFilterId.EvaluationTheirRecovery,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Their Recovery',
         func: (item) =>
           connections?.find((c) => c.id === item.fromSubjectId)?.level ===
@@ -256,7 +256,7 @@ export function useInboundEvaluationFilters(
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Suspicious | Reported',
         func: (item) =>
           item.inboundConnection?.level === 'suspicious' ||
@@ -264,13 +264,13 @@ export function useInboundEvaluationFilters(
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeJustMet,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Just Met',
         func: (item) => item.inboundConnection?.level === 'just met',
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Already Known +',
         func: (item) =>
           item.inboundConnection?.level === 'already known' ||
@@ -278,7 +278,7 @@ export function useInboundEvaluationFilters(
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeRecovery,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Recovery',
         func: (item) => item.inboundConnection?.level === 'recovery',
       },
@@ -301,7 +301,7 @@ export function useOutboundEvaluationFilters(
     const filters: AuraFilterOptions<AuraOutboundConnectionAndRatingData> = [
       {
         id: AuraFilterId.EvaluationMutualConnections,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Mutual Connections',
         func: (item) =>
           !!brightIdBackup?.connections.find(
@@ -312,34 +312,34 @@ export function useOutboundEvaluationFilters(
       },
       // {
       //   id: AuraFilterId.EvaluationJustEvaluations,
-      //   category: FilterOrSortCategory.Default,
+      //   category: FilterCategoryId.Default,
       //   title: 'Just Evaluations',
       //   func: (item) =>
       //     item.rating !== undefined && Number(item.rating.rating) !== 0,
       // },
       // {
       //   id: AuraFilterId.EvaluationJustConnections,
-      //   category: FilterOrSortCategory.Default,
+      //   category: FilterCategoryId.Default,
       //   title: 'Just Connections',
       //   func: (item) => item.rating === undefined,
       // },
       {
         id: AuraFilterId.EvaluationPositiveEvaluations,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Positive Evaluations',
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) > 0,
       },
       {
         id: AuraFilterId.EvaluationNegativeEvaluations,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Negative Evaluations',
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) < 0,
       },
       {
         id: AuraFilterId.EvaluationTheirRecovery,
-        category: FilterOrSortCategory.Default,
+        category: FilterCategoryId.Default,
         title: 'Their Recovery',
         func: (item) =>
           connections?.find((c) => c.id === item.toSubjectId)?.level ===
@@ -347,7 +347,7 @@ export function useOutboundEvaluationFilters(
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Suspicious | Reported',
         func: (item) =>
           item.outboundConnection?.level === 'suspicious' ||
@@ -355,13 +355,13 @@ export function useOutboundEvaluationFilters(
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeJustMet,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Just Met',
         func: (item) => item.outboundConnection?.level === 'just met',
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Already Known',
         func: (item) =>
           item.outboundConnection?.level === 'already known' ||
@@ -369,7 +369,7 @@ export function useOutboundEvaluationFilters(
       },
       {
         id: AuraFilterId.EvaluationConnectionTypeRecovery,
-        category: FilterOrSortCategory.ConnectionType,
+        category: FilterCategoryId.ConnectionType,
         title: 'Recovery',
         func: (item) => item.outboundConnection?.level === 'recovery',
       },

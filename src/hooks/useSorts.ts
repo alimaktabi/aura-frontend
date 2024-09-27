@@ -1,4 +1,4 @@
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { SortCategoryId } from 'hooks/useFilterAndSort';
 import { getAuraVerificationScore } from 'hooks/useParseBrightIdVerificationData';
 import { useMemo } from 'react';
 import {
@@ -25,7 +25,7 @@ export type AuraSortOption<T> = {
   justDefaultDirection?: boolean;
   ascendingLabel?: string;
   descendingLabel?: string;
-  category: FilterOrSortCategory;
+  category: SortCategoryId;
   func: (a: T, b: T) => number;
 };
 
@@ -39,7 +39,7 @@ export type AuraSelectedSort<T> = AuraSortOption<T> & {
 export function useCategorizeAuraSortOptions<T>(sorts: AuraSortOptions<T>) {
   return useMemo(() => {
     const result: {
-      [category in FilterOrSortCategory]?: AuraSortOptions<T>;
+      [category in SortCategoryId]?: AuraSortOptions<T>;
     } = {};
 
     for (const item of sorts) {
@@ -62,7 +62,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
         id: AuraSortId.ConnectionLastUpdated,
         title: 'Last Connected',
         defaultAscending: false,
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         ascendingLabel: 'Oldest',
         descendingLabel: 'Newest',
         func: (a, b) =>
@@ -73,14 +73,14 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
       //   id: AuraSortId.ConnectionMostEvaluations,
       //   title: 'Most Evaluations (Not Implemented)',
       //   defaultAscending: true,
-      //   category: FilterOrSortCategory.Default,
+      //   category: SortCategoryId.Default,
       //   func: (_a, _b) => 1,
       // },
       {
         id: AuraSortId.ConnectionScore,
         title: 'Score',
         defaultAscending: true,
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         func: (a, b) =>
           (getAuraVerificationScore(a.verifications) ?? 0) -
           (getAuraVerificationScore(b.verifications) ?? 0),
@@ -89,7 +89,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
       //   id: AuraSortId.MostMutualConnections,
       //   title: 'Most Mutual Connections (Not Implemented)',
       //   defaultAscending: true,
-      //   category: FilterOrSortCategory.Default,
+      //   category: SortCategoryId.Default,
       //   func: (_a, _b) => 1,
       // },
     ];
@@ -110,7 +110,7 @@ export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {
         defaultAscending: false,
         justDefaultDirection: true,
         descendingLabel: 'Most Recent',
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         func: (a, b) =>
           new Date(b.rating?.updatedAt ?? 0).getTime() -
           new Date(a.rating?.updatedAt ?? 0).getTime(),
@@ -119,7 +119,7 @@ export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {
         id: AuraSortId.EvaluationScore,
         title: 'Evaluation Score',
         defaultAscending: false,
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         func: (a, b) => {
           return (
             Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
@@ -129,7 +129,7 @@ export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {
       {
         id: AuraSortId.EvaluationPlayerScore,
         title: 'Player Score (Not Implemented)',
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         defaultAscending: true,
         func: (_a, _b) => 1,
       },
@@ -151,7 +151,7 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
         defaultAscending: false,
         justDefaultDirection: true,
         descendingLabel: 'Most Recent',
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         func: (a, b) =>
           new Date(b.rating?.updatedAt ?? 0).getTime() -
           new Date(a.rating?.updatedAt ?? 0).getTime(),
@@ -160,7 +160,7 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
         id: AuraSortId.EvaluationScore,
         title: 'Evaluation Score',
         defaultAscending: false,
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         func: (a, b) => {
           return (
             Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
@@ -170,7 +170,7 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
       {
         id: AuraSortId.EvaluationPlayerScore,
         title: 'Player Score (Not Implemented)',
-        category: FilterOrSortCategory.Default,
+        category: SortCategoryId.Default,
         defaultAscending: true,
         func: (_a, _b) => 1,
       },

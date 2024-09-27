@@ -1,5 +1,5 @@
 import { ModalSortItem } from 'components/Shared/Modal/ModalSortItem';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { SortCategoryId } from 'hooks/useFilterAndSort';
 import {
   AuraSelectedSort,
   AuraSortId,
@@ -34,9 +34,9 @@ export function SortsModal<T>({
   );
   return (
     <div className="w-full flex flex-col gap-5">
-      {(Object.keys(res) as FilterOrSortCategory[]).map((category) => (
+      {(Object.keys(res) as SortCategoryId[]).map((category) => (
         <div className="flex flex-col gap-3" key={category}>
-          {category !== FilterOrSortCategory.Default && (
+          {category !== SortCategoryId.Default && (
             <p className="text-black2">{category}</p>
           )}
           {res[category]?.map((item) => (

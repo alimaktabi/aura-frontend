@@ -1,5 +1,5 @@
 import { ModalItem } from 'components/Shared/Modal/ModalItem';
-import { FilterOrSortCategory } from 'hooks/useFilterAndSort';
+import { FilterCategoryId } from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
   AuraFilterOptions,
@@ -20,9 +20,9 @@ export function FiltersModal<T>({
   const res = useCategorizeAuraFilterOptions(filters);
   return (
     <div className="w-full flex flex-col gap-5">
-      {(Object.keys(res) as FilterOrSortCategory[]).map((category) => (
+      {(Object.keys(res) as FilterCategoryId[]).map((category) => (
         <div className="flex flex-col gap-3" key={category}>
-          {category !== FilterOrSortCategory.Default && (
+          {category !== FilterCategoryId.Default && (
             <p className="text-black2">{category}</p>
           )}
           <div className="flex flex-row flex-wrap gap-2">

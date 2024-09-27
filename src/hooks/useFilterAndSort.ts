@@ -2,12 +2,41 @@ import { AuraFilterId, AuraFilterOptions } from 'hooks/useFilters';
 import { AuraSelectedSort, AuraSortId, AuraSortOptions } from 'hooks/useSorts';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-export enum FilterOrSortCategory {
+export enum SortCategoryId {
+  Default = 'Default',
+}
+
+export enum FilterCategoryId {
   Default = 'Default',
   YourEvaluation = 'Your Evaluation',
   Level = 'Level',
   ConnectionType = 'Connection Type',
 }
+
+export enum FilterCategoryType {
+  Exclusive = 'Exclusive',
+  Conjunctive = 'Conjunctive',
+  Disjunctive = 'Disjunctive',
+}
+
+const filterCategories: {
+  [key in FilterCategoryId]: {
+    type: FilterCategoryType;
+  };
+} = {
+  [FilterCategoryId.Default]: {
+    type: FilterCategoryType.Conjunctive,
+  },
+  [FilterCategoryId.YourEvaluation]: {
+    type: FilterCategoryType.Exclusive,
+  },
+  [FilterCategoryId.Level]: {
+    type: FilterCategoryType.Disjunctive,
+  },
+  [FilterCategoryId.ConnectionType]: {
+    type: FilterCategoryType.Disjunctive,
+  },
+};
 
 export default function useFilterAndSort<T>(
   items: T[] | null,
@@ -29,9 +58,22 @@ export default function useFilterAndSort<T>(
           } else {
             newValue = value ?? [];
             filterIds.forEach((filterId) => {
-              newValue = newValue.includes(filterId)
-                ? newValue.filter((f) => f !== filterId)
-                : [...(value || []), filterId];
+              const filter = filters.find((f) => f.id === filterId);
+              if (filter) {
+                newValue = newValue.includes(filterId)
+                  ? newValue.filter((f) => f !== filterId)
+                  : filterCategories[filter.category].type ===
+                    FilterCategoryType.Exclusive
+                  ? [
+                      ...(value?.filter(
+                        (fid) =>
+                          filters.find((f) => f.id === fid)?.category !==
+                          filter.category,
+                      ) || []),
+                      filterId,
+                    ]
+                  : [...(value || []), filterId];
+              }
             });
           }
         }
@@ -40,7 +82,7 @@ export default function useFilterAndSort<T>(
           if (newValueFinal !== null) {
             localStorage.setItem(
               localStoragePrefix + 'FilterIds',
-              String(newValue),
+              JSON.stringify(newValue),
             );
           } else {
             localStorage.removeItem(localStoragePrefix + 'FilterIds');
@@ -49,7 +91,7 @@ export default function useFilterAndSort<T>(
         return newValueFinal;
       });
     },
-    [localStoragePrefix],
+    [filters, localStoragePrefix],
   );
 
   const [selectedSortId, setSelectedSortId] = useState<AuraSortId | null>(null);
@@ -137,8 +179,38 @@ export default function useFilterAndSort<T>(
         ),
       );
     } else if (selectedFilters) {
-      selectedFilters.forEach((selectedFilter) => {
-        result = result.filter(selectedFilter.func);
+      const filtersByCategory: {
+        [category in FilterCategoryId]: AuraFilterOptions<T>;
+      } = {
+        [FilterCategoryId.Default]: [],
+        [FilterCategoryId.YourEvaluation]: [],
+        [FilterCategoryId.Level]: [],
+        [FilterCategoryId.ConnectionType]: [],
+      };
+
+      for (const item of selectedFilters) {
+        filtersByCategory[item.category].push(item);
+      }
+
+      console.log({ filtersByCategory });
+
+      Object.values(FilterCategoryId).forEach((fcid) => {
+        if (filtersByCategory[fcid].length > 0) {
+          if (filterCategories[fcid].type === FilterCategoryType.Disjunctive) {
+            let currentResult: T[] = [];
+            filtersByCategory[fcid].forEach((selectedFilter) => {
+              const filteredItems = result.filter(selectedFilter.func);
+              currentResult = [
+                ...new Set([...currentResult, ...filteredItems]),
+              ];
+            });
+            result = [...currentResult];
+          } else {
+            filtersByCategory[fcid].forEach((selectedFilter) => {
+              result = result.filter(selectedFilter.func);
+            });
+          }
+        }
       });
     }
     if (selectedSort) {
