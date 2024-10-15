@@ -56,6 +56,7 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
         AuraSortId.ConnectionLastUpdated,
         // AuraSortId.ConnectionMostEvaluations,
         AuraSortId.ConnectionScore,
+        AuraSortId.ConnectionRecentEvaluation,
         // AuraSortId.MostMutualConnections,
       ],
       [],
@@ -68,15 +69,17 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
     if (!brightIdBackup?.connections || loading || myRatings === null)
       return null;
     const connections = [...brightIdBackup.connections].sort(
-      (a, b) =>
-        new Date(b.timestamp ?? 0).getTime() -
-        new Date(a.timestamp ?? 0).getTime(),
+      (a, b) => (b.timestamp ?? 0) - (a.timestamp ?? 0),
     );
     return connections
       .reduce(
         (acc, c) => {
           const ratingIndex = myRatings.findIndex((r) => r.toBrightId === c.id);
-          if (ratingIndex === -1) acc[0].push(c);
+          if (
+            ratingIndex === -1 &&
+            (c.level === 'already known' || c.level === 'recovery')
+          )
+            acc[0].push(c);
           else acc[1].push(c);
           return acc;
         },

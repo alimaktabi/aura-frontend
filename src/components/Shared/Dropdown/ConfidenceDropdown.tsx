@@ -66,6 +66,7 @@ const ConfidenceDropdown = ({
         setConfidence(item.value);
         setIsDropdownOpen(false);
       }}
+      className="h-12"
     />
   );
 };

@@ -8,12 +8,17 @@ import {
   BrightIdConnection,
 } from 'types';
 
+import useBrightIdBackupWithAuraConnectionData from './useBrightIdBackupWithAuraConnectionData';
+import { useOutboundEvaluations } from './useSubjectEvaluations';
+import useViewMode from './useViewMode';
+
 export enum AuraSortId {
   RecentEvaluation = 1,
   EvaluationScore,
   ConnectionLastUpdated,
   // MostMutualConnections,
   ConnectionScore,
+  ConnectionRecentEvaluation,
   // ConnectionMostEvaluations,
   EvaluationPlayerScore,
 }
@@ -56,6 +61,12 @@ export function useCategorizeAuraSortOptions<T>(sorts: AuraSortOptions<T>) {
 }
 
 export function useSubjectSorts(sortIds: AuraSortId[]) {
+  const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
+  const { currentEvaluationCategory } = useViewMode();
+  const { ratings: outboundRatings } = useOutboundEvaluations({
+    subjectId: brightIdBackup?.userData.id,
+    evaluationCategory: currentEvaluationCategory,
+  });
   return useMemo(() => {
     const sorts: AuraSortOptions<AuraNodeBrightIdConnectionWithBackupData> = [
       {
@@ -65,9 +76,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
         category: SortCategoryId.Default,
         ascendingLabel: 'Oldest',
         descendingLabel: 'Newest',
-        func: (a, b) =>
-          new Date(b.timestamp ?? 0).getTime() -
-          new Date(a.timestamp ?? 0).getTime(),
+        func: (a, b) => (b.timestamp ?? 0) - (a.timestamp ?? 0),
       },
       // {
       //   id: AuraSortId.ConnectionMostEvaluations,
@@ -85,6 +94,18 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
           (getAuraVerificationScore(a.verifications) ?? 0) -
           (getAuraVerificationScore(b.verifications) ?? 0),
       },
+      {
+        id: AuraSortId.ConnectionRecentEvaluation,
+        title: 'Recently Evaluated',
+        defaultAscending: false,
+        category: SortCategoryId.Default,
+        ascendingLabel: 'Oldest',
+        descendingLabel: 'Newest',
+        func: (a, b) =>
+          (outboundRatings?.find((r) => r.toBrightId === b.id)?.timestamp ??
+            0) -
+          (outboundRatings?.find((r) => r.toBrightId === a.id)?.timestamp ?? 0),
+      },
       // {
       //   id: AuraSortId.MostMutualConnections,
       //   title: 'Most Mutual Connections (Not Implemented)',
@@ -98,7 +119,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
       .filter(
         (item) => item !== undefined,
       ) as AuraSortOptions<BrightIdConnection>;
-  }, [sortIds]);
+  }, [outboundRatings, sortIds]);
 }
 
 export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {

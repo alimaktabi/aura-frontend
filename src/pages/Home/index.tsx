@@ -1,15 +1,13 @@
 import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
-import { SubjectSearch } from 'components/EvaluationFlow/SubjectSearch';
+import { SubjectListControls } from 'components/EvaluationFlow/SubjectListControls';
 import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
-import useViewMode from 'hooks/useViewMode';
 import Onboarding from 'pages/Onboarding';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { PreferredView } from 'types/dashboard';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
 import { EmptySubjectList } from '../../components/Shared/EmptyAndLoadingStates/EmptySubjectList';
@@ -18,7 +16,6 @@ import FindTrainersCard from '../../components/Shared/FindTrainersCard';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
-import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
 import { useDispatch } from '../../store/hooks';
 import { getBrightIdBackupThunk } from '../../store/profile/actions';
 import {
@@ -54,16 +51,14 @@ const Home = () => {
 
   const hasTrainers = false;
   const authData = useSelector(selectAuthData);
-  const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
   const {
     itemsFiltered: filteredSubjects,
     selectedFilterIds,
     clearFilter,
   } = useSubjectsListContext();
 
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const refreshBrightIdBackup = useCallback(async () => {
     if (!authData) return;
     setLoading(true);
@@ -85,9 +80,6 @@ const Home = () => {
   const playerOnboardingScreenShown = useSelector(
     selectPlayerOnboardingScreenShown,
   );
-
-  const { subjectViewModeTitle, currentViewMode, setPreferredView } =
-    useViewMode();
 
   if (!authData) {
     return <div>Not logged in</div>;
@@ -121,47 +113,9 @@ const Home = () => {
         />
         {isEvaluate ? (
           <div>
-            <SubjectSearch />
-            <div className="text-lg text-white mb-3 mt-3 flex">
-              {subjectViewModeTitle + 's '}
-              <strong className="ml-1">
-                ({brightIdBackup?.connections.length ?? '...'})
-              </strong>
-              {filteredSubjects !== null &&
-                filteredSubjects.length !==
-                  brightIdBackup?.connections.length && (
-                  <span className="ml-2">
-                    ({filteredSubjects.length} filter result
-                    {filteredSubjects.length !== 1 ? 's' : ''})
-                  </span>
-                )}
-              <img
-                src="/assets/images/Shared/refresh.svg"
-                alt="refresh"
-                className="w-7 h-7 ml-1 mt-0.5 cursor-pointer"
-                onClick={refreshBrightIdBackup}
-              />
-              {currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER && (
-                <p
-                  className="ml-auto font-medium cursor-pointer text-white"
-                  onClick={() =>
-                    setPreferredView(PreferredView.MANAGER_EVALUATING_MANAGER)
-                  }
-                >
-                  View Managers
-                </p>
-              )}
-              {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER && (
-                <p
-                  className="ml-auto font-medium cursor-pointer text-white"
-                  onClick={() =>
-                    setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
-                  }
-                >
-                  View Trainers
-                </p>
-              )}
-            </div>
+            <SubjectListControls
+              refreshBrightIdBackup={refreshBrightIdBackup}
+            />
             {filteredSubjects && !loading ? (
               filteredSubjects.length > 0 ? (
                 <div className="overflow-auto flex-grow no-scrollbar">

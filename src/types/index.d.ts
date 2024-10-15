@@ -1,5 +1,8 @@
 import { Verifications } from 'api/auranode.service';
+import { JSX } from 'react';
 
+import { AuraFilterId } from '../hooks/useFilters';
+import { AuraSortId } from '../hooks/useSorts';
 import { EvaluationCategory, EvaluationValue } from './dashboard';
 
 export type AuthData = {
@@ -131,4 +134,13 @@ export type AuraRatingRetrieveResponse = {
 export type PlayerHistorySequenceType = {
   subjectId: string;
   evaluationCategory: EvaluationCategory;
+};
+
+export type AuraFilterDropdownOption = {
+  value: number;
+  label: JSX.Element;
+  filterIds: AuraFilterId[] | null;
+  sortId: AuraSortId | null;
+  ascending?: boolean;
+  onClick: () => void;
 };
