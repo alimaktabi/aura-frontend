@@ -1,4 +1,4 @@
-import ConfidenceDropdown from 'components/Shared/ConfidenceDropdown';
+import ConfidenceDropdown from 'components/Shared/Dropdown/ConfidenceDropdown';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useEvaluateSubject } from 'hooks/useEvaluateSubject';
 import { useSubjectName } from 'hooks/useSubjectName';
