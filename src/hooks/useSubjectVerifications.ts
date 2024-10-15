@@ -4,9 +4,11 @@ import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerification
 import { useContext, useEffect, useState } from 'react';
 
 import { getBrightIdProfile, Verifications } from '../api/auranode.service';
+import { EvaluationCategory } from '../types/dashboard';
 
 export const useSubjectVerifications = (
   subjectId: string | null | undefined,
+  evaluationCategory: EvaluationCategory,
 ) => {
   const [verifications, setVerifications] = useState<Verifications | undefined>(
     undefined,
@@ -48,7 +50,7 @@ export const useSubjectVerifications = (
   }, [myEvaluationsContext, subjectId, subjectInboundEvaluationsContext]);
 
   const { auraLevel, userHasRecovery, auraScore } =
-    useParseBrightIdVerificationData(verifications);
+    useParseBrightIdVerificationData(verifications, evaluationCategory);
 
   return {
     auraLevel,

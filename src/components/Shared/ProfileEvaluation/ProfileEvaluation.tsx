@@ -10,6 +10,7 @@ import {
   INBOUND_EVIDENCE_VIEW_MODES,
   preferredViewIconColored,
   subjectViewAsIconColored,
+  viewModeToEvaluatorViewMode,
   viewModeToSubjectViewMode,
   viewModeToViewAs,
 } from 'constants/index';
@@ -23,7 +24,11 @@ import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import useViewMode from 'hooks/useViewMode';
 import moment from 'moment';
 import { useMemo } from 'react';
-import { EvidenceType, EvidenceViewMode } from 'types/dashboard';
+import {
+  EvaluationCategory,
+  EvidenceType,
+  EvidenceViewMode,
+} from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
 
@@ -189,7 +194,18 @@ const UserInformation = ({
   evidenceViewMode: EvidenceViewMode;
 }) => {
   const { currentViewMode } = useViewMode();
-  const { auraLevel, auraScore, loading } = useSubjectVerifications(subjectId);
+  const { auraLevel, auraScore, loading } = useSubjectVerifications(
+    subjectId,
+    evidenceViewMode === EvidenceViewMode.INBOUND_CONNECTION
+      ? EvaluationCategory.SUBJECT
+      : evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      ? viewModeToViewAs[viewModeToEvaluatorViewMode[currentViewMode]]
+      : viewModeToViewAs[
+          evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+            ? currentViewMode
+            : viewModeToSubjectViewMode[currentViewMode]
+        ],
+  );
   return (
     <div className="bg-gray00 rounded p-1 pr-2 flex gap-0.5 justify-between items-center mb-1.5 text-white">
       <img

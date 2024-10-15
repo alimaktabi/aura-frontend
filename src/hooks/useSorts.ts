@@ -67,6 +67,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
     subjectId: brightIdBackup?.userData.id,
     evaluationCategory: currentEvaluationCategory,
   });
+
   return useMemo(() => {
     const sorts: AuraSortOptions<AuraNodeBrightIdConnectionWithBackupData> = [
       {
@@ -91,8 +92,14 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
         defaultAscending: true,
         category: SortCategoryId.Default,
         func: (a, b) =>
-          (getAuraVerificationScore(a.verifications) ?? 0) -
-          (getAuraVerificationScore(b.verifications) ?? 0),
+          (getAuraVerificationScore(
+            a.verifications,
+            currentEvaluationCategory,
+          ) ?? 0) -
+          (getAuraVerificationScore(
+            b.verifications,
+            currentEvaluationCategory,
+          ) ?? 0),
       },
       {
         id: AuraSortId.ConnectionRecentEvaluation,

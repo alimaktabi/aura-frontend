@@ -31,11 +31,11 @@ export enum AuraFilterId {
   EvaluationConnectionTypeAlreadyKnownPlus,
   EvaluationConnectionTypeRecovery,
   EvaluationTheirRecovery,
-  ConnectionLevelNotYet = 1000,
-  ConnectionLevelSybil,
-  ConnectionLevelBronze,
-  ConnectionLevelSilver,
-  ConnectionLevelGold,
+  ConnectionLevelZero = 1000,
+  ConnectionLevelNegative,
+  ConnectionLevelOne,
+  ConnectionLevelTwo,
+  ConnectionLevelThree,
 }
 
 export type AuraFilterOption<T> = {
@@ -85,50 +85,52 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
             !!brightIdBackup?.connections.find((conn) => item.id === conn.id),
         },
         {
-          id: AuraFilterId.ConnectionLevelNotYet,
+          id: AuraFilterId.ConnectionLevelNegative,
           category: FilterCategoryId.Level,
-          title: 'Not yet',
-          func: (item) =>
-            getAuraVerificationLevel(
-              item.verifications,
-              currentEvaluationCategory,
-            ) === '-',
-        },
-        {
-          id: AuraFilterId.ConnectionLevelSybil,
-          category: FilterCategoryId.Level,
-          title: 'Sybil (Not implemented)',
+          title: 'Level Negative',
           func: (_item) => true,
         },
         {
-          id: AuraFilterId.ConnectionLevelBronze,
+          id: AuraFilterId.ConnectionLevelZero,
           category: FilterCategoryId.Level,
-          title: 'Bronze',
+          title: 'Level 0',
           func: (item) =>
-            getAuraVerificationLevel(
-              item.verifications,
-              currentEvaluationCategory,
-            ) === 'Bronze',
+            [0, null].includes(
+              getAuraVerificationLevel(
+                item.verifications,
+                currentEvaluationCategory,
+              ),
+            ),
         },
         {
-          id: AuraFilterId.ConnectionLevelSilver,
+          id: AuraFilterId.ConnectionLevelOne,
           category: FilterCategoryId.Level,
-          title: 'Silver',
+          title: 'Level 1',
           func: (item) =>
             getAuraVerificationLevel(
               item.verifications,
               currentEvaluationCategory,
-            ) === 'Silver',
+            ) === 1,
         },
         {
-          id: AuraFilterId.ConnectionLevelGold,
+          id: AuraFilterId.ConnectionLevelTwo,
           category: FilterCategoryId.Level,
-          title: 'Gold',
+          title: 'Level 2',
           func: (item) =>
             getAuraVerificationLevel(
               item.verifications,
               currentEvaluationCategory,
-            ) === 'Gold',
+            ) === 2,
+        },
+        {
+          id: AuraFilterId.ConnectionLevelThree,
+          category: FilterCategoryId.Level,
+          title: 'Level 3',
+          func: (item) =>
+            getAuraVerificationLevel(
+              item.verifications,
+              currentEvaluationCategory,
+            ) === 3,
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationPositive,

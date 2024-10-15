@@ -26,12 +26,12 @@ export const SubjectCard = ({
 
   const { myConnectionToSubject: inboundConnectionInfo } =
     useMyEvaluationsContext({ subjectId });
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
 
   const { auraLevel, auraScore } = useParseBrightIdVerificationData(
     inboundConnectionInfo?.verifications,
+    currentEvaluationCategory,
   );
-
-  const { currentViewMode } = useViewMode();
 
   return (
     <Link

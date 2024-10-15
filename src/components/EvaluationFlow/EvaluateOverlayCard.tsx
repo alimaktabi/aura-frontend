@@ -2,6 +2,8 @@ import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 
+import useViewMode from '../../hooks/useViewMode';
+
 const EvaluateOverlayCard = ({
   className,
   isPerformance = false,
@@ -15,7 +17,11 @@ const EvaluateOverlayCard = ({
   color?: string;
   setShowEvaluationFlow: (value: boolean) => void;
 }) => {
-  const { auraLevel } = useSubjectVerifications(subjectId);
+  const { currentEvaluationCategory } = useViewMode();
+  const { auraLevel } = useSubjectVerifications(
+    subjectId,
+    currentEvaluationCategory,
+  );
   const name = useSubjectName(subjectId);
   return (
     <div className={`card !bg-white ${className}`}>

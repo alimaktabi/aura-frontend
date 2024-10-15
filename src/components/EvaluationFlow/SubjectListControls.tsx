@@ -59,8 +59,7 @@ export const SubjectListControls = ({
 
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
 
-  const { subjectViewModeTitle, currentViewMode, setPreferredView } =
-    useViewMode();
+  const { currentViewMode, setPreferredView } = useViewMode();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

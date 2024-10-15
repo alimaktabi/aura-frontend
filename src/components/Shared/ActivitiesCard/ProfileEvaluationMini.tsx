@@ -3,6 +3,11 @@ import { useSubjectName } from 'hooks/useSubjectName';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { compactFormat } from 'utils/number';
 
+import {
+  viewModeToSubjectViewMode,
+  viewModeToViewAs,
+} from '../../../constants';
+import useViewMode from '../../../hooks/useViewMode';
 import { EvaluationCategory } from '../../../types/dashboard';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
@@ -18,7 +23,11 @@ const ProfileEvaluationMini = ({
   evaluationCategory: EvaluationCategory;
 }) => {
   const name = useSubjectName(toSubjectId);
-  const { auraLevel, auraScore } = useSubjectVerifications(toSubjectId);
+  const { currentViewMode } = useViewMode();
+  const { auraLevel, auraScore } = useSubjectVerifications(
+    toSubjectId,
+    viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+  );
   return (
     <div
       className={`card !bg-opacity-100 gap-2 ${

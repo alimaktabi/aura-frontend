@@ -32,7 +32,10 @@ const CredibilityDetailsForRole = ({
   onClose: () => void;
 }) => {
   const authData = useSelector(selectAuthData);
-  const { auraLevel, auraScore } = useSubjectVerifications(subjectId);
+  const { auraLevel, auraScore } = useSubjectVerifications(
+    subjectId,
+    roleEvaluationCategory,
+  );
   const { ratings, inboundRatingsStatsString } = useInboundEvaluations({
     subjectId,
     evaluationCategory: roleEvaluationCategory,

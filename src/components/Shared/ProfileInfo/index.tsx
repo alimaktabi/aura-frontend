@@ -34,9 +34,12 @@ export const ProfileInfo = ({
   setShowEvaluationFlow: (value: boolean) => void;
   setSelectedTab?: (value: ProfileTab) => void;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
 
-  const { userHasRecovery, auraLevel } = useSubjectVerifications(subjectId);
+  const { userHasRecovery, auraLevel } = useSubjectVerifications(
+    subjectId,
+    currentEvaluationCategory,
+  );
   const name = useSubjectName(subjectId);
   const inboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
@@ -44,7 +47,7 @@ export const ProfileInfo = ({
   const { myConnectionToSubject, myRatingNumberToSubject, loading } =
     useMyEvaluationsContext({
       subjectId,
-      evaluationCategory: viewModeToViewAs[currentViewMode],
+      evaluationCategory: currentEvaluationCategory,
     });
 
   const { connections: outboundConnections, ratings: outboundRatings } =

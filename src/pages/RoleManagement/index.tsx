@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useSubjectVerifications } from '../../hooks/useSubjectVerifications';
 import { selectAuthData } from '../../store/profile/selectors';
+import { EvaluationCategory } from '../../types/dashboard';
 import { compactFormat } from '../../utils/number';
 
 export const RoleManagement = () => {
@@ -133,14 +134,17 @@ const PlayerLevelAndScore = ({ color }: { color: string }) => {
     [authData?.brightId, subjectIdProp],
   );
 
-  const { auraLevel, auraScore, loading } = useSubjectVerifications(subjectId);
+  const { auraLevel, auraScore, loading } = useSubjectVerifications(
+    subjectId,
+    EvaluationCategory.PLAYER,
+  );
 
   return (
     <div
       className={`bg-gray00 rounded min-w-[90px] h-fit pl-2.5 py-1.5 pr-2 flex gap-1.5 justify-between items-center ${color}`}
     >
       <p className={`level text-sm font-bold`}>
-        {loading ? '-' : auraLevel !== '-' ? auraLevel : 'lvl 1'}
+        {loading ? '-' : auraLevel ? `lvl ${auraLevel}` : '-'}
       </p>
       <p className={`text-sm font-bold`}>
         {loading ? '-' : auraScore ? compactFormat(auraScore) : '13.3m'}

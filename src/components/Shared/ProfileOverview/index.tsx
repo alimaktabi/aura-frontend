@@ -8,7 +8,7 @@ import { useContext, useState } from 'react';
 import { PreferredView } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
-import { viewModeToString, viewModeToViewAs } from '../../../constants';
+import { viewModeToString } from '../../../constants';
 import { EchartsContext } from '../../../contexts/EchartsContext';
 import { compactFormat } from '../../../utils/number';
 
@@ -27,16 +27,19 @@ const ProfileOverview = ({
   title?: string;
   onLastEvaluationClick: (subjectId: string) => void;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
   const {
     ratings: inboundRatings,
     inboundRatingsStatsString,
     connections: inboundConnections,
   } = useSubjectInboundEvaluationsContext({
     subjectId,
-    evaluationCategory: viewModeToViewAs[currentViewMode],
+    evaluationCategory: currentEvaluationCategory,
   });
-  const { auraScore } = useSubjectVerifications(subjectId);
+  const { auraScore } = useSubjectVerifications(
+    subjectId,
+    currentEvaluationCategory,
+  );
 
   const [selectedLevel, setSelectedLevel] = useState(1);
 

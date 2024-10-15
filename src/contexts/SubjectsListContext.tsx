@@ -34,11 +34,11 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
   const filters = useSubjectFilters(
     useMemo(
       () => [
-        AuraFilterId.ConnectionLevelNotYet,
-        AuraFilterId.ConnectionLevelSybil,
-        AuraFilterId.ConnectionLevelBronze,
-        AuraFilterId.ConnectionLevelSilver,
-        AuraFilterId.ConnectionLevelGold,
+        AuraFilterId.ConnectionLevelNegative,
+        AuraFilterId.ConnectionLevelZero,
+        AuraFilterId.ConnectionLevelOne,
+        AuraFilterId.ConnectionLevelTwo,
+        AuraFilterId.ConnectionLevelThree,
         AuraFilterId.ConnectionYourEvaluationPositive,
         AuraFilterId.ConnectionYourEvaluationNegative,
         AuraFilterId.ConnectionYourEvaluationNotEvaluatedYet,

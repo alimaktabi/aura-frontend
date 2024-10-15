@@ -3,8 +3,13 @@ import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import { useContext } from 'react';
 
 import ProgressBar from '../../../components/Shared/ProgressBar';
+import {
+  viewModeToEvaluatorViewMode,
+  viewModeToViewAs,
+} from '../../../constants';
 import { EchartsContext } from '../../../contexts/EchartsContext';
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
+import useViewMode from '../../../hooks/useViewMode';
 import { compactFormat } from '../../../utils/number';
 
 const EvaluationsDetailsPerformance = ({
@@ -18,9 +23,13 @@ const EvaluationsDetailsPerformance = ({
   hasBtn?: boolean;
   title?: string;
 }) => {
+  const { currentViewMode } = useViewMode();
   const { ratings: inboundRatings, inboundRatingsStatsString } =
     useSubjectInboundEvaluationsContext({ subjectId });
-  const { auraScore } = useSubjectVerifications(subjectId);
+  const { auraScore } = useSubjectVerifications(
+    subjectId,
+    viewModeToViewAs[viewModeToEvaluatorViewMode[currentViewMode]],
+  );
 
   const { options } = useContext(EchartsContext);
 
