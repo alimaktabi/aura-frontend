@@ -2,8 +2,6 @@ import {
   getViewModeBackgroundColorClass,
   getViewModeUpArrowIcon,
   PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING,
-  viewModeToEvaluatorViewMode,
-  viewModeToViewAs,
 } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
@@ -21,10 +19,11 @@ const ProfileInfoPerformance = ({
   isPerformance: boolean;
   color: string;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentRoleEvaluatorEvaluationCategory } =
+    useViewMode();
   const { auraLevel } = useSubjectVerifications(
     subjectId,
-    viewModeToViewAs[viewModeToEvaluatorViewMode[currentViewMode]],
+    currentRoleEvaluatorEvaluationCategory,
   );
   const { myRatings } = useMyEvaluationsContext();
   const ratingsToBeDoneCount = useMemo(

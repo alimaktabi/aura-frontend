@@ -6,11 +6,11 @@ export enum PreferredView {
 }
 
 export enum ProfileTab {
-  OVERVIEW,
-  CONNECTIONS,
-  ACTIVITY,
-  EVALUATIONS,
-  ACTIVITY_ON_MANAGERS,
+  OVERVIEW = 'overview',
+  CONNECTIONS = 'connections',
+  ACTIVITY = 'activity',
+  EVALUATIONS = 'evaluations',
+  ACTIVITY_ON_MANAGERS = 'activity_on_managers',
 }
 
 export enum EvidenceViewMode {

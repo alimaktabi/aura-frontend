@@ -1,7 +1,4 @@
-import {
-  getConfidenceValueOfAuraRatingObject,
-  viewModeToViewAs,
-} from 'constants/index';
+import { getConfidenceValueOfAuraRatingObject } from 'constants/index';
 import { useMyEvaluations } from 'hooks/useMyEvaluations';
 import React, {
   createContext,
@@ -60,15 +57,14 @@ export const useMyEvaluationsContext = (props?: {
       'MyEvaluationsContext must be used within a MyEvaluationsContextProvider',
     );
   }
-  const { currentViewMode } = useViewMode();
+  const { currentEvaluationCategory } = useViewMode();
   const myRatings = useMemo(() => {
     if (!context.myRatings) return null;
     return context.myRatings.filter(
       (r) =>
-        r.category ===
-        (props?.evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+        r.category === (props?.evaluationCategory ?? currentEvaluationCategory),
     );
-  }, [context.myRatings, currentViewMode, props?.evaluationCategory]);
+  }, [context.myRatings, currentEvaluationCategory, props?.evaluationCategory]);
 
   const myRatingToSubject = useMemo(() => {
     if (!props?.subjectId || !myRatings) return undefined;

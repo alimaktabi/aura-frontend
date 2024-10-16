@@ -21,7 +21,6 @@ import { useSelector } from 'react-redux';
 import { selectAuthData, selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
 
-import { viewModeToViewAs } from '../constants';
 import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
 import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
@@ -156,17 +155,17 @@ export const useSubjectInboundEvaluationsContext = (props: {
     );
   }
 
-  const { currentViewMode } = useViewMode();
+  const { currentEvaluationCategory } = useViewMode();
   const ratings = useMemo(
     () =>
       context.ratings
         ? context.ratings.filter(
             (r) =>
               r.category ===
-              (props?.evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+              (props?.evaluationCategory ?? currentEvaluationCategory),
           )
         : null,
-    [context.ratings, currentViewMode, props?.evaluationCategory],
+    [context.ratings, currentEvaluationCategory, props?.evaluationCategory],
   );
   const authData = useSelector(selectAuthData);
   const myRatingObject = useMemo(() => {
@@ -196,14 +195,13 @@ export const useSubjectInboundEvaluationsContext = (props: {
             (o) =>
               o.rating === undefined ||
               o.rating.category ===
-                (props?.evaluationCategory ??
-                  viewModeToViewAs[currentViewMode]),
+                (props?.evaluationCategory ?? currentEvaluationCategory),
           ) || null,
       ),
     [
       context.itemsFiltered,
       context.itemsOriginal,
-      currentViewMode,
+      currentEvaluationCategory,
       props?.evaluationCategory,
     ],
   );

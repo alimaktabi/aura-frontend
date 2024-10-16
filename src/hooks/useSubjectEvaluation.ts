@@ -1,7 +1,4 @@
-import {
-  getConfidenceValueOfAuraRatingObject,
-  viewModeToViewAs,
-} from 'constants/index';
+import { getConfidenceValueOfAuraRatingObject } from 'constants/index';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { SubjectOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
 import { useContext, useMemo } from 'react';
@@ -72,15 +69,14 @@ export const useSubjectEvaluationFromContext = ({
     SubjectOutboundEvaluationsContext,
   );
 
-  const { currentViewMode } = useViewMode();
+  const { currentEvaluationCategory } = useViewMode();
   const rating = useMemo(() => {
     if (!fromSubjectId) return null;
     if (inboundEvaluationsContext?.subjectId === toSubjectId) {
       const ratingObject = inboundEvaluationsContext.ratings?.find(
         (r) =>
           r.fromBrightId === fromSubjectId &&
-          r.category ===
-            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+          r.category === (evaluationCategory ?? currentEvaluationCategory),
       );
       if (ratingObject) {
         return ratingObject;
@@ -90,8 +86,7 @@ export const useSubjectEvaluationFromContext = ({
       const ratingObject = outboundEvaluationsContext?.ratings?.find(
         (r) =>
           r.toBrightId === toSubjectId &&
-          r.category ===
-            (evaluationCategory ?? viewModeToViewAs[currentViewMode]),
+          r.category === (evaluationCategory ?? currentEvaluationCategory),
       );
       if (ratingObject) {
         return ratingObject;
@@ -99,13 +94,11 @@ export const useSubjectEvaluationFromContext = ({
     }
     return null;
   }, [
-    currentViewMode,
+    currentEvaluationCategory,
     evaluationCategory,
     fromSubjectId,
-    inboundEvaluationsContext?.ratings,
-    inboundEvaluationsContext?.subjectId,
-    outboundEvaluationsContext?.ratings,
-    outboundEvaluationsContext?.subjectId,
+    inboundEvaluationsContext,
+    outboundEvaluationsContext,
     toSubjectId,
   ]);
 

@@ -5,14 +5,14 @@ import {
   preferredViewIcon,
   subjectViewAsIcon,
   viewModeSubjectBackgroundColorClass,
-  viewModeToViewAs,
 } from '../../constants';
 import useViewMode from '../../hooks/useViewMode';
 import { EvaluationCategory, PreferredView } from '../../types/dashboard';
 
 export const HeaderPreferedView = {
   ProfileHeaderViews: () => {
-    const { updateViewAs, currentViewMode } = useViewMode();
+    const { updateViewAs, currentViewMode, currentEvaluationCategory } =
+      useViewMode();
 
     const views = [
       EvaluationCategory.SUBJECT,
@@ -26,7 +26,7 @@ export const HeaderPreferedView = {
         {views.map((subjectViewMode) => (
           <div
             className={`p-1 rounded ${
-              viewModeToViewAs[currentViewMode] === subjectViewMode
+              currentEvaluationCategory === subjectViewMode
                 ? viewModeSubjectBackgroundColorClass[currentViewMode]
                 : 'bg-gray100'
             } ml-2 cursor-pointer`}

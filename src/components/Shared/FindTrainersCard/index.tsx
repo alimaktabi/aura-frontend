@@ -1,24 +1,38 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import {
+  viewModeToEvaluatorViewMode,
+  viewModeToViewAs,
+} from '../../../constants';
+import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
+import { useSubjectConnectionInfoFromContext } from '../../../hooks/useSubjectEvaluation';
+import { useOutboundEvaluations } from '../../../hooks/useSubjectEvaluations';
+import { useSubjectName } from '../../../hooks/useSubjectName';
+import { useSubjectVerifications } from '../../../hooks/useSubjectVerifications';
 import LinkCard from '../../../pages/Home/LinkCard';
+import { PreferredView } from '../../../types/dashboard';
+import { connectionLevelIcons } from '../../../utils/connection';
+import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
-const FindTrainersCard = () => {
+const FindTrainersCard = ({ subjectId }: { subjectId: string }) => {
   return (
     <div className="card !bg-[#ECECEC]">
       <div className="mb-4.5 font-bold text-lg text-black">Find Trainers</div>
       <div className="flex flex-col gap-2.5">
-        <TrainersListBrief
+        <PotentialEvaluatorsListBrief
+          subjectId={subjectId}
           description={
             'Here is a list of trainers from you brightID connection list. Ask them to check your work and help you improve.'
           }
-          count={3}
+          evaluatorViewMode={PreferredView.TRAINER}
           title={'Trainers'}
         />
-        <TrainersListBrief
+        <PotentialEvaluatorsListBrief
+          subjectId={subjectId}
           description={
             'Or you can ask other players you know to introduce you to their trainers.'
           }
-          count={12}
+          evaluatorViewMode={PreferredView.PLAYER}
           title={'Players'}
         />
         <div className="mb-[22px]">
@@ -29,16 +43,22 @@ const FindTrainersCard = () => {
   );
 };
 
-const TrainersListBrief = ({
+const PotentialEvaluatorsListBrief = ({
   description,
-  count,
   title,
+  evaluatorViewMode,
+  subjectId,
 }: {
   description: string;
-  count: number;
   title: string;
+  evaluatorViewMode: PreferredView;
+  subjectId: string;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { itemsOriginal } = useSubjectInboundEvaluationsContext({
+    subjectId,
+  });
+  const potentialEvaluators = useMemo(() => itemsOriginal, [itemsOriginal]);
   //TODO: Animation must be implemented
   return (
     <div className="flex flex-col gap-2.5">
@@ -48,25 +68,17 @@ const TrainersListBrief = ({
           <div className="flex flex-row gap-2.5">
             {!isExpanded && (
               <div className="flex flex-row gap-0.5">
-                <img
-                  className="w-6 h-6 rounded border-pastel-green border-[1px]"
-                  src="/assets/images/profile.jpg"
-                  alt=""
-                />
-                <img
-                  className="w-6 h-6 rounded border-pastel-green border-[1px]"
-                  src="/assets/images/profile.jpg"
-                  alt=""
-                />
-                <img
-                  className="w-6 h-6 rounded border-pastel-green border-[1px]"
-                  src="/assets/images/profile.jpg"
-                  alt=""
-                />
+                {potentialEvaluators?.slice(0, 3).map((p) => (
+                  <BrightIdProfilePicture
+                    key={p.fromSubjectId}
+                    subjectId={p.fromSubjectId}
+                    className="w-6 h-6 rounded border-pastel-green border-[1px]"
+                  />
+                ))}
               </div>
             )}
             <div className="flex flex-row gap-1">
-              <span className="font-black">{count}</span>
+              <span className="font-black">{potentialEvaluators?.length}</span>
               <span className="font-medium">{title}</span>
             </div>
           </div>
@@ -88,9 +100,14 @@ const TrainersListBrief = ({
         </div>
         {isExpanded && (
           <div className="flex flex-col gap-2">
-            <TrainerItemBiref />
-            <TrainerItemBiref />
-            <TrainerItemBiref />
+            {potentialEvaluators?.map((p) => (
+              <PotentialEvaluatorBrief
+                key={p.fromSubjectId}
+                evaluatorViewMode={evaluatorViewMode}
+                evaluatorSubjectId={p.fromSubjectId}
+                subjectId={subjectId}
+              />
+            ))}
           </div>
         )}
       </div>
@@ -98,35 +115,84 @@ const TrainersListBrief = ({
   );
 };
 
-const TrainerItemBiref = () => {
+const EvaluationsCount = ({
+  evaluatorViewMode,
+  evaluatorSubjectId,
+}: {
+  evaluatorViewMode: PreferredView;
+  evaluatorSubjectId: string;
+}) => {
+  const { ratings } = useOutboundEvaluations({
+    subjectId: evaluatorSubjectId,
+    evaluationCategory: viewModeToViewAs[evaluatorViewMode],
+  });
+  return <>{ratings ? ratings.length : '...'}</>;
+};
+
+const PotentialEvaluatorBrief = ({
+  evaluatorViewMode,
+  evaluatorSubjectId,
+  subjectId,
+}: {
+  evaluatorViewMode: PreferredView;
+  evaluatorSubjectId: string;
+  subjectId: string;
+}) => {
+  const subjectName = useSubjectName(evaluatorSubjectId);
+  const { auraLevel, loading } = useSubjectVerifications(
+    evaluatorSubjectId,
+    viewModeToViewAs[viewModeToEvaluatorViewMode[evaluatorViewMode]],
+  );
+  const { connectionInfo } = useSubjectConnectionInfoFromContext({
+    fromSubjectId: evaluatorSubjectId,
+    toSubjectId: subjectId,
+  });
   return (
     <div className="flex justify-between items-center w-full">
       <div className="flex gap-1.5 items-center">
-        <img
+        <BrightIdProfilePicture
+          subjectId={evaluatorSubjectId}
           className="w-[26px] h-[26px] rounded border-pastel-green border-[1px]"
-          src="/assets/images/profile.jpg"
-          alt=""
         />
         <div className="flex flex-col leading-3">
-          <div className="font-bold text-sm leading-4">Adam Stallard</div>
+          <div className="font-bold text-sm leading-4">{subjectName}</div>
           <div className="leading-3">
-            <span className="font-bold text-xs">Level 2 </span>
-            <span className="font-medium text-xs">(7 Trainees)</span>
+            <span className="font-bold text-xs">
+              Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
+            </span>{' '}
+            {evaluatorViewMode === PreferredView.TRAINER && (
+              <span className="font-medium text-xs">
+                (
+                <EvaluationsCount
+                  evaluatorSubjectId={evaluatorSubjectId}
+                  evaluatorViewMode={evaluatorViewMode}
+                />{' '}
+                Trainees)
+              </span>
+            )}
           </div>
         </div>
       </div>
       <div className="flex flex-col leading-3">
         <div className="text-gray20 text-[10px] font-normal">
-          Your connection
+          Connection Level
         </div>
-        <div>
-          <img
-            src="/assets/images/Shared/smiling-face-with-sunglasses-emoji.svg"
-            alt=""
-            className="inline mr-0.5"
-          />
-          <span className="font-medium text-sm leading-3">Just Met</span>
-        </div>
+        {connectionInfo ? (
+          <div>
+            <img
+              src={`/assets/images/Shared/${
+                connectionLevelIcons[connectionInfo.level]
+              }.svg`}
+              alt=""
+              className="inline mr-0.5"
+            />
+            <span className="font-medium text-sm leading-3">
+              {connectionInfo.level}
+            </span>
+          </div>
+        ) : (
+          <div>...</div>
+        )}
       </div>
     </div>
   );

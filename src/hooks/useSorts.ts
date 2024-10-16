@@ -126,7 +126,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
       .filter(
         (item) => item !== undefined,
       ) as AuraSortOptions<BrightIdConnection>;
-  }, [outboundRatings, sortIds]);
+  }, [currentEvaluationCategory, outboundRatings, sortIds]);
 }
 
 export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {

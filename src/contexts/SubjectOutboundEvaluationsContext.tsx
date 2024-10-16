@@ -21,7 +21,6 @@ import { useSelector } from 'react-redux';
 import { selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraOutboundConnectionAndRatingData } from 'types';
 
-import { viewModeToViewAs } from '../constants';
 import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
 import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
@@ -154,7 +153,7 @@ export const useOutboundEvaluationsContext = (props: {
         'not provided',
     );
   }
-  const { currentViewMode } = useViewMode();
+  const { currentEvaluationCategory } = useViewMode();
   const [itemsFiltered, itemsOriginal] = useMemo(
     () =>
       [context.itemsFiltered, context.itemsOriginal].map(
@@ -163,14 +162,13 @@ export const useOutboundEvaluationsContext = (props: {
             (o) =>
               o.rating === undefined ||
               o.rating.category ===
-                (props?.evaluationCategory ??
-                  viewModeToViewAs[currentViewMode]),
+                (props?.evaluationCategory ?? currentEvaluationCategory),
           ) || null,
       ),
     [
       context.itemsFiltered,
       context.itemsOriginal,
-      currentViewMode,
+      currentEvaluationCategory,
       props?.evaluationCategory,
     ],
   );
@@ -184,11 +182,10 @@ export const useOutboundEvaluationsContext = (props: {
           ? context.ratings.filter(
               (r) =>
                 r.category ===
-                (props?.evaluationCategory ??
-                  viewModeToViewAs[currentViewMode]),
+                (props?.evaluationCategory ?? currentEvaluationCategory),
             )
           : null,
-      [context.ratings, currentViewMode, props?.evaluationCategory],
+      [context.ratings, currentEvaluationCategory, props?.evaluationCategory],
     ),
   };
 };

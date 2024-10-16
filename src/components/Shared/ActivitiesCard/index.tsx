@@ -1,26 +1,27 @@
 import { useOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
-import useViewMode from 'hooks/useViewMode';
 import moment from 'moment/moment';
 import { useMemo } from 'react';
 
 import {
+  viewModeSubjectString,
   viewModeToSubjectViewMode,
   viewModeToViewAs,
 } from '../../../constants';
+import { PreferredView } from '../../../types/dashboard';
 import ProfileEvaluationMini from './ProfileEvaluationMini';
 
 const ActivitiesCard = ({
   subjectId,
   onLastEvaluationClick,
+  viewMode,
 }: {
   subjectId: string;
   onLastEvaluationClick: (subjectId: string) => void;
+  viewMode: PreferredView;
 }) => {
-  const { subjectViewModeTitle, currentViewMode } = useViewMode();
   const { ratings: outboundRatings } = useOutboundEvaluationsContext({
     subjectId,
-    evaluationCategory:
-      viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+    evaluationCategory: viewModeToViewAs[viewModeToSubjectViewMode[viewMode]],
   });
   const outboundActiveRatings = useMemo(
     () => outboundRatings?.filter((r) => Number(r.rating)),
@@ -36,7 +37,7 @@ const ActivitiesCard = ({
   return (
     <>
       <div className=" mb-4 font-semibold text-xl text-black">
-        {subjectViewModeTitle} Activity
+        {viewModeSubjectString[viewMode]} Activity
       </div>
       <div>
         <div className="flex flex-col gap-1 leading-5 mb-3">
@@ -71,7 +72,7 @@ const ActivitiesCard = ({
             fromSubjectId={subjectId}
             toSubjectId={lastRating.toBrightId}
             evaluationCategory={
-              viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]]
+              viewModeToViewAs[viewModeToSubjectViewMode[viewMode]]
             }
             onClick={() => onLastEvaluationClick(lastRating.toBrightId)}
           ></ProfileEvaluationMini>

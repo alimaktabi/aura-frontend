@@ -18,7 +18,7 @@ import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   EvaluationCategory,
   EvidenceViewMode,
@@ -130,6 +130,22 @@ const ProfileTabs = ({
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const [selectedTab, setSelectedTab] = useState(ProfileTab.OVERVIEW);
 
+  const [query] = useSearchParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const tabFromQuery = query.get('tab') as ProfileTab | null;
+    if (tabFromQuery && Object.values(ProfileTab).includes(tabFromQuery)) {
+      setSelectedTab(tabFromQuery);
+
+      // Clear the 'tab' query parameter
+      query.delete('tab');
+      navigate({
+        pathname: window.location.pathname,
+        search: query.toString(),
+      });
+    }
+  }, [query, navigate]);
+
   const [showEvaluateOverlayCard, setShowEvaluateOverlayCard] = useState(false);
   const [credibilityDetailsSubjectId, setCredibilityDetailsSubjectId] =
     useState<string | null>(null);
@@ -154,7 +170,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         ?.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
 
   const {
     itemsOriginal: evaluationsOriginal,
@@ -164,7 +180,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     clearFilter: clearInboundEvaluationsFilter,
   } = useSubjectInboundEvaluationsContext({
     subjectId,
-    evaluationCategory: viewModeToViewAs[currentViewMode],
+    evaluationCategory: currentEvaluationCategory,
   });
   const {
     itemsOriginal: outboundEvaluationsOriginal,
@@ -276,6 +292,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           subjectId={subjectId}
           showEvidenceList={() => setSelectedTab(ProfileTab.EVALUATIONS)}
           onLastEvaluationClick={setCredibilityDetailsSubjectId}
+          viewMode={currentViewMode}
         />
       ) : selectedTab === ProfileTab.ACTIVITY ||
         selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS ? (

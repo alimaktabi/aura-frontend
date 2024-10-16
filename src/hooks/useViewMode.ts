@@ -1,6 +1,7 @@
 import {
   viewAsToViewMode,
   viewModeSubjectString,
+  viewModeToEvaluatorViewMode,
   viewModeToViewAs,
 } from 'constants/index';
 import { useCallback, useMemo } from 'react';
@@ -23,8 +24,13 @@ export default function useViewMode() {
     }
     return preferredViewMode;
   }, [preferredViewMode, query]);
+
   const currentEvaluationCategory = useMemo(
     () => viewModeToViewAs[currentViewMode],
+    [currentViewMode],
+  );
+  const currentRoleEvaluatorEvaluationCategory = useMemo(
+    () => viewModeToViewAs[viewModeToEvaluatorViewMode[currentViewMode]],
     [currentViewMode],
   );
 
@@ -62,5 +68,6 @@ export default function useViewMode() {
     setPreferredView,
     subjectViewModeTitle,
     currentEvaluationCategory,
+    currentRoleEvaluatorEvaluationCategory,
   };
 }

@@ -10,9 +10,9 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
+import LevelUp from '../../components/LevelUp';
 import { EmptySubjectList } from '../../components/Shared/EmptyAndLoadingStates/EmptySubjectList';
 import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/LoadingList';
-import FindTrainersCard from '../../components/Shared/FindTrainersCard';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ToggleInput } from '../../components/Shared/ToggleInput';
 import { useSubjectsListContext } from '../../contexts/SubjectsListContext';
@@ -23,7 +23,6 @@ import {
   selectPlayerOnboardingScreenShown,
 } from '../../store/profile/selectors';
 import { hash } from '../../utils/crypto';
-import EvaluationsDetailsPerformance from './components/EvaluationsDetailsPerformance';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
 // import LinkCard from './LinkCard';
 
@@ -49,7 +48,6 @@ const Home = () => {
     }
   }, [query, navigate]);
 
-  const hasTrainers = false;
   const authData = useSelector(selectAuthData);
   const {
     itemsFiltered: filteredSubjects,
@@ -142,18 +140,7 @@ const Home = () => {
             )}
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
-            {/*<ActivitiesCard />*/}
-            {!hasTrainers && <FindTrainersCard />}
-            {hasTrainers && (
-              <EvaluationsDetailsPerformance
-                subjectId={authData.brightId}
-                title="Evaluation by Trainers"
-                hasHeader={true}
-                hasBtn={true}
-              />
-            )}
-          </div>
+          <LevelUp subjectId={authData.brightId} />
         )}
       </div>
     </SubjectInboundEvaluationsContextProvider>

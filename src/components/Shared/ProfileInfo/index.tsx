@@ -1,7 +1,4 @@
-import {
-  getViewModeSubjectBorderColorClass,
-  viewModeToViewAs,
-} from 'constants/index';
+import { getViewModeSubjectBorderColorClass } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { useOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
@@ -17,11 +14,6 @@ import { connectionLevelIcons } from 'utils/connection';
 import NewEvaluationCard from '../../../pages/SubjectProfile/NewEvaluationCard';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 import { YourEvaluationInfo } from '../EvaluationInfo/YourEvaluationInfo';
-
-// import { useState } from 'react';
-// import { useInboundConnections } from '../../../hooks/useSubjectConnections';
-// import { ConnectionListModal } from '../../../pages/SubjectProfile/ConnectionListModal';
-// import Modal from '../Modal';
 
 export const ProfileInfo = ({
   isPerformance = false,
@@ -134,7 +126,7 @@ export const ProfileInfo = ({
         <YourEvaluationInfo
           toSubjectId={subjectId}
           setShowEvaluationFlow={setShowEvaluationFlow}
-          evaluationCategory={viewModeToViewAs[currentViewMode]}
+          evaluationCategory={currentEvaluationCategory}
         />
       )}
     </div>

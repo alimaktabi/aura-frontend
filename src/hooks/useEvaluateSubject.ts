@@ -8,7 +8,6 @@ import {
   selectOperationByHash,
 } from '../BrightID/reducer/operationsSlice';
 import { operation_states } from '../BrightID/utils/constants';
-import { viewModeToViewAs } from '../constants';
 import { EvaluationValue } from '../types/dashboard';
 import useViewMode from './useViewMode';
 
@@ -33,7 +32,7 @@ export function useEvaluateSubject() {
     getData();
   }, [connectionOp]);
 
-  const { currentViewMode } = useViewMode();
+  const { currentEvaluationCategory } = useViewMode();
   const submitEvaluation = useCallback(
     async (subjectId: string, newRating: number) => {
       if (!api || !authData) return;
@@ -45,7 +44,7 @@ export function useEvaluateSubject() {
           newRating < 0 ? EvaluationValue.NEGATIVE : EvaluationValue.POSITIVE,
           Math.abs(newRating),
           'BrightID',
-          viewModeToViewAs[currentViewMode],
+          currentEvaluationCategory,
           Date.now(),
         );
         dispatch(addOperation(op));
@@ -55,7 +54,7 @@ export function useEvaluateSubject() {
         throw e;
       }
     },
-    [api, authData, currentViewMode, dispatch],
+    [api, authData, currentEvaluationCategory, dispatch],
   );
 
   return { submitEvaluation, loading };

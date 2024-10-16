@@ -10,7 +10,6 @@ import {
   INBOUND_EVIDENCE_VIEW_MODES,
   preferredViewIconColored,
   subjectViewAsIconColored,
-  viewModeToEvaluatorViewMode,
   viewModeToSubjectViewMode,
   viewModeToViewAs,
 } from 'constants/index';
@@ -45,14 +44,14 @@ const ProfileEvaluation = ({
   onClick: () => void;
   evidenceViewMode: EvidenceViewMode;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
   const { loading, ratingNumber } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
     evaluationCategory:
       INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode) ||
       evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
-        ? viewModeToViewAs[currentViewMode]
+        ? currentEvaluationCategory
         : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   return (
@@ -87,7 +86,7 @@ const ConnectionInfo = ({
   subjectId: string;
   evidenceViewMode: EvidenceViewMode;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
   const {
     myRatingToSubject: rating,
     loading,
@@ -95,7 +94,7 @@ const ConnectionInfo = ({
   } = useMyEvaluationsContext({
     subjectId,
     evaluationCategory: INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
-      ? viewModeToViewAs[currentViewMode]
+      ? currentEvaluationCategory
       : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   const bgColor = useMemo(() => {
@@ -193,13 +192,14 @@ const UserInformation = ({
   isConnected?: boolean;
   evidenceViewMode: EvidenceViewMode;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentRoleEvaluatorEvaluationCategory } =
+    useViewMode();
   const { auraLevel, auraScore, loading } = useSubjectVerifications(
     subjectId,
     evidenceViewMode === EvidenceViewMode.INBOUND_CONNECTION
       ? EvaluationCategory.SUBJECT
       : evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
-      ? viewModeToViewAs[viewModeToEvaluatorViewMode[currentViewMode]]
+      ? currentRoleEvaluatorEvaluationCategory
       : viewModeToViewAs[
           evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
             ? currentViewMode
@@ -341,14 +341,14 @@ export const EvaluationInformation = ({
   toSubjectId: string;
   evidenceViewMode: EvidenceViewMode;
 }) => {
-  const { currentViewMode } = useViewMode();
+  const { currentViewMode, currentEvaluationCategory } = useViewMode();
   const { rating, loading } = useSubjectEvaluationFromContext({
     fromSubjectId,
     toSubjectId,
     evaluationCategory:
       INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode) ||
       evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
-        ? viewModeToViewAs[currentViewMode]
+        ? currentEvaluationCategory
         : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
   //TODO: change bg color on negative rating

@@ -3,12 +3,13 @@ import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEval
 import ReactECharts from 'echarts-for-react';
 import { AuraFilterId } from 'hooks/useFilters';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
-import useViewMode from 'hooks/useViewMode';
+import * as React from 'react';
 import { useContext, useState } from 'react';
-import { PreferredView } from 'types/dashboard';
+import { Link } from 'react-router-dom';
+import { PreferredView, ProfileTab } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
-import { viewModeToString } from '../../../constants';
+import { viewModeToString, viewModeToViewAs } from '../../../constants';
 import { EchartsContext } from '../../../contexts/EchartsContext';
 import { compactFormat } from '../../../utils/number';
 
@@ -17,28 +18,31 @@ const ProfileOverview = ({
   title = '',
   showEvidenceList,
   hasHeader = false,
-  hasBtn = false,
   onLastEvaluationClick,
+  onFindEvaluatorsButtonClick,
+  viewMode,
+  isMyPerformance,
 }: {
   subjectId: string;
   showEvidenceList?: () => void;
   hasHeader?: boolean;
-  hasBtn?: boolean;
   title?: string;
   onLastEvaluationClick: (subjectId: string) => void;
+  onFindEvaluatorsButtonClick?: () => void;
+  viewMode: PreferredView;
+  isMyPerformance?: boolean;
 }) => {
-  const { currentViewMode, currentEvaluationCategory } = useViewMode();
   const {
     ratings: inboundRatings,
     inboundRatingsStatsString,
     connections: inboundConnections,
   } = useSubjectInboundEvaluationsContext({
     subjectId,
-    evaluationCategory: currentEvaluationCategory,
+    evaluationCategory: viewModeToViewAs[viewMode],
   });
   const { auraScore } = useSubjectVerifications(
     subjectId,
-    currentEvaluationCategory,
+    viewModeToViewAs[viewMode],
   );
 
   const [selectedLevel, setSelectedLevel] = useState(1);
@@ -58,17 +62,18 @@ const ProfileOverview = ({
       {hasHeader && (
         <div className=" mb-4 font-bold text-lg text-black">{title}</div>
       )}
-      {currentViewMode !== PreferredView.PLAYER && (
+      {viewMode !== PreferredView.PLAYER && (
         <ActivitiesCard
           subjectId={subjectId}
           onLastEvaluationClick={onLastEvaluationClick}
+          viewMode={viewMode}
         />
       )}
 
       <div className="flex flex-col gap-1.5">
-        {currentViewMode !== PreferredView.PLAYER && (
+        {viewMode !== PreferredView.PLAYER && (
           <div className=" mt-4 font-semibold text-xl text-black">
-            {viewModeToString[currentViewMode]} Evaluations
+            {viewModeToString[viewMode]} Evaluations
           </div>
         )}
         {/*<ShowData*/}
@@ -76,7 +81,7 @@ const ProfileOverview = ({
         {/*  value={inboundConnections?.length ?? '...'}*/}
         {/*  details={null}*/}
         {/*/>*/}
-        {currentViewMode === PreferredView.PLAYER && (
+        {viewMode === PreferredView.PLAYER && (
           <>
             <div className="flex justify-between w-full">
               <p className="font-medium">Connections:</p>
@@ -251,7 +256,24 @@ const ProfileOverview = ({
           score
         </p>
       </div>
-      {hasBtn && <button className="btn mt-4">View All Evaluations</button>}
+
+      {isMyPerformance && (
+        <>
+          <Link
+            to={`/subject/${subjectId}?viewas=${viewModeToViewAs[viewMode]}&tab=${ProfileTab.EVALUATIONS}`}
+            className="w-full"
+          >
+            <button className="btn--outlined btn--medium mt-4 w-full">
+              View All Evaluations
+            </button>
+          </Link>
+          {viewMode === PreferredView.TRAINER && (
+            <button onClick={onFindEvaluatorsButtonClick} className="btn mt-3">
+              Find New Trainer
+            </button>
+          )}
+        </>
+      )}
     </div>
   );
 };
