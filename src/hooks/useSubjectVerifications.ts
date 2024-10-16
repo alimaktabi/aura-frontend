@@ -11,7 +11,6 @@ import {
 } from '../api/auranode.service';
 import { findNearestColor, valueColorMap } from '../constants/chart';
 import { EvaluationCategory } from '../types/dashboard';
-import { compactFormat } from '../utils/number';
 
 export const useSubjectVerifications = (
   subjectId: string | null | undefined,
@@ -93,7 +92,7 @@ export const useImpactEChartOption = (
       auraImpacts
         ?.filter((i) => i.impact)
         .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact))
-        .slice(0, 10) ?? [],
+        .slice(0, 20) ?? [],
     [auraImpacts],
   );
   const impactChartOption: EChartsOption = useMemo(() => {
@@ -140,14 +139,6 @@ export const useImpactEChartOption = (
               borderRadius: item.impact >= 0 ? [4, 4, 0, 0] : [0, 0, 4, 4],
             },
           })),
-          label: {
-            show: true,
-            position: 'top',
-            color: '#000',
-            formatter: (params: any) => {
-              return compactFormat(params.value);
-            },
-          },
           type: 'bar',
           barGap: '0',
           barMaxWidth: 30,
