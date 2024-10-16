@@ -87,7 +87,7 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
         {
           id: AuraFilterId.ConnectionLevelNegative,
           category: FilterCategoryId.Level,
-          title: 'Level Negative',
+          title: 'Negative',
           func: (_item) => true,
         },
         {
