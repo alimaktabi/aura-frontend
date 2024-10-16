@@ -5,6 +5,7 @@ import {
   viewModeToViewAs,
 } from '../../../constants';
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
+import { getAuraVerification } from '../../../hooks/useParseBrightIdVerificationData';
 import { useSubjectConnectionInfoFromContext } from '../../../hooks/useSubjectEvaluation';
 import { useOutboundEvaluations } from '../../../hooks/useSubjectEvaluations';
 import { useSubjectName } from '../../../hooks/useSubjectName';
@@ -58,7 +59,17 @@ const PotentialEvaluatorsListBrief = ({
   const { itemsOriginal } = useSubjectInboundEvaluationsContext({
     subjectId,
   });
-  const potentialEvaluators = useMemo(() => itemsOriginal, [itemsOriginal]);
+  const potentialEvaluators = useMemo(
+    () =>
+      itemsOriginal?.filter((c) => {
+        const level = getAuraVerification(
+          c.inboundConnection?.verifications,
+          viewModeToViewAs[viewModeToEvaluatorViewMode[evaluatorViewMode]],
+        )?.level;
+        return level && level > 0;
+      }),
+    [evaluatorViewMode, itemsOriginal],
+  );
   //TODO: Animation must be implemented
   return (
     <div className="flex flex-col gap-2.5">

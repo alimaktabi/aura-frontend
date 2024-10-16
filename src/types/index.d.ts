@@ -117,14 +117,14 @@ export type AuraInboundConnectionAndRatingData = {
   fromSubjectId: string;
   name?: string;
   rating?: AuraRating;
-  inboundConnection?: BrightIdConnection;
+  inboundConnection?: AuraNodeBrightIdConnection;
 };
 
 export type AuraOutboundConnectionAndRatingData = {
   toSubjectId: string;
   name?: string;
   rating?: AuraRating;
-  outboundConnection?: BrightIdConnection;
+  outboundConnection?: AuraNodeBrightIdConnection;
 };
 
 export type AuraRatingRetrieveResponse = {
