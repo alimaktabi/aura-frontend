@@ -36,6 +36,7 @@ export enum AuraFilterId {
   ConnectionLevelOne,
   ConnectionLevelTwo,
   ConnectionLevelThree,
+  ConnectionLevelFour,
 }
 
 export type AuraFilterOption<T> = {
@@ -121,6 +122,14 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           func: (item) =>
             getAuraVerification(item.verifications, currentEvaluationCategory)
               ?.level === 3,
+        },
+        {
+          id: AuraFilterId.ConnectionLevelFour,
+          category: FilterCategoryId.Level,
+          title: 'Level 4',
+          func: (item) =>
+            getAuraVerification(item.verifications, currentEvaluationCategory)
+              ?.level === 4,
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationPositive,

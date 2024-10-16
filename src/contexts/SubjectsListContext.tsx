@@ -39,6 +39,7 @@ export const SubjectsListContextProvider: React.FC<ProviderProps> = ({
         AuraFilterId.ConnectionLevelOne,
         AuraFilterId.ConnectionLevelTwo,
         AuraFilterId.ConnectionLevelThree,
+        AuraFilterId.ConnectionLevelFour,
         AuraFilterId.ConnectionYourEvaluationPositive,
         AuraFilterId.ConnectionYourEvaluationNegative,
         AuraFilterId.ConnectionYourEvaluationNotEvaluatedYet,
