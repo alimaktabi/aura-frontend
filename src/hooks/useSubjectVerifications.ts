@@ -75,7 +75,7 @@ export const useImpactEChartOption = (
     () =>
       auraImpacts
         ?.filter((i) => i.impact)
-        .sort((a, b) => b.impact - a.impact) ?? [],
+        .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact)) ?? [],
     [auraImpacts],
   );
   const impactChartOption: EChartsOption = useMemo(() => {
