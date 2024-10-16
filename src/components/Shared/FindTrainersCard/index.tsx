@@ -56,7 +56,7 @@ const PotentialEvaluatorsListBrief = ({
   subjectId: string;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { itemsOriginal } = useSubjectInboundEvaluationsContext({
+  const { itemsOriginal, loading } = useSubjectInboundEvaluationsContext({
     subjectId,
   });
   const potentialEvaluators = useMemo(
@@ -89,7 +89,11 @@ const PotentialEvaluatorsListBrief = ({
               </div>
             )}
             <div className="flex flex-row gap-1">
-              <span className="font-black">{potentialEvaluators?.length}</span>
+              <span className="font-black">
+                {!loading && potentialEvaluators
+                  ? potentialEvaluators.length
+                  : '...'}
+              </span>
               <span className="font-medium">{title}</span>
             </div>
           </div>
