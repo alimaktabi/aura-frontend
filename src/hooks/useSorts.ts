@@ -1,5 +1,5 @@
 import { SortCategoryId } from 'hooks/useFilterAndSort';
-import { getAuraVerificationScore } from 'hooks/useParseBrightIdVerificationData';
+import { getAuraVerification } from 'hooks/useParseBrightIdVerificationData';
 import { useMemo } from 'react';
 import {
   AuraInboundConnectionAndRatingData,
@@ -92,14 +92,10 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
         defaultAscending: true,
         category: SortCategoryId.Default,
         func: (a, b) =>
-          (getAuraVerificationScore(
-            a.verifications,
-            currentEvaluationCategory,
-          ) ?? 0) -
-          (getAuraVerificationScore(
-            b.verifications,
-            currentEvaluationCategory,
-          ) ?? 0),
+          (getAuraVerification(a.verifications, currentEvaluationCategory)
+            ?.score ?? 0) -
+          (getAuraVerification(b.verifications, currentEvaluationCategory)
+            ?.score ?? 0),
       },
       {
         id: AuraSortId.ConnectionRecentEvaluation,

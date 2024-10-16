@@ -1,6 +1,6 @@
 import useBrightIdBackupWithAuraConnectionData from 'hooks/useBrightIdBackupWithAuraConnectionData';
 import { FilterCategoryId } from 'hooks/useFilterAndSort';
-import { getAuraVerificationLevel } from 'hooks/useParseBrightIdVerificationData';
+import { getAuraVerification } from 'hooks/useParseBrightIdVerificationData';
 import { useOutboundEvaluations } from 'hooks/useSubjectEvaluations';
 import { useMemo } from 'react';
 import {
@@ -95,42 +95,32 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           category: FilterCategoryId.Level,
           title: 'Level 0',
           func: (item) =>
-            [0, null].includes(
-              getAuraVerificationLevel(
-                item.verifications,
-                currentEvaluationCategory,
-              ),
-            ),
+            !getAuraVerification(item.verifications, currentEvaluationCategory)
+              ?.level,
         },
         {
           id: AuraFilterId.ConnectionLevelOne,
           category: FilterCategoryId.Level,
           title: 'Level 1',
           func: (item) =>
-            getAuraVerificationLevel(
-              item.verifications,
-              currentEvaluationCategory,
-            ) === 1,
+            getAuraVerification(item.verifications, currentEvaluationCategory)
+              ?.level === 1,
         },
         {
           id: AuraFilterId.ConnectionLevelTwo,
           category: FilterCategoryId.Level,
           title: 'Level 2',
           func: (item) =>
-            getAuraVerificationLevel(
-              item.verifications,
-              currentEvaluationCategory,
-            ) === 2,
+            getAuraVerification(item.verifications, currentEvaluationCategory)
+              ?.level === 2,
         },
         {
           id: AuraFilterId.ConnectionLevelThree,
           category: FilterCategoryId.Level,
           title: 'Level 3',
           func: (item) =>
-            getAuraVerificationLevel(
-              item.verifications,
-              currentEvaluationCategory,
-            ) === 3,
+            getAuraVerification(item.verifications, currentEvaluationCategory)
+              ?.level === 3,
         },
         {
           id: AuraFilterId.ConnectionYourEvaluationPositive,

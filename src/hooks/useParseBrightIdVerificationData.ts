@@ -11,34 +11,17 @@ export const getUserHasRecovery = (
     (verification) => verification.name === 'SocialRecoverySetup',
   );
 };
-//TODO: filter aura verification based on evaluationCategory and make it required parameter
-export const getAuraVerificationScore = (
+export const getAuraVerification = (
   verifications: Verifications | undefined,
   evaluationCategory: EvaluationCategory,
-): number | null => {
+) => {
   if (!verifications) return null;
   const auraVerification = verifications.find(
     (verification) => verification.name === 'Aura',
   );
-  return (
-    auraVerification?.domains
-      ?.find((d) => d.name === 'BrightID')
-      ?.categories.find((c) => c.name === evaluationCategory)?.score ?? null
-  );
-};
-export const getAuraVerificationLevel = (
-  verifications: Verifications | undefined,
-  evaluationCategory: EvaluationCategory,
-): number | null => {
-  if (!verifications) return null;
-  const auraVerification = verifications.find(
-    (verification) => verification.name === 'Aura',
-  );
-  return (
-    auraVerification?.domains
-      ?.find((d) => d.name === 'BrightID')
-      ?.categories.find((c) => c.name === evaluationCategory)?.level ?? null
-  );
+  return auraVerification?.domains
+    ?.find((d) => d.name === 'BrightID')
+    ?.categories.find((c) => c.name === evaluationCategory);
 };
 
 export default function useParseBrightIdVerificationData(
@@ -49,17 +32,27 @@ export default function useParseBrightIdVerificationData(
     () => getUserHasRecovery(verifications),
     [verifications],
   );
-  const auraLevel = useMemo(
-    () => getAuraVerificationLevel(verifications, evaluationCategory),
+  const auraVerification = useMemo(
+    () => getAuraVerification(verifications, evaluationCategory),
     [evaluationCategory, verifications],
   );
+  const auraLevel = useMemo(
+    () => auraVerification?.level ?? null,
+    [auraVerification?.level],
+  );
   const auraScore = useMemo(
-    () => getAuraVerificationScore(verifications, evaluationCategory),
-    [evaluationCategory, verifications],
+    () => auraVerification?.score ?? null,
+    [auraVerification?.score],
+  );
+  const auraImpacts = useMemo(
+    () => auraVerification?.impacts ?? null,
+    [auraVerification?.impacts],
   );
   return {
     userHasRecovery,
+    auraVerification,
     auraScore,
     auraLevel,
+    auraImpacts,
   };
 }

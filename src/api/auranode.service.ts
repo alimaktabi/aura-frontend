@@ -1,6 +1,14 @@
 import { EvaluationCategory } from '../types/dashboard';
 import { auraBrightIdNodeApi } from './index';
 
+export type AuraImpact = {
+  evaluator: string;
+  level?: number | null;
+  score: number | null;
+  confidence: number;
+  impact: number;
+};
+
 export type Verifications = {
   name: string;
   block: number;
@@ -11,13 +19,7 @@ export type Verifications = {
       name: EvaluationCategory;
       score: number;
       level: number;
-      impacts: {
-        evaluator: string;
-        level?: number | null;
-        score: number | null;
-        confidence: number;
-        impact: number;
-      }[];
+      impacts: AuraImpact[];
     }[];
   }[];
 }[];

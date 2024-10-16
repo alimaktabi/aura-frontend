@@ -14,7 +14,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import App from './App';
-import { EchartsContextProvider } from './contexts/EchartsContext';
 import { RefreshEvaluationsContextProvider } from './contexts/RefreshEvaluationsContext';
 import { persistor, store } from './store';
 
@@ -37,23 +36,21 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <EchartsContextProvider>
-        <PersistGate persistor={persistor}>
-          <BrowserRouter>
-            <RefreshEvaluationsContextProvider>
-              <MyEvaluationsContextProvider>
-                <SubjectsListContextProvider>
-                  <NodeApiGateContextProvider>
-                    <BrowserHistoryContextProvider>
-                      <App />
-                    </BrowserHistoryContextProvider>
-                  </NodeApiGateContextProvider>
-                </SubjectsListContextProvider>
-              </MyEvaluationsContextProvider>
-            </RefreshEvaluationsContextProvider>
-          </BrowserRouter>
-        </PersistGate>
-      </EchartsContextProvider>
+      <PersistGate persistor={persistor}>
+        <BrowserRouter>
+          <RefreshEvaluationsContextProvider>
+            <MyEvaluationsContextProvider>
+              <SubjectsListContextProvider>
+                <NodeApiGateContextProvider>
+                  <BrowserHistoryContextProvider>
+                    <App />
+                  </BrowserHistoryContextProvider>
+                </NodeApiGateContextProvider>
+              </SubjectsListContextProvider>
+            </MyEvaluationsContextProvider>
+          </RefreshEvaluationsContextProvider>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
 );

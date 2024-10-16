@@ -1,16 +1,15 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
 import { ConnectionAndEvaluationStatus } from 'components/ConnectionAndEvaluationStatus';
 import { getViewModeSubjectBorderColorClass } from 'constants/index';
-import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerificationData';
 import { useSubjectName } from 'hooks/useSubjectName';
 import useViewMode from 'hooks/useViewMode';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { compactFormat } from 'utils/number';
 
+import { useImpactEChartOption } from '../../hooks/useSubjectVerifications';
 import { HorizontalProgressBar } from '../Shared/HorizontalProgressBar';
 
 export const SubjectCard = ({
@@ -22,16 +21,16 @@ export const SubjectCard = ({
 }) => {
   const name = useSubjectName(subjectId);
 
-  const { options3 } = useContext(EchartsContext);
-
   const { myConnectionToSubject: inboundConnectionInfo } =
     useMyEvaluationsContext({ subjectId });
   const { currentViewMode, currentEvaluationCategory } = useViewMode();
 
-  const { auraLevel, auraScore } = useParseBrightIdVerificationData(
-    inboundConnectionInfo?.verifications,
-    currentEvaluationCategory,
-  );
+  const { auraLevel, auraScore, auraImpacts } =
+    useParseBrightIdVerificationData(
+      inboundConnectionInfo?.verifications,
+      currentEvaluationCategory,
+    );
+  const { impactChartSmallOption } = useImpactEChartOption(auraImpacts);
 
   return (
     <Link
@@ -81,7 +80,7 @@ export const SubjectCard = ({
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
-            option={options3}
+            option={impactChartSmallOption}
           />
         </div>
       </div>

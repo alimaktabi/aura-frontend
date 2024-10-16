@@ -1,5 +1,4 @@
 import Modal from 'components/Shared/Modal';
-import { EchartsContext } from 'contexts/EchartsContext';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import {
@@ -7,8 +6,11 @@ import {
   useOutboundEvaluations,
 } from 'hooks/useSubjectEvaluations';
 import { useSubjectName } from 'hooks/useSubjectName';
-import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
-import { useContext, useMemo, useState } from 'react';
+import {
+  useImpactEChartOption,
+  useSubjectVerifications,
+} from 'hooks/useSubjectVerifications';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
@@ -32,7 +34,7 @@ const CredibilityDetailsForRole = ({
   onClose: () => void;
 }) => {
   const authData = useSelector(selectAuthData);
-  const { auraLevel, auraScore } = useSubjectVerifications(
+  const { auraLevel, auraScore, auraImpacts } = useSubjectVerifications(
     subjectId,
     roleEvaluationCategory,
   );
@@ -50,7 +52,7 @@ const CredibilityDetailsForRole = ({
     evaluationCategory: roleEvaluationCategory,
   });
   const { connections } = useOutboundEvaluations({ subjectId });
-  const { options2 } = useContext(EchartsContext);
+  const { impactChartOption } = useImpactEChartOption(auraImpacts);
   const link = '/subject/' + subjectId;
   const navigate = useNavigate();
 
@@ -125,7 +127,7 @@ const CredibilityDetailsForRole = ({
       </div>
       <ReactECharts
         style={{ height: '110px' }}
-        option={options2}
+        option={impactChartOption}
         className="body__chart w-full mb-5 mt-2"
       />
       <Link

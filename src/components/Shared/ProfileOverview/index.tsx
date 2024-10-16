@@ -2,15 +2,17 @@ import ActivitiesCard from 'components/Shared/ActivitiesCard';
 import { useSubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
 import { AuraFilterId } from 'hooks/useFilters';
-import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import {
+  useImpactEChartOption,
+  useSubjectVerifications,
+} from 'hooks/useSubjectVerifications';
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PreferredView, ProfileTab } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
 import { viewModeToString, viewModeToViewAs } from '../../../constants';
-import { EchartsContext } from '../../../contexts/EchartsContext';
 import { compactFormat } from '../../../utils/number';
 
 const ProfileOverview = ({
@@ -40,18 +42,17 @@ const ProfileOverview = ({
     subjectId,
     evaluationCategory: viewModeToViewAs[viewMode],
   });
-  const { auraScore } = useSubjectVerifications(
+  const { auraScore, auraImpacts } = useSubjectVerifications(
     subjectId,
     viewModeToViewAs[viewMode],
   );
+  const { impactChartOption } = useImpactEChartOption(auraImpacts);
 
   const [selectedLevel, setSelectedLevel] = useState(1);
 
   const { toggleFiltersById } = useSubjectInboundEvaluationsContext({
     subjectId,
   });
-
-  const { options2 } = useContext(EchartsContext);
 
   const setEvidenceListFilter = (filterId: AuraFilterId) => {
     toggleFiltersById([filterId], true);
@@ -222,7 +223,10 @@ const ProfileOverview = ({
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
 
-        <ReactECharts option={options2} className="body__chart w-full mb-3" />
+        <ReactECharts
+          option={impactChartOption}
+          className="body__chart w-full mb-3"
+        />
 
         <div className="chart-info flex flex-wrap gap-y-2.5 mb-5">
           <div className="chart-info__item flex items-center gap-1 w-1/2">
