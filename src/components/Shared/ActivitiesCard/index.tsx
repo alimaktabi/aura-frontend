@@ -50,8 +50,8 @@ const ActivitiesCard = ({
               <span>
                 (
                 {outboundRatings?.filter((r) => Number(r.rating) > 0).length ??
-                  '...'}{' '}
-                Pos /
+                  '...'}
+                {' Pos / '}
                 {outboundRatings?.filter((r) => Number(r.rating) < 0).length ??
                   '...'}{' '}
                 Neg)
