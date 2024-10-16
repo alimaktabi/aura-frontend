@@ -68,6 +68,23 @@ export const useSubjectVerifications = (
   };
 };
 
+export const useImpactPercent = (
+  auraImpacts: AuraImpact[] | null | undefined,
+  fromSubjectId: string,
+) => {
+  return useMemo(() => {
+    const totalAbsoluteImpact = auraImpacts?.reduce(
+      (a, c) => a + Math.abs(c.impact),
+      0,
+    );
+    const evaluatorImpact = auraImpacts?.find(
+      (i) => i.evaluator === fromSubjectId,
+    )?.impact;
+    if (!totalAbsoluteImpact || !evaluatorImpact) return 0;
+    return Math.round(Math.abs(evaluatorImpact) / totalAbsoluteImpact);
+  }, [auraImpacts, fromSubjectId]);
+};
+
 export const useImpactEChartOption = (
   auraImpacts: AuraImpact[] | null | undefined,
 ) => {
@@ -75,7 +92,8 @@ export const useImpactEChartOption = (
     () =>
       auraImpacts
         ?.filter((i) => i.impact)
-        .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact)) ?? [],
+        .sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact))
+        .slice(0, 10) ?? [],
     [auraImpacts],
   );
   const impactChartOption: EChartsOption = useMemo(() => {

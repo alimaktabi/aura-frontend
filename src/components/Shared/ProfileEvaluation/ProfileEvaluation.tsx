@@ -97,6 +97,8 @@ const ConnectionInfo = ({
       ? currentEvaluationCategory
       : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
+  // const {} = useSubjectVerifications()
+  // const impactPercent = useImpactPercent(, )
   const bgColor = useMemo(() => {
     if (rating && Number(rating?.rating) !== 0) {
       return getBgClassNameOfAuraRatingObject(rating);
