@@ -216,7 +216,47 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
   ]);
 }
 
-export function useInboundEvaluationFilters(
+export function useInboundEvaluationsFilters(
+  filterIds: AuraFilterId[],
+  subjectId?: string,
+) {
+  return useMemo(() => {
+    const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
+      // {
+      //   id: AuraFilterId.EvaluationMutualConnections,
+      //   category: FilterCategoryId.Default,
+      //   title: 'Mutual Connections',
+      //   func: (item) =>
+      //     !!brightIdBackup?.connections.find(
+      //       (conn) =>
+      //         item.rating?.fromBrightId === conn.id ||
+      //         item.inboundConnection?.id === conn.id,
+      //     ),
+      // },
+      {
+        id: AuraFilterId.EvaluationPositiveEvaluations,
+        category: FilterCategoryId.Default,
+        title: 'Positive Evaluations',
+        func: (item) =>
+          item.rating !== undefined && Number(item.rating.rating) > 0,
+      },
+      {
+        id: AuraFilterId.EvaluationNegativeEvaluations,
+        category: FilterCategoryId.Default,
+        title: 'Negative Evaluations',
+        func: (item) =>
+          item.rating !== undefined && Number(item.rating.rating) < 0,
+      },
+    ];
+    return filterIds
+      .map((id) => filters.find((f) => f.id === id))
+      .filter(
+        (item) => item !== undefined,
+      ) as AuraFilterOptions<AuraInboundConnectionAndRatingData>;
+  }, [filterIds]);
+}
+
+export function useInboundConnectionsFilters(
   filterIds: AuraFilterId[],
   subjectId?: string,
 ) {
@@ -234,33 +274,6 @@ export function useInboundEvaluationFilters(
               item.rating?.fromBrightId === conn.id ||
               item.inboundConnection?.id === conn.id,
           ),
-      },
-      // {
-      //   id: AuraFilterId.EvaluationJustEvaluations,
-      //   category: FilterCategoryId.Default,
-      //   title: 'Just Evaluations',
-      //   func: (item) =>
-      //     item.rating !== undefined && Number(item.rating.rating) !== 0,
-      // },
-      // {
-      //   id: AuraFilterId.EvaluationJustConnections,
-      //   category: FilterCategoryId.Default,
-      //   title: 'Just Connections',
-      //   func: (item) => item.rating === undefined,
-      // },
-      {
-        id: AuraFilterId.EvaluationPositiveEvaluations,
-        category: FilterCategoryId.Default,
-        title: 'Positive Evaluations',
-        func: (item) =>
-          item.rating !== undefined && Number(item.rating.rating) > 0,
-      },
-      {
-        id: AuraFilterId.EvaluationNegativeEvaluations,
-        category: FilterCategoryId.Default,
-        title: 'Negative Evaluations',
-        func: (item) =>
-          item.rating !== undefined && Number(item.rating.rating) < 0,
       },
       {
         id: AuraFilterId.EvaluationTheirRecovery,

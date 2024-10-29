@@ -1,9 +1,11 @@
 export const EmptySubjectList = ({
   clearFilter,
   hasFilter,
+  showConnectionGuide,
 }: {
   clearFilter: () => void;
   hasFilter: boolean;
+  showConnectionGuide?: boolean;
 }) => {
   return (
     <div className="flex flex-col items-center justify-center py-10 px-2 gap-2">
@@ -19,14 +21,16 @@ export const EmptySubjectList = ({
             Reset view to default
           </span>
         ) : (
-          <>
-            Open the{' '}
-            <span className="text-bright-l1 hover:underline cursor-pointer">
-              BrightID
-            </span>{' '}
-            app to connect with someone. After connecting, you&apos;ll be able
-            to evaluate them here
-          </>
+          showConnectionGuide && (
+            <>
+              Open the{' '}
+              <span className="text-bright-l1 hover:underline cursor-pointer">
+                BrightID
+              </span>{' '}
+              app to connect with someone. After connecting, you&apos;ll be able
+              to evaluate them here
+            </>
+          )
         )}
       </p>
     </div>

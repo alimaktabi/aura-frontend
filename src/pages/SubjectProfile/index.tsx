@@ -29,6 +29,7 @@ import { __DEV__ } from 'utils/env';
 
 import { EmptyActivitiesList } from '../../components/Shared/EmptyAndLoadingStates/EmptyActivitiesList';
 import { EmptyEvaluationsList } from '../../components/Shared/EmptyAndLoadingStates/EmptyEvaluationsList';
+import { EmptySubjectList } from '../../components/Shared/EmptyAndLoadingStates/EmptySubjectList';
 import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/LoadingList';
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
@@ -39,7 +40,12 @@ import {
   viewModeToSubjectViewMode,
   viewModeToViewAs,
 } from '../../constants';
+import {
+  SubjectInboundConnectionsContextProvider,
+  useSubjectInboundConnectionsContext,
+} from '../../contexts/SubjectInboundConnectionsContext';
 import { selectAuthData } from '../../store/profile/selectors';
+import { ConnectionListSearch } from './ConnectionListSearch';
 
 const ProfileTabs = ({
   selectedTab,
@@ -183,6 +189,16 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     evaluationCategory: currentEvaluationCategory,
   });
   const {
+    itemsOriginal: connectionsOriginal,
+    itemsFiltered: connections,
+    loading: loadingInboundConnections,
+    selectedFilterIds: inboundConnectionsSelectedFilterId,
+    clearFilter: clearInboundConnectionsFilter,
+  } = useSubjectInboundConnectionsContext({
+    subjectId,
+    evaluationCategory: currentEvaluationCategory,
+  });
+  const {
     itemsOriginal: outboundEvaluationsOriginal,
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
@@ -197,17 +213,17 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   });
 
   const [evaluators, evaluatorsOriginal] = useMemo(() => {
-    return [evaluations, evaluationsOriginal].map((items) => {
-      if (!items) return [];
-      if (selectedTab === ProfileTab.CONNECTIONS) {
-        return items
-          .filter((e) => e.inboundConnection)
-          .map((e) => e.fromSubjectId);
-      } else {
-        return items.filter((e) => e.rating).map((e) => e.fromSubjectId);
-      }
-    });
-  }, [evaluations, evaluationsOriginal, selectedTab]);
+    return [evaluations, evaluationsOriginal].map(
+      (items) =>
+        items?.filter((e) => e.rating).map((e) => e.fromSubjectId) || [],
+    );
+  }, [evaluations, evaluationsOriginal]);
+
+  const [connectionIds, connectionIdsOriginal] = useMemo(() => {
+    return [connections, connectionsOriginal].map(
+      (items) => items?.map((e) => e.fromSubjectId) || [],
+    );
+  }, [connections, connectionsOriginal]);
 
   const [evaluateds, evaluatedsOriginal] = useMemo(() => {
     return [outboundEvaluations, outboundEvaluationsOriginal].map(
@@ -361,7 +377,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
             </>
           )}
         </>
-      ) : (
+      ) : selectedTab === ProfileTab.EVALUATIONS ? (
         <>
           <EvidenceListSearch subjectId={subjectId} />
           {loadingInboundEvaluations ? (
@@ -369,9 +385,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           ) : (
             <>
               <div className="text-lg text-white flex">
-                {selectedTab === ProfileTab.CONNECTIONS
-                  ? 'Subjects'
-                  : viewModeToString[currentViewMode] + 's '}
+                {viewModeToString[currentViewMode] + 's '}
                 <strong className="ml-1">({evaluatorsOriginal.length})</strong>
                 {inboundEvaluationsSelectedFilterId !== null && (
                   <span className="ml-2">
@@ -386,11 +400,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                   items={evaluators}
                   renderItem={(evaluator) => (
                     <ProfileEvaluation
-                      evidenceViewMode={
-                        selectedTab === ProfileTab.CONNECTIONS
-                          ? EvidenceViewMode.INBOUND_CONNECTION
-                          : EvidenceViewMode.INBOUND_EVALUATION
-                      }
+                      evidenceViewMode={EvidenceViewMode.INBOUND_EVALUATION}
                       onClick={() => setCredibilityDetailsSubjectId(evaluator)}
                       key={evaluator}
                       fromSubjectId={evaluator}
@@ -402,6 +412,50 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                 <EmptyEvaluationsList
                   hasFilter={inboundEvaluationsSelectedFilterId !== null}
                   clearFilter={clearInboundEvaluationsFilter}
+                />
+              )}
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <ConnectionListSearch subjectId={subjectId} />
+          {loadingInboundConnections ? (
+            <LoadingList />
+          ) : (
+            <>
+              <div className="text-lg text-white flex">
+                Subjects
+                <strong className="ml-1">
+                  ({connectionIdsOriginal.length})
+                </strong>
+                {inboundConnectionsSelectedFilterId !== null && (
+                  <span className="ml-2">
+                    ({connectionIds.length} filter result
+                    {connectionIds.length !== 1 ? 's' : ''})
+                  </span>
+                )}
+              </div>
+              {connectionIds.length > 0 ? (
+                <InfiniteScrollLocal
+                  className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+                  items={connectionIds}
+                  renderItem={(connectionId) => (
+                    <ProfileEvaluation
+                      evidenceViewMode={EvidenceViewMode.INBOUND_CONNECTION}
+                      onClick={() =>
+                        setCredibilityDetailsSubjectId(connectionId)
+                      }
+                      key={connectionId}
+                      fromSubjectId={connectionId}
+                      toSubjectId={subjectId}
+                    />
+                  )}
+                />
+              ) : (
+                <EmptySubjectList
+                  hasFilter={inboundConnectionsSelectedFilterId !== null}
+                  clearFilter={clearInboundConnectionsFilter}
                 />
               )}
             </>
@@ -464,7 +518,9 @@ const SubjectProfile = () => {
   ) : (
     <SubjectOutboundEvaluationsContextProvider subjectId={subjectId}>
       <SubjectInboundEvaluationsContextProvider subjectId={subjectId}>
-        <SubjectProfileBody subjectId={subjectId} />
+        <SubjectInboundConnectionsContextProvider subjectId={subjectId}>
+          <SubjectProfileBody subjectId={subjectId} />
+        </SubjectInboundConnectionsContextProvider>
       </SubjectInboundEvaluationsContextProvider>
     </SubjectOutboundEvaluationsContextProvider>
   );

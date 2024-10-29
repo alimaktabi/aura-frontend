@@ -2,12 +2,12 @@ import useFilterAndSort from 'hooks/useFilterAndSort';
 import {
   AuraFilterId,
   AuraFilterOptions,
-  useInboundEvaluationsFilters,
+  useInboundConnectionsFilters,
 } from 'hooks/useFilters';
 import {
   AuraSortId,
   AuraSortOptions,
-  useInboundEvaluationsSorts,
+  useInboundConnectionsSorts,
 } from 'hooks/useSorts';
 import { useInboundEvaluations } from 'hooks/useSubjectEvaluations';
 import React, {
@@ -25,7 +25,7 @@ import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
 import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
 
-type SubjectInboundEvaluationsContextType = ReturnType<
+type SubjectInboundConnectionsContextType = ReturnType<
   typeof useInboundEvaluations
 > & {
   subjectId: string;
@@ -34,8 +34,8 @@ type SubjectInboundEvaluationsContextType = ReturnType<
     filters: AuraFilterOptions<AuraInboundConnectionAndRatingData>;
   };
 // Define the context
-export const SubjectInboundEvaluationsContext =
-  createContext<SubjectInboundEvaluationsContextType | null>(null);
+export const SubjectInboundConnectionsContext =
+  createContext<SubjectInboundConnectionsContextType | null>(null);
 
 interface ProviderProps {
   subjectId: string;
@@ -43,28 +43,27 @@ interface ProviderProps {
 }
 
 // Define the Provider component
-export const SubjectInboundEvaluationsContextProvider: React.FC<
+export const SubjectInboundConnectionsContextProvider: React.FC<
   ProviderProps
 > = ({ subjectId, children }) => {
-  const { refreshInboundRatings, ...useSubjectInboundEvaluationsHookData } =
+  const { refreshInboundRatings, ...useSubjectInboundConnectionsHookData } =
     useInboundEvaluations({
       subjectId,
     });
-  const { ratings, connections } = useSubjectInboundEvaluationsHookData;
-  const filters = useInboundEvaluationsFilters(
+  const { ratings, connections } = useSubjectInboundConnectionsHookData;
+  const filters = useInboundConnectionsFilters(
     [
-      // AuraFilterId.EvaluationMutualConnections,
-      AuraFilterId.EvaluationPositiveEvaluations,
-      AuraFilterId.EvaluationNegativeEvaluations,
+      AuraFilterId.EvaluationMutualConnections,
+      AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+      AuraFilterId.EvaluationConnectionTypeJustMet,
+      AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
+      AuraFilterId.EvaluationConnectionTypeRecovery,
+      AuraFilterId.EvaluationTheirRecovery,
     ],
     subjectId,
   );
 
-  const sorts = useInboundEvaluationsSorts([
-    AuraSortId.RecentEvaluation,
-    AuraSortId.EvaluationScore,
-    AuraSortId.EvaluationPlayerScore,
-  ]);
+  const sorts = useInboundConnectionsSorts([AuraSortId.ConnectionLastUpdated]);
 
   const brightIdBackup = useSelector(selectBrightIdBackup);
 
@@ -113,10 +112,10 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
   }, [refreshCounter, refreshInboundRatings]);
 
   return (
-    <SubjectInboundEvaluationsContext.Provider
+    <SubjectInboundConnectionsContext.Provider
       value={{
         refreshInboundRatings,
-        ...useSubjectInboundEvaluationsHookData,
+        ...useSubjectInboundConnectionsHookData,
         ...filterAndSortHookData,
         sorts,
         filters,
@@ -124,25 +123,25 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
       }}
     >
       {children}
-    </SubjectInboundEvaluationsContext.Provider>
+    </SubjectInboundConnectionsContext.Provider>
   );
 };
 
-export const useSubjectInboundEvaluationsContext = (props: {
+export const useSubjectInboundConnectionsContext = (props: {
   subjectId: string;
   evaluationCategory?: EvaluationCategory;
-}): SubjectInboundEvaluationsContextType & {
+}): SubjectInboundConnectionsContextType & {
   myRatingObject: AuraRating | undefined;
 } => {
-  const context = useContext(SubjectInboundEvaluationsContext);
+  const context = useContext(SubjectInboundConnectionsContext);
   if (context === null) {
     throw new Error(
-      'SubjectInboundEvaluationsContext must be used within a SubjectInboundEvaluationsContextProvider',
+      'SubjectInboundConnectionsContext must be used within a SubjectInboundConnectionsContextProvider',
     );
   }
   if (context.subjectId !== props.subjectId) {
     throw new Error(
-      'SubjectInboundEvaluationsContextProvider for ' +
+      'SubjectInboundConnectionsContextProvider for ' +
         props.subjectId +
         'not provided',
     );
@@ -186,9 +185,10 @@ export const useSubjectInboundEvaluationsContext = (props: {
         (items) =>
           items?.filter(
             (o) =>
-              o.rating === undefined ||
-              o.rating.category ===
-                (props?.evaluationCategory ?? currentEvaluationCategory),
+              Boolean(o.inboundConnection) &&
+              (o.rating === undefined ||
+                o.rating.category ===
+                  (props?.evaluationCategory ?? currentEvaluationCategory)),
           ) || null,
       ),
     [

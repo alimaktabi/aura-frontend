@@ -133,6 +133,7 @@ const Home = () => {
                 <EmptySubjectList
                   clearFilter={clearFilter}
                   hasFilter={selectedFilterIds !== null}
+                  showConnectionGuide={true}
                 />
               )
             ) : (

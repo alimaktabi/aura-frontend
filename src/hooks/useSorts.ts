@@ -125,7 +125,7 @@ export function useSubjectSorts(sortIds: AuraSortId[]) {
   }, [currentEvaluationCategory, outboundRatings, sortIds]);
 }
 
-export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {
+export function useInboundEvaluationsSorts(sortIds: AuraSortId[]) {
   return useMemo(() => {
     const sorts: AuraSortOptions<AuraInboundConnectionAndRatingData> = [
       {
@@ -156,6 +156,29 @@ export function useInboundEvaluationSorts(sortIds: AuraSortId[]) {
         category: SortCategoryId.Default,
         defaultAscending: true,
         func: (_a, _b) => 1,
+      },
+    ];
+    return sortIds
+      .map((id) => sorts.find((f) => f.id === id))
+      .filter(
+        (item) => item !== undefined,
+      ) as AuraSortOptions<AuraInboundConnectionAndRatingData>;
+  }, [sortIds]);
+}
+
+export function useInboundConnectionsSorts(sortIds: AuraSortId[]) {
+  return useMemo(() => {
+    const sorts: AuraSortOptions<AuraInboundConnectionAndRatingData> = [
+      {
+        id: AuraSortId.ConnectionLastUpdated,
+        title: 'Last Connected',
+        defaultAscending: false,
+        category: SortCategoryId.Default,
+        ascendingLabel: 'Oldest',
+        descendingLabel: 'Newest',
+        func: (a, b) =>
+          (b.inboundConnection?.timestamp ?? 0) -
+          (a.inboundConnection?.timestamp ?? 0),
       },
     ];
     return sortIds
