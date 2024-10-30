@@ -255,10 +255,10 @@ const ProfileOverview = ({
           </div>
         </div>
 
-        <p className="font-medium italic text-sm text-black">
-          *This chart displays the top 10 impacts players have on the subject
-          score
-        </p>
+        {/*<p className="font-medium italic text-sm text-black">*/}
+        {/*  *This chart displays the top 10 impacts players have on the subject*/}
+        {/*  score*/}
+        {/*</p>*/}
       </div>
 
       {isMyPerformance && (
