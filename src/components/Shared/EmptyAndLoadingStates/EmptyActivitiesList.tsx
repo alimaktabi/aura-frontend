@@ -1,8 +1,8 @@
 export const EmptyActivitiesList = ({
-  clearFilter,
+  clearSortAndFilter,
   hasFilter,
 }: {
-  clearFilter: () => void;
+  clearSortAndFilter: () => void;
   hasFilter: boolean;
 }) => {
   return (
@@ -16,7 +16,7 @@ export const EmptyActivitiesList = ({
       {hasFilter && (
         <p
           className="text-center text-white underline cursor-pointer"
-          onClick={clearFilter}
+          onClick={clearSortAndFilter}
         >
           Reset view to default
         </p>

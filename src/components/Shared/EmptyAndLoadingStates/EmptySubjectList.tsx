@@ -1,9 +1,9 @@
 export const EmptySubjectList = ({
-  clearFilter,
+  clearSortAndFilter,
   hasFilter,
   showConnectionGuide,
 }: {
-  clearFilter: () => void;
+  clearSortAndFilter: () => void;
   hasFilter: boolean;
   showConnectionGuide?: boolean;
 }) => {
@@ -17,7 +17,10 @@ export const EmptySubjectList = ({
       <h2 className="text-lg font-medium text-white">No subjects found</h2>
       <p className="text-center text-white">
         {hasFilter ? (
-          <span className="underline cursor-pointer" onClick={clearFilter}>
+          <span
+            className="underline cursor-pointer"
+            onClick={clearSortAndFilter}
+          >
             Reset view to default
           </span>
         ) : (

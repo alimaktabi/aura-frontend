@@ -52,7 +52,7 @@ const Home = () => {
   const {
     itemsFiltered: filteredSubjects,
     selectedFilterIds,
-    clearFilter,
+    clearSortAndFilter,
   } = useSubjectsListContext();
 
   const [loading, setLoading] = useState(false);
@@ -131,7 +131,7 @@ const Home = () => {
                 </div>
               ) : (
                 <EmptySubjectList
-                  clearFilter={clearFilter}
+                  clearSortAndFilter={clearSortAndFilter}
                   hasFilter={selectedFilterIds !== null}
                   showConnectionGuide={true}
                 />

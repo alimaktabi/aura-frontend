@@ -182,7 +182,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     itemsFiltered: evaluations,
     loading: loadingInboundEvaluations,
     selectedFilterIds: inboundEvaluationsSelectedFilterId,
-    clearFilter: clearInboundEvaluationsFilter,
+    clearSortAndFilter: clearInboundEvaluationsSortAndFilter,
   } = useSubjectInboundEvaluationsContext({
     subjectId,
     evaluationCategory: currentEvaluationCategory,
@@ -192,7 +192,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     itemsFiltered: connections,
     loading: loadingInboundConnections,
     selectedFilterIds: inboundConnectionsSelectedFilterId,
-    clearFilter: clearInboundConnectionsFilter,
+    clearSortAndFilter: clearInboundConnectionsSortAndFilter,
   } = useSubjectInboundConnectionsContext({
     subjectId,
     evaluationCategory: currentEvaluationCategory,
@@ -201,7 +201,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
     selectedFilterIds: outboundEvaluationsSelectedFilterId,
-    clearFilter: clearOutboundEvaluationsFilter,
+    clearSortAndFilter: clearOutboundEvaluationsSortAndFilter,
   } = useOutboundEvaluationsContext({
     subjectId,
     evaluationCategory:
@@ -339,7 +339,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           ) : (
             <EmptyActivitiesList
               hasFilter={outboundEvaluationsSelectedFilterId !== null}
-              clearFilter={clearOutboundEvaluationsFilter}
+              clearSortAndFilter={clearOutboundEvaluationsSortAndFilter}
             />
           )}
         </>
@@ -377,7 +377,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               ) : (
                 <EmptyEvaluationsList
                   hasFilter={inboundEvaluationsSelectedFilterId !== null}
-                  clearFilter={clearInboundEvaluationsFilter}
+                  clearFilter={clearInboundEvaluationsSortAndFilter}
                 />
               )}
             </>
@@ -421,7 +421,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               ) : (
                 <EmptySubjectList
                   hasFilter={inboundConnectionsSelectedFilterId !== null}
-                  clearFilter={clearInboundConnectionsFilter}
+                  clearSortAndFilter={clearInboundConnectionsSortAndFilter}
                 />
               )}
             </>
