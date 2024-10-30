@@ -189,8 +189,15 @@ export const ActivityListSearch = ({
           <FilterAndSortModalBody subjectId={subjectId} />
         </Modal>
         <span className="ml-1">
-          ({filteredSubjects?.length ?? itemsOriginal?.length ?? '...'} result
-          {(filteredSubjects?.length ?? itemsOriginal?.length) !== 1 ? 's' : ''}
+          (
+          {filteredSubjects?.filter((e) => e.rating).length ??
+            itemsOriginal?.length ??
+            '...'}{' '}
+          result
+          {(filteredSubjects?.filter((e) => e.rating).length ??
+            itemsOriginal?.length) !== 1
+            ? 's'
+            : ''}
           )
         </span>
         {currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER &&
