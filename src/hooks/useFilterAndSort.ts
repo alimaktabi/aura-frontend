@@ -9,6 +9,7 @@ export enum SortCategoryId {
 export enum FilterCategoryId {
   Default = 'Default',
   YourEvaluation = 'Your Evaluation',
+  Confidence = 'Confidence',
   Level = 'Level',
   ConnectionType = 'Connection Type',
 }
@@ -31,6 +32,9 @@ const filterCategories: {
     type: FilterCategoryType.Exclusive,
   },
   [FilterCategoryId.Level]: {
+    type: FilterCategoryType.Disjunctive,
+  },
+  [FilterCategoryId.Confidence]: {
     type: FilterCategoryType.Disjunctive,
   },
   [FilterCategoryId.ConnectionType]: {
@@ -186,6 +190,7 @@ export default function useFilterAndSort<T>(
         [FilterCategoryId.YourEvaluation]: [],
         [FilterCategoryId.Level]: [],
         [FilterCategoryId.ConnectionType]: [],
+        [FilterCategoryId.Confidence]: [],
       };
 
       for (const item of selectedFilters) {

@@ -21,6 +21,7 @@ export enum AuraSortId {
   ConnectionRecentEvaluation,
   // ConnectionMostEvaluations,
   EvaluationPlayerScore,
+  EvaluationConfidence,
 }
 
 export type AuraSortOption<T> = {
@@ -151,6 +152,18 @@ export function useInboundEvaluationsSorts(sortIds: AuraSortId[]) {
         },
       },
       {
+        id: AuraSortId.EvaluationConfidence,
+        title: 'Confidence',
+        defaultAscending: false,
+        category: SortCategoryId.Default,
+        func: (a, b) => {
+          return (
+            Math.abs(Number(b.rating?.rating || '0')) -
+            Math.abs(Number(a.rating?.rating || '0'))
+          );
+        },
+      },
+      {
         id: AuraSortId.EvaluationPlayerScore,
         title: 'Player Score (Not Implemented)',
         category: SortCategoryId.Default,
@@ -194,7 +207,7 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
     const sorts: AuraSortOptions<AuraOutboundConnectionAndRatingData> = [
       {
         id: AuraSortId.RecentEvaluation,
-        title: 'Date',
+        title: 'Last evaluated',
         defaultAscending: false,
         justDefaultDirection: true,
         descendingLabel: 'Most Recent',
@@ -211,6 +224,18 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
         func: (a, b) => {
           return (
             Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
+          );
+        },
+      },
+      {
+        id: AuraSortId.EvaluationConfidence,
+        title: 'Confidence',
+        defaultAscending: false,
+        category: SortCategoryId.Default,
+        func: (a, b) => {
+          return (
+            Math.abs(Number(b.rating?.rating || '0')) -
+            Math.abs(Number(a.rating?.rating || '0'))
           );
         },
       },

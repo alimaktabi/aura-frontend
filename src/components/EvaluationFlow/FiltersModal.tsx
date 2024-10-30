@@ -22,9 +22,9 @@ export function FiltersModal<T>({
     <div className="w-full flex flex-col gap-5">
       {(Object.keys(res) as FilterCategoryId[]).map((category) => (
         <div className="flex flex-col gap-3" key={category}>
-          {category !== FilterCategoryId.Default && (
-            <p className="text-black2">{category}</p>
-          )}
+          <p className="text-black2">
+            {category !== FilterCategoryId.Default && category}
+          </p>
           <div className="flex flex-row flex-wrap gap-2">
             {res[category]?.map((item) => (
               <ModalItem

@@ -31,6 +31,10 @@ export enum AuraFilterId {
   EvaluationConnectionTypeAlreadyKnownPlus,
   EvaluationConnectionTypeRecovery,
   EvaluationTheirRecovery,
+  EvaluationConfidenceLow = 900,
+  EvaluationConfidenceMedium,
+  EvaluationConfidenceHigh,
+  EvaluationConfidenceVeryHigh,
   ConnectionLevelZero = 1000,
   ConnectionLevelNegative,
   ConnectionLevelOne,
@@ -247,6 +251,42 @@ export function useInboundEvaluationsFilters(
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) < 0,
       },
+      {
+        id: AuraFilterId.EvaluationConfidenceLow,
+        category: FilterCategoryId.Confidence,
+        title: 'Low',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 0 &&
+          Math.abs(Number(item.rating.rating)) <= 1,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceMedium,
+        category: FilterCategoryId.Confidence,
+        title: 'Medium',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 1 &&
+          Math.abs(Number(item.rating.rating)) <= 2,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceHigh,
+        category: FilterCategoryId.Confidence,
+        title: 'High',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 2 &&
+          Math.abs(Number(item.rating.rating)) <= 3,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceVeryHigh,
+        category: FilterCategoryId.Confidence,
+        title: 'Very High',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 3 &&
+          Math.abs(Number(item.rating.rating)) <= 4,
+      },
     ];
     return filterIds
       .map((id) => filters.find((f) => f.id === id))
@@ -339,19 +379,6 @@ export function useOutboundEvaluationFilters(
               item.outboundConnection?.id === conn.id,
           ),
       },
-      // {
-      //   id: AuraFilterId.EvaluationJustEvaluations,
-      //   category: FilterCategoryId.Default,
-      //   title: 'Just Evaluations',
-      //   func: (item) =>
-      //     item.rating !== undefined && Number(item.rating.rating) !== 0,
-      // },
-      // {
-      //   id: AuraFilterId.EvaluationJustConnections,
-      //   category: FilterCategoryId.Default,
-      //   title: 'Just Connections',
-      //   func: (item) => item.rating === undefined,
-      // },
       {
         id: AuraFilterId.EvaluationPositiveEvaluations,
         category: FilterCategoryId.Default,
@@ -365,6 +392,42 @@ export function useOutboundEvaluationFilters(
         title: 'Negative Evaluations',
         func: (item) =>
           item.rating !== undefined && Number(item.rating.rating) < 0,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceLow,
+        category: FilterCategoryId.Confidence,
+        title: 'Low',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 0 &&
+          Math.abs(Number(item.rating.rating)) <= 1,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceMedium,
+        category: FilterCategoryId.Confidence,
+        title: 'Medium',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 1 &&
+          Math.abs(Number(item.rating.rating)) <= 2,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceHigh,
+        category: FilterCategoryId.Confidence,
+        title: 'High',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 2 &&
+          Math.abs(Number(item.rating.rating)) <= 3,
+      },
+      {
+        id: AuraFilterId.EvaluationConfidenceVeryHigh,
+        category: FilterCategoryId.Confidence,
+        title: 'Very High',
+        func: (item) =>
+          item.rating !== undefined &&
+          Math.abs(Number(item.rating.rating)) > 3 &&
+          Math.abs(Number(item.rating.rating)) <= 4,
       },
       {
         id: AuraFilterId.EvaluationTheirRecovery,

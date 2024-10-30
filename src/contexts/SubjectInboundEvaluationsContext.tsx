@@ -56,6 +56,10 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
       // AuraFilterId.EvaluationMutualConnections,
       AuraFilterId.EvaluationPositiveEvaluations,
       AuraFilterId.EvaluationNegativeEvaluations,
+      AuraFilterId.EvaluationConfidenceLow,
+      AuraFilterId.EvaluationConfidenceMedium,
+      AuraFilterId.EvaluationConfidenceHigh,
+      AuraFilterId.EvaluationConfidenceVeryHigh,
     ],
     subjectId,
   );

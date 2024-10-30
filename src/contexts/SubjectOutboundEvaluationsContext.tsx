@@ -54,24 +54,21 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
   const { ratings, connections } = useOutboundEvaluationsHookData;
   const filters = useOutboundEvaluationFilters(
     [
-      AuraFilterId.EvaluationMutualConnections,
       AuraFilterId.EvaluationPositiveEvaluations,
       AuraFilterId.EvaluationNegativeEvaluations,
-      // AuraFilterId.EvaluationJustEvaluations,
-      // AuraFilterId.EvaluationJustConnections,
-      AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
-      AuraFilterId.EvaluationConnectionTypeJustMet,
-      AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
-      AuraFilterId.EvaluationConnectionTypeRecovery,
-      AuraFilterId.EvaluationTheirRecovery,
+      AuraFilterId.EvaluationConfidenceLow,
+      AuraFilterId.EvaluationConfidenceMedium,
+      AuraFilterId.EvaluationConfidenceHigh,
+      AuraFilterId.EvaluationConfidenceVeryHigh,
     ],
     subjectId,
   );
 
   const sorts = useOutboundEvaluationSorts([
     AuraSortId.RecentEvaluation,
-    AuraSortId.EvaluationScore,
-    AuraSortId.EvaluationPlayerScore,
+    // AuraSortId.EvaluationScore,
+    // AuraSortId.EvaluationPlayerScore,
+    AuraSortId.EvaluationConfidence,
   ]);
 
   const brightIdBackup = useSelector(selectBrightIdBackup);
@@ -103,7 +100,11 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
           });
         }
       });
-      return outboundOpinions;
+      return outboundOpinions.sort(
+        (a, b) =>
+          (a.rating?.timestamp ?? a.outboundConnection?.timestamp ?? 0) -
+          (b.rating?.timestamp ?? b.outboundConnection?.timestamp ?? 0),
+      );
     }, [brightIdBackup, ratings, connections]);
   const filterAndSortHookData = useFilterAndSort(
     outboundOpinions,
