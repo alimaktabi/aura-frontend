@@ -67,7 +67,7 @@ export const SubjectOutboundEvaluationsContextProvider: React.FC<
   const sorts = useOutboundEvaluationSorts([
     AuraSortId.RecentEvaluation,
     // AuraSortId.EvaluationScore,
-    // AuraSortId.EvaluationPlayerScore,
+    // AuraSortId.EvaluatorScore,
     AuraSortId.EvaluationConfidence,
   ]);
 

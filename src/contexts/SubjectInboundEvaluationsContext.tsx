@@ -21,6 +21,8 @@ import { useSelector } from 'react-redux';
 import { selectAuthData, selectBrightIdBackup } from 'store/profile/selectors';
 import { AuraInboundConnectionAndRatingData, AuraRating } from 'types';
 
+import { viewAsToEvaluatorViewAs } from '../constants';
+import { getAuraVerification } from '../hooks/useParseBrightIdVerificationData';
 import useViewMode from '../hooks/useViewMode';
 import { EvaluationCategory } from '../types/dashboard';
 import { useRefreshEvaluationsContext } from './RefreshEvaluationsContext';
@@ -60,14 +62,20 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
       AuraFilterId.EvaluationConfidenceMedium,
       AuraFilterId.EvaluationConfidenceHigh,
       AuraFilterId.EvaluationConfidenceVeryHigh,
+      AuraFilterId.EvaluationEvaluatorLevelNegative,
+      AuraFilterId.EvaluationEvaluatorLevelZero,
+      AuraFilterId.EvaluationEvaluatorLevelOne,
+      AuraFilterId.EvaluationEvaluatorLevelTwo,
+      AuraFilterId.EvaluationEvaluatorLevelThree,
+      AuraFilterId.EvaluationEvaluatorLevelFour,
     ],
     subjectId,
   );
 
   const sorts = useInboundEvaluationsSorts([
     AuraSortId.RecentEvaluation,
-    AuraSortId.EvaluationScore,
-    AuraSortId.EvaluationPlayerScore,
+    AuraSortId.EvaluationConfidence,
+    AuraSortId.EvaluatorScore,
   ]);
 
   const brightIdBackup = useSelector(selectBrightIdBackup);
@@ -98,7 +106,23 @@ export const SubjectInboundEvaluationsContextProvider: React.FC<
         });
       }
     });
-    return inboundOpinions;
+    return inboundOpinions.sort(
+      (a, b) =>
+        ((b.inboundConnection &&
+          b.rating &&
+          getAuraVerification(
+            b.inboundConnection.verifications,
+            viewAsToEvaluatorViewAs[b.rating.category],
+          )?.level) ||
+          0) -
+        ((a.inboundConnection &&
+          a.rating &&
+          getAuraVerification(
+            a.inboundConnection.verifications,
+            viewAsToEvaluatorViewAs[a.rating.category],
+          )?.level) ||
+          0),
+    );
   }, [brightIdBackup, ratings, connections]);
 
   const filterAndSortHookData = useFilterAndSort(

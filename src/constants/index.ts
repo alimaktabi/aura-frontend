@@ -238,6 +238,14 @@ export const viewAsToViewMode: {
   [EvaluationCategory.TRAINER]: PreferredView.MANAGER_EVALUATING_TRAINER,
   [EvaluationCategory.MANAGER]: PreferredView.MANAGER_EVALUATING_MANAGER,
 };
+export const viewAsToEvaluatorViewAs: {
+  [key in EvaluationCategory]: EvaluationCategory;
+} = {
+  [EvaluationCategory.SUBJECT]: EvaluationCategory.PLAYER,
+  [EvaluationCategory.PLAYER]: EvaluationCategory.TRAINER,
+  [EvaluationCategory.TRAINER]: EvaluationCategory.MANAGER,
+  [EvaluationCategory.MANAGER]: EvaluationCategory.MANAGER,
+};
 
 export const subjectViewAsIcon: {
   [key in EvaluationCategory]: string;

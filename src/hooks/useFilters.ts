@@ -10,6 +10,7 @@ import {
   BrightIdConnection,
 } from 'types';
 
+import { viewAsToEvaluatorViewAs } from '../constants';
 import useViewMode from './useViewMode';
 
 export enum AuraFilterId {
@@ -41,6 +42,12 @@ export enum AuraFilterId {
   ConnectionLevelTwo,
   ConnectionLevelThree,
   ConnectionLevelFour,
+  EvaluationEvaluatorLevelZero = 1100,
+  EvaluationEvaluatorLevelNegative,
+  EvaluationEvaluatorLevelOne,
+  EvaluationEvaluatorLevelTwo,
+  EvaluationEvaluatorLevelThree,
+  EvaluationEvaluatorLevelFour,
 }
 
 export type AuraFilterOption<T> = {
@@ -93,7 +100,13 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           id: AuraFilterId.ConnectionLevelNegative,
           category: FilterCategoryId.Level,
           title: 'Negative',
-          func: (_item) => true,
+          func: (item) => {
+            const level = getAuraVerification(
+              item.verifications,
+              currentEvaluationCategory,
+            )?.level;
+            return Boolean(level && level < 0);
+          },
         },
         {
           id: AuraFilterId.ConnectionLevelZero,
@@ -226,6 +239,89 @@ export function useInboundEvaluationsFilters(
 ) {
   return useMemo(() => {
     const filters: AuraFilterOptions<AuraInboundConnectionAndRatingData> = [
+      {
+        id: AuraFilterId.EvaluationEvaluatorLevelNegative,
+        category: FilterCategoryId.EvaluatorLevel,
+        title: 'Negative',
+        func: (item) => {
+          if (!item.inboundConnection || !item.rating) return false;
+          const level = getAuraVerification(
+            item.inboundConnection.verifications,
+            viewAsToEvaluatorViewAs[item.rating.category],
+          )?.level;
+          return Boolean(level && level < 0);
+        },
+      },
+      {
+        id: AuraFilterId.EvaluationEvaluatorLevelZero,
+        category: FilterCategoryId.EvaluatorLevel,
+        title: 'Level 0',
+        func: (item) =>
+          Boolean(
+            item.inboundConnection &&
+              item.rating &&
+              !getAuraVerification(
+                item.inboundConnection.verifications,
+                viewAsToEvaluatorViewAs[item.rating.category],
+              )?.level,
+          ),
+      },
+      {
+        id: AuraFilterId.EvaluationEvaluatorLevelOne,
+        category: FilterCategoryId.EvaluatorLevel,
+        title: 'Level 1',
+        func: (item) =>
+          Boolean(
+            item.inboundConnection &&
+              item.rating &&
+              getAuraVerification(
+                item.inboundConnection.verifications,
+                viewAsToEvaluatorViewAs[item.rating.category],
+              )?.level === 1,
+          ),
+      },
+      {
+        id: AuraFilterId.EvaluationEvaluatorLevelTwo,
+        category: FilterCategoryId.EvaluatorLevel,
+        title: 'Level 2',
+        func: (item) =>
+          Boolean(
+            item.inboundConnection &&
+              item.rating &&
+              getAuraVerification(
+                item.inboundConnection.verifications,
+                viewAsToEvaluatorViewAs[item.rating.category],
+              )?.level === 2,
+          ),
+      },
+      {
+        id: AuraFilterId.EvaluationEvaluatorLevelThree,
+        category: FilterCategoryId.EvaluatorLevel,
+        title: 'Level 3',
+        func: (item) =>
+          Boolean(
+            item.inboundConnection &&
+              item.rating &&
+              getAuraVerification(
+                item.inboundConnection.verifications,
+                viewAsToEvaluatorViewAs[item.rating.category],
+              )?.level === 3,
+          ),
+      },
+      {
+        id: AuraFilterId.EvaluationEvaluatorLevelFour,
+        category: FilterCategoryId.EvaluatorLevel,
+        title: 'Level 4',
+        func: (item) =>
+          Boolean(
+            item.inboundConnection &&
+              item.rating &&
+              getAuraVerification(
+                item.inboundConnection.verifications,
+                viewAsToEvaluatorViewAs[item.rating.category],
+              )?.level === 4,
+          ),
+      },
       // {
       //   id: AuraFilterId.EvaluationMutualConnections,
       //   category: FilterCategoryId.Default,

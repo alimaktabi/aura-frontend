@@ -10,6 +10,7 @@ export enum FilterCategoryId {
   Default = 'Default',
   YourEvaluation = 'Your Evaluation',
   Confidence = 'Confidence',
+  EvaluatorLevel = "Evaluator's level",
   Level = 'Level',
   ConnectionType = 'Connection Type',
 }
@@ -35,6 +36,9 @@ const filterCategories: {
     type: FilterCategoryType.Disjunctive,
   },
   [FilterCategoryId.Confidence]: {
+    type: FilterCategoryType.Disjunctive,
+  },
+  [FilterCategoryId.EvaluatorLevel]: {
     type: FilterCategoryType.Disjunctive,
   },
   [FilterCategoryId.ConnectionType]: {
@@ -189,6 +193,7 @@ export default function useFilterAndSort<T>(
         [FilterCategoryId.Default]: [],
         [FilterCategoryId.YourEvaluation]: [],
         [FilterCategoryId.Level]: [],
+        [FilterCategoryId.EvaluatorLevel]: [],
         [FilterCategoryId.ConnectionType]: [],
         [FilterCategoryId.Confidence]: [],
       };

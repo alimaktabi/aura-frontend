@@ -8,19 +8,19 @@ import {
   BrightIdConnection,
 } from 'types';
 
+import { viewAsToEvaluatorViewAs } from '../constants';
 import useBrightIdBackupWithAuraConnectionData from './useBrightIdBackupWithAuraConnectionData';
 import { useOutboundEvaluations } from './useSubjectEvaluations';
 import useViewMode from './useViewMode';
 
 export enum AuraSortId {
   RecentEvaluation = 1,
-  EvaluationScore,
   ConnectionLastUpdated,
   // MostMutualConnections,
   ConnectionScore,
   ConnectionRecentEvaluation,
   // ConnectionMostEvaluations,
-  EvaluationPlayerScore,
+  EvaluatorScore,
   EvaluationConfidence,
 }
 
@@ -131,7 +131,7 @@ export function useInboundEvaluationsSorts(sortIds: AuraSortId[]) {
     const sorts: AuraSortOptions<AuraInboundConnectionAndRatingData> = [
       {
         id: AuraSortId.RecentEvaluation,
-        title: 'Date',
+        title: 'Last evaluated',
         defaultAscending: false,
         justDefaultDirection: true,
         descendingLabel: 'Most Recent',
@@ -139,17 +139,6 @@ export function useInboundEvaluationsSorts(sortIds: AuraSortId[]) {
         func: (a, b) =>
           new Date(b.rating?.updatedAt ?? 0).getTime() -
           new Date(a.rating?.updatedAt ?? 0).getTime(),
-      },
-      {
-        id: AuraSortId.EvaluationScore,
-        title: 'Evaluation Score',
-        defaultAscending: false,
-        category: SortCategoryId.Default,
-        func: (a, b) => {
-          return (
-            Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
-          );
-        },
       },
       {
         id: AuraSortId.EvaluationConfidence,
@@ -164,11 +153,25 @@ export function useInboundEvaluationsSorts(sortIds: AuraSortId[]) {
         },
       },
       {
-        id: AuraSortId.EvaluationPlayerScore,
-        title: 'Player Score (Not Implemented)',
+        id: AuraSortId.EvaluatorScore,
+        title: "Evaluator's score",
         category: SortCategoryId.Default,
         defaultAscending: true,
-        func: (_a, _b) => 1,
+        func: (a, b) =>
+          ((b.inboundConnection &&
+            b.rating &&
+            getAuraVerification(
+              b.inboundConnection.verifications,
+              viewAsToEvaluatorViewAs[b.rating.category],
+            )?.level) ||
+            0) -
+          ((a.inboundConnection &&
+            a.rating &&
+            getAuraVerification(
+              a.inboundConnection.verifications,
+              viewAsToEvaluatorViewAs[a.rating.category],
+            )?.level) ||
+            0),
       },
     ];
     return sortIds
@@ -217,17 +220,6 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
           new Date(a.rating?.updatedAt ?? 0).getTime(),
       },
       {
-        id: AuraSortId.EvaluationScore,
-        title: 'Evaluation Score',
-        defaultAscending: false,
-        category: SortCategoryId.Default,
-        func: (a, b) => {
-          return (
-            Number(b.rating?.rating || '0') - Number(a.rating?.rating || '0')
-          );
-        },
-      },
-      {
         id: AuraSortId.EvaluationConfidence,
         title: 'Confidence',
         defaultAscending: false,
@@ -240,7 +232,7 @@ export function useOutboundEvaluationSorts(sortIds: AuraSortId[]) {
         },
       },
       {
-        id: AuraSortId.EvaluationPlayerScore,
+        id: AuraSortId.EvaluatorScore,
         title: 'Player Score (Not Implemented)',
         category: SortCategoryId.Default,
         defaultAscending: true,
