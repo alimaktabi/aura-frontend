@@ -14,12 +14,16 @@ import {
   viewModeToViewAs,
 } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
+import ReactECharts from 'echarts-for-react';
 import {
   useSubjectConnectionInfoFromContext,
   useSubjectEvaluationFromContext,
 } from 'hooks/useSubjectEvaluation';
 import { useSubjectName } from 'hooks/useSubjectName';
-import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
+import {
+  useImpactEChartOption,
+  useSubjectVerifications,
+} from 'hooks/useSubjectVerifications';
 import useViewMode from 'hooks/useViewMode';
 import moment from 'moment';
 import { useMemo } from 'react';
@@ -187,11 +191,9 @@ const UserName = ({ subjectId }: { subjectId: string }) => {
 
 const UserInformation = ({
   subjectId,
-  isConnected,
   evidenceViewMode,
 }: {
   subjectId: string;
-  isConnected?: boolean;
   evidenceViewMode: EvidenceViewMode;
 }) => {
   const { currentViewMode, currentRoleEvaluatorEvaluationCategory } =
@@ -280,11 +282,34 @@ const UserInformation = ({
   );
 };
 
-const Graph = () => {
+const Graph = ({
+  subjectId,
+  evidenceViewMode,
+}: {
+  subjectId: string;
+  evidenceViewMode: EvidenceViewMode;
+}) => {
+  const { currentViewMode, currentRoleEvaluatorEvaluationCategory } =
+    useViewMode();
+  const { auraImpacts } = useSubjectVerifications(
+    subjectId,
+    evidenceViewMode === EvidenceViewMode.INBOUND_CONNECTION
+      ? EvaluationCategory.SUBJECT
+      : evidenceViewMode === EvidenceViewMode.INBOUND_EVALUATION
+      ? currentRoleEvaluatorEvaluationCategory
+      : viewModeToViewAs[
+          evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
+            ? currentViewMode
+            : viewModeToSubjectViewMode[currentViewMode]
+        ],
+  );
+  const { impactChartSmallOption } = useImpactEChartOption(auraImpacts);
+
   return (
-    <div className="graph">
-      <img src="/assets/images/chart.svg" alt="" />
-    </div>
+    <ReactECharts
+      style={{ height: '48px', width: '100%' }}
+      option={impactChartSmallOption}
+    />
   );
 };
 
@@ -438,7 +463,7 @@ const EvaluatedCardBody = ({
             subjectId={leftCardSide}
             evidenceViewMode={evidenceViewMode}
           />
-          <Graph />
+          <Graph subjectId={leftCardSide} evidenceViewMode={evidenceViewMode} />
         </div>
         <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
       </div>
@@ -563,9 +588,8 @@ const ConnectedCardBody = ({
           <UserInformation
             evidenceViewMode={evidenceViewMode}
             subjectId={leftCardSide}
-            isConnected
           />
-          <Graph />
+          <Graph subjectId={leftCardSide} evidenceViewMode={evidenceViewMode} />
         </div>
         <span className="divider border-r border-dashed border-gray00 pl-.5 mr-1.5 h-full"></span>
       </div>

@@ -34,11 +34,7 @@ import { LoadingList } from '../../components/Shared/EmptyAndLoadingStates/Loadi
 import { HeaderPreferedView } from '../../components/Shared/HeaderPreferedView';
 import { ProfileInfo } from '../../components/Shared/ProfileInfo';
 import ProfileOverview from '../../components/Shared/ProfileOverview';
-import {
-  viewModeToString,
-  viewModeToSubjectViewMode,
-  viewModeToViewAs,
-} from '../../constants';
+import { viewModeToSubjectViewMode, viewModeToViewAs } from '../../constants';
 import {
   SubjectInboundConnectionsContextProvider,
   useSubjectInboundConnectionsContext,
@@ -348,39 +344,25 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           <EvidenceListSearch subjectId={subjectId} />
           {loadingInboundEvaluations ? (
             <LoadingList />
-          ) : (
-            <>
-              <div className="text-lg text-white flex">
-                {viewModeToString[currentViewMode] + 's '}
-                <strong className="ml-1">({evaluatorsOriginal.length})</strong>
-                {inboundEvaluationsSelectedFilterId !== null && (
-                  <span className="ml-2">
-                    ({evaluators.length} filter result
-                    {evaluators.length !== 1 ? 's' : ''})
-                  </span>
-                )}
-              </div>
-              {evaluators.length > 0 ? (
-                <InfiniteScrollLocal
-                  className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-                  items={evaluators}
-                  renderItem={(evaluator) => (
-                    <ProfileEvaluation
-                      evidenceViewMode={EvidenceViewMode.INBOUND_EVALUATION}
-                      onClick={() => setCredibilityDetailsSubjectId(evaluator)}
-                      key={evaluator}
-                      fromSubjectId={evaluator}
-                      toSubjectId={subjectId}
-                    />
-                  )}
-                />
-              ) : (
-                <EmptyEvaluationsList
-                  hasFilter={inboundEvaluationsSelectedFilterId !== null}
-                  clearFilter={clearInboundEvaluationsSortAndFilter}
+          ) : evaluators.length > 0 ? (
+            <InfiniteScrollLocal
+              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+              items={evaluators}
+              renderItem={(evaluator) => (
+                <ProfileEvaluation
+                  evidenceViewMode={EvidenceViewMode.INBOUND_EVALUATION}
+                  onClick={() => setCredibilityDetailsSubjectId(evaluator)}
+                  key={evaluator}
+                  fromSubjectId={evaluator}
+                  toSubjectId={subjectId}
                 />
               )}
-            </>
+            />
+          ) : (
+            <EmptyEvaluationsList
+              hasFilter={inboundEvaluationsSelectedFilterId !== null}
+              clearFilter={clearInboundEvaluationsSortAndFilter}
+            />
           )}
         </>
       ) : (

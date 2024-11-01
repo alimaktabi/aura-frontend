@@ -42,7 +42,7 @@ export default function Dropdown<T extends DropdownItem>({
           alt=""
         />
         {isDropdownOpen && (
-          <div className="dropdown__body absolute min-w-[300px] w-full top-full bg-white left-0 rounded-b-lg border border-gray10 ">
+          <div className="dropdown__body absolute min-w-[300px] w-full top-full bg-white left-0 rounded-b-lg border border-gray10 z-[100]">
             {items.map((item) => (
               <div
                 data-testid={`confidence-dropdown-option-${item.value}`}
