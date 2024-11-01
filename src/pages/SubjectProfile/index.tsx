@@ -217,7 +217,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     );
   }, [evaluations, evaluationsOriginal]);
 
-  const [connectionIds, connectionIdsOriginal] = useMemo(() => {
+  const [connectionIds] = useMemo(() => {
     return [connections, connectionsOriginal].map(
       (items) => items?.map((e) => e.fromSubjectId) || [],
     );
@@ -388,43 +388,25 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           <ConnectionListSearch subjectId={subjectId} />
           {loadingInboundConnections ? (
             <LoadingList />
-          ) : (
-            <>
-              <div className="text-lg text-white flex">
-                Subjects
-                <strong className="ml-1">
-                  ({connectionIdsOriginal.length})
-                </strong>
-                {inboundConnectionsSelectedFilterId !== null && (
-                  <span className="ml-2">
-                    ({connectionIds.length} filter result
-                    {connectionIds.length !== 1 ? 's' : ''})
-                  </span>
-                )}
-              </div>
-              {connectionIds.length > 0 ? (
-                <InfiniteScrollLocal
-                  className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
-                  items={connectionIds}
-                  renderItem={(connectionId) => (
-                    <ProfileEvaluation
-                      evidenceViewMode={EvidenceViewMode.INBOUND_CONNECTION}
-                      onClick={() =>
-                        setCredibilityDetailsSubjectId(connectionId)
-                      }
-                      key={connectionId}
-                      fromSubjectId={connectionId}
-                      toSubjectId={subjectId}
-                    />
-                  )}
-                />
-              ) : (
-                <EmptySubjectList
-                  hasFilter={inboundConnectionsSelectedFilterId !== null}
-                  clearSortAndFilter={clearInboundConnectionsSortAndFilter}
+          ) : connectionIds.length > 0 ? (
+            <InfiniteScrollLocal
+              className={'flex flex-col gap-2.5 w-full -mb-5 pb-5 h-full'}
+              items={connectionIds}
+              renderItem={(connectionId) => (
+                <ProfileEvaluation
+                  evidenceViewMode={EvidenceViewMode.INBOUND_CONNECTION}
+                  onClick={() => setCredibilityDetailsSubjectId(connectionId)}
+                  key={connectionId}
+                  fromSubjectId={connectionId}
+                  toSubjectId={subjectId}
                 />
               )}
-            </>
+            />
+          ) : (
+            <EmptySubjectList
+              hasFilter={inboundConnectionsSelectedFilterId !== null}
+              clearSortAndFilter={clearInboundConnectionsSortAndFilter}
+            />
           )}
         </>
       )}

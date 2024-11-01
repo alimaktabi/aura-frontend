@@ -23,15 +23,11 @@ export enum AuraFilterId {
   ConnectionYourEvaluationPositive,
   ConnectionYourEvaluationNegative,
   ConnectionYourEvaluationNotEvaluatedYet,
-  ConnectionConnectionTypeSuspiciousOrReported,
-  ConnectionConnectionTypeJustMet,
-  ConnectionConnectionTypeAlreadyKnownPlus,
-  ConnectionConnectionTypeRecovery,
-  EvaluationConnectionTypeSuspiciousOrReported,
-  EvaluationConnectionTypeJustMet,
-  EvaluationConnectionTypeAlreadyKnownPlus,
-  EvaluationConnectionTypeRecovery,
-  EvaluationTheirRecovery,
+  ConnectionTypeSuspiciousOrReported,
+  ConnectionTypeJustMet,
+  ConnectionTypeAlreadyKnownPlus,
+  ConnectionTypeRecovery,
+  TheirRecovery,
   EvaluationConfidenceLow = 900,
   EvaluationConfidenceMedium,
   EvaluationConfidenceHigh,
@@ -194,27 +190,27 @@ export function useSubjectFilters(filterIds: AuraFilterId[]) {
           },
         },
         {
-          id: AuraFilterId.ConnectionConnectionTypeSuspiciousOrReported,
+          id: AuraFilterId.ConnectionTypeSuspiciousOrReported,
           category: FilterCategoryId.ConnectionType,
           title: 'Suspicious | Reported',
           func: (item) =>
             item.level === 'suspicious' || item.level === 'reported',
         },
         {
-          id: AuraFilterId.ConnectionConnectionTypeJustMet,
+          id: AuraFilterId.ConnectionTypeJustMet,
           category: FilterCategoryId.ConnectionType,
           title: 'Just Met',
           func: (item) => item.level === 'just met',
         },
         {
-          id: AuraFilterId.ConnectionConnectionTypeAlreadyKnownPlus,
+          id: AuraFilterId.ConnectionTypeAlreadyKnownPlus,
           category: FilterCategoryId.ConnectionType,
           title: 'Already Known+',
           func: (item) =>
             item.level === 'already known' || item.level === 'recovery',
         },
         {
-          id: AuraFilterId.ConnectionConnectionTypeRecovery,
+          id: AuraFilterId.ConnectionTypeRecovery,
           category: FilterCategoryId.ConnectionType,
           title: 'Recovery',
           func: (item) => item.level === 'recovery',
@@ -412,7 +408,7 @@ export function useInboundConnectionsFilters(
           ),
       },
       {
-        id: AuraFilterId.EvaluationTheirRecovery,
+        id: AuraFilterId.TheirRecovery,
         category: FilterCategoryId.Default,
         title: 'Their Recovery',
         func: (item) =>
@@ -420,7 +416,7 @@ export function useInboundConnectionsFilters(
           'recovery',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+        id: AuraFilterId.ConnectionTypeSuspiciousOrReported,
         category: FilterCategoryId.ConnectionType,
         title: 'Suspicious | Reported',
         func: (item) =>
@@ -428,13 +424,13 @@ export function useInboundConnectionsFilters(
           item.inboundConnection?.level === 'reported',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeJustMet,
+        id: AuraFilterId.ConnectionTypeJustMet,
         category: FilterCategoryId.ConnectionType,
         title: 'Just Met',
         func: (item) => item.inboundConnection?.level === 'just met',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
+        id: AuraFilterId.ConnectionTypeAlreadyKnownPlus,
         category: FilterCategoryId.ConnectionType,
         title: 'Already Known +',
         func: (item) =>
@@ -442,7 +438,7 @@ export function useInboundConnectionsFilters(
           item.inboundConnection?.level === 'recovery',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeRecovery,
+        id: AuraFilterId.ConnectionTypeRecovery,
         category: FilterCategoryId.ConnectionType,
         title: 'Recovery',
         func: (item) => item.inboundConnection?.level === 'recovery',
@@ -526,7 +522,7 @@ export function useOutboundEvaluationFilters(
           Math.abs(Number(item.rating.rating)) <= 4,
       },
       {
-        id: AuraFilterId.EvaluationTheirRecovery,
+        id: AuraFilterId.TheirRecovery,
         category: FilterCategoryId.Default,
         title: 'Their Recovery',
         func: (item) =>
@@ -534,7 +530,7 @@ export function useOutboundEvaluationFilters(
           'recovery',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
+        id: AuraFilterId.ConnectionTypeSuspiciousOrReported,
         category: FilterCategoryId.ConnectionType,
         title: 'Suspicious | Reported',
         func: (item) =>
@@ -542,13 +538,13 @@ export function useOutboundEvaluationFilters(
           item.outboundConnection?.level === 'reported',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeJustMet,
+        id: AuraFilterId.ConnectionTypeJustMet,
         category: FilterCategoryId.ConnectionType,
         title: 'Just Met',
         func: (item) => item.outboundConnection?.level === 'just met',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
+        id: AuraFilterId.ConnectionTypeAlreadyKnownPlus,
         category: FilterCategoryId.ConnectionType,
         title: 'Already Known',
         func: (item) =>
@@ -556,7 +552,7 @@ export function useOutboundEvaluationFilters(
           item.outboundConnection?.level === 'recovery',
       },
       {
-        id: AuraFilterId.EvaluationConnectionTypeRecovery,
+        id: AuraFilterId.ConnectionTypeRecovery,
         category: FilterCategoryId.ConnectionType,
         title: 'Recovery',
         func: (item) => item.outboundConnection?.level === 'recovery',

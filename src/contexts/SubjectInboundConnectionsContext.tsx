@@ -54,11 +54,11 @@ export const SubjectInboundConnectionsContextProvider: React.FC<
   const filters = useInboundConnectionsFilters(
     [
       AuraFilterId.EvaluationMutualConnections,
-      AuraFilterId.EvaluationConnectionTypeSuspiciousOrReported,
-      AuraFilterId.EvaluationConnectionTypeJustMet,
-      AuraFilterId.EvaluationConnectionTypeAlreadyKnownPlus,
-      AuraFilterId.EvaluationConnectionTypeRecovery,
-      AuraFilterId.EvaluationTheirRecovery,
+      AuraFilterId.ConnectionTypeSuspiciousOrReported,
+      AuraFilterId.ConnectionTypeJustMet,
+      AuraFilterId.ConnectionTypeAlreadyKnownPlus,
+      AuraFilterId.ConnectionTypeRecovery,
+      AuraFilterId.TheirRecovery,
     ],
     subjectId,
   );
@@ -93,7 +93,35 @@ export const SubjectInboundConnectionsContextProvider: React.FC<
         });
       }
     });
-    return inboundOpinions;
+    return inboundOpinions
+      .sort(
+        (a, b) =>
+          (a.inboundConnection?.timestamp ?? 0) -
+          (b.inboundConnection?.timestamp ?? 0),
+      )
+      .reduce(
+        (acc, o) => {
+          const myConnection = brightIdBackup.connections.find(
+            (conn) => conn.id === o.inboundConnection?.id,
+          );
+          if (
+            myConnection?.level === 'already known' ||
+            myConnection?.level === 'recovery'
+          ) {
+            acc[0].push(o);
+          } else if (
+            o.inboundConnection?.level === 'already known' ||
+            o.inboundConnection?.level === 'recovery'
+          ) {
+            acc[1].push(o);
+          } else {
+            acc[2].push(o);
+          }
+          return acc;
+        },
+        [[], [], []] as AuraInboundConnectionAndRatingData[][],
+      )
+      .flat();
   }, [brightIdBackup, ratings, connections]);
 
   const filterAndSortHookData = useFilterAndSort(
