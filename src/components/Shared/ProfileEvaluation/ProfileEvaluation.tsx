@@ -22,6 +22,7 @@ import {
 import { useSubjectName } from 'hooks/useSubjectName';
 import {
   useImpactEChartOption,
+  useImpactPercentage,
   useSubjectVerifications,
 } from 'hooks/useSubjectVerifications';
 import useViewMode from 'hooks/useViewMode';
@@ -35,6 +36,8 @@ import {
 import { connectionLevelIcons } from 'utils/connection';
 import { compactFormat } from 'utils/number';
 
+import { useSelector } from '../../../store/hooks';
+import { selectAuthData } from '../../../store/profile/selectors';
 import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
 const ProfileEvaluation = ({
@@ -91,18 +94,29 @@ const ConnectionInfo = ({
   evidenceViewMode: EvidenceViewMode;
 }) => {
   const { currentViewMode, currentEvaluationCategory } = useViewMode();
+  const evaluationCategory = useMemo(
+    () =>
+      INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
+        ? currentEvaluationCategory
+        : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+    [currentEvaluationCategory, currentViewMode, evidenceViewMode],
+  );
   const {
     myRatingToSubject: rating,
     loading,
     myConnectionToSubject: inboundConnectionInfo,
   } = useMyEvaluationsContext({
     subjectId,
-    evaluationCategory: INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode)
-      ? currentEvaluationCategory
-      : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+    evaluationCategory,
   });
-  // const {} = useSubjectVerifications()
-  // const impactPercent = useImpactPercent(, )
+
+  const { auraImpacts } = useSubjectVerifications(
+    subjectId,
+    evaluationCategory,
+  );
+  const authData = useSelector(selectAuthData);
+  const impactPercentage = useImpactPercentage(auraImpacts, authData?.brightId);
+
   const bgColor = useMemo(() => {
     if (rating && Number(rating?.rating) !== 0) {
       return getBgClassNameOfAuraRatingObject(rating);
@@ -158,7 +172,7 @@ const ConnectionInfo = ({
                 rating,
               )} text-[11px] font-bold text-center w-full`}
             >
-              12%
+              {`${impactPercentage}%` ?? '-'}
             </p>
           )}
         </>
@@ -369,15 +383,26 @@ export const EvaluationInformation = ({
   evidenceViewMode: EvidenceViewMode;
 }) => {
   const { currentViewMode, currentEvaluationCategory } = useViewMode();
-  const { rating, loading } = useSubjectEvaluationFromContext({
-    fromSubjectId,
-    toSubjectId,
-    evaluationCategory:
+  const evaluationCategory = useMemo(
+    () =>
       INBOUND_EVIDENCE_VIEW_MODES.includes(evidenceViewMode) ||
       evidenceViewMode === EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
         ? currentEvaluationCategory
         : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
+    [currentEvaluationCategory, currentViewMode, evidenceViewMode],
+  );
+  const { rating, loading } = useSubjectEvaluationFromContext({
+    fromSubjectId,
+    toSubjectId,
+    evaluationCategory,
   });
+
+  const { auraImpacts } = useSubjectVerifications(
+    toSubjectId,
+    evaluationCategory,
+  );
+  const impactPercentage = useImpactPercentage(auraImpacts, fromSubjectId);
+
   //TODO: change bg color on negative rating
   return (
     <div
@@ -405,7 +430,7 @@ export const EvaluationInformation = ({
         )}`}
       >
         <p>Impact</p>
-        <p className="font-bold">12%</p>
+        <p className="font-bold">{`${impactPercentage}%` ?? '-'}</p>
       </div>
     </div>
   );

@@ -6,6 +6,10 @@ import {
 import { useSubjectEvaluationFromContext } from 'hooks/useSubjectEvaluation';
 import { useMemo } from 'react';
 
+import {
+  useImpactPercentage,
+  useSubjectVerifications,
+} from '../../../hooks/useSubjectVerifications';
 import { EvaluationCategory } from '../../../types/dashboard';
 import LoadingSpinner from '../LoadingSpinner';
 
@@ -24,6 +28,12 @@ export default function EvaluationInfo({
     toSubjectId,
     evaluationCategory,
   });
+
+  const { auraImpacts } = useSubjectVerifications(
+    toSubjectId,
+    evaluationCategory,
+  );
+  const impactPercentage = useImpactPercentage(auraImpacts, fromSubjectId);
 
   //TODO: get notes from api
   const styleValues = useMemo(() => {
@@ -110,7 +120,7 @@ export default function EvaluationInfo({
               />
             </>
           ) : (
-            <span className="font-medium">{'12%'}</span>
+            <span className="font-medium">{`${impactPercentage}%` ?? '-'}</span>
           )}
         </div>
       )}

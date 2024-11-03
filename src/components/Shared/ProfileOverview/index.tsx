@@ -5,6 +5,7 @@ import { AuraFilterId } from 'hooks/useFilters';
 import {
   useImpactEChartOption,
   useSubjectVerifications,
+  useTotalImpact,
 } from 'hooks/useSubjectVerifications';
 import * as React from 'react';
 import { useState } from 'react';
@@ -46,6 +47,8 @@ const ProfileOverview = ({
     subjectId,
     viewModeToViewAs[viewMode],
   );
+  const { totalPositiveImpact, totalNegativeImpact } =
+    useTotalImpact(auraImpacts);
   const { impactChartOption } = useImpactEChartOption(auraImpacts);
 
   const [selectedLevel, setSelectedLevel] = useState(1);
@@ -211,7 +214,15 @@ const ProfileOverview = ({
           <ShowData
             title="Calculated Score"
             value={auraScore ? compactFormat(auraScore) : '-'}
-            details="(2.82K / -500)"
+            details={`(${
+              totalPositiveImpact !== null
+                ? `+${compactFormat(totalPositiveImpact)}`
+                : '-'
+            } / ${
+              totalNegativeImpact !== null
+                ? `-${compactFormat(totalNegativeImpact)}`
+                : '-'
+            })`}
           />
         </div>
         <div className="body__info flex justify-between w-full">

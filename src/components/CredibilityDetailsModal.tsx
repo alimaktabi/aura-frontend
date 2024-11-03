@@ -8,6 +8,7 @@ import {
 import { useSubjectName } from 'hooks/useSubjectName';
 import {
   useImpactEChartOption,
+  useImpactPercentage,
   useSubjectVerifications,
 } from 'hooks/useSubjectVerifications';
 import { useMemo, useState } from 'react';
@@ -18,6 +19,7 @@ import { EvaluationCategory } from 'types/dashboard';
 import { compactFormat } from 'utils/number';
 
 import {
+  getRawTextClassNameOfAuraRatingNumber,
   getViewModeSubjectTextColorClass,
   viewAsToViewMode,
 } from '../constants';
@@ -42,6 +44,7 @@ const CredibilityDetailsForRole = ({
     subjectId,
     evaluationCategory: roleEvaluationCategory,
   });
+  const impactPercentage = useImpactPercentage(auraImpacts, authData?.brightId);
   const {
     loading,
     myRatingToSubject,
@@ -106,15 +109,23 @@ const CredibilityDetailsForRole = ({
         <span className="font-bold">
           {loading ? (
             <span className="text-gray20">...</span>
-          ) : Number(myRatingToSubject?.rating) > 0 ? (
-            <span className="text-pl3">
+          ) : myRatingToSubject && Number(myRatingToSubject.rating) > 0 ? (
+            <span
+              className={`${getRawTextClassNameOfAuraRatingNumber(
+                Number(myRatingToSubject.rating),
+              )}`}
+            >
               Positive - {myConfidenceValueInThisSubjectRating} (
-              {Number(myRatingToSubject?.rating)})
+              {Number(myRatingToSubject.rating)})
             </span>
-          ) : Number(myRatingToSubject?.rating) < 0 ? (
-            <span className="text-nl3">
+          ) : myRatingToSubject && Number(myRatingToSubject.rating) < 0 ? (
+            <span
+              className={`${getRawTextClassNameOfAuraRatingNumber(
+                Number(myRatingToSubject.rating),
+              )}`}
+            >
               Negative - {myConfidenceValueInThisSubjectRating} (
-              {Number(myRatingToSubject?.rating)})
+              {Number(myRatingToSubject.rating)})
             </span>
           ) : (
             '-'
@@ -122,8 +133,14 @@ const CredibilityDetailsForRole = ({
         </span>
       </div>
       <div>
-        Your Evaluation Impact:
-        <span className="font-bold text-nl3"> 32%</span>
+        Your Evaluation Impact:{' '}
+        <span
+          className={`font-bold ${getRawTextClassNameOfAuraRatingNumber(
+            Number(myRatingToSubject?.rating),
+          )}`}
+        >
+          {`${impactPercentage}%` ?? '-'}
+        </span>
       </div>
       <ReactECharts
         style={{ height: '110px' }}

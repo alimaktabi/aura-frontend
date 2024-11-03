@@ -67,26 +67,7 @@ export const useSubjectVerifications = (
   };
 };
 
-export const useImpactPercent = (
-  auraImpacts: AuraImpact[] | null | undefined,
-  fromSubjectId: string,
-) => {
-  return useMemo(() => {
-    const totalAbsoluteImpact = auraImpacts?.reduce(
-      (a, c) => a + Math.abs(c.impact),
-      0,
-    );
-    const evaluatorImpact = auraImpacts?.find(
-      (i) => i.evaluator === fromSubjectId,
-    )?.impact;
-    if (!totalAbsoluteImpact || !evaluatorImpact) return 0;
-    return Math.round(Math.abs(evaluatorImpact) / totalAbsoluteImpact);
-  }, [auraImpacts, fromSubjectId]);
-};
-
-export const useImpactEChartOption = (
-  auraImpacts: AuraImpact[] | null | undefined,
-) => {
+export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
   const auraTopImpacts = useMemo(
     () =>
       auraImpacts
@@ -184,4 +165,45 @@ export const useImpactEChartOption = (
     impactChartOption,
     impactChartSmallOption,
   };
+};
+
+export const useImpactPercentage = (
+  auraImpacts: AuraImpact[] | null,
+  subjectId: string | null | undefined,
+) => {
+  return useMemo(() => {
+    if (auraImpacts === null || auraImpacts === undefined || !subjectId)
+      return undefined;
+    const subjectImpact = auraImpacts.find(
+      (i) => i.evaluator === subjectId,
+    )?.impact;
+    if (!subjectImpact) return 0;
+    return Math.round(
+      Math.abs(subjectImpact * 100) /
+        auraImpacts.reduce((a, c) => a + Math.abs(c.impact), 0),
+    );
+  }, [auraImpacts, subjectId]);
+};
+
+export const useTotalImpact = (auraImpacts: AuraImpact[] | null) => {
+  return useMemo(() => {
+    if (auraImpacts === null || auraImpacts === undefined)
+      return {
+        totalPositiveImpact: null,
+        totalNegativeImpact: null,
+      };
+    let totalPositiveImpact = 0;
+    let totalNegativeImpact = 0;
+    auraImpacts.forEach((i) => {
+      if (i.impact > 0) {
+        totalPositiveImpact += i.impact;
+      } else {
+        totalNegativeImpact += i.impact;
+      }
+    });
+    return {
+      totalPositiveImpact,
+      totalNegativeImpact,
+    };
+  }, [auraImpacts]);
 };

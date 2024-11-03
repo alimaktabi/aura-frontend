@@ -54,6 +54,21 @@ export function getBgClassNameOfAuraRatingNumber(
   return 'bg-nl4';
 }
 
+// All cases of if are here because of Tailwindcss
+export function getRawTextClassNameOfAuraRatingNumber(
+  rating: number | null | undefined,
+) {
+  if (!rating) return '';
+  if (rating >= 4) return 'text-pl4';
+  if (rating >= 3) return 'text-pl3';
+  if (rating >= 2) return 'text-pl2';
+  if (rating > 0) return 'text-pl1';
+  if (rating >= -1) return 'text-nl1';
+  if (rating >= -2) return 'text-nl2';
+  if (rating >= -3) return 'text-nl3';
+  return 'text-nl4';
+}
+
 export function getBgClassNameOfAuraRatingObject(
   auraRating: AuraRating | null | undefined,
 ) {
