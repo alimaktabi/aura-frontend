@@ -138,13 +138,6 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     const tabFromQuery = query.get('tab') as ProfileTab | null;
     if (tabFromQuery && Object.values(ProfileTab).includes(tabFromQuery)) {
       setSelectedTab(tabFromQuery);
-
-      // Clear the 'tab' query parameter
-      query.delete('tab');
-      navigate({
-        pathname: window.location.pathname,
-        search: query.toString(),
-      });
     }
   }, [query, navigate]);
 

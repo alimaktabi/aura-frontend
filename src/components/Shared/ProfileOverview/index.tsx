@@ -291,7 +291,6 @@ const ProfileOverview = ({
         <>
           <Link
             to={`/subject/${subjectId}?viewas=${viewModeToViewAs[viewMode]}&tab=${ProfileTab.EVALUATIONS}`}
-            replace={true}
             className="w-full"
           >
             <button className="btn--outlined btn--medium mt-4 w-full">
