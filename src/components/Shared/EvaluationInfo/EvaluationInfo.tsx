@@ -120,7 +120,9 @@ export default function EvaluationInfo({
               />
             </>
           ) : (
-            <span className="font-medium">{`${impactPercentage}%` ?? '-'}</span>
+            <span className="font-medium">
+              {impactPercentage !== null ? `${impactPercentage}%` : '-'}
+            </span>
           )}
         </div>
       )}

@@ -6,6 +6,7 @@ import CredibilityDetailsModal from '../../../components/CredibilityDetailsModal
 import ProfileOverview from '../../../components/Shared/ProfileOverview';
 import { viewModeToEvaluatorViewMode } from '../../../constants';
 import useViewMode from '../../../hooks/useViewMode';
+import { CredibilityDetailsProps } from '../../../types';
 
 const EvaluationsDetailsPerformance = ({
   subjectId,
@@ -21,8 +22,8 @@ const EvaluationsDetailsPerformance = ({
   onFindEvaluatorsButtonClick?: () => void;
 }) => {
   const { currentViewMode } = useViewMode();
-  const [credibilityDetailsSubjectId, setCredibilityDetailsSubjectId] =
-    useState<string | null>(null);
+  const [credibilityDetailsProps, setCredibilityDetailsProps] =
+    useState<CredibilityDetailsProps | null>(null);
   return (
     <>
       {/*<div className="card relative">*/}
@@ -54,15 +55,15 @@ const EvaluationsDetailsPerformance = ({
         <ProfileOverview
           subjectId={subjectId}
           isMyPerformance={true}
-          onLastEvaluationClick={setCredibilityDetailsSubjectId}
+          onLastEvaluationClick={setCredibilityDetailsProps}
           viewMode={viewModeToEvaluatorViewMode[currentViewMode]}
           onFindEvaluatorsButtonClick={onFindEvaluatorsButtonClick}
         />
       </SubjectOutboundEvaluationsContextProvider>
-      {credibilityDetailsSubjectId && (
+      {credibilityDetailsProps && (
         <CredibilityDetailsModal
-          onClose={() => setCredibilityDetailsSubjectId(null)}
-          subjectId={credibilityDetailsSubjectId}
+          onClose={() => setCredibilityDetailsProps(null)}
+          credibilityDetailsProps={credibilityDetailsProps}
         />
       )}
       {/*</div>*/}

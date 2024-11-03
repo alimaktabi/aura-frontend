@@ -40,6 +40,7 @@ import {
   useSubjectInboundConnectionsContext,
 } from '../../contexts/SubjectInboundConnectionsContext';
 import { selectAuthData } from '../../store/profile/selectors';
+import { CredibilityDetailsProps } from '../../types';
 import { ConnectionListSearch } from './ConnectionListSearch';
 
 const ProfileTabs = ({
@@ -148,8 +149,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   }, [query, navigate]);
 
   const [showEvaluateOverlayCard, setShowEvaluateOverlayCard] = useState(false);
-  const [credibilityDetailsSubjectId, setCredibilityDetailsSubjectId] =
-    useState<string | null>(null);
+  const [credibilityDetailsProps, setCredibilityDetailsProps] =
+    useState<CredibilityDetailsProps | null>(null);
   const handleScroll = () => {
     const scrollPosition =
       document.getElementsByClassName('page')[0]?.scrollTop; // => scroll position
@@ -171,10 +172,13 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         ?.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const { currentViewMode, currentEvaluationCategory } = useViewMode();
+  const {
+    currentViewMode,
+    currentEvaluationCategory,
+    currentRoleEvaluatorEvaluationCategory,
+  } = useViewMode();
 
   const {
-    itemsOriginal: evaluationsOriginal,
     itemsFiltered: evaluations,
     loading: loadingInboundEvaluations,
     selectedFilterIds: inboundEvaluationsSelectedFilterId,
@@ -184,7 +188,6 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     evaluationCategory: currentEvaluationCategory,
   });
   const {
-    itemsOriginal: connectionsOriginal,
     itemsFiltered: connections,
     loading: loadingInboundConnections,
     selectedFilterIds: inboundConnectionsSelectedFilterId,
@@ -206,22 +209,20 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         : viewModeToViewAs[viewModeToSubjectViewMode[currentViewMode]],
   });
 
-  const [evaluators, evaluatorsOriginal] = useMemo(() => {
-    return [evaluations, evaluationsOriginal].map(
-      (items) =>
-        items?.filter((e) => e.rating).map((e) => e.fromSubjectId) || [],
+  const evaluators = useMemo(() => {
+    return (
+      evaluations?.filter((e) => e.rating).map((e) => e.fromSubjectId) || []
     );
-  }, [evaluations, evaluationsOriginal]);
+  }, [evaluations]);
 
-  const [connectionIds] = useMemo(() => {
-    return [connections, connectionsOriginal].map(
-      (items) => items?.map((e) => e.fromSubjectId) || [],
-    );
-  }, [connections, connectionsOriginal]);
+  const connectionIds = useMemo(() => {
+    return connections?.map((e) => e.fromSubjectId) || [];
+  }, [connections]);
 
-  const [evaluateds] = useMemo(() => {
-    return [outboundEvaluations].map(
-      (items) => items?.filter((e) => e.rating).map((e) => e.toSubjectId) || [],
+  const evaluateds = useMemo(() => {
+    return (
+      outboundEvaluations?.filter((e) => e.rating).map((e) => e.toSubjectId) ||
+      []
     );
   }, [outboundEvaluations]);
 
@@ -301,7 +302,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <ProfileOverview
           subjectId={subjectId}
           showEvidenceList={() => setSelectedTab(ProfileTab.EVALUATIONS)}
-          onLastEvaluationClick={setCredibilityDetailsSubjectId}
+          onLastEvaluationClick={setCredibilityDetailsProps}
           viewMode={currentViewMode}
         />
       ) : selectedTab === ProfileTab.ACTIVITY ||
@@ -325,7 +326,17 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
                       ? EvidenceViewMode.OUTBOUND_ACTIVITY
                       : EvidenceViewMode.OUTBOUND_ACTIVITY_ON_MANAGERS
                   }
-                  onClick={() => setCredibilityDetailsSubjectId(evaluated)}
+                  onClick={() =>
+                    setCredibilityDetailsProps({
+                      subjectId: evaluated,
+                      evaluationCategory:
+                        selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
+                          ? EvaluationCategory.MANAGER
+                          : viewModeToViewAs[
+                              viewModeToSubjectViewMode[currentViewMode]
+                            ],
+                    })
+                  }
                   key={evaluated}
                   fromSubjectId={subjectId}
                   toSubjectId={evaluated}
@@ -351,7 +362,13 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               renderItem={(evaluator) => (
                 <ProfileEvaluation
                   evidenceViewMode={EvidenceViewMode.INBOUND_EVALUATION}
-                  onClick={() => setCredibilityDetailsSubjectId(evaluator)}
+                  onClick={() =>
+                    setCredibilityDetailsProps({
+                      subjectId: evaluator,
+                      evaluationCategory:
+                        currentRoleEvaluatorEvaluationCategory,
+                    })
+                  }
                   key={evaluator}
                   fromSubjectId={evaluator}
                   toSubjectId={subjectId}
@@ -377,7 +394,12 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
               renderItem={(connectionId) => (
                 <ProfileEvaluation
                   evidenceViewMode={EvidenceViewMode.INBOUND_CONNECTION}
-                  onClick={() => setCredibilityDetailsSubjectId(connectionId)}
+                  onClick={() =>
+                    setCredibilityDetailsProps({
+                      subjectId: connectionId,
+                      evaluationCategory: EvaluationCategory.SUBJECT,
+                    })
+                  }
                   key={connectionId}
                   fromSubjectId={connectionId}
                   toSubjectId={subjectId}
@@ -426,10 +448,10 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         setShowEvaluationFlow={setShowEvaluationFlow}
         subjectId={subjectId}
       />
-      {credibilityDetailsSubjectId && (
+      {credibilityDetailsProps && (
         <CredibilityDetailsModal
-          onClose={() => setCredibilityDetailsSubjectId(null)}
-          subjectId={credibilityDetailsSubjectId}
+          onClose={() => setCredibilityDetailsProps(null)}
+          credibilityDetailsProps={credibilityDetailsProps}
         />
       )}
     </div>

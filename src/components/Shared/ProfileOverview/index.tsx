@@ -14,6 +14,7 @@ import { PreferredView, ProfileTab } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
 import { viewModeToString, viewModeToViewAs } from '../../../constants';
+import { CredibilityDetailsProps } from '../../../types';
 import { compactFormat } from '../../../utils/number';
 
 const ProfileOverview = ({
@@ -30,7 +31,9 @@ const ProfileOverview = ({
   showEvidenceList?: () => void;
   hasHeader?: boolean;
   title?: string;
-  onLastEvaluationClick: (subjectId: string) => void;
+  onLastEvaluationClick: (
+    credibilityDetailsProps: CredibilityDetailsProps,
+  ) => void;
   onFindEvaluatorsButtonClick?: () => void;
   viewMode: PreferredView;
   isMyPerformance?: boolean;
@@ -229,12 +232,11 @@ const ProfileOverview = ({
           <div className="font-medium">Evaluation Impact:</div>
           <div className="underline text-sm text-gray00">What&apos;s this?</div>
         </div>
-
         <ReactECharts
           option={impactChartOption}
           className="body__chart w-full mb-3"
         />
-
+        t
         <div className="chart-info flex flex-wrap gap-y-2.5 mb-5">
           <div className="chart-info__item flex items-center gap-1 w-1/2">
             <div className="chart-info__item__color w-[22px] h-[11px] rounded bg-[#E2E2E2]"></div>
@@ -261,7 +263,6 @@ const ProfileOverview = ({
             </div>
           </div>
         </div>
-
         {/*<p className="font-medium italic text-sm text-black">*/}
         {/*  *This chart displays the top 10 impacts players have on the subject*/}
         {/*  score*/}

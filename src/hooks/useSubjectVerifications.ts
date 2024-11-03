@@ -173,7 +173,7 @@ export const useImpactPercentage = (
 ) => {
   return useMemo(() => {
     if (auraImpacts === null || auraImpacts === undefined || !subjectId)
-      return undefined;
+      return null;
     const subjectImpact = auraImpacts.find(
       (i) => i.evaluator === subjectId,
     )?.impact;

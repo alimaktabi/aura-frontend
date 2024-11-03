@@ -172,7 +172,7 @@ const ConnectionInfo = ({
                 rating,
               )} text-[11px] font-bold text-center w-full`}
             >
-              {`${impactPercentage}%` ?? '-'}
+              {impactPercentage !== null ? `${impactPercentage}%` : '-'}
             </p>
           )}
         </>
@@ -430,7 +430,9 @@ export const EvaluationInformation = ({
         )}`}
       >
         <p>Impact</p>
-        <p className="font-bold">{`${impactPercentage}%` ?? '-'}</p>
+        <p className="font-bold">
+          {impactPercentage !== null ? `${impactPercentage}%` : '-'}
+        </p>
       </div>
     </div>
   );

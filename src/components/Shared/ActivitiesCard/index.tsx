@@ -7,6 +7,7 @@ import {
   viewModeToSubjectViewMode,
   viewModeToViewAs,
 } from '../../../constants';
+import { CredibilityDetailsProps } from '../../../types';
 import { PreferredView } from '../../../types/dashboard';
 import ProfileEvaluationMini from './ProfileEvaluationMini';
 
@@ -16,7 +17,9 @@ const ActivitiesCard = ({
   viewMode,
 }: {
   subjectId: string;
-  onLastEvaluationClick: (subjectId: string) => void;
+  onLastEvaluationClick: (
+    credibilityDetailsProps: CredibilityDetailsProps,
+  ) => void;
   viewMode: PreferredView;
 }) => {
   const { ratings: outboundRatings } = useOutboundEvaluationsContext({
@@ -74,7 +77,13 @@ const ActivitiesCard = ({
             evaluationCategory={
               viewModeToViewAs[viewModeToSubjectViewMode[viewMode]]
             }
-            onClick={() => onLastEvaluationClick(lastRating.toBrightId)}
+            onClick={() =>
+              onLastEvaluationClick({
+                subjectId: lastRating.toBrightId,
+                evaluationCategory:
+                  viewModeToViewAs[viewModeToSubjectViewMode[viewMode]],
+              })
+            }
           ></ProfileEvaluationMini>
         )}
       </div>

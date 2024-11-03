@@ -144,3 +144,8 @@ export type AuraFilterDropdownOption = {
   ascending?: boolean;
   onClick: () => void;
 };
+
+export type CredibilityDetailsProps = {
+  subjectId: string;
+  evaluationCategory: EvaluationCategory;
+};
