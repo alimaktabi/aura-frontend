@@ -13,7 +13,11 @@ import { Link } from 'react-router-dom';
 import { PreferredView, ProfileTab } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
-import { viewModeToString, viewModeToViewAs } from '../../../constants';
+import {
+  viewModeToEvaluatorViewMode,
+  viewModeToString,
+  viewModeToViewAs,
+} from '../../../constants';
 import { CredibilityDetailsProps } from '../../../types';
 import { compactFormat } from '../../../utils/number';
 
@@ -22,7 +26,7 @@ const ProfileOverview = ({
   title = '',
   showEvidenceList,
   hasHeader = false,
-  onLastEvaluationClick,
+  setCredibilityDetailsProps,
   onFindEvaluatorsButtonClick,
   viewMode,
   isMyPerformance,
@@ -31,7 +35,7 @@ const ProfileOverview = ({
   showEvidenceList?: () => void;
   hasHeader?: boolean;
   title?: string;
-  onLastEvaluationClick: (
+  setCredibilityDetailsProps: (
     credibilityDetailsProps: CredibilityDetailsProps,
   ) => void;
   onFindEvaluatorsButtonClick?: () => void;
@@ -64,6 +68,17 @@ const ProfileOverview = ({
     toggleFiltersById([filterId], true);
     showEvidenceList?.();
   };
+
+  const onChartClick = (params: any) => {
+    if (params.componentType === 'series') {
+      console.log('Bar clicked:', params.data.evaluator);
+      setCredibilityDetailsProps({
+        subjectId: params.data.evaluator,
+        evaluationCategory:
+          viewModeToViewAs[viewModeToEvaluatorViewMode[viewMode]],
+      });
+    }
+  };
   return (
     <div className="card">
       {hasHeader && (
@@ -72,7 +87,7 @@ const ProfileOverview = ({
       {viewMode !== PreferredView.PLAYER && (
         <ActivitiesCard
           subjectId={subjectId}
-          onLastEvaluationClick={onLastEvaluationClick}
+          onLastEvaluationClick={setCredibilityDetailsProps}
           viewMode={viewMode}
         />
       )}
@@ -234,6 +249,9 @@ const ProfileOverview = ({
         </div>
         <ReactECharts
           option={impactChartOption}
+          onEvents={{
+            click: onChartClick, // Attach click event
+          }}
           className="body__chart w-full mb-3"
         />
         t

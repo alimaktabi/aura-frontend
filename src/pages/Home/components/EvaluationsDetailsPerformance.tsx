@@ -55,7 +55,7 @@ const EvaluationsDetailsPerformance = ({
         <ProfileOverview
           subjectId={subjectId}
           isMyPerformance={true}
-          onLastEvaluationClick={setCredibilityDetailsProps}
+          setCredibilityDetailsProps={setCredibilityDetailsProps}
           viewMode={viewModeToEvaluatorViewMode[currentViewMode]}
           onFindEvaluatorsButtonClick={onFindEvaluatorsButtonClick}
         />

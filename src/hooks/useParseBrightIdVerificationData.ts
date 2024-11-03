@@ -1,6 +1,11 @@
-import { Verifications } from 'api/auranode.service';
+import { AuraImpact, Verifications } from 'api/auranode.service';
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
+import {
+  selectAuthData,
+  selectBrightIdBackup,
+} from '../store/profile/selectors';
 import { EvaluationCategory } from '../types/dashboard';
 
 export const getUserHasRecovery = (
@@ -44,10 +49,35 @@ export default function useParseBrightIdVerificationData(
     () => auraVerification?.score ?? null,
     [auraVerification?.score],
   );
-  const auraImpacts = useMemo(
-    () => auraVerification?.impacts ?? null,
-    [auraVerification?.impacts],
+
+  const authData = useSelector(selectAuthData);
+  const brightIdBackup = useSelector(selectBrightIdBackup);
+
+  const auraImpacts: AuraImpact[] | null = useMemo(
+    () =>
+      auraVerification?.impacts.map((impact) => {
+        const profileInfo =
+          impact.evaluator === authData?.brightId
+            ? brightIdBackup?.userData
+            : brightIdBackup?.connections.find(
+                (conn) => conn.id === impact.evaluator,
+              );
+
+        return {
+          evaluatorName:
+            profileInfo?.name ??
+            `${impact.evaluator.slice(0, 4)}...${impact.evaluator.slice(-3)}`,
+          ...impact,
+        };
+      }) ?? null,
+    [
+      auraVerification?.impacts,
+      authData?.brightId,
+      brightIdBackup?.connections,
+      brightIdBackup?.userData,
+    ],
   );
+
   return {
     userHasRecovery,
     auraVerification,

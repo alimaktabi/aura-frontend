@@ -6,6 +6,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 
 import {
   AuraImpact,
+  AuraImpactRaw,
   getBrightIdProfile,
   Verifications,
 } from '../api/auranode.service';
@@ -107,11 +108,37 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
         left: 0,
         right: 0,
       },
+      tooltip: {
+        trigger: 'item',
+        formatter: (params: any) => {
+          const { data } = params;
+          return data.label;
+        },
+        position: (point: any, params: any, dom: any, rect: any, size: any) => {
+          // Destructure width from size.viewSize
+          const [chartWidth] = size.viewSize;
+          const tooltipWidth = dom.offsetWidth;
+
+          // Adjust tooltip position to prevent overflow
+          let xPos = point[0];
+          const yPos = point[1];
+
+          // If the tooltip is too close to the right edge, shift it to the left
+          if (xPos + tooltipWidth > chartWidth) {
+            xPos -= tooltipWidth;
+          }
+
+          // Return adjusted position
+          return [xPos, yPos];
+        },
+      },
       series: [
         {
           color: '#ABCAAE',
           data: auraTopImpacts.map((item) => ({
             value: item.impact,
+            label: item.evaluatorName,
+            evaluator: item.evaluator,
             itemStyle: {
               color: findNearestColor(
                 item.confidence * (item.impact >= 0 ? 1 : -1),
@@ -137,11 +164,14 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
         left: 0,
         right: 0,
       },
+      tooltip: undefined,
       series: [
         {
           color: '#ABCAAE',
           data: auraTopImpacts.map((item) => ({
             value: item.impact,
+            label: item.evaluatorName,
+            evaluator: item.evaluator,
             itemStyle: {
               color: findNearestColor(
                 item.confidence * (item.impact >= 0 ? 1 : -1),
@@ -168,7 +198,7 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
 };
 
 export const useImpactPercentage = (
-  auraImpacts: AuraImpact[] | null,
+  auraImpacts: AuraImpactRaw[] | null,
   subjectId: string | null | undefined,
 ) => {
   return useMemo(() => {
@@ -185,7 +215,7 @@ export const useImpactPercentage = (
   }, [auraImpacts, subjectId]);
 };
 
-export const useTotalImpact = (auraImpacts: AuraImpact[] | null) => {
+export const useTotalImpact = (auraImpacts: AuraImpactRaw[] | null) => {
   return useMemo(() => {
     if (auraImpacts === null || auraImpacts === undefined)
       return {

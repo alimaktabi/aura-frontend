@@ -302,7 +302,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         <ProfileOverview
           subjectId={subjectId}
           showEvidenceList={() => setSelectedTab(ProfileTab.EVALUATIONS)}
-          onLastEvaluationClick={setCredibilityDetailsProps}
+          setCredibilityDetailsProps={setCredibilityDetailsProps}
           viewMode={currentViewMode}
         />
       ) : selectedTab === ProfileTab.ACTIVITY ||

@@ -1,13 +1,17 @@
 import { EvaluationCategory } from '../types/dashboard';
 import { auraBrightIdNodeApi } from './index';
 
-export type AuraImpact = {
+export interface AuraImpactRaw {
   evaluator: string;
   level?: number | null;
   score: number | null;
   confidence: number;
   impact: number;
-};
+}
+
+export interface AuraImpact extends AuraImpactRaw {
+  evaluatorName: string;
+}
 
 export type Verifications = {
   name: string;
@@ -19,7 +23,7 @@ export type Verifications = {
       name: EvaluationCategory;
       score: number;
       level: number;
-      impacts: AuraImpact[];
+      impacts: AuraImpactRaw[];
     }[];
   }[];
 }[];
