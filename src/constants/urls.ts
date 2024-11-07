@@ -1,8 +1,11 @@
 import { LOCATION_ORIGIN } from 'constants/index';
 
-export const AURA_NODE_URL_PROXY = `${LOCATION_ORIGIN}/auranode`;
+import { IS_PRODUCTION } from '../utils/env';
 
-if (!process.env.REACT_APP_AURA_NODE_URL) {
-  throw new Error('REACT_APP_AURA_NODE_URL not provided');
-}
-export const AURA_NODE_URL = process.env.REACT_APP_AURA_NODE_URL;
+export const AURA_NODE_URL_PROXY = `${LOCATION_ORIGIN}/auranode${
+  IS_PRODUCTION ? '' : '-test'
+}`;
+
+export const AURA_NODE_URL = IS_PRODUCTION
+  ? 'https://aura-node.brightid.org'
+  : 'https://aura-test.brightid.org';

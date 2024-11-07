@@ -17,7 +17,7 @@ import { setUserId, userSelector } from 'BrightID/reducer/userSlice';
 import { recover_steps, RecoveryCodeScreenAction, urlTypesOfActions } from 'BrightID/utils/constants';
 import { buildRecoveryChannelQrUrl } from 'BrightID/utils/recovery';
 import { LOCATION_ORIGIN } from 'constants/index';
-import { AURA_NODE_URL } from 'constants/urls';
+import { AURA_NODE_URL, AURA_NODE_URL_PROXY } from 'constants/urls';
 import useRedirectAfterLogin from 'hooks/useRedirectAfterLogin';
 import { useEffect, useMemo, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
@@ -143,10 +143,7 @@ const RecoveryCodeScreen = () => {
         aesKey: recoveryData.aesKey,
         url: channelUrl.href.startsWith(LOCATION_ORIGIN)
           ? {
-              href: channelUrl.href.replace(
-                LOCATION_ORIGIN + '/auranode',
-                AURA_NODE_URL,
-              ),
+              href: channelUrl.href.replace(AURA_NODE_URL_PROXY, AURA_NODE_URL),
             }
           : channelUrl,
         t: urlTypesOfActions[action],

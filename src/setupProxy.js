@@ -20,10 +20,21 @@ module.exports = function (app) {
     app.use(
       '/auranode',
       createProxyMiddleware({
-        target: process.env.REACT_APP_AURA_NODE_URL,
+        target: 'https://aura-node.brightid.org',
         changeOrigin: true,
         pathRewrite: {
           '^/auranode/?(.*)': '/$1',
+        },
+        secure: process.env.NODE_ENV !== 'development',
+      }),
+    );
+    app.use(
+      '/auranode-test',
+      createProxyMiddleware({
+        target: 'https://aura-test.brightid.org',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/auranode-test/?(.*)': '/$1',
         },
         secure: process.env.NODE_ENV !== 'development',
       }),
