@@ -24,7 +24,7 @@ const NewPlayerGuideAfterEvaluation = ({
           <span data-testid="ratings-remaining-before-training">
             {PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING - ratingsDoneCount}
           </span>{' '}
-          more before you can start getting feedback by Aura trainers
+          more before you can start getting feedback from Aura trainers
         </p>
         <div className="grow bg-[#D9D9D9] rounded-xl h-[14px] overflow-hidden mt-[20px]">
           <span
