@@ -78,7 +78,7 @@ const ProfileInfoPerformance = ({
                 </span>
                 <span className="text-lg font-medium">
                   more evaluation{ratingsToBeDoneCount > 1 ? `s` : ''} to unlock
-                  Level-up
+                  Level Up
                 </span>
               </>
             ) : (
