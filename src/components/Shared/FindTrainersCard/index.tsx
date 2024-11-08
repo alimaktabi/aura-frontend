@@ -23,7 +23,7 @@ const FindTrainersCard = ({ subjectId }: { subjectId: string }) => {
         <PotentialEvaluatorsListBrief
           subjectId={subjectId}
           description={
-            'Here is a list of trainers from you brightID connection list. Ask them to check your work and help you improve.'
+            'Here is a list of trainers from your BrightID connections. Ask them to check your work and help you improve.'
           }
           evaluatorViewMode={PreferredView.TRAINER}
           title={'Trainers'}
