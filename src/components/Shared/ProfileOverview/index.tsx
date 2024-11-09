@@ -254,7 +254,6 @@ const ProfileOverview = ({
           }}
           className="body__chart w-full mb-3"
         />
-        t
         <div className="chart-info flex flex-wrap gap-y-2.5 mb-5">
           <div className="chart-info__item flex items-center gap-1 w-1/2">
             <div className="chart-info__item__color w-[22px] h-[11px] rounded bg-[#E2E2E2]"></div>
