@@ -1,3 +1,4 @@
+import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import * as React from 'react';
 
 import {
@@ -9,37 +10,81 @@ import {
 import useViewMode from '../../hooks/useViewMode';
 import { EvaluationCategory, PreferredView } from '../../types/dashboard';
 
+const views = [
+  EvaluationCategory.SUBJECT,
+  EvaluationCategory.PLAYER,
+  EvaluationCategory.TRAINER,
+  EvaluationCategory.MANAGER,
+];
+
 export const HeaderPreferedView = {
-  ProfileHeaderViews: () => {
+  ProfileHeaderViews: ({ subjectId }: { subjectId: string }) => {
     const { updateViewAs, currentViewMode, currentEvaluationCategory } =
       useViewMode();
 
-    const views = [
-      EvaluationCategory.SUBJECT,
+    const playerEvaluation = useSubjectVerifications(
+      subjectId,
       EvaluationCategory.PLAYER,
+    );
+
+    const trainerEvaluation = useSubjectVerifications(
+      subjectId,
       EvaluationCategory.TRAINER,
+    );
+
+    const managerEvaluation = useSubjectVerifications(
+      subjectId,
       EvaluationCategory.MANAGER,
-    ];
+    );
+
+    const authorizedTabs = React.useMemo(() => {
+      const tabs = [EvaluationCategory.SUBJECT];
+
+      if (playerEvaluation.auraLevel && playerEvaluation.auraLevel > 0)
+        tabs.push(EvaluationCategory.PLAYER);
+
+      if (trainerEvaluation.auraLevel && trainerEvaluation.auraLevel > 0)
+        tabs.push(EvaluationCategory.TRAINER);
+
+      if (managerEvaluation.auraLevel && managerEvaluation.auraLevel > 0)
+        tabs.push(EvaluationCategory.MANAGER);
+
+      return tabs;
+    }, [playerEvaluation, trainerEvaluation, managerEvaluation]);
+
+    const isLoading =
+      managerEvaluation.loading ||
+      trainerEvaluation.loading ||
+      playerEvaluation.loading;
 
     return (
       <>
-        {views.map((subjectViewMode) => (
-          <div
-            className={`p-1 rounded ${
-              currentEvaluationCategory === subjectViewMode
-                ? viewModeSubjectBackgroundColorClass[currentViewMode]
-                : 'bg-gray100'
-            } ml-2 cursor-pointer`}
-            key={subjectViewMode}
-            onClick={() => updateViewAs(subjectViewMode)}
-          >
-            <img
-              className="w-4 h-4"
-              src={subjectViewAsIcon[subjectViewMode]}
-              alt=""
-            />
-          </div>
-        ))}
+        {isLoading
+          ? views.map((_, key) => (
+              <div
+                key={key}
+                className={`p-1 rounded animate-pulse bg-gray100 ml-2 cursor-pointer`}
+              >
+                <div className="w-4 h-4"></div>
+              </div>
+            ))
+          : authorizedTabs.map((subjectViewMode) => (
+              <div
+                className={`p-1 rounded ${
+                  currentEvaluationCategory === subjectViewMode
+                    ? viewModeSubjectBackgroundColorClass[currentViewMode]
+                    : 'bg-gray100'
+                } ml-2 cursor-pointer`}
+                key={subjectViewMode}
+                onClick={() => updateViewAs(subjectViewMode)}
+              >
+                <img
+                  className="w-4 h-4"
+                  src={subjectViewAsIcon[subjectViewMode]}
+                  alt=""
+                />
+              </div>
+            ))}
       </>
     );
   },
