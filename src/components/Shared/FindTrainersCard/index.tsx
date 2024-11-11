@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { compactFormat } from 'utils/number';
 
 import {
   viewModeToEvaluatorViewMode,
@@ -114,7 +115,7 @@ const PotentialEvaluatorsListBrief = ({
           )}
         </div>
         {isExpanded && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             {potentialEvaluators?.map((p) => (
               <PotentialEvaluatorBrief
                 key={p.fromSubjectId}
@@ -154,7 +155,7 @@ const PotentialEvaluatorBrief = ({
   subjectId: string;
 }) => {
   const subjectName = useSubjectName(evaluatorSubjectId);
-  const { auraLevel, loading } = useSubjectVerifications(
+  const { auraLevel, loading, auraScore } = useSubjectVerifications(
     evaluatorSubjectId,
     viewModeToViewAs[viewModeToEvaluatorViewMode[evaluatorViewMode]],
   );
@@ -171,43 +172,53 @@ const PotentialEvaluatorBrief = ({
         />
         <div className="flex flex-col leading-3">
           <div className="font-bold text-sm leading-4">{subjectName}</div>
-          <div className="leading-3">
-            <span className="font-bold text-xs">
-              Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
-            </span>{' '}
-            {evaluatorViewMode === PreferredView.TRAINER && (
-              <span className="font-medium text-xs">
-                (
-                <EvaluationsCount
-                  evaluatorSubjectId={evaluatorSubjectId}
-                  evaluatorViewMode={evaluatorViewMode}
-                />{' '}
-                Trainees)
-              </span>
+          <div className="">
+            {connectionInfo ? (
+              <div className="flex items-center gap-1">
+                <img
+                  src={`/assets/images/Shared/${
+                    connectionLevelIcons[connectionInfo.level]
+                  }.svg`}
+                  alt=""
+                  className="inline mr-0.5"
+                  width={20}
+                  height={20}
+                />
+                <span className="font-medium text-sm leading-3">
+                  {connectionInfo.level}
+                </span>
+              </div>
+            ) : (
+              <div>...</div>
             )}
           </div>
         </div>
       </div>
-      <div className="flex flex-col leading-3">
-        <div className="text-gray20 text-[10px] font-normal">
-          Connection Level
-        </div>
-        {connectionInfo ? (
-          <div>
-            <img
-              src={`/assets/images/Shared/${
-                connectionLevelIcons[connectionInfo.level]
-              }.svg`}
-              alt=""
-              className="inline mr-0.5"
-            />
-            <span className="font-medium text-sm leading-3">
-              {connectionInfo.level}
+      <div className="flex flex-col leading-3 text-right">
+        <span>
+          <span className="font-bold text-xs">
+            Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
+          </span>{' '}
+          {evaluatorViewMode === PreferredView.TRAINER && (
+            <span className="font-medium text-xs">
+              (
+              <EvaluationsCount
+                evaluatorSubjectId={evaluatorSubjectId}
+                evaluatorViewMode={evaluatorViewMode}
+              />{' '}
+              Trainees)
             </span>
-          </div>
-        ) : (
-          <div>...</div>
-        )}
+          )}
+        </span>
+        <p className="text-gray10 text-xs mb-2">
+          Score:{' '}
+          <span className="font-medium text-black">
+            {auraScore ? compactFormat(auraScore) : '-'}
+          </span>
+        </p>
+        {/* <div className="text-gray20 text-[10px] font-normal">
+          Connection Level
+        </div> */}
       </div>
     </div>
   );
