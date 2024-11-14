@@ -12,7 +12,7 @@ import { PreferredView } from '../../types/dashboard';
 import Dropdown from '../Shared/Dropdown';
 import Modal from '../Shared/Modal';
 
-function FilterAndSortModalBody() {
+function FilterAndSortModalBody({ isPlayerMode }: { isPlayerMode: boolean }) {
   const {
     selectedFilterIds,
     toggleFiltersById,
@@ -26,6 +26,7 @@ function FilterAndSortModalBody() {
     <div>
       <p className="text-black2 font-bold">Filters</p>
       <FiltersModal
+        includeConnectionFilters={isPlayerMode}
         testidPrefix={'subject-filter'}
         filters={filters}
         selectedFilterIds={selectedFilterIds}
@@ -33,6 +34,7 @@ function FilterAndSortModalBody() {
       />
       <p className="text-black2 font-bold pt-3 pb-1">Sorts</p>
       <SortsModal
+        includeLastConnectionFilter={isPlayerMode}
         testidPrefix={'subject-sort'}
         sorts={sorts}
         selectedSort={selectedSort}
@@ -170,7 +172,9 @@ export const SubjectListControls = ({
           closeModalHandler={() => setIsModalOpen(false)}
           className="select-button-with-modal__modal"
         >
-          <FilterAndSortModalBody />
+          <FilterAndSortModalBody
+            isPlayerMode={currentViewMode === PreferredView.PLAYER}
+          />
         </Modal>
         <span className="ml-1">
           (
