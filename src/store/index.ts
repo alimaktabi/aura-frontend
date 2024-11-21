@@ -11,6 +11,7 @@ import {
 import { PreferredView } from 'types/dashboard';
 import { __DEV__ } from 'utils/env';
 
+import { apiSlice } from './api/slice';
 import { profileSlice } from './profile';
 
 const migrations: MigrationManifest = {
@@ -62,6 +63,7 @@ const persistedReducer = persistReducer(
   combineReducers({
     ...reducers,
     profile: profileSlice.reducer,
+    api: apiSlice.reducer,
   }),
 );
 
@@ -80,7 +82,7 @@ export const store = configureStore({
         ],
         ignoredPaths: ['recoveryData'],
       },
-    }),
+    }).concat(apiSlice.middleware),
 });
 
 export const persistor = persistStore(store);
