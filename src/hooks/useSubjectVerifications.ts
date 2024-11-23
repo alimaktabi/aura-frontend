@@ -1,13 +1,14 @@
+import { skipToken } from '@reduxjs/toolkit/query';
 import { MyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluationsContext';
 import { EChartsOption } from 'echarts-for-react/src/types';
 import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerificationData';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { useGetBrightIDProfileQuery } from 'store/api/profile';
 
 import {
   AuraImpact,
   AuraImpactRaw,
-  getBrightIdProfile,
   Verifications,
 } from '../api/auranode.service';
 import { findNearestColor, valueColorMap } from '../constants/chart';
@@ -21,13 +22,16 @@ export const useSubjectVerifications = (
     undefined,
   );
 
+  const profileFetch = useGetBrightIDProfileQuery(
+    subjectId ? { id: subjectId } : skipToken,
+  );
+
   const myEvaluationsContext = useContext(MyEvaluationsContext);
   const subjectInboundEvaluationsContext = useContext(
     SubjectInboundEvaluationsContext,
   );
 
   useEffect(() => {
-    let mounted = true;
     if (
       (myEvaluationsContext !== null &&
         myEvaluationsContext.myConnections === null) ||
@@ -46,15 +50,15 @@ export const useSubjectVerifications = (
       return;
     }
     setVerifications(undefined);
-    if (subjectId) {
-      getBrightIdProfile(subjectId).then((res) => {
-        if (mounted) setVerifications(res.data.verifications);
-      });
+    if (subjectId && profileFetch.data) {
+      setVerifications(profileFetch.data.verifications);
     }
-    return () => {
-      mounted = false;
-    };
-  }, [myEvaluationsContext, subjectId, subjectInboundEvaluationsContext]);
+  }, [
+    myEvaluationsContext,
+    subjectId,
+    profileFetch,
+    subjectInboundEvaluationsContext,
+  ]);
 
   const { auraLevel, userHasRecovery, auraScore, auraImpacts } =
     useParseBrightIdVerificationData(verifications, evaluationCategory);

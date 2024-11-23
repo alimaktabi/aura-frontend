@@ -100,7 +100,7 @@ const CredibilityDetailsForRole = ({
       <div>
         Their Connection to you:{' '}
         <span className="font-bold">
-          {connections !== null
+          {!!connections
             ? connections.find((c) => c.id === authData?.brightId)?.level || '-'
             : '...'}
         </span>

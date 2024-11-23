@@ -63,7 +63,7 @@ const persistedReducer = persistReducer(
   combineReducers({
     ...reducers,
     profile: profileSlice.reducer,
-    api: apiSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   }),
 );
 

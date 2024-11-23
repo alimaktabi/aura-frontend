@@ -46,7 +46,7 @@ export const ProfileInfo = ({
     useOutboundEvaluationsContext({ subjectId });
 
   const lastActivity = useMemo(() => {
-    if (outboundConnections !== null && outboundRatings !== null) {
+    if (outboundConnections && outboundRatings !== null) {
       let timestamp = 0;
       outboundConnections.forEach(
         (c) => (timestamp = Math.max(timestamp, c.timestamp)),
