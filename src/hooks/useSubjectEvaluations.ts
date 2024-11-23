@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { skipToken } from '@reduxjs/toolkit/query/react';
+import { useMemo } from 'react';
 import {
-  getInboundConnections,
-  getOutboundConnections,
-} from '../api/connections.service';
+  useGetInboundConnectionsQuery,
+  useGetOutboundConnectionsQuery,
+} from 'store/api/connections';
+
 import { selectEvaluateOperations } from '../BrightID/reducer/operationsSlice';
 import { pendingOperationStates } from '../constants';
 import { useSelector } from '../store/hooks';
-import { AuraNodeBrightIdConnection, AuraRating } from '../types';
+import { AuraRating } from '../types';
 import { EvaluationCategory, EvaluationValue } from '../types/dashboard';
 
 export const useInboundEvaluations = ({
@@ -17,35 +18,16 @@ export const useInboundEvaluations = ({
   subjectId: string | null | undefined;
   evaluationCategory?: EvaluationCategory;
 }) => {
-  const [inboundConnections, setInboundConnections] = useState<
-    AuraNodeBrightIdConnection[] | null
-  >(null);
-
-  const [loading, setLoading] = useState(true);
-  const mounted = useRef(false);
-
-  const refreshInboundEvaluations = useCallback(async () => {
-    setLoading(true);
-    if (subjectId) {
-      const connections = await getInboundConnections(subjectId);
-      if (mounted.current) {
-        setLoading(false);
-        setInboundConnections(connections);
-      }
-    }
-  }, [subjectId]);
-
-  useEffect(() => {
-    mounted.current = true;
-    refreshInboundEvaluations();
-    return () => {
-      mounted.current = false;
-    };
-  }, [refreshInboundEvaluations]);
+  const {
+    data,
+    isLoading: loading,
+    refetch,
+  } = useGetInboundConnectionsQuery(subjectId ? { id: subjectId } : skipToken);
 
   const operations = useSelector(selectEvaluateOperations);
+
   const inboundRatings: AuraRating[] | null = useMemo(() => {
-    if (!inboundConnections || !subjectId) return null;
+    if (!data || !subjectId) return null;
     const pendingRatings: AuraRating[] = [];
     operations
       .filter(
@@ -78,7 +60,8 @@ export const useInboundEvaluations = ({
           });
         }
       });
-    return inboundConnections
+
+    return data
       .reduce(
         (a, c) =>
           a.concat(
@@ -111,7 +94,7 @@ export const useInboundEvaluations = ({
       )
       .concat(pendingRatings)
       .sort((a, b) => a.timestamp - b.timestamp);
-  }, [evaluationCategory, inboundConnections, operations, subjectId]);
+  }, [evaluationCategory, data, operations, subjectId]);
 
   const inboundPositiveRatingsCount = useMemo(
     () => inboundRatings?.filter((r) => Number(r.rating) > 0).length,
@@ -129,8 +112,8 @@ export const useInboundEvaluations = ({
   }, [inboundNegativeRatingsCount, inboundPositiveRatingsCount]);
 
   return {
-    connections: inboundConnections,
-    refreshInboundRatings: refreshInboundEvaluations,
+    connections: data,
+    refreshInboundRatings: refetch,
     loading,
     ratings: inboundRatings,
     inboundPositiveRatingsCount,
@@ -146,35 +129,15 @@ export const useOutboundEvaluations = ({
   subjectId: string | null | undefined;
   evaluationCategory?: EvaluationCategory;
 }) => {
-  const [outboundConnections, setOutboundConnections] = useState<
-    AuraNodeBrightIdConnection[] | null
-  >(null);
-  const [loading, setLoading] = useState(true);
-
-  const mounted = useRef(false);
-
-  const refreshOutboundEvaluations = useCallback(async () => {
-    setLoading(true);
-    if (subjectId) {
-      const connections = await getOutboundConnections(subjectId);
-      if (mounted.current) {
-        setLoading(false);
-        setOutboundConnections(connections);
-      }
-    }
-  }, [subjectId]);
-
-  useEffect(() => {
-    mounted.current = true;
-    refreshOutboundEvaluations();
-    return () => {
-      mounted.current = false;
-    };
-  }, [refreshOutboundEvaluations]);
+  const {
+    data,
+    refetch,
+    isLoading: loading,
+  } = useGetOutboundConnectionsQuery(subjectId ? { id: subjectId } : skipToken);
 
   const operations = useSelector(selectEvaluateOperations);
   const outboundRatings: AuraRating[] | null = useMemo(() => {
-    if (!outboundConnections || !subjectId) return null;
+    if (!data || !subjectId) return null;
     const pendingRatings: AuraRating[] = [];
     operations
       .filter(
@@ -207,7 +170,7 @@ export const useOutboundEvaluations = ({
           });
         }
       });
-    return outboundConnections
+    return data
       .reduce(
         (a, c) =>
           a.concat(
@@ -240,12 +203,12 @@ export const useOutboundEvaluations = ({
       )
       .concat(pendingRatings)
       .sort((a, b) => a.timestamp - b.timestamp);
-  }, [evaluationCategory, operations, outboundConnections, subjectId]);
+  }, [evaluationCategory, operations, data, subjectId]);
 
   return {
     loading,
-    connections: outboundConnections,
-    refreshOutboundRatings: refreshOutboundEvaluations,
+    connections: data,
+    refreshOutboundRatings: refetch,
     ratings: outboundRatings,
   };
 };

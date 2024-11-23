@@ -27,6 +27,13 @@ import {
 import { CredibilityDetailsProps } from '../types';
 import { HorizontalProgressBar } from './Shared/HorizontalProgressBar';
 
+const views = [
+  EvaluationCategory.SUBJECT,
+  EvaluationCategory.PLAYER,
+  EvaluationCategory.TRAINER,
+  EvaluationCategory.MANAGER,
+];
+
 const CredibilityDetailsForRole = ({
   subjectId,
   roleEvaluationCategory,
@@ -165,6 +172,66 @@ const CredibilityDetails = ({
     credibilityDetailsProps.evaluationCategory,
   );
 
+  const playerEvaluation = useSubjectVerifications(
+    credibilityDetailsProps.subjectId,
+    EvaluationCategory.PLAYER,
+  );
+
+  const trainerEvaluation = useSubjectVerifications(
+    credibilityDetailsProps.subjectId,
+    EvaluationCategory.TRAINER,
+  );
+
+  const managerEvaluation = useSubjectVerifications(
+    credibilityDetailsProps.subjectId,
+    EvaluationCategory.MANAGER,
+  );
+
+  const authorizedTabs = React.useMemo(() => {
+    const tabs = [EvaluationCategory.SUBJECT];
+
+    if (playerEvaluation.auraLevel && playerEvaluation.auraLevel > 0)
+      tabs.push(EvaluationCategory.PLAYER);
+
+    if (trainerEvaluation.auraLevel && trainerEvaluation.auraLevel > 0)
+      tabs.push(EvaluationCategory.TRAINER);
+
+    if (managerEvaluation.auraLevel && managerEvaluation.auraLevel > 0)
+      tabs.push(EvaluationCategory.MANAGER);
+
+    return tabs;
+  }, [playerEvaluation, trainerEvaluation, managerEvaluation]);
+
+  const isLoading =
+    managerEvaluation.loading ||
+    trainerEvaluation.loading ||
+    playerEvaluation.loading;
+
+  if (isLoading)
+    return (
+      <div className="min-h-[450px] flex flex-col w-full">
+        <div
+          className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg p-1 mb-5`}
+        >
+          <div
+            className={`flex flex-row gap-1 min-w-full overflow-x-auto overflow-y-hidden h-full pb-1`}
+            // TODO: refactor this to tailwindcss class and values
+            style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#292534 rgba(209, 213, 219, 0.5)',
+            }}
+          >
+            {views.map((_, key) => (
+              <p
+                key={key}
+                className={`rounded-md bg-gray100 min-w-[100px] animate-pulse w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out`}
+              ></p>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
   return (
     <div className="min-h-[450px] flex flex-col w-full">
       <div
@@ -179,7 +246,9 @@ const CredibilityDetails = ({
           }}
         >
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 0 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.SUBJECT
                 ? 'background bg-orange text-white font-bold'
                 : 'bg-transparent text-black font-medium'
@@ -198,7 +267,9 @@ const CredibilityDetails = ({
             Subject
           </p>
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 1 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.PLAYER
                 ? 'background bg-purple text-white font-bold'
                 : 'bg-transparent text-black font-medium'
@@ -210,7 +281,9 @@ const CredibilityDetails = ({
             Player
           </p>
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 2 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.TRAINER
                 ? 'background bg-green text-white font-bold'
                 : 'bg-transparent text-black font-medium'
@@ -222,7 +295,9 @@ const CredibilityDetails = ({
             Trainer
           </p>
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 3 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.MANAGER
                 ? 'background bg-blue text-white font-bold'
                 : 'bg-transparent text-black font-medium'

@@ -18,7 +18,12 @@ import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import {
   EvaluationCategory,
   EvidenceViewMode,
@@ -506,12 +511,26 @@ const SubjectProfile = () => {
 
 export const SubjectProfileHeader = () => {
   const { subjectViewModeTitle } = useViewMode();
+  const location = useLocation();
+
+  const authData = useSelector(selectAuthData);
+
+  const subjectIdProp = location.pathname.split('/').at(-1);
+
+  const subjectId = useMemo(
+    () => subjectIdProp ?? authData?.brightId,
+    [authData?.brightId, subjectIdProp],
+  )!;
 
   return (
-    <>
-      {subjectViewModeTitle} Profile
-      <HeaderPreferedView.ProfileHeaderViews />
-    </>
+    <SubjectOutboundEvaluationsContextProvider subjectId={subjectId}>
+      <SubjectInboundEvaluationsContextProvider subjectId={subjectId}>
+        <SubjectInboundConnectionsContextProvider subjectId={subjectId}>
+          {subjectViewModeTitle} Profile
+          <HeaderPreferedView.ProfileHeaderViews subjectId={subjectId} />
+        </SubjectInboundConnectionsContextProvider>
+      </SubjectInboundEvaluationsContextProvider>
+    </SubjectOutboundEvaluationsContextProvider>
   );
 };
 export default SubjectProfile;
