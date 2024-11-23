@@ -94,7 +94,7 @@ const ProfileOverview = ({
 
       <div className="flex flex-col gap-1.5">
         {viewMode !== PreferredView.PLAYER && (
-          <div className=" mt-4 font-semibold text-xl text-black">
+          <div className=" mt-4 font-semibold text-xl">
             {viewModeToString[viewMode]} Evaluations
           </div>
         )}

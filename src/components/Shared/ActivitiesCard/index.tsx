@@ -39,13 +39,13 @@ const ActivitiesCard = ({
   );
   return (
     <>
-      <div className=" mb-4 font-semibold text-xl text-black">
+      <div className=" mb-4 font-semibold text-xl">
         {viewModeSubjectString[viewMode]} Activity
       </div>
       <div>
         <div className="flex flex-col gap-1 leading-5 mb-3">
           <div className="flex justify-between">
-            <div className="text-black font-medium">Total evaluations:</div>
+            <div className="font-medium">Total evaluations:</div>
             <div>
               <span className="font-medium">
                 {outboundActiveRatings?.length ?? '...'}{' '}
@@ -62,7 +62,7 @@ const ActivitiesCard = ({
             </div>
           </div>
           <div className="flex justify-between">
-            <div className="text-black font-medium">Last evaluation:</div>
+            <div className="font-medium">Last evaluation:</div>
             <div>
               <span className="font-medium">
                 {lastRating ? moment(lastRating.updatedAt).fromNow() : '-'}

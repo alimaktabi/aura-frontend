@@ -22,14 +22,16 @@ function FilterAndSortModalBody({ subjectId }: { subjectId: string }) {
 
   return (
     <div>
-      <p className="text-black2 font-bold">Filters</p>
+      <p className="text-black2 dark:text-gray-100 font-bold">Filters</p>
       <FiltersModal
         testidPrefix={'subject-filter'}
         filters={filters}
         selectedFilterIds={selectedFilterIds}
         toggleFiltersById={toggleFiltersById}
       />
-      <p className="text-black2 font-bold pt-3 pb-1">Sorts</p>
+      <p className="text-black2 dark:text-gray-100 font-bold pt-3 pb-1">
+        Sorts
+      </p>
       <SortsModal
         testidPrefix={'subject-sort'}
         sorts={sorts}
@@ -178,7 +180,7 @@ export const ConnectionListSearch = ({ subjectId }: { subjectId: string }) => {
         >
           <FilterAndSortModalBody subjectId={subjectId} />
         </Modal>
-        <span className="ml-1">
+        <span className="ml-auto">
           (
           {filteredSubjects?.filter((e) => e.inboundConnection).length ??
             itemsOriginal?.length ??

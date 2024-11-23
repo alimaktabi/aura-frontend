@@ -53,7 +53,7 @@ const ProfileTabs = ({
   const { currentViewMode } = useViewMode();
   return (
     <div
-      className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card`}
+      className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card dark:bg-button-primary`}
     >
       <div
         className={`flex flex-row min-w-full gap-1.5 overflow-x-auto overflow-y-hidden h-full`}
@@ -80,8 +80,8 @@ const ProfileTabs = ({
         <p
           className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.OVERVIEW
-              ? 'background bg-button-primary text-white font-bold'
-              : 'bg-transparent text-black font-medium'
+              ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+              : 'bg-transparent dark:text-white text-black font-medium'
           }`}
           onClick={() => setSelectedTab(ProfileTab.OVERVIEW)}
           data-testid="table-view-switch-option-one"
@@ -92,8 +92,8 @@ const ProfileTabs = ({
           <p
             className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
               selectedTab === ProfileTab.CONNECTIONS
-                ? 'background bg-button-primary text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+                : 'bg-transparent dark:text-white text-black font-medium'
             }`}
             onClick={() => setSelectedTab(ProfileTab.CONNECTIONS)}
             data-testid="table-view-switch-option-one"
@@ -105,8 +105,8 @@ const ProfileTabs = ({
             className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
               selectedTab === ProfileTab.ACTIVITY ||
               selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
-                ? 'background bg-button-primary text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+                : 'bg-transparent dark:text-white text-black font-medium'
             }`}
             onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
             data-testid="table-view-switch-option-one"
@@ -117,8 +117,8 @@ const ProfileTabs = ({
         <p
           className={`rounded-md min-w-[100px] w-full cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.EVALUATIONS
-              ? 'background bg-button-primary text-white font-bold'
-              : 'bg-transparent text-black font-medium'
+              ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+              : 'bg-transparent dark:text-white text-black font-medium'
           }`}
           onClick={() => setSelectedTab(ProfileTab.EVALUATIONS)}
           data-testid="table-view-switch-option-two"

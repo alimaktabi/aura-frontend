@@ -44,8 +44,8 @@ export function getBgClassNameOfAuraRatingNumber(
   rating: number | null | undefined,
 ) {
   if (!rating) return '';
-  if (rating >= 4) return 'bg-pl4';
-  if (rating >= 3) return 'bg-pl3';
+  if (rating >= 4) return 'bg-pl4 dark:bg-pl4-dark';
+  if (rating >= 3) return 'bg-pl3 dark:bg-pl3-dark';
   if (rating >= 2) return 'bg-pl2';
   if (rating > 0) return 'bg-pl1';
   if (rating >= -1) return 'bg-nl1';
@@ -160,7 +160,7 @@ export const getViewModeUpArrowIcon = (viewMode: PreferredView) => {
 export const getViewModeBackgroundColorClass = (viewMode: PreferredView) => {
   switch (viewMode) {
     case PreferredView.PLAYER:
-      return 'bg-natural-black';
+      return 'bg-natural-black dark:bg-slate-500';
     case PreferredView.TRAINER:
       return 'bg-pl2';
     case PreferredView.MANAGER_EVALUATING_TRAINER:

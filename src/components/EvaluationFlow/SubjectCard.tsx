@@ -53,13 +53,16 @@ export const SubjectCard = ({
           </div>
           <div className="evaluation__info flex flex-col">
             <p
-              className="text-black font-medium"
+              className="text-black dark:text-white font-medium"
               data-testid={`user-item-${index}-name`}
             >
               {name}
             </p>
-            <p className="text-gray10">
-              Level: <span className="font-medium text-black">{auraLevel}</span>
+            <p className="text-gray10 dark:text-gray70">
+              Level:{' '}
+              <span className="font-medium text-black dark:text-white">
+                {auraLevel}
+              </span>
             </p>
           </div>
         </div>
@@ -69,9 +72,9 @@ export const SubjectCard = ({
       </div>
       <div className="evaluation-right flex flex-col gap-2 items-end">
         <div className="evaluation-right__top">
-          <p className="text-gray10">
+          <p className="text-gray10 dark:text-gray70">
             Score:{' '}
-            <span className="font-medium text-black">
+            <span className="font-medium text-black dark:text-white">
               {auraScore ? compactFormat(auraScore) : '-'}
             </span>
           </p>

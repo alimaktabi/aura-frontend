@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const tailwindConfig = {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,css,scss}'],
   theme: {
     extend: {
@@ -35,6 +35,7 @@ export default {
         green10: '#5B9969',
         green20: '#B4E6C0',
         green30: '#D5ECDA',
+        'dark-bright': '#ffa131',
         'pastel-purple': '#C9A2FF',
         'pastel-purple-25': '#C9A2FF40',
         'pastel-green': '#81CC91',
@@ -52,6 +53,8 @@ export default {
         pl2: '#72BF83',
         pl3: '#5B9969',
         pl4: '#257036',
+        'pl3-dark': '#257036',
+        'pl4-dark': '#024711',
         nl1: '#F5BFBF',
         nl2: '#EE9D9D',
         nl3: '#DA6A6A',
@@ -67,5 +70,8 @@ export default {
       },
     },
   },
+  darkMode: 'class',
   plugins: [require('tailwindcss-animation-delay')],
 };
+
+export default tailwindConfig;
