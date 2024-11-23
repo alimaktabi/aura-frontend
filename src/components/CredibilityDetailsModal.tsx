@@ -94,18 +94,6 @@ const CredibilityDetailsForRole = ({
         </span>
       </div>
       <div>
-        Your Connection:{' '}
-        <span className="font-bold">{myConnectionToSubject?.level}</span>
-      </div>
-      <div>
-        Their Connection to you:{' '}
-        <span className="font-bold">
-          {connections !== null
-            ? connections.find((c) => c.id === authData?.brightId)?.level || '-'
-            : '...'}
-        </span>
-      </div>
-      <div>
         Your Evaluation:{' '}
         <span className="font-bold">
           {loading ? (
