@@ -8,7 +8,10 @@ import {
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
 import { getAuraVerification } from '../../../hooks/useParseBrightIdVerificationData';
 import { useSubjectConnectionInfoFromContext } from '../../../hooks/useSubjectEvaluation';
-import { useOutboundEvaluations } from '../../../hooks/useSubjectEvaluations';
+import {
+  useInboundEvaluations,
+  useOutboundEvaluations,
+} from '../../../hooks/useSubjectEvaluations';
 import { useSubjectName } from '../../../hooks/useSubjectName';
 import { useSubjectVerifications } from '../../../hooks/useSubjectVerifications';
 import LinkCard from '../../../pages/Home/LinkCard';
@@ -145,6 +148,20 @@ const EvaluationsCount = ({
   return <>{ratings ? ratings.length : '...'}</>;
 };
 
+const EvaluatorsCount = ({
+  evaluatorViewMode,
+  evaluatorSubjectId,
+}: {
+  evaluatorViewMode: PreferredView;
+  evaluatorSubjectId: string;
+}) => {
+  const { ratings } = useInboundEvaluations({
+    subjectId: evaluatorSubjectId,
+    evaluationCategory: viewModeToViewAs[evaluatorViewMode],
+  });
+  return <>{ratings ? ratings.length : '...'}</>;
+};
+
 const PotentialEvaluatorBrief = ({
   evaluatorViewMode,
   evaluatorSubjectId,
@@ -196,9 +213,6 @@ const PotentialEvaluatorBrief = ({
       </div>
       <div className="flex flex-col leading-3 text-right">
         <span>
-          <span className="font-bold text-xs">
-            Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
-          </span>{' '}
           {evaluatorViewMode === PreferredView.TRAINER && (
             <span className="font-medium text-xs">
               (
@@ -208,7 +222,20 @@ const PotentialEvaluatorBrief = ({
               />{' '}
               Trainees)
             </span>
-          )}
+          )}{' '}
+          {evaluatorViewMode === PreferredView.TRAINER && (
+            <span className="font-medium text-xs">
+              (
+              <EvaluatorsCount
+                evaluatorSubjectId={evaluatorSubjectId}
+                evaluatorViewMode={evaluatorViewMode}
+              />{' '}
+              Trainers)
+            </span>
+          )}{' '}
+          <span className="font-bold text-xs">
+            Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
+          </span>{' '}
         </span>
         <p className="text-gray10 text-xs mb-2">
           Score:{' '}
