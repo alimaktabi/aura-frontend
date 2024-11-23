@@ -134,6 +134,15 @@ const ProfileTabs = ({
     </div>
   );
 };
+
+const connectionLevelPriority: { [key in ConnectionLevel]: number } = {
+  'already known': 1,
+  recovery: 2,
+  'just met': 3,
+  suspicious: 4,
+  reported: 5,
+};
+
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const [selectedTab, setSelectedTab] = useState(ProfileTab.OVERVIEW);
 
@@ -190,6 +199,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     loading: loadingInboundConnections,
     selectedFilterIds: inboundConnectionsSelectedFilterId,
     clearSortAndFilter: clearInboundConnectionsSortAndFilter,
+    selectedSort,
+    selectedFilters,
   } = useSubjectInboundConnectionsContext({
     subjectId,
     evaluationCategory: currentEvaluationCategory,
@@ -214,8 +225,30 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   }, [evaluations]);
 
   const connectionIds = useMemo(() => {
-    return connections?.map((e) => e.fromSubjectId) || [];
-  }, [connections]);
+    if (selectedSort || selectedFilters)
+      return connections?.map((e) => e.fromSubjectId) || [];
+
+    return (
+      connections
+        ?.sort((a, b) => {
+          const levelA = a.inboundConnection?.level;
+          const levelB = b.inboundConnection?.level;
+
+          const priorityA = levelA ? connectionLevelPriority[levelA] : Infinity;
+          const priorityB = levelB ? connectionLevelPriority[levelB] : Infinity;
+
+          if (priorityA === priorityB) {
+            const timestampA = a.inboundConnection?.timestamp || 0;
+            const timestampB = b.inboundConnection?.timestamp || 0;
+
+            return timestampB - timestampA;
+          }
+
+          return priorityA - priorityB; // Lower number means higher priority
+        })
+        .map((e) => e.fromSubjectId) || []
+    );
+  }, [connections, selectedSort, selectedFilters]);
 
   const evaluateds = useMemo(() => {
     return (
