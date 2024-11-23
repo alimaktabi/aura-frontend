@@ -71,7 +71,7 @@ export const ConnectionListSearch = ({ subjectId }: { subjectId: string }) => {
   const defaultOption = useMemo(
     () => ({
       value: 0,
-      label: <p>Expected connections (default)</p>,
+      label: <p>Smart Sort (default)</p>,
       filterIds: null,
       sortId: null,
       onClick: () => clearSortAndFilter(),
