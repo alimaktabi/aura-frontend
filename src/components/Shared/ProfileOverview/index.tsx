@@ -11,7 +11,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PreferredView, ProfileTab } from 'types/dashboard';
-import { connectionLevelIcons } from 'utils/connection';
 
 import {
   viewModeToEvaluatorViewMode,
@@ -103,122 +102,6 @@ const ProfileOverview = ({
         {/*  value={inboundConnections?.length ?? '...'}*/}
         {/*  details={null}*/}
         {/*/>*/}
-        {viewMode === PreferredView.PLAYER && (
-          <>
-            <div className="flex justify-between w-full">
-              <p className="font-medium">Connections:</p>
-              <div className="flex gap-1">
-                <span
-                  onClick={() => setSelectedLevel(1)}
-                  className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                    selectedLevel === 1 &&
-                    '!bg-button-primary !text-white !border-0'
-                  }`}
-                >
-                  <p className="text-sm font-medium">All</p>
-                </span>
-                <span
-                  onClick={() => setSelectedLevel(2)}
-                  className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                    selectedLevel === 2 &&
-                    '!bg-button-primary !text-white !border-0'
-                  }`}
-                >
-                  <p className="text-sm font-medium">Lvl 1</p>
-                </span>
-                <span
-                  onClick={() => setSelectedLevel(3)}
-                  className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                    selectedLevel === 3 &&
-                    '!bg-button-primary !text-white !border-0'
-                  }`}
-                >
-                  <p className="text-sm font-medium">Lvl 2</p>
-                </span>
-                <span
-                  onClick={() => setSelectedLevel(4)}
-                  className={`rounded cursor-pointer text-black min-w-[36px] justify-center border px-1 py-0.5 border-gray00 flex items-center gap-1 ${
-                    selectedLevel === 4 &&
-                    '!bg-button-primary !text-white !border-0'
-                  }`}
-                >
-                  <p className="text-sm font-medium">Lvl 3</p>
-                </span>
-              </div>
-            </div>
-            <div className="filters flex items-center justify-end gap-1">
-              <span
-                className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
-                onClick={() =>
-                  setEvidenceListFilter(AuraFilterId.ConnectionTypeRecovery)
-                }
-              >
-                <img
-                  src={`/assets/images/Shared/${connectionLevelIcons.recovery}.svg`}
-                  alt=""
-                />
-                <p className="text-sm text-black">
-                  {inboundConnections?.filter(
-                    (conn) => conn.level === 'recovery',
-                  ).length ?? '...'}
-                </p>
-              </span>
-              <span
-                className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
-                onClick={() =>
-                  setEvidenceListFilter(
-                    AuraFilterId.ConnectionTypeAlreadyKnownPlus,
-                  )
-                }
-              >
-                <img
-                  src={`/assets/images/Shared/${connectionLevelIcons['already known']}.svg`}
-                  alt=""
-                />
-                <p className="text-sm text-black">
-                  {inboundConnections?.filter(
-                    (conn) => conn.level === 'already known',
-                  ).length ?? '...'}
-                </p>
-              </span>
-              <span
-                className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
-                onClick={() =>
-                  setEvidenceListFilter(AuraFilterId.ConnectionTypeJustMet)
-                }
-              >
-                <img
-                  src={`/assets/images/Shared/${connectionLevelIcons['just met']}.svg`}
-                  alt=""
-                />
-                <p className="text-sm text-black">
-                  {inboundConnections?.filter(
-                    (conn) => conn.level === 'just met',
-                  ).length ?? '...'}
-                </p>
-              </span>
-              <span
-                className="rounded cursor-pointer border px-1 py-0.5 border-gray00 flex items-center gap-1"
-                onClick={() =>
-                  setEvidenceListFilter(
-                    AuraFilterId.ConnectionTypeSuspiciousOrReported,
-                  )
-                }
-              >
-                <img
-                  src={`/assets/images/Shared/${connectionLevelIcons.suspicious}.svg`}
-                  alt=""
-                />
-                <p className="text-sm text-black">
-                  {inboundConnections?.filter(
-                    (conn) =>
-                      conn.level === 'suspicious' || conn.level === 'reported',
-                  ).length ?? '...'}
-                </p>
-              </span>
-            </div>
-          </>
-        )}
         <div className="header__info flex flex-col gap-1">
           <ShowData
             title="Evaluations"
