@@ -11,6 +11,7 @@ import {
   SubjectOutboundEvaluationsContextProvider,
   useOutboundEvaluationsContext,
 } from 'contexts/SubjectOutboundEvaluationsContext';
+import { useMyEvaluations } from 'hooks/useMyEvaluations';
 import useViewMode from 'hooks/useViewMode';
 import { ActivityListSearch } from 'pages/SubjectProfile/ActivityListSearch';
 import { ConnectionLevel } from 'pages/SubjectProfile/ConnectionLevel';
@@ -194,6 +195,8 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     subjectId,
     evaluationCategory: currentEvaluationCategory,
   });
+  const { loading, myConnections } = useMyEvaluations();
+
   const {
     itemsFiltered: connections,
     loading: loadingInboundConnections,
@@ -205,6 +208,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     subjectId,
     evaluationCategory: currentEvaluationCategory,
   });
+
   const {
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
@@ -228,14 +232,34 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     if (selectedSort || selectedFilters)
       return connections?.map((e) => e.fromSubjectId) || [];
 
+    const myConnectionsMap =
+      myConnections?.reduce(
+        (prev, curr) => {
+          prev[curr.id] = true;
+
+          return prev;
+        },
+
+        {} as { [key: string]: boolean },
+      ) ?? {};
+
     return (
       connections
         ?.sort((a, b) => {
           const levelA = a.inboundConnection?.level;
           const levelB = b.inboundConnection?.level;
 
-          const priorityA = levelA ? connectionLevelPriority[levelA] : Infinity;
-          const priorityB = levelB ? connectionLevelPriority[levelB] : Infinity;
+          const priorityA =
+            (levelA ? connectionLevelPriority[levelA] : Infinity) +
+            (a.inboundConnection?.id && myConnectionsMap[a.inboundConnection.id]
+              ? 1
+              : 0);
+
+          const priorityB =
+            (levelB ? connectionLevelPriority[levelB] : Infinity) +
+            (b.inboundConnection?.id && myConnectionsMap[b.inboundConnection.id]
+              ? 1
+              : 0);
 
           if (priorityA === priorityB) {
             const timestampA = a.inboundConnection?.timestamp || 0;
@@ -248,7 +272,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
         })
         .map((e) => e.fromSubjectId) || []
     );
-  }, [connections, selectedSort, selectedFilters]);
+  }, [selectedSort, selectedFilters, connections, myConnections]);
 
   const evaluateds = useMemo(() => {
     return (
