@@ -1,8 +1,8 @@
 export const HorizontalProgressBar = ({
-  percentage = 'w-[20%]',
+  percentage = 20,
   isWidthFull = false,
 }: {
-  percentage: string;
+  percentage: number;
   isWidthFull?: boolean;
 }) => {
   return (
@@ -12,7 +12,10 @@ export const HorizontalProgressBar = ({
       }`}
     >
       <div
-        className={`${percentage} absolute bg-green10 rounded-sm h-full`}
+        style={{
+          width: `${percentage}%`,
+        }}
+        className={`absolute bg-green10 rounded-sm h-full`}
       ></div>
     </div>
   );
