@@ -8,6 +8,7 @@ import { useSubjectName } from 'hooks/useSubjectName';
 import useViewMode from 'hooks/useViewMode';
 import { Link } from 'react-router-dom';
 import { compactFormat } from 'utils/number';
+import { calculateUserScorePercentage } from 'utils/score';
 
 import { useImpactEChartOption } from '../../hooks/useSubjectVerifications';
 import { HorizontalProgressBar } from '../Shared/HorizontalProgressBar';
@@ -31,6 +32,11 @@ export const SubjectCard = ({
       currentEvaluationCategory,
     );
   const { impactChartSmallOption } = useImpactEChartOption(auraImpacts);
+
+  const progress = calculateUserScorePercentage(
+    currentEvaluationCategory,
+    auraScore ?? 0,
+  );
 
   return (
     <Link
@@ -76,7 +82,11 @@ export const SubjectCard = ({
             </span>
           </p>
         </div>
-        <HorizontalProgressBar isWidthFull={true} percentage={'w-[20%]'} />
+        {progress < 0 ? (
+          '😈'
+        ) : (
+          <HorizontalProgressBar isWidthFull={true} percentage={progress} />
+        )}
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}

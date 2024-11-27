@@ -18,6 +18,7 @@ import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
 import { EvaluationCategory } from 'types/dashboard';
 import { compactFormat } from 'utils/number';
+import { calculateUserScorePercentage } from 'utils/score';
 
 import {
   getRawTextClassNameOfAuraRatingNumber,
@@ -67,6 +68,11 @@ const CredibilityDetailsForRole = ({
   const link = '/subject/' + subjectId;
   const navigate = useNavigate();
 
+  const progress = calculateUserScorePercentage(
+    roleEvaluationCategory,
+    auraScore ?? 0,
+  );
+
   return (
     <>
       <div className="font-bold text-l">
@@ -91,7 +97,7 @@ const CredibilityDetailsForRole = ({
             {auraScore ? compactFormat(auraScore) : '-'}
           </span>
         </div>
-        <HorizontalProgressBar percentage={'w-[15%]'} />
+        <HorizontalProgressBar percentage={progress} />
       </div>
       <div>
         Evaluations:{' '}
