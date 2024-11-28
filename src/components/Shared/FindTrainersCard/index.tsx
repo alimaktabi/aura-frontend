@@ -18,8 +18,8 @@ import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
 const FindTrainersCard = ({ subjectId }: { subjectId: string }) => {
   return (
-    <div className="card !bg-[#ECECEC]">
-      <div className="mb-4.5 font-bold text-lg text-black">Find Trainers</div>
+    <div className="card !bg-[#ECECEC] dark:!bg-[#1f1f1f]">
+      <div className="mb-4.5 font-bold text-lg">Find Trainers</div>
       <div className="flex flex-col gap-2.5">
         <PotentialEvaluatorsListBrief
           subjectId={subjectId}
@@ -74,8 +74,10 @@ const PotentialEvaluatorsListBrief = ({
   //TODO: Animation must be implemented
   return (
     <div className="flex flex-col gap-2.5">
-      <div className="text-black2 font-medium">{description}</div>
-      <div className="flex flex-col gap-2 bg-white rounded-[8px] p-3">
+      <div className="text-black2 dark:text-gray-300 font-medium">
+        {description}
+      </div>
+      <div className="flex flex-col gap-2 dark:bg-dark-primary bg-white rounded-[8px] p-3">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-2.5">
             {!isExpanded && (
@@ -107,7 +109,7 @@ const PotentialEvaluatorsListBrief = ({
             />
           ) : (
             <div
-              className="text-button-primary font-medium cursor-pointer"
+              className="font-medium cursor-pointer"
               onClick={() => setIsExpanded(true)}
             >
               Show All
@@ -210,9 +212,9 @@ const PotentialEvaluatorBrief = ({
             </span>
           )}
         </span>
-        <p className="text-gray10 text-xs mb-2">
+        <p className="text-gray10 dark:text-gray-300 text-xs mb-2">
           Score:{' '}
-          <span className="font-medium text-black">
+          <span className="font-medium text-black dark:text-white">
             {auraScore ? compactFormat(auraScore) : '-'}
           </span>
         </p>
