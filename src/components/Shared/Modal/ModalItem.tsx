@@ -18,7 +18,11 @@ export const ModalItem = ({
     <div
       className={`flex justify-center items-center gap-3 rounded px-3 py-2.5 min-w-[30%] ${
         onClick ? 'cursor-pointer' : ''
-      } ${isSelected ? 'bg-pastel-purple' : 'bg-gray30'}
+      } ${
+        isSelected
+          ? 'bg-pastel-purple dark:bg-primary-d1'
+          : 'bg-gray30 dark:bg-button-primary'
+      }
       ${className ? className : ''}
       `}
       onClick={onClick}
@@ -27,7 +31,9 @@ export const ModalItem = ({
       {icon && <img className="w-3 h-4" src={`${icon}-black.svg`} alt="" />}
       <p
         className={`text-sm ${
-          isSelected ? 'font-bold text-black' : 'font-medium text-black2'
+          isSelected
+            ? 'font-bold text-black'
+            : 'font-medium dark:text-gray-100 text-black2'
         }`}
       >
         {title}

@@ -22,7 +22,7 @@ export const ConnectionAndEvaluationStatus = ({
 
   return (
     <div className="w-full flex gap-1">
-      <div className="flex gap-1 p-2 rounded-md bg-soft-bright">
+      <div className="flex gap-1 p-2 rounded-md bg-soft-bright dark:bg-dark-bright">
         {inboundConnectionInfo &&
           connectionLevelIcons[inboundConnectionInfo.level] && (
             <img
@@ -46,6 +46,7 @@ export const ConnectionAndEvaluationStatus = ({
             ratingNumber,
           )} ${getTextClassNameOfAuraRatingNumber(ratingNumber)} py-2.5 px-3`}
         >
+          {ratingNumber}
           <EvaluationThumb
             width="18px"
             height="18px"

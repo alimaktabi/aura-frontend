@@ -43,14 +43,14 @@ const LinkCard = () => {
 
   return (
     <div className="card flex flex-col gap-3 w-full">
-      <p className="text-gray00 leading-4 font-medium">
+      <p className="text-gray00 dark:text-gray-300 leading-4 font-medium">
         Share this link with a trainer to become their player
       </p>
       <div className="flex w-full gap-2.5 items-center">
         <div className="rounded py-2.5 px-3 bg-purple00 bg-opacity-50 flex-grow min-w-0">
           <Link
             to={evaluationLink}
-            className="text-sm font-medium text-black2 overflow-hidden whitespace-nowrap text-ellipsis block"
+            className="text-sm font-medium dark:text-gray-100 text-black2 overflow-hidden whitespace-nowrap text-ellipsis block"
           >
             {evaluationLink}
           </Link>

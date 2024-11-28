@@ -102,7 +102,7 @@ const ProfileInfoPerformance = ({
               </>
             )}
           </div>
-          <div className="w-full relative bg-gray30 rounded-full h-4">
+          <div className="w-full relative bg-gray30 dark:bg-button-primary rounded-full h-4">
             <div
               className={`absolute ${getViewModeBackgroundColorClass(
                 currentViewMode,

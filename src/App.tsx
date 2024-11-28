@@ -1,3 +1,4 @@
+import { selectPrefferedTheme } from 'BrightID/actions';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import React, { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -41,6 +42,8 @@ function App() {
   const playerOnboardingScreenShown = useSelector(
     selectPlayerOnboardingScreenShown,
   );
+  const prefferedTheme = useSelector(selectPrefferedTheme);
+
   const { myRatings } = useMyEvaluationsContext();
   const isPlayerOnboarding =
     location.pathname === RoutePath.HOME &&
@@ -58,7 +61,11 @@ function App() {
     <div
       className={`app_container ${
         hasDarkBackground && 'app_container__dark'
-      } relative`}
+      } relative ${
+        prefferedTheme !== 'light'
+          ? 'bg-black dark app_container_dark_bg'
+          : 'app_container'
+      }`}
     >
       <div className="app">
         {!noHeader && <Header />}

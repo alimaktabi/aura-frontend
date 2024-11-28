@@ -7,7 +7,7 @@ export const HorizontalProgressBar = ({
 }) => {
   return (
     <div
-      className={`relative bg-gray70 rounded-sm h-2.5 ${
+      className={`relative bg-gray70 dark:bg-gray20 rounded-sm h-2.5 ${
         isWidthFull ? 'w-full' : 'w-24'
       }`}
     >
