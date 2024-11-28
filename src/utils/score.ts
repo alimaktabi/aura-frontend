@@ -10,9 +10,11 @@ export const calculateUserScorePercentage = (
 
   const highestLevelStart = selectedCategoryLevel.find((item) => item > score);
 
-  if (!highestLevelStart) return 100;
+  if (highestLevelStart === undefined) return 100;
 
-  if (score >= 0) {
+  if (score === 0) return 0;
+
+  if (score > 0) {
     const width = Math.min(
       (Math.log(score) / Math.log(highestLevelStart * 100)) * 100,
       100,
