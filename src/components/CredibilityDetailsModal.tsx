@@ -11,8 +11,7 @@ import {
   useImpactPercentage,
   useSubjectVerifications,
 } from 'hooks/useSubjectVerifications';
-import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
@@ -193,7 +192,7 @@ const CredibilityDetails = ({
     EvaluationCategory.MANAGER,
   );
 
-  const authorizedTabs = React.useMemo(() => {
+  const authorizedTabs = useMemo(() => {
     const tabs = [EvaluationCategory.SUBJECT];
 
     if (playerEvaluation.auraLevel && playerEvaluation.auraLevel > 0)
@@ -212,6 +211,14 @@ const CredibilityDetails = ({
     managerEvaluation.loading ||
     trainerEvaluation.loading ||
     playerEvaluation.loading;
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!authorizedTabs.includes(evaluationCategory)) {
+      setEvaluationCategory(authorizedTabs[0]);
+    }
+  }, [isLoading, authorizedTabs, evaluationCategory]);
 
   if (isLoading)
     return (
@@ -241,7 +248,7 @@ const CredibilityDetails = ({
   return (
     <div className="min-h-[450px] flex flex-col w-full">
       <div
-        className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card dark:bg-stone-800 p-1 mb-5`}
+        className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card dark:bg-button-primary p-1 mb-5`}
       >
         <div
           className={`flex flex-row min-w-full overflow-x-auto overflow-y-hidden h-full pb-1`}
@@ -256,8 +263,8 @@ const CredibilityDetails = ({
               authorizedTabs.length > 0 ? '' : 'hidden'
             } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.SUBJECT
-                ? 'background bg-orange text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                ? 'background bg-orange dark:text-black text-white font-bold'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.SUBJECT)}
             data-testid="table-view-switch-option-one"
@@ -278,7 +285,7 @@ const CredibilityDetails = ({
             } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.PLAYER
                 ? 'background bg-purple text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.PLAYER)}
             data-testid="table-view-switch-option-one"
@@ -292,7 +299,7 @@ const CredibilityDetails = ({
             } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.TRAINER
                 ? 'background bg-green text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.TRAINER)}
             data-testid="table-view-switch-option-two"
@@ -306,7 +313,7 @@ const CredibilityDetails = ({
             } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.MANAGER
                 ? 'background bg-blue text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.MANAGER)}
             data-testid="table-view-switch-option-two"
