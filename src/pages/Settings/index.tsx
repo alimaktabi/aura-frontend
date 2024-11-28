@@ -1,6 +1,7 @@
+import { auraVersion } from 'constants/version';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   resetStore,
@@ -26,10 +27,6 @@ export const Settings = () => {
           <p className="font-medium text-[20px]">Role Management</p>
         </div>
 
-        <div className="bg-white-90-card dark:bg-button-primary cursor-pointer rounded-lg pl-5 py-3.5 pr-2">
-          <p className="font-medium text-[20px]">Domain Overview</p>
-        </div>
-
         <div
           onClick={() =>
             dispatch(
@@ -45,9 +42,21 @@ export const Settings = () => {
           </span>
         </div>
 
-        <div className="bg-white-90-card dark:bg-button-primary cursor-pointer rounded-lg pl-5 py-3.5 pr-2">
-          <p className="font-medium text-[20px]">FAQ</p>
-        </div>
+        <Link
+          target="_blank"
+          to="https://brightid.gitbook.io/aura"
+          className="bg-white-90-card dark:bg-button-primary cursor-pointer rounded-lg pl-5 py-3.5 pr-2"
+        >
+          <p className="font-medium text-[20px]">Guide</p>
+        </Link>
+
+        <Link
+          target="_blank"
+          to="https://x.com/brightidproject"
+          className="bg-white-90-card dark:bg-button-primary cursor-pointer rounded-lg pl-5 py-3.5 pr-2"
+        >
+          <p className="font-medium text-[20px]">X</p>
+        </Link>
 
         {(__DEV__ ||
           process.env.REACT_APP_IS_CYPRESS === 'true' ||
@@ -83,7 +92,7 @@ export const Settings = () => {
       </section>
 
       <section className="flex w-full justify-center">
-        <p className="text-white text-sm">Aura version 2.1</p>
+        <p className="text-white text-sm">Aura version {auraVersion}</p>
       </section>
     </div>
   );
