@@ -128,7 +128,9 @@ const ProfileOverview = ({
         </div>
         <div className="body__info flex justify-between w-full">
           <div className="font-medium">Evaluation Impact:</div>
-          <div className="underline text-sm text-gray00">What&apos;s this?</div>
+          <div className="underline text-sm text-gray00 dark:text-gray-400">
+            What&apos;s this?
+          </div>
         </div>
         <ReactECharts
           option={impactChartOption}
