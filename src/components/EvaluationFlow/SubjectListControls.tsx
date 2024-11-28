@@ -3,6 +3,7 @@ import { SortsModal } from 'components/EvaluationFlow/SortsModal';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
 import { AuraSortId } from '../../hooks/useSorts';
@@ -64,6 +65,8 @@ export const SubjectListControls = ({
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
 
   const { currentViewMode, setPreferredView } = useViewMode();
+
+  const [params] = useSearchParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -138,6 +141,15 @@ export const SubjectListControls = ({
     selectedFilters,
     selectedSort,
   ]);
+
+  React.useEffect(() => {
+    if (!params.get('search')) {
+      setSearchString('');
+      return;
+    }
+
+    setSearchString(params.get('search') || '');
+  }, [params, setSearchString]);
 
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
 

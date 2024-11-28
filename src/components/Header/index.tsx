@@ -1,4 +1,7 @@
+import { toggleSearchModal } from 'BrightID/actions';
 import { useEffect, useMemo, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
@@ -22,6 +25,7 @@ const Header = () => {
   const [isSequenceOpen, setIsSequenceOpen] = useState(false);
 
   const { currentEvaluationCategory } = useViewMode();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (matchPath(RoutePath.HOME, pathname)) {
@@ -118,8 +122,16 @@ const Header = () => {
             {headerComponent.title}
           </div>
         </div>
-        {!matchPath(RoutePath.SETTINGS, pathname) && (
-          <span className="header-right flex items-center">
+        <span className="header-right flex items-center">
+          <button
+            key="/assets/images/Header/search.svg"
+            onClick={() => dispatch(toggleSearchModal())}
+            className="header-icon text-gray-300 dark:text-white mr-4"
+            data-testid="nav-button"
+          >
+            <FaSearch size={20} />
+          </button>
+          {!matchPath(RoutePath.SETTINGS, pathname) && (
             <span
               key="/assets/images/Header/settings.svg"
               onClick={() => navigate(RoutePath.SETTINGS)}
@@ -133,8 +145,8 @@ const Header = () => {
                 alt={''}
               />
             </span>
-          </span>
-        )}
+          )}
+        </span>
       </header>
     </div>
   );

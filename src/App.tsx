@@ -1,7 +1,12 @@
-import { selectPrefferedTheme } from 'BrightID/actions';
+import {
+  selectIsSearchModalOpen,
+  selectPrefferedTheme,
+  toggleSearchModal,
+} from 'BrightID/actions';
+import GlobalSearchModal from 'components/GlobalSearchModal';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import React, { FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import routes from 'Routes';
 import { RoutePath } from 'types/router';
@@ -37,12 +42,15 @@ function App() {
     () => routes.find((route) => route.pathRegex.test(location.pathname)),
     [location.pathname],
   );
+  const dispatch = useDispatch();
 
   //TODO: remove these hardcodes after a stable release
   const playerOnboardingScreenShown = useSelector(
     selectPlayerOnboardingScreenShown,
   );
   const prefferedTheme = useSelector(selectPrefferedTheme);
+
+  const isSearchModalOpen = useSelector(selectIsSearchModalOpen);
 
   const { myRatings } = useMyEvaluationsContext();
   const isPlayerOnboarding =
@@ -89,6 +97,9 @@ function App() {
           <EvaluationOpNotifications />
         </div>
       </div>
+      {isSearchModalOpen && (
+        <GlobalSearchModal onClose={() => dispatch(toggleSearchModal())} />
+      )}
     </div>
   );
 }

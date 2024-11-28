@@ -1,6 +1,5 @@
 import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
 import { SortsModal } from 'components/EvaluationFlow/SortsModal';
-import * as React from 'react';
 import { useMemo, useState } from 'react';
 
 import Dropdown from '../../components/Shared/Dropdown';
