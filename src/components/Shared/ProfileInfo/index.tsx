@@ -85,7 +85,7 @@ export const ProfileInfo = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-1.5 items-end text-sm text-black min-w-[90px]">
+        <div className="flex flex-col gap-1.5 items-end text-sm dark:text-white text-black min-w-[90px]">
           {userHasRecovery !== null && (
             <div
               onClick={() => {

@@ -12,6 +12,7 @@ const tailwindConfig = {
         size: 'width, height',
       },
       colors: {
+        'dark-primary': '#18181b',
         gray00: '#393939',
         gray10: '#343434',
         gray20: '#585858',
@@ -53,6 +54,7 @@ const tailwindConfig = {
         pl2: '#72BF83',
         pl3: '#5B9969',
         pl4: '#257036',
+        'pl1-dark': '#738b78',
         'pl3-dark': '#257036',
         'pl4-dark': '#024711',
         nl1: '#F5BFBF',

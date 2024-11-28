@@ -47,7 +47,7 @@ export function getBgClassNameOfAuraRatingNumber(
   if (rating >= 4) return 'bg-pl4 dark:bg-pl4-dark';
   if (rating >= 3) return 'bg-pl3 dark:bg-pl3-dark';
   if (rating >= 2) return 'bg-pl2';
-  if (rating > 0) return 'bg-pl1';
+  if (rating > 0) return 'bg-pl1 dark:bg-pl1-dark';
   if (rating >= -1) return 'bg-nl1';
   if (rating >= -2) return 'bg-nl2';
   if (rating >= -3) return 'bg-nl3';
