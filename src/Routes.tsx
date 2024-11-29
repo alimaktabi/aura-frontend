@@ -81,10 +81,7 @@ const routes = [
       title: <HomeHeader />,
       icon: '/assets/images/Header/home.svg',
       iconClickedHandler: (navigate: NavigateFunction) => {
-        navigate(RoutePath.HOME + '?tab=evaluate', {
-          replace: true,
-          flushSync: true,
-        });
+        navigate(RoutePath.HOME + '?tab=evaluate');
       },
     },
     requireAuth: true,
