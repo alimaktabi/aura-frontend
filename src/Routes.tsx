@@ -79,6 +79,10 @@ const routes = [
     element: <Home />,
     header: {
       title: <HomeHeader />,
+      icon: '/assets/images/Header/home.svg',
+      iconClickedHandler: (navigate: NavigateFunction) => {
+        navigate(RoutePath.HOME + '?tab=evaluate');
+      },
     },
     requireAuth: true,
   },

@@ -71,8 +71,8 @@ const EvaluateModalBody = ({
         />
       </p>
 
-      <div className="p-1.5 rounded-lg bg-white w-full mb-5">
-        <div className="w-full h-[38px] relative bg-white flex">
+      <div className="p-1.5 rounded-lg dark:bg-button-primary bg-white w-full mb-5">
+        <div className="w-full h-[38px] relative dark:bg-button-primary bg-white flex">
           <span
             className={`cursor-pointer background absolute w-1/2 top-0 bottom-0 rounded-md transition-all duration-300 ease-in-out ${
               isYes ? 'left-0 right-1/2 bg-pl3' : 'right-0 left-1/2 bg-error'
@@ -167,7 +167,7 @@ const EvaluateModalBody = ({
             </button>
             <button
               data-testid="remove-evaluation"
-              className={`btn btn--big !bg-delete flex gap-2.5 transition-all ease-linear ${
+              className={`btn btn--big bg-delete dark:bg-red-500 flex gap-2.5 transition-all ease-linear ${
                 onDelete ? 'w-full justify-center items-center' : ''
               }`}
               onClick={() =>
