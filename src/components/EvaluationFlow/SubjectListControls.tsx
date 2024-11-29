@@ -1,8 +1,7 @@
 import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
 import { SortsModal } from 'components/EvaluationFlow/SortsModal';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
-import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
@@ -142,7 +141,7 @@ export const SubjectListControls = ({
     selectedSort,
   ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!params.get('search')) {
       setSearchString('');
       return;
