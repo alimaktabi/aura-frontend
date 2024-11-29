@@ -57,5 +57,14 @@
         }
       ]
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "BUN_INSTALL": "true"
+    },
+    "commands": {
+      "install": "bun install",
+      "build": "bun run build"
+    }
+  }
 }
