@@ -59,5 +59,7 @@
       ]
     }
   ],
-  "installCommand": "bun install"
+  "installCommand": "bun install",
+  "buildCommand": "react-app-rewired build",
+  "outputDirectory": "build"
 }
