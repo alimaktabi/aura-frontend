@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
       "source": "/brightid/:path*",
@@ -58,13 +59,5 @@
       ]
     }
   ],
-  "build": {
-    "env": {
-      "BUN_INSTALL": "true"
-    },
-    "commands": {
-      "install": "bun install",
-      "build": "bun run build"
-    }
-  }
+  "installCommand": "bun install"
 }
