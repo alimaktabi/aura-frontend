@@ -23,7 +23,9 @@ export const ToggleInput = ({
         ></p>
         <p
           className={`bg-transparent absolute cursor-pointer w-1/2 h-full flex items-center justify-center left-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${
-            isChecked ? 'text-primary font-bold' : 'text-white font-medium'
+            isChecked
+              ? 'text-primary text-white dark:text-black font-bold'
+              : 'dark:text-white text-black font-medium'
           }`}
           onClick={() => setIsChecked(true)}
           data-testid="table-view-switch-option-one"
@@ -32,10 +34,12 @@ export const ToggleInput = ({
         </p>
         <p
           className={`bg-transparent absolute cursor-pointer flex justify-center items-center w-1/2 h-full right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${
-            isChecked ? 'text-white font-medium' : 'text-black font-bold'
+            isChecked
+              ? 'text-black dark:text-white font-medium'
+              : 'dark:text-black text-white font-bold'
           } ${
             option2Disabled
-              ? 'text-gray50 cursor-not-allowed opacity-50 pointer-events-none'
+              ? 'dark:text-gray50 text-black cursor-not-allowed opacity-50 pointer-events-none'
               : 'text-black'
           }`}
           onClick={() => setIsChecked(false)}

@@ -9,6 +9,7 @@ import {
 } from '../../constants';
 import useViewMode from '../../hooks/useViewMode';
 import { EvaluationCategory, PreferredView } from '../../types/dashboard';
+import Tooltip from './Tooltip';
 
 const views = [
   EvaluationCategory.SUBJECT,
@@ -16,6 +17,13 @@ const views = [
   EvaluationCategory.TRAINER,
   EvaluationCategory.MANAGER,
 ];
+
+const viewsLabel = {
+  [EvaluationCategory.MANAGER]: 'Manager',
+  [EvaluationCategory.PLAYER]: 'Player',
+  [EvaluationCategory.TRAINER]: 'Trainer',
+  [EvaluationCategory.SUBJECT]: 'Subject',
+};
 
 export const HeaderPreferedView = {
   ProfileHeaderViews: ({ subjectId }: { subjectId: string }) => {
@@ -69,13 +77,15 @@ export const HeaderPreferedView = {
               </div>
             ))
           : authorizedTabs.map((subjectViewMode) => (
-              <div
+              <Tooltip
                 className={`p-1 rounded ${
                   currentEvaluationCategory === subjectViewMode
                     ? viewModeSubjectBackgroundColorClass[currentViewMode]
                     : 'bg-gray100'
                 } ml-2 cursor-pointer`}
+                position="bottom"
                 key={subjectViewMode}
+                content={viewsLabel[subjectViewMode]}
                 onClick={() => updateViewAs(subjectViewMode)}
               >
                 <img
@@ -83,7 +93,7 @@ export const HeaderPreferedView = {
                   src={subjectViewAsIcon[subjectViewMode]}
                   alt=""
                 />
-              </div>
+              </Tooltip>
             ))}
       </>
     );
@@ -93,7 +103,8 @@ export const HeaderPreferedView = {
 
     return (
       <>
-        <div
+        <Tooltip
+          content="Player"
           className={`p-1 rounded ${
             currentViewMode === PreferredView.PLAYER
               ? getViewModeBackgroundColorClass(currentViewMode)
@@ -106,8 +117,9 @@ export const HeaderPreferedView = {
             src={preferredViewIcon[PreferredView.PLAYER]}
             alt=""
           />
-        </div>
-        <div
+        </Tooltip>
+        <Tooltip
+          content="Trainer"
           className={`p-1 rounded ${
             currentViewMode === PreferredView.TRAINER
               ? getViewModeBackgroundColorClass(currentViewMode)
@@ -120,8 +132,9 @@ export const HeaderPreferedView = {
             src={preferredViewIcon[PreferredView.TRAINER]}
             alt=""
           />
-        </div>
-        <div
+        </Tooltip>
+        <Tooltip
+          content="Manager"
           className={`p-1 rounded ${
             currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
             currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
@@ -137,7 +150,7 @@ export const HeaderPreferedView = {
             src={preferredViewIcon[PreferredView.MANAGER_EVALUATING_TRAINER]}
             alt=""
           />
-        </div>
+        </Tooltip>
       </>
     );
   },
