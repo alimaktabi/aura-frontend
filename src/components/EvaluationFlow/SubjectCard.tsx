@@ -1,5 +1,8 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
-import { ConnectionAndEvaluationStatus } from 'components/ConnectionAndEvaluationStatus';
+import {
+  ConnectionStatus,
+  EvaluationStatus,
+} from 'components/ConnectionAndEvaluationStatus';
 import { getViewModeSubjectBorderColorClass } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
@@ -70,10 +73,19 @@ export const SubjectCard = ({
                 {auraLevel}
               </span>
             </p>
+            {progress < 0 ? (
+              '😈'
+            ) : (
+              <HorizontalProgressBar
+                className="w-36"
+                isWidthFull={true}
+                percentage={progress}
+              />
+            )}
           </div>
         </div>
-        <div className="evaluation-left__bottom">
-          <ConnectionAndEvaluationStatus subjectId={subjectId} />
+        <div className="mt-auto">
+          <ConnectionStatus subjectId={subjectId} />
         </div>
       </div>
       <div className="evaluation-right flex flex-col gap-2 items-end">
@@ -85,16 +97,15 @@ export const SubjectCard = ({
             </span>
           </p>
         </div>
-        {progress < 0 ? (
-          '😈'
-        ) : (
-          <HorizontalProgressBar isWidthFull={true} percentage={progress} />
-        )}
+
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
             option={impactChartSmallOption}
           />
+        </div>
+        <div className="-mt-1">
+          <EvaluationStatus subjectId={subjectId} />
         </div>
       </div>
     </Link>

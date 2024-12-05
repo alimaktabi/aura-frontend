@@ -82,6 +82,7 @@ export const store = configureStore({
         ],
         ignoredPaths: ['recoveryData'],
       },
+      immutableCheck: false,
     }).concat(apiSlice.middleware),
 });
 
