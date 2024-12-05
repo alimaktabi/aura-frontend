@@ -14,6 +14,7 @@ export interface SettingsSlice {
   lastSyncTime: number;
   languageTag: string | null;
   prefferedTheme: 'dark' | 'light';
+  isSearchModalOpen?: boolean;
 }
 
 const initialState: SettingsSlice = {
@@ -23,6 +24,7 @@ const initialState: SettingsSlice = {
   lastSyncTime: 0,
   languageTag: null,
   prefferedTheme: 'light',
+  isSearchModalOpen: false,
 };
 
 export const settingsSlice = createSlice({
@@ -83,6 +85,9 @@ export const settingsSlice = createSlice({
     resetLanguageTag: (state) => {
       state.languageTag = initialState.languageTag;
     },
+    toggleSearchModal: (state) => {
+      state.isSearchModalOpen = !state.isSearchModalOpen;
+    },
   },
   extraReducers: {
     [RESET_STORE]: () => {
@@ -103,6 +108,7 @@ export const {
   setLanguageTag,
   resetLanguageTag,
   setPrefferedTheme,
+  toggleSearchModal,
 } = settingsSlice.actions;
 
 export const selectBaseUrl = (state: RootState) => state.settings.baseUrl;
@@ -117,5 +123,8 @@ export const selectLastSyncTime = (state: RootState) =>
   state.settings.lastSyncTime;
 export const selectLanguageTag = (state: RootState) =>
   state.settings.languageTag;
+
+export const selectIsSearchModalOpen = (state: RootState) =>
+  state.settings.isSearchModalOpen;
 
 export default settingsSlice.reducer;
