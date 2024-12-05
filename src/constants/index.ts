@@ -112,7 +112,7 @@ export const viewModeSubjectBackgroundColorClass: {
   [key in PreferredView]: string;
 } = {
   [PreferredView.PLAYER]: 'bg-pastel-orange',
-  [PreferredView.TRAINER]: 'bg-natural-black',
+  [PreferredView.TRAINER]: 'bg-natural-black dark:bg-purple3',
   [PreferredView.MANAGER_EVALUATING_TRAINER]: 'bg-pastel-green',
   [PreferredView.MANAGER_EVALUATING_MANAGER]: 'bg-pastel-blue',
 };
