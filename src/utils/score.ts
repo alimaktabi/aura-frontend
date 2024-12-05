@@ -8,7 +8,9 @@ export const calculateUserScorePercentage = (
 ) => {
   const selectedCategoryLevel = userLevelPoints[view];
 
-  const highestLevelStart = selectedCategoryLevel.find((item) => item > score);
+  const highestLevelStart =
+    selectedCategoryLevel.find((item) => item > score) ??
+    selectedCategoryLevel.at(-1);
 
   if (highestLevelStart === undefined) return 100;
 
