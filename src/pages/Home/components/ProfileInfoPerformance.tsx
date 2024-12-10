@@ -78,7 +78,7 @@ const ProfileInfoPerformance = ({
                 </span>
                 <span className="text-lg font-medium">
                   more evaluation{ratingsToBeDoneCount > 1 ? `s` : ''} to unlock
-                  Level-up
+                  Level Up
                 </span>
               </>
             ) : (
@@ -102,7 +102,7 @@ const ProfileInfoPerformance = ({
               </>
             )}
           </div>
-          <div className="w-full relative bg-gray30 rounded-full h-4">
+          <div className="w-full relative bg-gray30 dark:bg-button-primary rounded-full h-4">
             <div
               className={`absolute ${getViewModeBackgroundColorClass(
                 currentViewMode,

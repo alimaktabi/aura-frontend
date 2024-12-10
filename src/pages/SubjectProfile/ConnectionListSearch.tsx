@@ -1,6 +1,5 @@
 import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
 import { SortsModal } from 'components/EvaluationFlow/SortsModal';
-import * as React from 'react';
 import { useMemo, useState } from 'react';
 
 import Dropdown from '../../components/Shared/Dropdown';
@@ -22,14 +21,16 @@ function FilterAndSortModalBody({ subjectId }: { subjectId: string }) {
 
   return (
     <div>
-      <p className="text-black2 font-bold">Filters</p>
+      <p className="text-black2 dark:text-gray-100 font-bold">Filters</p>
       <FiltersModal
         testidPrefix={'subject-filter'}
         filters={filters}
         selectedFilterIds={selectedFilterIds}
         toggleFiltersById={toggleFiltersById}
       />
-      <p className="text-black2 font-bold pt-3 pb-1">Sorts</p>
+      <p className="text-black2 dark:text-gray-100 font-bold pt-3 pb-1">
+        Sorts
+      </p>
       <SortsModal
         testidPrefix={'subject-sort'}
         sorts={sorts}
@@ -71,7 +72,7 @@ export const ConnectionListSearch = ({ subjectId }: { subjectId: string }) => {
   const defaultOption = useMemo(
     () => ({
       value: 0,
-      label: <p>Expected connections (default)</p>,
+      label: <p>Smart Sort (default)</p>,
       filterIds: null,
       sortId: null,
       onClick: () => clearSortAndFilter(),
@@ -145,7 +146,7 @@ export const ConnectionListSearch = ({ subjectId }: { subjectId: string }) => {
 
   return (
     <>
-      <div className="bg-gray40 rounded-[10px] p-1 flex-1 flex flex-col justify-center gap-4 max-h-[175px]">
+      <div className="bg-gray40 text-black2 dark:text-white dark:bg-button-primary rounded-[10px] p-1 flex-1 flex flex-col justify-center gap-4 max-h-[175px]">
         <div className="card__input flex gap-2 items-center rounded px-3.5">
           <img
             className="w-4 h-4"
@@ -153,7 +154,7 @@ export const ConnectionListSearch = ({ subjectId }: { subjectId: string }) => {
             alt=""
           />
           <input
-            className="bg-gray40 w-full text-black2 font-medium placeholder-black2 text-sm h-11 focus:outline-none"
+            className="bg-gray40 w-full font-medium dark:placeholder:text-gray-50 placeholder-black2 dark:bg-button-primary text-sm h-11 focus:outline-none"
             type="text"
             placeholder="Subject name or ID ..."
             value={searchString}
@@ -178,7 +179,7 @@ export const ConnectionListSearch = ({ subjectId }: { subjectId: string }) => {
         >
           <FilterAndSortModalBody subjectId={subjectId} />
         </Modal>
-        <span className="ml-1">
+        <span className="ml-auto">
           (
           {filteredSubjects?.filter((e) => e.inboundConnection).length ??
             itemsOriginal?.length ??

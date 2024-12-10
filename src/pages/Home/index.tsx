@@ -4,10 +4,10 @@ import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import Onboarding from 'pages/Onboarding';
-import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { RoutePath } from 'types/router';
 
 import InfiniteScrollLocal from '../../components/InfiniteScrollLocal';
 import LevelUp from '../../components/LevelUp';
@@ -36,15 +36,19 @@ const Home = () => {
   const [query] = useSearchParams();
   const navigate = useNavigate();
   useEffect(() => {
+    if (query.get('tab') === 'evaluate') {
+      setIsEvaluate(true);
+    }
+
     if (query.get('tab') === 'levelup') {
       setIsEvaluate(false);
 
       // Clear the 'tab' query parameter
-      query.delete('tab');
-      navigate({
-        pathname: window.location.pathname,
-        search: query.toString(),
-      });
+      // query.delete('tab');
+      // navigate({
+      //   pathname: window.location.pathname,
+      //   search: query.toString(),
+      // });
     }
   }, [query, navigate]);
 
@@ -106,7 +110,11 @@ const Home = () => {
           option1={'Evaluate'}
           option2={'Level Up'}
           isChecked={isEvaluate}
-          setIsChecked={setIsEvaluate}
+          setIsChecked={(isEvaluate) => {
+            navigate(
+              RoutePath.HOME + `?tab=${isEvaluate ? 'evaluate' : 'levelup'}`,
+            );
+          }}
           option2Disabled={isLocked}
         />
         {isEvaluate ? (

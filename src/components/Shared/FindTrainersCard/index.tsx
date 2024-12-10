@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { compactFormat } from 'utils/number';
 
 import {
   viewModeToEvaluatorViewMode,
@@ -7,7 +8,10 @@ import {
 import { useSubjectInboundEvaluationsContext } from '../../../contexts/SubjectInboundEvaluationsContext';
 import { getAuraVerification } from '../../../hooks/useParseBrightIdVerificationData';
 import { useSubjectConnectionInfoFromContext } from '../../../hooks/useSubjectEvaluation';
-import { useOutboundEvaluations } from '../../../hooks/useSubjectEvaluations';
+import {
+  useInboundEvaluations,
+  useOutboundEvaluations,
+} from '../../../hooks/useSubjectEvaluations';
 import { useSubjectName } from '../../../hooks/useSubjectName';
 import { useSubjectVerifications } from '../../../hooks/useSubjectVerifications';
 import LinkCard from '../../../pages/Home/LinkCard';
@@ -17,13 +21,13 @@ import BrightIdProfilePicture from '../../BrightIdProfilePicture';
 
 const FindTrainersCard = ({ subjectId }: { subjectId: string }) => {
   return (
-    <div className="card !bg-[#ECECEC]">
-      <div className="mb-4.5 font-bold text-lg text-black">Find Trainers</div>
+    <div className="card !bg-[#ECECEC] dark:!bg-[#1f1f1f]">
+      <div className="mb-4.5 font-bold text-lg">Find Trainers</div>
       <div className="flex flex-col gap-2.5">
         <PotentialEvaluatorsListBrief
           subjectId={subjectId}
           description={
-            'Here is a list of trainers from you brightID connection list. Ask them to check your work and help you improve.'
+            'Here is a list of trainers from your BrightID connections. Ask them to check your work and help you improve.'
           }
           evaluatorViewMode={PreferredView.TRAINER}
           title={'Trainers'}
@@ -73,8 +77,10 @@ const PotentialEvaluatorsListBrief = ({
   //TODO: Animation must be implemented
   return (
     <div className="flex flex-col gap-2.5">
-      <div className="text-black2 font-medium">{description}</div>
-      <div className="flex flex-col gap-2 bg-white rounded-[8px] p-3">
+      <div className="text-black2 dark:text-gray-300 font-medium">
+        {description}
+      </div>
+      <div className="flex flex-col gap-2 dark:bg-dark-primary bg-white rounded-[8px] p-3">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-2.5">
             {!isExpanded && (
@@ -106,7 +112,7 @@ const PotentialEvaluatorsListBrief = ({
             />
           ) : (
             <div
-              className="text-button-primary font-medium cursor-pointer"
+              className="font-medium cursor-pointer"
               onClick={() => setIsExpanded(true)}
             >
               Show All
@@ -114,7 +120,7 @@ const PotentialEvaluatorsListBrief = ({
           )}
         </div>
         {isExpanded && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             {potentialEvaluators?.map((p) => (
               <PotentialEvaluatorBrief
                 key={p.fromSubjectId}
@@ -144,6 +150,20 @@ const EvaluationsCount = ({
   return <>{ratings ? ratings.length : '...'}</>;
 };
 
+const EvaluatorsCount = ({
+  evaluatorViewMode,
+  evaluatorSubjectId,
+}: {
+  evaluatorViewMode: PreferredView;
+  evaluatorSubjectId: string;
+}) => {
+  const { ratings } = useInboundEvaluations({
+    subjectId: evaluatorSubjectId,
+    evaluationCategory: viewModeToViewAs[evaluatorViewMode],
+  });
+  return <>{ratings ? ratings.length : '...'}</>;
+};
+
 const PotentialEvaluatorBrief = ({
   evaluatorViewMode,
   evaluatorSubjectId,
@@ -154,7 +174,7 @@ const PotentialEvaluatorBrief = ({
   subjectId: string;
 }) => {
   const subjectName = useSubjectName(evaluatorSubjectId);
-  const { auraLevel, loading } = useSubjectVerifications(
+  const { auraLevel, loading, auraScore } = useSubjectVerifications(
     evaluatorSubjectId,
     viewModeToViewAs[viewModeToEvaluatorViewMode[evaluatorViewMode]],
   );
@@ -171,43 +191,63 @@ const PotentialEvaluatorBrief = ({
         />
         <div className="flex flex-col leading-3">
           <div className="font-bold text-sm leading-4">{subjectName}</div>
-          <div className="leading-3">
-            <span className="font-bold text-xs">
-              Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
-            </span>{' '}
-            {evaluatorViewMode === PreferredView.TRAINER && (
-              <span className="font-medium text-xs">
-                (
-                <EvaluationsCount
-                  evaluatorSubjectId={evaluatorSubjectId}
-                  evaluatorViewMode={evaluatorViewMode}
-                />{' '}
-                Trainees)
-              </span>
+          <div className="">
+            {connectionInfo ? (
+              <div className="flex items-center gap-1">
+                <img
+                  src={`/assets/images/Shared/${
+                    connectionLevelIcons[connectionInfo.level]
+                  }.svg`}
+                  alt=""
+                  className="inline mr-0.5"
+                  width={20}
+                  height={20}
+                />
+                <span className="font-medium text-sm leading-3">
+                  {connectionInfo.level}
+                </span>
+              </div>
+            ) : (
+              <div>...</div>
             )}
           </div>
         </div>
       </div>
-      <div className="flex flex-col leading-3">
-        <div className="text-gray20 text-[10px] font-normal">
-          Connection Level
-        </div>
-        {connectionInfo ? (
-          <div>
-            <img
-              src={`/assets/images/Shared/${
-                connectionLevelIcons[connectionInfo.level]
-              }.svg`}
-              alt=""
-              className="inline mr-0.5"
-            />
-            <span className="font-medium text-sm leading-3">
-              {connectionInfo.level}
+      <div className="flex flex-col leading-3 text-right">
+        <span>
+          {evaluatorViewMode === PreferredView.TRAINER && (
+            <span className="font-medium text-xs">
+              (
+              <EvaluationsCount
+                evaluatorSubjectId={evaluatorSubjectId}
+                evaluatorViewMode={evaluatorViewMode}
+              />{' '}
+              Trainees)
             </span>
-          </div>
-        ) : (
-          <div>...</div>
-        )}
+          )}{' '}
+          {evaluatorViewMode === PreferredView.TRAINER && (
+            <span className="font-medium text-xs">
+              (
+              <EvaluatorsCount
+                evaluatorSubjectId={evaluatorSubjectId}
+                evaluatorViewMode={evaluatorViewMode}
+              />{' '}
+              Trainers)
+            </span>
+          )}{' '}
+          <span className="font-bold text-xs">
+            Level {loading ? '...' : auraLevel !== null ? auraLevel : '-'}
+          </span>{' '}
+        </span>
+        <p className="text-gray10 dark:text-gray-300 text-xs mb-2">
+          Score:{' '}
+          <span className="font-medium text-black dark:text-white">
+            {auraScore ? compactFormat(auraScore) : '-'}
+          </span>
+        </p>
+        {/* <div className="text-gray20 text-[10px] font-normal">
+          Connection Level
+        </div> */}
       </div>
     </div>
   );

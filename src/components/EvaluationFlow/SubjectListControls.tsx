@@ -1,8 +1,8 @@
 import { FiltersModal } from 'components/EvaluationFlow/FiltersModal';
 import { SortsModal } from 'components/EvaluationFlow/SortsModal';
 import { useSubjectsListContext } from 'contexts/SubjectsListContext';
-import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import useBrightIdBackupWithAuraConnectionData from '../../hooks/useBrightIdBackupWithAuraConnectionData';
 import { AuraSortId } from '../../hooks/useSorts';
@@ -12,7 +12,7 @@ import { PreferredView } from '../../types/dashboard';
 import Dropdown from '../Shared/Dropdown';
 import Modal from '../Shared/Modal';
 
-function FilterAndSortModalBody() {
+function FilterAndSortModalBody({ isPlayerMode }: { isPlayerMode: boolean }) {
   const {
     selectedFilterIds,
     toggleFiltersById,
@@ -24,15 +24,19 @@ function FilterAndSortModalBody() {
 
   return (
     <div>
-      <p className="text-black2 font-bold">Filters</p>
+      <p className="text-black2 dark:text-gray-100 font-bold">Filters</p>
       <FiltersModal
+        includeConnectionFilters={isPlayerMode}
         testidPrefix={'subject-filter'}
         filters={filters}
         selectedFilterIds={selectedFilterIds}
         toggleFiltersById={toggleFiltersById}
       />
-      <p className="text-black2 font-bold pt-3 pb-1">Sorts</p>
+      <p className="text-black2 dark:text-gray-100 font-bold pt-3 pb-1">
+        Sorts
+      </p>
       <SortsModal
+        includeLastConnectionFilter={isPlayerMode}
         testidPrefix={'subject-sort'}
         sorts={sorts}
         selectedSort={selectedSort}
@@ -60,6 +64,8 @@ export const SubjectListControls = ({
   const brightIdBackup = useBrightIdBackupWithAuraConnectionData();
 
   const { currentViewMode, setPreferredView } = useViewMode();
+
+  const [params] = useSearchParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -135,11 +141,20 @@ export const SubjectListControls = ({
     selectedSort,
   ]);
 
+  useEffect(() => {
+    if (!params.get('search')) {
+      setSearchString('');
+      return;
+    }
+
+    setSearchString(params.get('search') || '');
+  }, [params, setSearchString]);
+
   const { itemsFiltered: filteredSubjects } = useSubjectsListContext();
 
   return (
     <>
-      <div className="bg-gray40 rounded-[10px] p-1 flex-1 flex flex-col justify-center gap-4 max-h-[175px]">
+      <div className="bg-gray40 text-black2 dark:text-white dark:bg-button-primary rounded-[10px] p-1 flex-1 flex flex-col justify-center gap-4 max-h-[175px]">
         <div className="card__input flex gap-2 items-center rounded px-3.5">
           <img
             className="w-4 h-4"
@@ -147,7 +162,7 @@ export const SubjectListControls = ({
             alt=""
           />
           <input
-            className="bg-gray40 w-full text-black2 font-medium placeholder-black2 text-sm h-11 focus:outline-none"
+            className="bg-gray40 w-full font-medium dark:placeholder:text-gray-50 placeholder-black2 dark:bg-button-primary text-sm h-11 focus:outline-none"
             type="text"
             placeholder="Subject name or ID ..."
             value={searchString}
@@ -170,9 +185,11 @@ export const SubjectListControls = ({
           closeModalHandler={() => setIsModalOpen(false)}
           className="select-button-with-modal__modal"
         >
-          <FilterAndSortModalBody />
+          <FilterAndSortModalBody
+            isPlayerMode={currentViewMode === PreferredView.PLAYER}
+          />
         </Modal>
-        <span className="ml-1">
+        <span className="ml-auto">
           (
           {filteredSubjects?.length ??
             brightIdBackup?.connections.length ??

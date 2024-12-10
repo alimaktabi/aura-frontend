@@ -11,13 +11,13 @@ import {
   useImpactPercentage,
   useSubjectVerifications,
 } from 'hooks/useSubjectVerifications';
-import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'store/hooks';
 import { selectAuthData } from 'store/profile/selectors';
 import { EvaluationCategory } from 'types/dashboard';
 import { compactFormat } from 'utils/number';
+import { calculateUserScorePercentage } from 'utils/score';
 
 import {
   getRawTextClassNameOfAuraRatingNumber,
@@ -26,6 +26,13 @@ import {
 } from '../constants';
 import { CredibilityDetailsProps } from '../types';
 import { HorizontalProgressBar } from './Shared/HorizontalProgressBar';
+
+const views = [
+  EvaluationCategory.SUBJECT,
+  EvaluationCategory.PLAYER,
+  EvaluationCategory.TRAINER,
+  EvaluationCategory.MANAGER,
+];
 
 const CredibilityDetailsForRole = ({
   subjectId,
@@ -60,6 +67,11 @@ const CredibilityDetailsForRole = ({
   const link = '/subject/' + subjectId;
   const navigate = useNavigate();
 
+  const progress = calculateUserScorePercentage(
+    roleEvaluationCategory,
+    auraScore ?? 0,
+  );
+
   return (
     <>
       <div className="font-bold text-l">
@@ -84,25 +96,13 @@ const CredibilityDetailsForRole = ({
             {auraScore ? compactFormat(auraScore) : '-'}
           </span>
         </div>
-        <HorizontalProgressBar percentage={'w-[15%]'} />
+        <HorizontalProgressBar percentage={progress} />
       </div>
       <div>
         Evaluations:{' '}
         <span className="font-bold">
           {ratings !== null ? ratings.length : '...'} (
           {inboundRatingsStatsString})
-        </span>
-      </div>
-      <div>
-        Your Connection:{' '}
-        <span className="font-bold">{myConnectionToSubject?.level}</span>
-      </div>
-      <div>
-        Their Connection to you:{' '}
-        <span className="font-bold">
-          {connections !== null
-            ? connections.find((c) => c.id === authData?.brightId)?.level || '-'
-            : '...'}
         </span>
       </div>
       <div>
@@ -177,10 +177,78 @@ const CredibilityDetails = ({
     credibilityDetailsProps.evaluationCategory,
   );
 
+  const playerEvaluation = useSubjectVerifications(
+    credibilityDetailsProps.subjectId,
+    EvaluationCategory.PLAYER,
+  );
+
+  const trainerEvaluation = useSubjectVerifications(
+    credibilityDetailsProps.subjectId,
+    EvaluationCategory.TRAINER,
+  );
+
+  const managerEvaluation = useSubjectVerifications(
+    credibilityDetailsProps.subjectId,
+    EvaluationCategory.MANAGER,
+  );
+
+  const authorizedTabs = useMemo(() => {
+    const tabs = [EvaluationCategory.SUBJECT];
+
+    if (playerEvaluation.auraLevel && playerEvaluation.auraLevel > 0)
+      tabs.push(EvaluationCategory.PLAYER);
+
+    if (trainerEvaluation.auraLevel && trainerEvaluation.auraLevel > 0)
+      tabs.push(EvaluationCategory.TRAINER);
+
+    if (managerEvaluation.auraLevel && managerEvaluation.auraLevel > 0)
+      tabs.push(EvaluationCategory.MANAGER);
+
+    return tabs;
+  }, [playerEvaluation, trainerEvaluation, managerEvaluation]);
+
+  const isLoading =
+    managerEvaluation.loading ||
+    trainerEvaluation.loading ||
+    playerEvaluation.loading;
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!authorizedTabs.includes(evaluationCategory)) {
+      setEvaluationCategory(authorizedTabs[0]);
+    }
+  }, [isLoading, authorizedTabs, evaluationCategory]);
+
+  if (isLoading)
+    return (
+      <div className="min-h-[450px] flex flex-col w-full">
+        <div
+          className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg p-1 mb-5`}
+        >
+          <div
+            className={`flex flex-row gap-1 min-w-full overflow-x-auto overflow-y-hidden h-full pb-1`}
+            // TODO: refactor this to tailwindcss class and values
+            style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#292534 rgba(209, 213, 219, 0.5)',
+            }}
+          >
+            {views.map((_, key) => (
+              <p
+                key={key}
+                className={`rounded-md bg-gray100 min-w-[100px] animate-pulse w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out`}
+              ></p>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
   return (
     <div className="min-h-[450px] flex flex-col w-full">
       <div
-        className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card p-1 bg-white mb-5`}
+        className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card dark:bg-button-primary p-1 mb-5`}
       >
         <div
           className={`flex flex-row min-w-full overflow-x-auto overflow-y-hidden h-full pb-1`}
@@ -191,10 +259,12 @@ const CredibilityDetails = ({
           }}
         >
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 0 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.SUBJECT
-                ? 'background bg-orange text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                ? 'background bg-orange dark:text-black text-white font-bold'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.SUBJECT)}
             data-testid="table-view-switch-option-one"
@@ -210,10 +280,12 @@ const CredibilityDetails = ({
             Subject
           </p>
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 1 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 items-center justify-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.PLAYER
                 ? 'background bg-purple text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.PLAYER)}
             data-testid="table-view-switch-option-one"
@@ -222,10 +294,12 @@ const CredibilityDetails = ({
             Player
           </p>
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 2 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.TRAINER
                 ? 'background bg-green text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.TRAINER)}
             data-testid="table-view-switch-option-two"
@@ -234,10 +308,12 @@ const CredibilityDetails = ({
             Trainer
           </p>
           <p
-            className={`rounded-md min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
+            className={`rounded-md ${
+              authorizedTabs.length > 3 ? '' : 'hidden'
+            } min-w-[100px] w-full cursor-pointer h-9 flex gap-1 justify-center items-center transition-all duration-300 ease-in-out ${
               evaluationCategory === EvaluationCategory.MANAGER
                 ? 'background bg-blue text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                : 'bg-transparent text-black dark:text-white font-medium'
             }`}
             onClick={() => setEvaluationCategory(EvaluationCategory.MANAGER)}
             data-testid="table-view-switch-option-two"

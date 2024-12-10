@@ -8,6 +8,8 @@ import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import useViewMode from 'hooks/useViewMode';
 import moment from 'moment';
 import { useContext, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAuthData } from 'store/profile/selectors';
 import { ProfileTab } from 'types/dashboard';
 import { connectionLevelIcons } from 'utils/connection';
 
@@ -27,6 +29,7 @@ export const ProfileInfo = ({
   setSelectedTab?: (value: ProfileTab) => void;
 }) => {
   const { currentViewMode, currentEvaluationCategory } = useViewMode();
+  const authData = useSelector(selectAuthData);
 
   const { userHasRecovery, auraLevel } = useSubjectVerifications(
     subjectId,
@@ -46,7 +49,7 @@ export const ProfileInfo = ({
     useOutboundEvaluationsContext({ subjectId });
 
   const lastActivity = useMemo(() => {
-    if (outboundConnections !== null && outboundRatings !== null) {
+    if (outboundConnections && outboundRatings !== null) {
       let timestamp = 0;
       outboundConnections.forEach(
         (c) => (timestamp = Math.max(timestamp, c.timestamp)),
@@ -59,6 +62,8 @@ export const ProfileInfo = ({
     }
     return '...';
   }, [outboundConnections, outboundRatings]);
+
+  const isVisitingYourPage = authData?.brightId === subjectId;
 
   return (
     <div className="card flex flex-col gap-3">
@@ -85,7 +90,7 @@ export const ProfileInfo = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-1.5 items-end text-sm text-black min-w-[90px]">
+        <div className="flex flex-col gap-1.5 items-end text-sm dark:text-white text-black min-w-[90px]">
           {userHasRecovery !== null && (
             <div
               onClick={() => {
@@ -117,18 +122,19 @@ export const ProfileInfo = ({
           </p>
         </div>
       </div>
-      {!loading && !myRatingNumberToSubject ? (
-        <NewEvaluationCard
-          subjectId={subjectId}
-          setShowEvaluationFlow={setShowEvaluationFlow}
-        />
-      ) : (
-        <YourEvaluationInfo
-          toSubjectId={subjectId}
-          setShowEvaluationFlow={setShowEvaluationFlow}
-          evaluationCategory={currentEvaluationCategory}
-        />
-      )}
+      {isVisitingYourPage ||
+        (!loading && !myRatingNumberToSubject ? (
+          <NewEvaluationCard
+            subjectId={subjectId}
+            setShowEvaluationFlow={setShowEvaluationFlow}
+          />
+        ) : (
+          <YourEvaluationInfo
+            toSubjectId={subjectId}
+            setShowEvaluationFlow={setShowEvaluationFlow}
+            evaluationCategory={currentEvaluationCategory}
+          />
+        ))}
     </div>
   );
 };

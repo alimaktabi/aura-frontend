@@ -24,7 +24,7 @@ const EvaluateOverlayCard = ({
   );
   const name = useSubjectName(subjectId);
   return (
-    <div className={`card !bg-white ${className}`}>
+    <div className={`card bg-white dark:dark-primary ${className}`}>
       <div className="card--header flex justify-between w-full items-center">
         <div className="card--header__left flex gap-4">
           <BrightIdProfilePicture

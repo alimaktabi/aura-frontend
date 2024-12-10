@@ -551,7 +551,7 @@ const ConnectionInformation = ({
     return moment(connectionInfo.timestamp).fromNow();
   }, [connectionInfo?.timestamp]);
   return (
-    <div className="flex flex-col py-1.5 items-center justify-center gap-1 bg-soft-bright rounded-md">
+    <div className="flex flex-col py-1.5 items-center justify-center gap-1 bg-soft-bright dark:bg-dark-bright rounded-md">
       {loading ? (
         '...'
       ) : (

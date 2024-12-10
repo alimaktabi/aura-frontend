@@ -1,5 +1,8 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
-import { ConnectionAndEvaluationStatus } from 'components/ConnectionAndEvaluationStatus';
+import {
+  ConnectionStatus,
+  EvaluationStatus,
+} from 'components/ConnectionAndEvaluationStatus';
 import { getViewModeSubjectBorderColorClass } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
@@ -8,6 +11,7 @@ import { useSubjectName } from 'hooks/useSubjectName';
 import useViewMode from 'hooks/useViewMode';
 import { Link } from 'react-router-dom';
 import { compactFormat } from 'utils/number';
+import { calculateUserScorePercentage } from 'utils/score';
 
 import { useImpactEChartOption } from '../../hooks/useSubjectVerifications';
 import { HorizontalProgressBar } from '../Shared/HorizontalProgressBar';
@@ -32,6 +36,11 @@ export const SubjectCard = ({
     );
   const { impactChartSmallOption } = useImpactEChartOption(auraImpacts);
 
+  const progress = calculateUserScorePercentage(
+    currentEvaluationCategory,
+    auraScore ?? 0,
+  );
+
   return (
     <Link
       to={'/subject/' + subjectId}
@@ -53,35 +62,50 @@ export const SubjectCard = ({
           </div>
           <div className="evaluation__info flex flex-col">
             <p
-              className="text-black font-medium"
+              className="text-black dark:text-white font-medium"
               data-testid={`user-item-${index}-name`}
             >
               {name}
             </p>
-            <p className="text-gray10">
-              Level: <span className="font-medium text-black">{auraLevel}</span>
+            <p className="text-gray10 dark:text-gray70">
+              Level:{' '}
+              <span className="font-medium text-black dark:text-white">
+                {auraLevel}
+              </span>
             </p>
+            {progress < 0 ? (
+              '😈'
+            ) : (
+              <HorizontalProgressBar
+                className="w-36"
+                isWidthFull={true}
+                percentage={progress}
+              />
+            )}
           </div>
         </div>
-        <div className="evaluation-left__bottom">
-          <ConnectionAndEvaluationStatus subjectId={subjectId} />
+        <div className="mt-auto">
+          <ConnectionStatus subjectId={subjectId} />
         </div>
       </div>
       <div className="evaluation-right flex flex-col gap-2 items-end">
         <div className="evaluation-right__top">
-          <p className="text-gray10">
+          <p className="text-gray10 dark:text-gray70">
             Score:{' '}
-            <span className="font-medium text-black">
+            <span className="font-medium text-black dark:text-white">
               {auraScore ? compactFormat(auraScore) : '-'}
             </span>
           </p>
         </div>
-        <HorizontalProgressBar isWidthFull={true} percentage={'w-[20%]'} />
+
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
             option={impactChartSmallOption}
           />
+        </div>
+        <div className="-mt-1">
+          <EvaluationStatus subjectId={subjectId} />
         </div>
       </div>
     </Link>

@@ -12,7 +12,8 @@ export default function useBrightIdBackupWithAuraConnectionData(): BrightIdBacku
   const { myConnections } = useMyEvaluationsContext();
 
   return useMemo(() => {
-    if (brightIdBackup === null || myConnections === null) return null;
+    if (brightIdBackup === null || !myConnections) return null;
+
     const connections: AuraNodeBrightIdConnectionWithBackupData[] = [];
     myConnections.forEach((c) => {
       const connectionInBrightIdBackup = brightIdBackup.connections.find(

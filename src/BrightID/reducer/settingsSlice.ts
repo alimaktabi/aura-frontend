@@ -13,6 +13,8 @@ export interface SettingsSlice {
   isPrimaryDevice: boolean;
   lastSyncTime: number;
   languageTag: string | null;
+  prefferedTheme: 'dark' | 'light';
+  isSearchModalOpen?: boolean;
 }
 
 const initialState: SettingsSlice = {
@@ -21,6 +23,8 @@ const initialState: SettingsSlice = {
   isPrimaryDevice: true,
   lastSyncTime: 0,
   languageTag: null,
+  prefferedTheme: 'light',
+  isSearchModalOpen: false,
 };
 
 export const settingsSlice = createSlice({
@@ -32,6 +36,9 @@ export const settingsSlice = createSlice({
     },
     clearBaseUrl: (state) => {
       state.baseUrl = null;
+    },
+    setPrefferedTheme: (state, action: PayloadAction<'dark' | 'light'>) => {
+      state.prefferedTheme = action.payload;
     },
     addNodeUrl: (state, action: PayloadAction<string>) => {
       const newNodeUrl = action.payload.toLowerCase();
@@ -78,6 +85,9 @@ export const settingsSlice = createSlice({
     resetLanguageTag: (state) => {
       state.languageTag = initialState.languageTag;
     },
+    toggleSearchModal: (state) => {
+      state.isSearchModalOpen = !state.isSearchModalOpen;
+    },
   },
   extraReducers: {
     [RESET_STORE]: () => {
@@ -97,9 +107,14 @@ export const {
   setLastSyncTime,
   setLanguageTag,
   resetLanguageTag,
+  setPrefferedTheme,
+  toggleSearchModal,
 } = settingsSlice.actions;
 
 export const selectBaseUrl = (state: RootState) => state.settings.baseUrl;
+export const selectPrefferedTheme = (state: RootState) =>
+  state.settings.prefferedTheme ?? 'dark';
+
 export const selectAllNodeUrls = (state: RootState) => state.settings.nodeUrls;
 export const selectDefaultNodeUrls = () => initialState.nodeUrls;
 export const selectIsPrimaryDevice = (state: RootState) =>
@@ -108,5 +123,8 @@ export const selectLastSyncTime = (state: RootState) =>
   state.settings.lastSyncTime;
 export const selectLanguageTag = (state: RootState) =>
   state.settings.languageTag;
+
+export const selectIsSearchModalOpen = (state: RootState) =>
+  state.settings.isSearchModalOpen;
 
 export default settingsSlice.reducer;

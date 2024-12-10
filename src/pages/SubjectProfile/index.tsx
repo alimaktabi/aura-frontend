@@ -11,6 +11,7 @@ import {
   SubjectOutboundEvaluationsContextProvider,
   useOutboundEvaluationsContext,
 } from 'contexts/SubjectOutboundEvaluationsContext';
+import { useMyEvaluations } from 'hooks/useMyEvaluations';
 import useViewMode from 'hooks/useViewMode';
 import { ActivityListSearch } from 'pages/SubjectProfile/ActivityListSearch';
 import { ConnectionLevel } from 'pages/SubjectProfile/ConnectionLevel';
@@ -18,7 +19,12 @@ import { EvidenceListSearch } from 'pages/SubjectProfile/EvidenceListSearch';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import {
   EvaluationCategory,
   EvidenceViewMode,
@@ -53,7 +59,7 @@ const ProfileTabs = ({
   const { currentViewMode } = useViewMode();
   return (
     <div
-      className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card`}
+      className={`px-1.5 py-1.5 w-full min-h-[52px] rounded-lg bg-white-90-card dark:bg-button-primary`}
     >
       <div
         className={`flex flex-row min-w-full gap-1.5 overflow-x-auto overflow-y-hidden h-full`}
@@ -80,8 +86,8 @@ const ProfileTabs = ({
         <p
           className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.OVERVIEW
-              ? 'background bg-button-primary text-white font-bold'
-              : 'bg-transparent text-black font-medium'
+              ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+              : 'bg-transparent dark:text-white text-black font-medium'
           }`}
           onClick={() => setSelectedTab(ProfileTab.OVERVIEW)}
           data-testid="table-view-switch-option-one"
@@ -92,8 +98,8 @@ const ProfileTabs = ({
           <p
             className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
               selectedTab === ProfileTab.CONNECTIONS
-                ? 'background bg-button-primary text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+                : 'bg-transparent dark:text-white text-black font-medium'
             }`}
             onClick={() => setSelectedTab(ProfileTab.CONNECTIONS)}
             data-testid="table-view-switch-option-one"
@@ -105,8 +111,8 @@ const ProfileTabs = ({
             className={`rounded-md min-w-[100px] w-full cursor-pointer h-full flex items-center justify-center transition-all duration-300 ease-in-out ${
               selectedTab === ProfileTab.ACTIVITY ||
               selectedTab === ProfileTab.ACTIVITY_ON_MANAGERS
-                ? 'background bg-button-primary text-white font-bold'
-                : 'bg-transparent text-black font-medium'
+                ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+                : 'bg-transparent dark:text-white text-black font-medium'
             }`}
             onClick={() => setSelectedTab(ProfileTab.ACTIVITY)}
             data-testid="table-view-switch-option-one"
@@ -117,8 +123,8 @@ const ProfileTabs = ({
         <p
           className={`rounded-md min-w-[100px] w-full cursor-pointer flex justify-center items-center h-full transition-all duration-300 ease-in-out ${
             selectedTab === ProfileTab.EVALUATIONS
-              ? 'background bg-button-primary text-white font-bold'
-              : 'bg-transparent text-black font-medium'
+              ? 'background bg-button-primary dark:bg-slate-200 dark:text-black text-white font-bold'
+              : 'bg-transparent dark:text-white text-black font-medium'
           }`}
           onClick={() => setSelectedTab(ProfileTab.EVALUATIONS)}
           data-testid="table-view-switch-option-two"
@@ -129,6 +135,15 @@ const ProfileTabs = ({
     </div>
   );
 };
+
+const connectionLevelPriority: { [key in ConnectionLevel]: number } = {
+  'already known': 1,
+  recovery: 2,
+  'just met': 3,
+  suspicious: 4,
+  reported: 5,
+};
+
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   const [selectedTab, setSelectedTab] = useState(ProfileTab.OVERVIEW);
 
@@ -180,15 +195,20 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
     subjectId,
     evaluationCategory: currentEvaluationCategory,
   });
+  const { loading, myConnections } = useMyEvaluations();
+
   const {
     itemsFiltered: connections,
     loading: loadingInboundConnections,
     selectedFilterIds: inboundConnectionsSelectedFilterId,
     clearSortAndFilter: clearInboundConnectionsSortAndFilter,
+    selectedSort,
+    selectedFilters,
   } = useSubjectInboundConnectionsContext({
     subjectId,
     evaluationCategory: currentEvaluationCategory,
   });
+
   const {
     itemsFiltered: outboundEvaluations,
     loading: loadingOutboundEvaluations,
@@ -209,8 +229,50 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
   }, [evaluations]);
 
   const connectionIds = useMemo(() => {
-    return connections?.map((e) => e.fromSubjectId) || [];
-  }, [connections]);
+    if (selectedSort || selectedFilters)
+      return connections?.map((e) => e.fromSubjectId) || [];
+
+    const myConnectionsMap =
+      myConnections?.reduce(
+        (prev, curr) => {
+          prev[curr.id] = true;
+
+          return prev;
+        },
+
+        {} as { [key: string]: boolean },
+      ) ?? {};
+
+    return (
+      connections
+        ?.sort((a, b) => {
+          const levelA = a.inboundConnection?.level;
+          const levelB = b.inboundConnection?.level;
+
+          const priorityA =
+            (levelA ? connectionLevelPriority[levelA] : Infinity) +
+            (a.inboundConnection?.id && myConnectionsMap[a.inboundConnection.id]
+              ? 1
+              : 0);
+
+          const priorityB =
+            (levelB ? connectionLevelPriority[levelB] : Infinity) +
+            (b.inboundConnection?.id && myConnectionsMap[b.inboundConnection.id]
+              ? 1
+              : 0);
+
+          if (priorityA === priorityB) {
+            const timestampA = a.inboundConnection?.timestamp || 0;
+            const timestampB = b.inboundConnection?.timestamp || 0;
+
+            return timestampB - timestampA;
+          }
+
+          return priorityA - priorityB; // Lower number means higher priority
+        })
+        .map((e) => e.fromSubjectId) || []
+    );
+  }, [selectedSort, selectedFilters, connections, myConnections]);
 
   const evaluateds = useMemo(() => {
     return (
@@ -473,12 +535,26 @@ const SubjectProfile = () => {
 
 export const SubjectProfileHeader = () => {
   const { subjectViewModeTitle } = useViewMode();
+  const location = useLocation();
+
+  const authData = useSelector(selectAuthData);
+
+  const subjectIdProp = location.pathname.split('/').at(-1);
+
+  const subjectId = useMemo(
+    () => subjectIdProp ?? authData?.brightId,
+    [authData?.brightId, subjectIdProp],
+  )!;
 
   return (
-    <>
-      {subjectViewModeTitle} Profile
-      <HeaderPreferedView.ProfileHeaderViews />
-    </>
+    <SubjectOutboundEvaluationsContextProvider subjectId={subjectId}>
+      <SubjectInboundEvaluationsContextProvider subjectId={subjectId}>
+        <SubjectInboundConnectionsContextProvider subjectId={subjectId}>
+          {subjectViewModeTitle} Profile
+          <HeaderPreferedView.ProfileHeaderViews subjectId={subjectId} />
+        </SubjectInboundConnectionsContextProvider>
+      </SubjectInboundEvaluationsContextProvider>
+    </SubjectOutboundEvaluationsContextProvider>
   );
 };
 export default SubjectProfile;
