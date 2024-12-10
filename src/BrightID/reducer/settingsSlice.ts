@@ -137,6 +137,8 @@ export const {
   resetLanguageTag,
   setPrefferedTheme,
   toggleSearchModal,
+  toggleManagerRole,
+  toggleTrainerRole,
 } = settingsSlice.actions;
 
 export const selectBaseUrl = (state: RootState) => state.settings.baseUrl;

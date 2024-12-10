@@ -1,8 +1,16 @@
+import {
+  selectHasManagerRole,
+  selectTrainerRole,
+  toggleManagerRole,
+  toggleTrainerRole,
+} from 'BrightID/actions';
+import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
+import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundConnectionsContextProvider } from 'contexts/SubjectInboundConnectionsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { SubjectOutboundEvaluationsContextProvider } from 'contexts/SubjectOutboundEvaluationsContext';
-import { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useSubjectVerifications } from '../../hooks/useSubjectVerifications';
 import { selectAuthData } from '../../store/profile/selectors';
@@ -65,9 +73,7 @@ const PlayerCard: FC<SubjectIdProps> = ({ subjectId }) => {
         />
       </section>
 
-      <section className="flex dark:text-white text-black justify-between mt-auto">
-        {/* <button className="btn btn--outlined btn--small">Hide</button> */}
-      </section>
+      <section className="flex dark:text-white text-black justify-between mt-auto"></section>
     </div>
   );
 };
@@ -77,8 +83,24 @@ const TrainerCard: FC<SubjectIdProps> = ({ subjectId }) => {
     subjectId,
     EvaluationCategory.TRAINER,
   );
+  const { myRatings } = useMyEvaluationsContext({
+    evaluationCategory: EvaluationCategory.PLAYER,
+  });
+  const dispatch = useDispatch();
 
-  console.log(trainerEvaluation);
+  const hasTrainerRole = useSelector(selectTrainerRole);
+
+  const ratingsToBeDoneCount = useMemo(
+    () =>
+      myRatings
+        ? Math.max(
+            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
+              myRatings.filter((r) => Number(r.rating)).length,
+            0,
+          )
+        : undefined,
+    [myRatings],
+  );
 
   return (
     <div className="bg-white-90-card flex dark:bg-button-primary flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
@@ -99,12 +121,47 @@ const TrainerCard: FC<SubjectIdProps> = ({ subjectId }) => {
           level={trainerEvaluation.auraLevel}
           score={trainerEvaluation.auraScore}
           color="text-pastel-green"
-        />
+        />{' '}
       </section>
+      {ratingsToBeDoneCount === undefined ? (
+        '...'
+      ) : ratingsToBeDoneCount > 0 ? (
+        <>
+          <section>
+            <div className="flex gap-2 items-center mt-2 text-sm font-medium">
+              <img src="/assets/images/RoleManagement/item.svg" alt="" />
 
-      <section className="flex justify-end dark:text-white text-black mt-auto">
-        <button className="btn !bg-pl2 btn--small">Join</button>
-      </section>
+              <p className="dark:text-white">
+                <span className="">{ratingsToBeDoneCount} </span>
+                <span className="">
+                  more evaluation{ratingsToBeDoneCount > 1 ? `s` : ''} to unlock
+                </span>
+              </p>
+              <span className="text-pastel-green font-bold"> Trainer </span>
+            </div>
+          </section>
+        </>
+      ) : null}
+
+      {(ratingsToBeDoneCount && ratingsToBeDoneCount > 0) || (
+        <section className="flex justify-end dark:text-white text-black mt-auto">
+          {hasTrainerRole ? (
+            <button
+              onClick={() => dispatch(toggleTrainerRole())}
+              className="btn btn--outlined btn--small"
+            >
+              Hide
+            </button>
+          ) : (
+            <button
+              className="btn !bg-pl2 btn--small"
+              onClick={() => dispatch(toggleTrainerRole())}
+            >
+              Join
+            </button>
+          )}
+        </section>
+      )}
     </div>
   );
 };
@@ -114,7 +171,24 @@ const ManagerCard: FC<SubjectIdProps> = ({ subjectId }) => {
     subjectId,
     EvaluationCategory.MANAGER,
   );
+  const { myRatings } = useMyEvaluationsContext({
+    evaluationCategory: EvaluationCategory.TRAINER,
+  });
+  const hasManagerRole = useSelector(selectHasManagerRole);
 
+  const dispatch = useDispatch();
+
+  const ratingsToBeDoneCount = useMemo(
+    () =>
+      myRatings
+        ? Math.max(
+            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
+              myRatings.filter((r) => Number(r.rating)).length,
+            0,
+          )
+        : undefined,
+    [myRatings],
+  );
   return (
     <div className="bg-white-90-card flex dark:bg-button-primary flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
       <img
@@ -136,18 +210,44 @@ const ManagerCard: FC<SubjectIdProps> = ({ subjectId }) => {
           color="text-gray50"
         />
       </section>
+      {ratingsToBeDoneCount === undefined ? (
+        '...'
+      ) : ratingsToBeDoneCount > 0 ? (
+        <>
+          <section>
+            <div className="flex gap-2 items-center mt-2 text-sm font-medium">
+              <img src="/assets/images/RoleManagement/item.svg" alt="" />
 
-      <section>
-        <div className="flex gap-2 items-center mt-2 text-sm font-medium">
-          <img src="/assets/images/RoleManagement/item.svg" alt="" />
-          <p className="font-medium dark:text-white">
-            Reach Trainer Level 2 to unlock
-            <span className="text-blue font-bold"> Manager </span>
-          </p>
-        </div>
-      </section>
-
-      <section className="flex justify-between mt-auto dark:text-white text-black"></section>
+              <p className="dark:text-white">
+                <span className="">{ratingsToBeDoneCount} </span>
+                <span className="">
+                  more evaluation{ratingsToBeDoneCount > 1 ? `s` : ''} to unlock
+                </span>
+              </p>
+              <span className="text-blue font-bold"> Manager </span>
+            </div>
+          </section>
+        </>
+      ) : null}
+      {(ratingsToBeDoneCount && ratingsToBeDoneCount > 0) || (
+        <section className="flex justify-end dark:text-white text-black mt-auto">
+          {hasManagerRole ? (
+            <button
+              onClick={() => dispatch(toggleManagerRole())}
+              className="btn btn--outlined btn--small"
+            >
+              Hide
+            </button>
+          ) : (
+            <button
+              className="btn !bg-pl2 btn--small"
+              onClick={() => dispatch(toggleManagerRole())}
+            >
+              Join
+            </button>
+          )}
+        </section>
+      )}
     </div>
   );
 };
