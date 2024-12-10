@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FaBook } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -25,7 +26,7 @@ export const RoleManagement = () => {
 
 const PlayerCard = () => {
   return (
-    <div className="bg-white-90-card flex flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
+    <div className="bg-white-90-card dark:bg-button-primary flex flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
       <img
         src="/assets/images/RoleManagement/player-shadow-icon.svg"
         alt=""
@@ -35,18 +36,19 @@ const PlayerCard = () => {
         <div className="flex gap-2">
           <img src="/assets/images/Shared/player.svg" alt="" />
           <div>
-            <p className="font-medium text-[20px]">Player</p>
-            <p className="text-gray00 text-sm font-medium -mt-1.5">
-              <span className="text-gray50">Joined</span> 2y ago
+            <p className="font-medium dark:text-white text-[20px]">Player</p>
+            <p className="text-gray00 dark:text-gray-200 text-sm font-medium -mt-1.5">
+              <span className="text-gray50 dark:text-gray70">Joined</span> 2y
+              ago
             </p>
           </div>
         </div>
         <PlayerLevelAndScore color="text-pastel-purple" />
       </section>
 
-      <section className="flex justify-between mt-auto">
+      <section className="flex dark:text-white text-black justify-between mt-auto">
         <div className="flex gap-2 items-end">
-          <img src="/assets/images/Shared/guide-black.svg" alt="" />
+          <FaBook size={14} />
           <p className="font-medium underline -mb-1">Guide</p>
         </div>
         <button className="btn btn--outlined btn--small">Hide</button>
@@ -57,17 +59,17 @@ const PlayerCard = () => {
 
 const TrainerCard = () => {
   return (
-    <div className="bg-white-90-card flex flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
+    <div className="bg-white-90-card flex dark:bg-button-primary flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
       <img
         src="/assets/images/RoleManagement/trainer-shadow-icon.svg"
         alt=""
         className="absolute top-0 left-0"
       />
       <section className="flex justify-between">
-        <div className="flex gap-2">
+        <div className="flex gap-2 dark:text-white text-black">
           <img src="/assets/images/Shared/trainer.svg" alt="" />
           <div>
-            <p className="font-medium text-[20px]">Trainer</p>
+            <p className="font-medium text-[20px] dark:text-white">Trainer</p>
             <p className="text-gray50 text-sm font-medium -mt-1.5">
               Ready to join
             </p>
@@ -76,9 +78,9 @@ const TrainerCard = () => {
         <PlayerLevelAndScore color="text-pastel-green" />
       </section>
 
-      <section className="flex justify-between mt-auto">
+      <section className="flex justify-between dark:text-white text-black mt-auto">
         <div className="flex gap-2 items-end">
-          <img src="/assets/images/Shared/guide-black.svg" alt="" />
+          <FaBook size={14} />
           <p className="font-medium underline -mb-1">Guide</p>
         </div>
         <button className="btn !bg-pl2 btn--small">Join</button>
@@ -89,7 +91,7 @@ const TrainerCard = () => {
 
 const ManagerCard = () => {
   return (
-    <div className="bg-white-90-card flex flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
+    <div className="bg-white-90-card flex dark:bg-button-primary flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
       <img
         src="/assets/images/RoleManagement/manager-shadow-icon.svg"
         alt=""
@@ -99,7 +101,7 @@ const ManagerCard = () => {
         <div className="flex gap-2">
           <img src="/assets/images/Shared/manager.svg" alt="" />
           <div>
-            <p className="font-medium text-[20px]">Manager</p>
+            <p className="font-medium text-[20px] dark:text-white">Manager</p>
             <p className="text-gray50 text-sm font-medium -mt-1.5">-</p>
           </div>
         </div>
@@ -116,9 +118,9 @@ const ManagerCard = () => {
         </div>
       </section>
 
-      <section className="flex justify-between mt-auto">
+      <section className="flex justify-between mt-auto dark:text-white text-black">
         <div className="flex gap-2 items-end">
-          <img src="/assets/images/Shared/guide-black.svg" alt="" />
+          <FaBook size={14} />
           <p className="font-medium underline -mb-1">Guide</p>
         </div>
       </section>
