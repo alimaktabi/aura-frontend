@@ -1,5 +1,9 @@
+import { selectHasManagerRole, selectTrainerRole } from 'BrightID/actions';
+import { useOutboundEvaluationsContext } from 'contexts/SubjectOutboundEvaluationsContext';
 import { useSubjectVerifications } from 'hooks/useSubjectVerifications';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { selectAuthData } from 'store/profile/selectors';
 
 import {
   getViewModeBackgroundColorClass,
@@ -101,6 +105,24 @@ export const HeaderPreferedView = {
   PreferedView: () => {
     const { currentViewMode, setPreferredView } = useViewMode();
 
+    const authData = useSelector(selectAuthData);
+
+    const hasManagerRole = useSelector(selectHasManagerRole);
+
+    const hasTrainerRole = useSelector(selectTrainerRole);
+
+    const subjectId = authData!.brightId;
+
+    const { itemsFiltered: trainerActivity } = useOutboundEvaluationsContext({
+      subjectId,
+      evaluationCategory: EvaluationCategory.TRAINER,
+    });
+
+    const { itemsFiltered: managerActivity } = useOutboundEvaluationsContext({
+      subjectId,
+      evaluationCategory: EvaluationCategory.MANAGER,
+    });
+
     return (
       <>
         <Tooltip
@@ -118,39 +140,43 @@ export const HeaderPreferedView = {
             alt=""
           />
         </Tooltip>
-        <Tooltip
-          content="Trainer"
-          className={`p-1 rounded ${
-            currentViewMode === PreferredView.TRAINER
-              ? getViewModeBackgroundColorClass(currentViewMode)
-              : 'bg-gray100'
-          } ml-2 cursor-pointer`}
-          onClick={() => setPreferredView(PreferredView.TRAINER)}
-        >
-          <img
-            className="w-4 h-4"
-            src={preferredViewIcon[PreferredView.TRAINER]}
-            alt=""
-          />
-        </Tooltip>
-        <Tooltip
-          content="Manager"
-          className={`p-1 rounded ${
-            currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
-            currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
-              ? getViewModeBackgroundColorClass(currentViewMode)
-              : 'bg-gray100'
-          } ml-2 cursor-pointer`}
-          onClick={() =>
-            setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
-          }
-        >
-          <img
-            className="w-4 h-4"
-            src={preferredViewIcon[PreferredView.MANAGER_EVALUATING_TRAINER]}
-            alt=""
-          />
-        </Tooltip>
+        {hasTrainerRole && trainerActivity && trainerActivity.length > 0 && (
+          <Tooltip
+            content="Trainer"
+            className={`p-1 rounded ${
+              currentViewMode === PreferredView.TRAINER
+                ? getViewModeBackgroundColorClass(currentViewMode)
+                : 'bg-gray100'
+            } ml-2 cursor-pointer`}
+            onClick={() => setPreferredView(PreferredView.TRAINER)}
+          >
+            <img
+              className="w-4 h-4"
+              src={preferredViewIcon[PreferredView.TRAINER]}
+              alt=""
+            />
+          </Tooltip>
+        )}
+        {hasManagerRole && managerActivity && managerActivity.length > 0 && (
+          <Tooltip
+            content="Manager"
+            className={`p-1 rounded ${
+              currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
+              currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
+                ? getViewModeBackgroundColorClass(currentViewMode)
+                : 'bg-gray100'
+            } ml-2 cursor-pointer`}
+            onClick={() =>
+              setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
+            }
+          >
+            <img
+              className="w-4 h-4"
+              src={preferredViewIcon[PreferredView.MANAGER_EVALUATING_TRAINER]}
+              alt=""
+            />
+          </Tooltip>
+        )}
       </>
     );
   },

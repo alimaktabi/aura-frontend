@@ -7,6 +7,12 @@ import { __DEV__ } from 'utils/env';
 const ProdCandidates = [AURA_NODE_URL_PROXY];
 const TestCandidates = [AURA_NODE_URL_PROXY];
 
+export enum RoleStatus {
+  NOT_SET,
+  HIDE,
+  SHOW,
+}
+
 export interface SettingsSlice {
   baseUrl: string | null;
   nodeUrls: Array<string>;
@@ -15,6 +21,8 @@ export interface SettingsSlice {
   languageTag: string | null;
   prefferedTheme: 'dark' | 'light';
   isSearchModalOpen?: boolean;
+  hasManagerRole?: RoleStatus;
+  hasTrainerRole?: RoleStatus;
 }
 
 const initialState: SettingsSlice = {
@@ -25,12 +33,32 @@ const initialState: SettingsSlice = {
   languageTag: null,
   prefferedTheme: 'light',
   isSearchModalOpen: false,
+  hasManagerRole: RoleStatus.NOT_SET,
+  hasTrainerRole: RoleStatus.NOT_SET,
 };
 
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
+    toggleManagerRole(state) {
+      if (state.hasManagerRole === undefined) {
+        state.hasManagerRole = RoleStatus.HIDE;
+      } else if (state.hasManagerRole === RoleStatus.HIDE) {
+        state.hasManagerRole = RoleStatus.SHOW;
+      } else {
+        state.hasManagerRole = RoleStatus.HIDE;
+      }
+    },
+    toggleTrainerRole(state) {
+      if (state.hasTrainerRole === undefined) {
+        state.hasTrainerRole = RoleStatus.HIDE;
+      } else if (state.hasTrainerRole === RoleStatus.HIDE) {
+        state.hasTrainerRole = RoleStatus.SHOW;
+      } else {
+        state.hasTrainerRole = RoleStatus.HIDE;
+      }
+    },
     setBaseUrl: (state, action: PayloadAction<string>) => {
       state.baseUrl = action.payload;
     },
@@ -123,6 +151,12 @@ export const selectLastSyncTime = (state: RootState) =>
   state.settings.lastSyncTime;
 export const selectLanguageTag = (state: RootState) =>
   state.settings.languageTag;
+
+export const selectHasManagerRole = (state: RootState) =>
+  state.settings.hasManagerRole !== RoleStatus.HIDE;
+
+export const selectTrainerRole = (state: RootState) =>
+  state.settings.hasTrainerRole !== RoleStatus.HIDE;
 
 export const selectIsSearchModalOpen = (state: RootState) =>
   state.settings.isSearchModalOpen;
