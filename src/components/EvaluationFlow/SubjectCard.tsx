@@ -1,8 +1,5 @@
 import BrightIdProfilePicture from 'components/BrightIdProfilePicture';
-import {
-  ConnectionStatus,
-  EvaluationStatus,
-} from 'components/ConnectionAndEvaluationStatus';
+import { ConnectionAndEvaluationStatus } from 'components/ConnectionAndEvaluationStatus';
 import { getViewModeSubjectBorderColorClass } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import ReactECharts from 'echarts-for-react';
@@ -44,7 +41,7 @@ export const SubjectCard = ({
   return (
     <Link
       to={'/subject/' + subjectId}
-      className={`card card--evaluation b-4 flex !flex-row gap-1 !justify-between w-full`}
+      className={`card card--evaluation b-4 flex !flex-row gap-1 items-center !justify-between w-full`}
       data-testid={`subject-card-${subjectId}`}
     >
       <div
@@ -67,46 +64,43 @@ export const SubjectCard = ({
             >
               {name}
             </p>
+
             <p className="text-gray10 dark:text-gray70">
               Level:{' '}
               <span className="font-medium text-black dark:text-white">
                 {auraLevel}
               </span>
+              <span className="text-sm mt-2">
+                <p className="text-gray10 dark:text-gray70">
+                  Score:{' '}
+                  <span className="font-medium text-black dark:text-white">
+                    {auraScore ? compactFormat(auraScore) : '-'}
+                  </span>
+                </p>
+              </span>
             </p>
             {progress < 0 ? (
               '😈'
             ) : (
-              <HorizontalProgressBar
-                className="w-36"
-                isWidthFull={true}
-                percentage={progress}
-              />
+              <HorizontalProgressBar className="w-36" percentage={progress} />
             )}
           </div>
         </div>
+
         <div className="mt-auto">
-          <ConnectionStatus subjectId={subjectId} />
+          <ConnectionAndEvaluationStatus subjectId={subjectId} />
         </div>
       </div>
       <div className="evaluation-right flex flex-col gap-2 items-end">
-        <div className="evaluation-right__top">
-          <p className="text-gray10 dark:text-gray70">
-            Score:{' '}
-            <span className="font-medium text-black dark:text-white">
-              {auraScore ? compactFormat(auraScore) : '-'}
-            </span>
-          </p>
-        </div>
-
         <div className="evaluation-right__bottom">
           <ReactECharts
             style={{ height: '48px', width: '100%' }}
             option={impactChartSmallOption}
           />
         </div>
-        <div className="-mt-1">
+        {/* <div className="-mt-1">
           <EvaluationStatus subjectId={subjectId} />
-        </div>
+        </div> */}
       </div>
     </Link>
   );
