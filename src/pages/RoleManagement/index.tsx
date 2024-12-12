@@ -4,12 +4,10 @@ import {
   toggleManagerRole,
   toggleTrainerRole,
 } from 'BrightID/actions';
-import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
-import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
 import { SubjectInboundConnectionsContextProvider } from 'contexts/SubjectInboundConnectionsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
 import { SubjectOutboundEvaluationsContextProvider } from 'contexts/SubjectOutboundEvaluationsContext';
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useSubjectVerifications } from '../../hooks/useSubjectVerifications';
@@ -83,23 +81,13 @@ const TrainerCard: FC<SubjectIdProps> = ({ subjectId }) => {
     subjectId,
     EvaluationCategory.TRAINER,
   );
-  const { myRatings } = useMyEvaluationsContext({
-    evaluationCategory: EvaluationCategory.PLAYER,
-  });
   const dispatch = useDispatch();
 
   const hasTrainerRole = useSelector(selectTrainerRole);
 
-  const ratingsToBeDoneCount = useMemo(
-    () =>
-      myRatings
-        ? Math.max(
-            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
-              myRatings.filter((r) => Number(r.rating)).length,
-            0,
-          )
-        : undefined,
-    [myRatings],
+  const playerEvaluation = useSubjectVerifications(
+    subjectId,
+    EvaluationCategory.PLAYER,
   );
 
   return (
@@ -123,27 +111,23 @@ const TrainerCard: FC<SubjectIdProps> = ({ subjectId }) => {
           color="text-pastel-green"
         />{' '}
       </section>
-      {ratingsToBeDoneCount === undefined ? (
+      {playerEvaluation.auraLevel === null ||
+      playerEvaluation.auraLevel === undefined ? (
         '...'
-      ) : ratingsToBeDoneCount > 0 ? (
+      ) : playerEvaluation.auraLevel < 2 ? (
         <>
           <section>
             <div className="flex gap-2 items-center mt-2 text-sm font-medium">
               <img src="/assets/images/RoleManagement/item.svg" alt="" />
 
-              <p className="dark:text-white">
-                <span className="">{ratingsToBeDoneCount} </span>
-                <span className="">
-                  more evaluation{ratingsToBeDoneCount > 1 ? `s` : ''} to unlock
-                </span>
-              </p>
+              <p className="dark:text-white">Reach Player level 2 to unlock</p>
               <span className="text-pastel-green font-bold"> Trainer </span>
             </div>
           </section>
         </>
       ) : null}
 
-      {(ratingsToBeDoneCount && ratingsToBeDoneCount > 0) || (
+      {!!playerEvaluation.auraLevel && playerEvaluation.auraLevel > 2 && (
         <section className="flex justify-end dark:text-white text-black mt-auto">
           {hasTrainerRole ? (
             <button
@@ -171,24 +155,16 @@ const ManagerCard: FC<SubjectIdProps> = ({ subjectId }) => {
     subjectId,
     EvaluationCategory.MANAGER,
   );
-  const { myRatings } = useMyEvaluationsContext({
-    evaluationCategory: EvaluationCategory.TRAINER,
-  });
+
+  const trainerEvaluation = useSubjectVerifications(
+    subjectId,
+    EvaluationCategory.TRAINER,
+  );
+
   const hasManagerRole = useSelector(selectHasManagerRole);
 
   const dispatch = useDispatch();
 
-  const ratingsToBeDoneCount = useMemo(
-    () =>
-      myRatings
-        ? Math.max(
-            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
-              myRatings.filter((r) => Number(r.rating)).length,
-            0,
-          )
-        : undefined,
-    [myRatings],
-  );
   return (
     <div className="bg-white-90-card flex dark:bg-button-primary flex-col gap-3.5 relative cursor-pointer rounded-lg pl-5 py-[18px] pr-6 pb-4 min-h-[150px]">
       <img
@@ -210,26 +186,22 @@ const ManagerCard: FC<SubjectIdProps> = ({ subjectId }) => {
           color="text-gray50"
         />
       </section>
-      {ratingsToBeDoneCount === undefined ? (
+      {trainerEvaluation.auraLevel === undefined ||
+      trainerEvaluation.auraLevel === null ? (
         '...'
-      ) : ratingsToBeDoneCount > 0 ? (
+      ) : trainerEvaluation.auraLevel < 1 ? (
         <>
           <section>
             <div className="flex gap-2 items-center mt-2 text-sm font-medium">
               <img src="/assets/images/RoleManagement/item.svg" alt="" />
 
-              <p className="dark:text-white">
-                <span className="">{ratingsToBeDoneCount} </span>
-                <span className="">
-                  more evaluation{ratingsToBeDoneCount > 1 ? `s` : ''} to unlock
-                </span>
-              </p>
+              <p className="dark:text-white">Reach Trainer level 1 to unlock</p>
               <span className="text-blue font-bold"> Manager </span>
             </div>
           </section>
         </>
       ) : null}
-      {(ratingsToBeDoneCount && ratingsToBeDoneCount > 0) || (
+      {!!trainerEvaluation.auraLevel && trainerEvaluation.auraLevel > 1 && (
         <section className="flex justify-end dark:text-white text-black mt-auto">
           {hasManagerRole ? (
             <button

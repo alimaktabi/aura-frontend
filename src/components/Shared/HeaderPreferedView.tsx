@@ -123,6 +123,16 @@ export const HeaderPreferedView = {
       evaluationCategory: EvaluationCategory.MANAGER,
     });
 
+    const playerEvaluation = useSubjectVerifications(
+      subjectId,
+      EvaluationCategory.PLAYER,
+    );
+
+    const trainerEvaluation = useSubjectVerifications(
+      subjectId,
+      EvaluationCategory.TRAINER,
+    );
+
     return (
       <>
         <Tooltip
@@ -140,43 +150,53 @@ export const HeaderPreferedView = {
             alt=""
           />
         </Tooltip>
-        {hasTrainerRole && trainerActivity && trainerActivity.length > 0 && (
-          <Tooltip
-            content="Trainer"
-            className={`p-1 rounded ${
-              currentViewMode === PreferredView.TRAINER
-                ? getViewModeBackgroundColorClass(currentViewMode)
-                : 'bg-gray100'
-            } ml-2 cursor-pointer`}
-            onClick={() => setPreferredView(PreferredView.TRAINER)}
-          >
-            <img
-              className="w-4 h-4"
-              src={preferredViewIcon[PreferredView.TRAINER]}
-              alt=""
-            />
-          </Tooltip>
-        )}
-        {hasManagerRole && managerActivity && managerActivity.length > 0 && (
-          <Tooltip
-            content="Manager"
-            className={`p-1 rounded ${
-              currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
-              currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
-                ? getViewModeBackgroundColorClass(currentViewMode)
-                : 'bg-gray100'
-            } ml-2 cursor-pointer`}
-            onClick={() =>
-              setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
-            }
-          >
-            <img
-              className="w-4 h-4"
-              src={preferredViewIcon[PreferredView.MANAGER_EVALUATING_TRAINER]}
-              alt=""
-            />
-          </Tooltip>
-        )}
+        {!!playerEvaluation.auraLevel &&
+          playerEvaluation.auraLevel > 2 &&
+          hasTrainerRole &&
+          trainerActivity &&
+          trainerActivity.length > 0 && (
+            <Tooltip
+              content="Trainer"
+              className={`p-1 rounded ${
+                currentViewMode === PreferredView.TRAINER
+                  ? getViewModeBackgroundColorClass(currentViewMode)
+                  : 'bg-gray100'
+              } ml-2 cursor-pointer`}
+              onClick={() => setPreferredView(PreferredView.TRAINER)}
+            >
+              <img
+                className="w-4 h-4"
+                src={preferredViewIcon[PreferredView.TRAINER]}
+                alt=""
+              />
+            </Tooltip>
+          )}
+        {!!trainerEvaluation.auraLevel &&
+          trainerEvaluation.auraLevel > 1 &&
+          hasManagerRole &&
+          managerActivity &&
+          managerActivity.length > 0 && (
+            <Tooltip
+              content="Manager"
+              className={`p-1 rounded ${
+                currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
+                currentViewMode === PreferredView.MANAGER_EVALUATING_MANAGER
+                  ? getViewModeBackgroundColorClass(currentViewMode)
+                  : 'bg-gray100'
+              } ml-2 cursor-pointer`}
+              onClick={() =>
+                setPreferredView(PreferredView.MANAGER_EVALUATING_TRAINER)
+              }
+            >
+              <img
+                className="w-4 h-4"
+                src={
+                  preferredViewIcon[PreferredView.MANAGER_EVALUATING_TRAINER]
+                }
+                alt=""
+              />
+            </Tooltip>
+          )}
       </>
     );
   },
