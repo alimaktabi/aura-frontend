@@ -1,4 +1,5 @@
 import { auraVersion } from 'constants/version';
+import { BsTwitterX } from 'react-icons/bs';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -45,7 +46,7 @@ export const Settings = () => {
         <Link
           target="_blank"
           to="https://brightid.gitbook.io/aura"
-          className="bg-white-90-card dark:bg-button-primary cursor-pointer rounded-lg pl-5 py-3.5 pr-2"
+          className="bg-white-90-card dark:bg-button-primary flex items-center justify-between cursor-pointer rounded-lg pl-5 py-3.5 pr-2"
         >
           <p className="font-medium text-[20px]">Guide</p>
         </Link>
@@ -53,9 +54,22 @@ export const Settings = () => {
         <Link
           target="_blank"
           to="https://x.com/brightidproject"
-          className="bg-white-90-card dark:bg-button-primary cursor-pointer rounded-lg pl-5 py-3.5 pr-2"
+          className="bg-white-90-card dark:bg-button-primary cursor-pointer flex items-center justify-between rounded-lg pl-5 py-3.5 pr-5"
         >
           <p className="font-medium text-[20px]">X</p>
+          <BsTwitterX size={25} />
+        </Link>
+        <Link
+          target="_blank"
+          to="https://discord.gg/y24xeXq7mj"
+          className="bg-white-90-card dark:bg-button-primary cursor-pointer flex items-center justify-between rounded-lg pl-5 py-3.5 pr-5"
+        >
+          <p className="font-medium text-[20px]">Discord</p>
+          <img
+            src="/assets/images/Shared/discord.svg"
+            alt=""
+            className="w-8 cursor-pointer"
+          />
         </Link>
 
         {(__DEV__ ||
@@ -71,24 +85,6 @@ export const Settings = () => {
             <p className="font-medium text-[20px]">Logout</p>
           </div>
         )}
-      </section>
-
-      <section className="mt-auto flex justify-center items-center gap-11 mb-2">
-        <img
-          src="/assets/images/Shared/guide.svg"
-          alt=""
-          className="w-auto h-9 cursor-pointer"
-        />
-        <img
-          src="/assets/images/Shared/discord.svg"
-          alt=""
-          className="w-auto h-9 cursor-pointer"
-        />
-        <img
-          src="/assets/images/Shared/brightid-icon-white.svg"
-          alt=""
-          className="w-auto h-9 cursor-pointer"
-        />
       </section>
 
       <section className="flex w-full justify-center">
