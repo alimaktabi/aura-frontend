@@ -4,7 +4,9 @@ import { SubjectInboundEvaluationsContext } from 'contexts/SubjectInboundEvaluat
 import { EChartsOption } from 'echarts-for-react/src/types';
 import useParseBrightIdVerificationData from 'hooks/useParseBrightIdVerificationData';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useGetBrightIDProfileQuery } from 'store/api/profile';
+import { selectAuthData } from 'store/profile/selectors';
 
 import {
   AuraImpact,
@@ -73,6 +75,8 @@ export const useSubjectVerifications = (
 };
 
 export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
+  const authData = useSelector(selectAuthData);
+
   const auraTopImpacts = useMemo(
     () =>
       auraImpacts
@@ -144,10 +148,13 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
             label: item.evaluatorName,
             evaluator: item.evaluator,
             itemStyle: {
-              color: findNearestColor(
-                item.confidence * (item.impact >= 0 ? 1 : -1),
-                valueColorMap,
-              ),
+              color:
+                authData?.brightId === item.evaluator
+                  ? '#8341DE'
+                  : findNearestColor(
+                      item.confidence * (item.impact >= 0 ? 1 : -1),
+                      valueColorMap,
+                    ),
               borderRadius: item.impact >= 0 ? [4, 4, 0, 0] : [0, 0, 4, 4],
             },
           })),
@@ -157,7 +164,7 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
         },
       ],
     };
-  }, [auraTopImpacts]);
+  }, [auraTopImpacts, authData]);
 
   const impactChartSmallOption = useMemo(
     () => ({
@@ -177,10 +184,13 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
             label: item.evaluatorName,
             evaluator: item.evaluator,
             itemStyle: {
-              color: findNearestColor(
-                item.confidence * (item.impact >= 0 ? 1 : -1),
-                valueColorMap,
-              ),
+              color:
+                authData?.brightId === item.evaluator
+                  ? '#8341DE'
+                  : findNearestColor(
+                      item.confidence * (item.impact >= 0 ? 1 : -1),
+                      valueColorMap,
+                    ),
               borderRadius: item.impact >= 0 ? [2, 2, 0, 0] : [0, 0, 2, 2],
             },
           })),
@@ -192,7 +202,7 @@ export const useImpactEChartOption = (auraImpacts: AuraImpact[] | null) => {
         },
       ],
     }),
-    [auraTopImpacts, impactChartOption],
+    [auraTopImpacts, authData, impactChartOption],
   );
 
   return {
