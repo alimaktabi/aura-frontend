@@ -133,6 +133,46 @@ export const HeaderPreferedView = {
       EvaluationCategory.TRAINER,
     );
 
+    React.useEffect(() => {
+      if (
+        currentViewMode === PreferredView.TRAINER &&
+        !trainerEvaluation.loading
+      ) {
+        if (
+          !playerEvaluation.auraLevel ||
+          playerEvaluation.auraLevel < 2 ||
+          !hasTrainerRole ||
+          !trainerActivity ||
+          trainerActivity.length === 0
+        ) {
+          setPreferredView(PreferredView.PLAYER);
+        }
+      } else if (
+        currentViewMode === PreferredView.MANAGER_EVALUATING_TRAINER ||
+        PreferredView.MANAGER_EVALUATING_MANAGER
+      ) {
+        if (
+          !trainerEvaluation.auraLevel ||
+          trainerEvaluation.auraLevel < 1 ||
+          !hasManagerRole ||
+          !managerActivity ||
+          managerActivity.length === 0
+        ) {
+          setPreferredView(PreferredView.PLAYER);
+        }
+      }
+    }, [
+      currentViewMode,
+      hasManagerRole,
+      hasTrainerRole,
+      managerActivity,
+      playerEvaluation.auraLevel,
+      setPreferredView,
+      trainerActivity,
+      trainerEvaluation.auraLevel,
+      trainerEvaluation.loading,
+    ]);
+
     return (
       <>
         <Tooltip
@@ -151,7 +191,7 @@ export const HeaderPreferedView = {
           />
         </Tooltip>
         {!!playerEvaluation.auraLevel &&
-          playerEvaluation.auraLevel > 2 &&
+          playerEvaluation.auraLevel >= 2 &&
           hasTrainerRole &&
           trainerActivity &&
           trainerActivity.length > 0 && (
@@ -172,7 +212,7 @@ export const HeaderPreferedView = {
             </Tooltip>
           )}
         {!!trainerEvaluation.auraLevel &&
-          trainerEvaluation.auraLevel > 1 &&
+          trainerEvaluation.auraLevel >= 1 &&
           hasManagerRole &&
           managerActivity &&
           managerActivity.length > 0 && (

@@ -73,6 +73,18 @@ const Home = () => {
     [myRatings],
   );
 
+  const ratingsToBeDoneCount = useMemo(
+    () =>
+      myRatings
+        ? Math.max(
+            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
+              myRatings.filter((r) => Number(r.rating)).length,
+            0,
+          )
+        : 0,
+    [myRatings],
+  );
+
   const playerOnboardingScreenShown = useSelector(
     selectPlayerOnboardingScreenShown,
   );
@@ -93,10 +105,14 @@ const Home = () => {
           isPerformance={true}
           color={color.Player} // this color should be based on role
         />
+
         <ToggleInput
           option1={'Evaluate'}
           option2={'Level Up'}
           isChecked={isEvaluate}
+          disabledHelpText={`${ratingsToBeDoneCount} more evaluation ${
+            ratingsToBeDoneCount > 1 ? `s` : ''
+          } to unlock Level Up`}
           setIsChecked={(isEvaluate) => {
             navigate(
               RoutePath.HOME + `?tab=${isEvaluate ? 'evaluate' : 'levelup'}`,
