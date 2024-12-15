@@ -136,12 +136,15 @@ const ProfileTabs = ({
   );
 };
 
-const connectionLevelPriority: { [key in ConnectionLevel]: number } = {
+const connectionLevelPriority: {
+  [key in ConnectionLevel | 'aura only']: number;
+} = {
   'already known': 1,
   recovery: 2,
   'just met': 3,
-  suspicious: 4,
-  reported: 5,
+  'aura only': 4,
+  suspicious: 5,
+  reported: 6,
 };
 
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
