@@ -27,6 +27,12 @@ export const Settings = () => {
         >
           <p className="font-medium text-[20px]">Role Management</p>
         </div>
+        <div
+          className="bg-white-90-card cursor-pointer dark:bg-button-primary rounded-lg pl-5 py-3.5 pr-2"
+          onClick={() => navigate(RoutePath.ONBOARDING)}
+        >
+          <p className="font-medium text-[20px]">On Boarding</p>
+        </div>
 
         <div
           onClick={() =>
