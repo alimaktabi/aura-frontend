@@ -2,7 +2,9 @@ import { SubjectCard } from 'components/EvaluationFlow/SubjectCard';
 import { SubjectListControls } from 'components/EvaluationFlow/SubjectListControls';
 import { PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING } from 'constants/index';
 import { useMyEvaluationsContext } from 'contexts/MyEvaluationsContext';
+import { SubjectInboundConnectionsContextProvider } from 'contexts/SubjectInboundConnectionsContext';
 import { SubjectInboundEvaluationsContextProvider } from 'contexts/SubjectInboundEvaluationsContext';
+import { SubjectOutboundEvaluationsContextProvider } from 'contexts/SubjectOutboundEvaluationsContext';
 import Onboarding from 'pages/Onboarding';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -24,7 +26,6 @@ import {
 } from '../../store/profile/selectors';
 import { hash } from '../../utils/crypto';
 import ProfileInfoPerformance from './components/ProfileInfoPerformance';
-// import LinkCard from './LinkCard';
 
 const Home = () => {
   const color = {
@@ -42,13 +43,6 @@ const Home = () => {
 
     if (query.get('tab') === 'levelup') {
       setIsEvaluate(false);
-
-      // Clear the 'tab' query parameter
-      // query.delete('tab');
-      // navigate({
-      //   pathname: window.location.pathname,
-      //   search: query.toString(),
-      // });
     }
   }, [query, navigate]);
 
@@ -79,6 +73,18 @@ const Home = () => {
     [myRatings],
   );
 
+  const ratingsToBeDoneCount = useMemo(
+    () =>
+      myRatings
+        ? Math.max(
+            PLAYER_EVALUATION_MINIMUM_COUNT_BEFORE_TRAINING -
+              myRatings.filter((r) => Number(r.rating)).length,
+            0,
+          )
+        : 0,
+    [myRatings],
+  );
+
   const playerOnboardingScreenShown = useSelector(
     selectPlayerOnboardingScreenShown,
   );
@@ -94,22 +100,19 @@ const Home = () => {
   ) : (
     <SubjectInboundEvaluationsContextProvider subjectId={authData.brightId}>
       <div id="scrollable-div" className="page flex flex-col gap-4">
-        {/*<ProfileInfo*/}
-        {/*  subjectId={authData.brightId}*/}
-        {/*  isPerformance={true}*/}
-        {/*  // role="Player" // this name should be dynamic and be shown on the top of the page - value is set on Routes.tsx*/}
-        {/*  color={color.Player} // this color should be based on role*/}
-        {/*/>*/}
         <ProfileInfoPerformance
           subjectId={authData.brightId}
           isPerformance={true}
-          // role="Player" // this name should be dynamic and be shown on the top of the page - value is set on Routes.tsx
           color={color.Player} // this color should be based on role
         />
+
         <ToggleInput
           option1={'Evaluate'}
           option2={'Level Up'}
           isChecked={isEvaluate}
+          disabledHelpText={`${ratingsToBeDoneCount} more evaluation ${
+            ratingsToBeDoneCount > 1 ? `s` : ''
+          } to unlock Level Up`}
           setIsChecked={(isEvaluate) => {
             navigate(
               RoutePath.HOME + `?tab=${isEvaluate ? 'evaluate' : 'levelup'}`,
@@ -157,10 +160,18 @@ const Home = () => {
 };
 
 export const HomeHeader = () => {
+  const authData = useSelector(selectAuthData);
+  const subjectId = authData?.brightId;
   return (
     <>
       Home
-      <HeaderPreferedView.PreferedView />
+      <SubjectOutboundEvaluationsContextProvider subjectId={subjectId!}>
+        <SubjectInboundEvaluationsContextProvider subjectId={subjectId!}>
+          <SubjectInboundConnectionsContextProvider subjectId={subjectId!}>
+            <HeaderPreferedView.PreferedView />
+          </SubjectInboundConnectionsContextProvider>
+        </SubjectInboundEvaluationsContextProvider>
+      </SubjectOutboundEvaluationsContextProvider>
     </>
   );
 };

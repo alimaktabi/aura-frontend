@@ -136,12 +136,15 @@ const ProfileTabs = ({
   );
 };
 
-const connectionLevelPriority: { [key in ConnectionLevel]: number } = {
+const connectionLevelPriority: {
+  [key in ConnectionLevel | 'aura only']: number;
+} = {
   'already known': 1,
   recovery: 2,
   'just met': 3,
-  suspicious: 4,
-  reported: 5,
+  'aura only': 4,
+  suspicious: 5,
+  reported: 6,
 };
 
 const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
@@ -250,15 +253,15 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
           const levelB = b.inboundConnection?.level;
 
           const priorityA =
-            (levelA ? connectionLevelPriority[levelA] : Infinity) +
+            (levelA ? connectionLevelPriority[levelA] * 2 : Infinity) +
             (a.inboundConnection?.id && myConnectionsMap[a.inboundConnection.id]
-              ? 1
+              ? -1
               : 0);
 
           const priorityB =
-            (levelB ? connectionLevelPriority[levelB] : Infinity) +
+            (levelB ? connectionLevelPriority[levelB] * 2 : Infinity) +
             (b.inboundConnection?.id && myConnectionsMap[b.inboundConnection.id]
-              ? 1
+              ? -1
               : 0);
 
           if (priorityA === priorityB) {
@@ -268,7 +271,7 @@ const SubjectProfileBody = ({ subjectId }: { subjectId: string }) => {
             return timestampB - timestampA;
           }
 
-          return priorityA - priorityB; // Lower number means higher priority
+          return priorityA - priorityB;
         })
         .map((e) => e.fromSubjectId) || []
     );

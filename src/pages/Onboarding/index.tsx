@@ -1,9 +1,10 @@
 import { SUBJECTS_EVALUATION_ONBOARDING_GUIDE_STEP_COUNT } from 'constants/index';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'store/hooks';
 import { setPlayerOnboardingScreenShown } from 'store/profile';
+import { RoutePath } from 'types/router';
 
 import { MoveX, Scale } from '../../animations';
 import FirstStep from './components/firstStep';
@@ -15,6 +16,7 @@ const Onboarding = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const stepNumber = Number(searchParams.get('step'));
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!stepNumber)
@@ -138,7 +140,10 @@ const Onboarding = () => {
               <Scale duration={0.3} delay={0} key={2}>
                 <p
                   data-testid="subjects-evaluation-onboarding-guide-finish-button"
-                  onClick={() => dispatch(setPlayerOnboardingScreenShown(true))}
+                  onClick={() => {
+                    dispatch(setPlayerOnboardingScreenShown(true));
+                    navigate(RoutePath.HOME);
+                  }}
                   className={`font-semibold text-xl text-white transition-all opacity-1'`}
                 >
                   Let&apos;s Start
